@@ -203,7 +203,7 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-# Mac crap
+# Mac
 .DS_Store
 
 #############
@@ -219,5 +219,5 @@ make/growth # Consider using an extension like .run
 make/growth*
 /growth*
 .gitignore
-/Tools/Workbench/target/
-/Tools/Workbench/WorkbenchProject/target/
+WorkbenchProject/target/
+WorkbenchProject/BrainGridRepos/
