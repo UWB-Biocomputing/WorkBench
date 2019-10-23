@@ -12,6 +12,7 @@ git checkout [branch_name/commit_id]
 ```
 
 ### 1.2. Compile and build
+You can compile and build WorkBench using Maven in a command prompt or using NetBeans
 #### 1.2.1. Maven
 
 * Make sure Maven is installed by checking Maven version using the following command.
@@ -29,7 +30,7 @@ mvn clean install
 ```
 * After the project is built successfully, a JAR file "BrainGridWorkbench-1.0-SNAPSHOT.jar " will be created under the directory "Tools/Workbench/WorkbenchProject/target". Run this JAR file to start using the Workbench.
 
-#### 1.2.1. NetBeans
+#### 1.2.2. NetBeans
 
 * Create a New Project in NetBeans. Then, select "Maven" under project categories and choose the option "Project with existing POM". And, press “Next”.
 
