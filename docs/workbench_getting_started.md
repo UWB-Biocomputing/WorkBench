@@ -12,7 +12,7 @@ git checkout [branch_name/commit_id]
 ```
 
 ### 1.2. Compile and build
-You can compile and build WorkBench using Maven in a command prompt or using NetBeans
+You can compile and build WorkBench using Maven in a command prompt or using NetBeans.
 #### 1.2.1. Maven
 
 * Make sure Maven is installed by checking Maven version using the following command.
