@@ -4,7 +4,7 @@
 
 * Clone the repository to a local folder by typing the following command.
 ```shell
-git clone https://github.com/UWB-Biocomputing/BrainGrid.git [folder_name]
+git clone https://github.com/UWB-Biocomputing/WorkBench.git [folder_name]
 ```
 * If you would like to checkout a specific branch or commit, use the following command.
 ```shell
