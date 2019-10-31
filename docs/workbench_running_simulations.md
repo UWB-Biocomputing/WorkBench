@@ -67,7 +67,7 @@
  
 ![alt text](images/WorkbenchResultDownloadFail.png "Fail")
 
-### 2.1. About the generated script files
+### 2.2. About the generated script files
 The generated script files do the following steps.
 1. Make an empty directory and clone the BrainGrid repository.
 2. Checkout the revision specified in SHA1 field of the script configuration dialog.
