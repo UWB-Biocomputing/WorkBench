@@ -39,7 +39,7 @@
 
 ![alt text](images/WorkbenchSpecifyButton.png "Specify")
  
-* Setup the parameters for script generation. The “SHA1 Checkout Key” is the commit number. If it is blank, it will checkout the latest version. 
+* Setup the parameters for script generation. The “SHA1 Checkout Key” is the commit number. If it is blank, it will checkout the latest version. Make sure to specify the Simulation Folder Location. 
 
 ![alt text](images/WorkbenchScriptSpecification.png "Script Specification")
  
