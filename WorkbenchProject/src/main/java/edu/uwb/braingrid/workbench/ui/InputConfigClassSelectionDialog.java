@@ -2,7 +2,7 @@ package edu.uwb.braingrid.workbench.ui;
 
 import edu.uwb.braingrid.workbench.SystemConfig;
 import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
-import jdk.internal.jline.internal.Log;
+//import jdk.internal.jline.internal.Log;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
