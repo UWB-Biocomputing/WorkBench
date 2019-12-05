@@ -36,13 +36,10 @@ public class SystemConfig {
 
 	// Mapping between Tag Name and Input Type
 	public static final HashMap<String, InputAnalyzer.InputType> TAG_NAME_INPUT_TYPE_MAPPING = new HashMap<String, InputAnalyzer.InputType>() {
-
 		{
 			put("activeNListFileName", InputAnalyzer.InputType.ACTIVE);
 			put("inhNListFileName", InputAnalyzer.InputType.INHIBITORY);
 			put("probedNListFileName", InputAnalyzer.InputType.PROBED);
-			put("prbNListFileName", InputAnalyzer.InputType.PROBED);
-			
 		}
 	};
 
