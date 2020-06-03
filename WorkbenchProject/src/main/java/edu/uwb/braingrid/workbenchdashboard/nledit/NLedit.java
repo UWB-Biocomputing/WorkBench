@@ -186,7 +186,6 @@ public class NLedit extends WorkbenchApp {
 			actionStatisticalData();
 		});
 
-	
 		
 		HBox toolbar = new HBox(new_project_btn_, open_item_btn_, save_item_btn_, import_item_btn_, export_item_btn_,
 				bcell_item_btn_, scell_item_btn_, print_item_btn_, sdat_item_btn_, clear_item_btn_);
@@ -209,6 +208,7 @@ public class NLedit extends WorkbenchApp {
 			button.setGraphic(new ImageView(image));
 		} catch (NullPointerException e) {
 			System.out.println(e.toString());
+			System.out.println("Error by toolbar button image set");
 		}
 	}
 
@@ -761,18 +761,18 @@ public class NLedit extends WorkbenchApp {
 	NL_Sim_Util nl_sim_util_;
 
 	// Toolbar
-	private Button new_project_btn_ = new Button();
-	private Button open_item_btn_ = new Button();
-	private Button save_item_btn_ = new Button();
-	private Button import_item_btn_ = new Button();
-	private Button export_item_btn_ = new Button();
-	private Button clear_item_btn_ = new Button();
-	private Button print_item_btn_ = new Button();
-	private Button bcell_item_btn_ = new Button();
-	private Button scell_item_btn_ = new Button();
+	private Button new_project_btn_ = new Button("New Project");
+	private Button open_item_btn_ = new Button("Open");
+	private Button save_item_btn_ = new Button("Save");
+	private Button import_item_btn_ = new Button("Import");
+	private Button export_item_btn_ = new Button("Export");
+	private Button clear_item_btn_ = new Button("Clear");
+	private Button print_item_btn_ = new Button("Print");
+	private Button bcell_item_btn_ = new Button("Zoom In");
+	private Button scell_item_btn_ = new Button("Zoom Out");
 	private Button gpat_item_btn_ = new Button("_Generate pattern...");
 	private Button aprb_item_btn_ = new Button("_Arrange probes...");
-	private Button sdat_item_btn_ = new Button();
+	private Button sdat_item_btn_ = new Button("Stats");
 
 	private ToggleGroup editGroup = new ToggleGroup();
 	private RadioButton inhNItem = new RadioButton("Inhibitory neurons");
