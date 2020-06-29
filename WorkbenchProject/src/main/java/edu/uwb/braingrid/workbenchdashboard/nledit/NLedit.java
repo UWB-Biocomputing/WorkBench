@@ -304,14 +304,14 @@ public class NLedit extends WorkbenchApp {
 		ImportPanel myPanel = new ImportPanel();
 
 		final Stage dialog = new Stage();
-		dialog.setTitle("Confirmation");
-		Button yes = new Button("Yes");
-		Button no = new Button("No");
+		dialog.setTitle("Select Input Files");
+		Button imprt = new Button("Import");
+		Button cancel = new Button("Cancel");
 
 		dialog.initModality(Modality.NONE);
 		dialog.initOwner(WorkbenchDashboard.primaryStage_);
 
-		yes.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		imprt.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				readNeuronListFromFile(myPanel.tfields[ImportPanel.idxInhList].getText(), neurons_layout_.inhNList,
@@ -323,17 +323,18 @@ public class NLedit extends WorkbenchApp {
 
 				Graphics g = layoutPanel.getGraphics();
 				layoutPanel.writeToGraphics(g);
+				layoutPanel.repaint();
 				dialog.close();
 			}
 		});
-		no.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		cancel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				dialog.close();
 			}
 		});
 
-		HBox hbox = new HBox(yes, no);
+		HBox hbox = new HBox(imprt, cancel);
 		hbox.setAlignment(Pos.CENTER);
 		VBox vbox = new VBox(myPanel, hbox);
 		Scene dialogScene = new Scene(vbox, 500, 150);
