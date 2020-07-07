@@ -20,13 +20,13 @@ You can compile and build WorkBench using Maven in a command prompt or using Net
 mvn -v
 ```
 
-* If Maven is installed, the output will be like the screen dump below.
+* If Maven is installed, the output will be like the screen dump below. Note that Maven is using Java 8, here shown as Java version: 1.8.0_111
 
 ![alt text](images/CheckMavenVersion.png "Maven is installed.")
 
 * Type the following Maven command under the directory "Tools/Workbench/WorkbenchProject" to compile and create executable JAR file.
 ```shell
-mvn clean install
+mvn install -Dmaven.test.skip=true
 ```
 * After the project is built successfully, a JAR file "BrainGridWorkbench-1.0-SNAPSHOT.jar " will be created under the directory "Tools/Workbench/WorkbenchProject/target". Run this JAR file to start using the Workbench.
 
