@@ -129,20 +129,20 @@ public class NLedit extends WorkbenchApp {
 
 	private void initToolbar() {
 		
-		primeButton(new_project_btn_, "/icons/baseline-create_new_folder-black-18/1x/baseline_create_new_folder_black_18dp.png", "New Project");
-		new_project_btn_.setOnAction(event -> {
-			newProject();
-		});
+		// primeButton(new_project_btn_, "/icons/baseline-create_new_folder-black-18/1x/baseline_create_new_folder_black_18dp.png", "New Project");
+		// new_project_btn_.setOnAction(event -> {
+		// 	newProject();
+		// });
 
-		primeButton(open_item_btn_, "/icons/baseline-input-black-18/1x/baseline_input_black_18dp.png", "Open Project");
-		import_item_btn_.setOnAction(event -> {
+		// primeButton(open_item_btn_, "/icons/baseline-input-black-18/1x/baseline_input_black_18dp.png", "Open Project");
+		// import_item_btn_.setOnAction(event -> {
 
-		});
+		// });
 
-		primeButton(save_item_btn_, "/icons/baseline-save-black-18/1x/baseline_save_black_18dp.png", "Save Project");
-		export_item_btn_.setOnAction(event -> {
+		// primeButton(save_item_btn_, "/icons/baseline-save-black-18/1x/baseline_save_black_18dp.png", "Save Project");
+		// export_item_btn_.setOnAction(event -> {
 
-		});
+		// });
 
 		primeButton(clear_item_btn_, "/icons/baseline-clear-black-18/1x/baseline_clear_black_18dp.png",
 				"Clear Neurons");
@@ -151,17 +151,17 @@ public class NLedit extends WorkbenchApp {
 			actionClear();
 		});
 
-		primeButton(import_item_btn_, "/icons/baseline-input-black-18/1x/baseline_input_black_18dp.png",
-				"Import Neuron Layout");
-		import_item_btn_.setOnAction(event -> {
-			actionImport();
-		});
+		// primeButton(import_item_btn_, "/icons/baseline-input-black-18/1x/baseline_input_black_18dp.png",
+		// 		"Import Neuron Layout");
+		// import_item_btn_.setOnAction(event -> {
+		// 	actionImport();
+		// });
 
-		primeButton(export_item_btn_, "/icons/baseline-save_alt-black-18/1x/baseline_save_alt_black_18dp.png",
-				"Export Neuron Layout");
-		export_item_btn_.setOnAction(event -> {
-			actionExport();
-		});
+		// primeButton(export_item_btn_, "/icons/baseline-save_alt-black-18/1x/baseline_save_alt_black_18dp.png",
+		// 		"Export Neuron Layout");
+		// export_item_btn_.setOnAction(event -> {
+		// 	actionExport();
+		// });
 
 		primeButton(print_item_btn_,
 				"/icons/baseline-local_printshop-black-18/1x/baseline_local_printshop_black_18dp.png", "Print");
@@ -187,8 +187,7 @@ public class NLedit extends WorkbenchApp {
 		});
 
 		
-		HBox toolbar = new HBox(new_project_btn_, open_item_btn_, save_item_btn_, import_item_btn_, export_item_btn_,
-				bcell_item_btn_, scell_item_btn_, print_item_btn_, sdat_item_btn_, clear_item_btn_);
+		HBox toolbar = new HBox(bcell_item_btn_, scell_item_btn_, print_item_btn_, sdat_item_btn_, clear_item_btn_);
 
 		toolbar.getStyleClass().add("toolbar");
 
@@ -304,14 +303,14 @@ public class NLedit extends WorkbenchApp {
 		ImportPanel myPanel = new ImportPanel();
 
 		final Stage dialog = new Stage();
-		dialog.setTitle("Confirmation");
-		Button yes = new Button("Yes");
-		Button no = new Button("No");
+		dialog.setTitle("Select Input Files");
+		Button imprt = new Button("Import");
+		Button cancel = new Button("Cancel");
 
 		dialog.initModality(Modality.NONE);
 		dialog.initOwner(WorkbenchDashboard.primaryStage_);
 
-		yes.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		imprt.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				readNeuronListFromFile(myPanel.tfields[ImportPanel.idxInhList].getText(), neurons_layout_.inhNList,
@@ -323,17 +322,18 @@ public class NLedit extends WorkbenchApp {
 
 				Graphics g = layoutPanel.getGraphics();
 				layoutPanel.writeToGraphics(g);
+				layoutPanel.repaint();
 				dialog.close();
 			}
 		});
-		no.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		cancel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				dialog.close();
 			}
 		});
 
-		HBox hbox = new HBox(yes, no);
+		HBox hbox = new HBox(imprt, cancel);
 		hbox.setAlignment(Pos.CENTER);
 		VBox vbox = new VBox(myPanel, hbox);
 		Scene dialogScene = new Scene(vbox, 500, 150);

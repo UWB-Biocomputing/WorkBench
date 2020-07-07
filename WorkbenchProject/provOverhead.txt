@@ -215,3 +215,19 @@ WorkbenchManager.initProject;provEnabled=true;total milliseconds:92
 WorkbenchManager.initProject;total prov overhead:89
 WorkbenchManager.initProject;provEnabled=true;total milliseconds:92
 WorkbenchManager.initProject;total prov overhead:90
+WorkbenchManager.initProject;provEnabled=true;total milliseconds:1035
+WorkbenchManager.initProject;total prov overhead:1030
+WorkbenchManager.initProject;provEnabled=true;total milliseconds:99
+WorkbenchManager.initProject;total prov overhead:97
+WorkbenchManager.initProject;provEnabled=true;total milliseconds:99
+WorkbenchManager.initProject;total prov overhead:98
+WorkbenchManager.initProject;provEnabled=false;total milliseconds:1
+WorkbenchManager.initProject;provEnabled=true;total milliseconds:98
+WorkbenchManager.initProject;total prov overhead:96
+WorkbenchManager.initProject;provEnabled=false;total milliseconds:2
+WorkbenchManager.initProject;provEnabled=true;total milliseconds:95
+WorkbenchManager.initProject;total prov overhead:94
+WorkbenchManager.initProject;provEnabled=true;total milliseconds:97
+WorkbenchManager.initProject;total prov overhead:95
+WorkbenchManager.initProject;provEnabled=true;total milliseconds:98
+WorkbenchManager.initProject;total prov overhead:96
