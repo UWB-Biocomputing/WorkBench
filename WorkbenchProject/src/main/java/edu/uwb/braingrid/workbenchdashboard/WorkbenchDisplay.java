@@ -53,7 +53,8 @@ public class WorkbenchDisplay extends BorderPane {
 		primaryStage_ = primary_stage;
 		setTop(generateMenuBar(primaryStage_));
 		setBottom(new WorkbenchStatusBar());
-		pushWeclomePage();
+		// pushWeclomePage();
+		pushProVisStarterPage();
 		setCenter(tp_);
 	}
 
@@ -150,14 +151,14 @@ public class WorkbenchDisplay extends BorderPane {
 	/**
 	 * Adds a new Welcome tab
 	 */
-	void pushWeclomePage() {
-		Tab tab = new Tab();
-		Welcome pv = new Welcome(tab);
-		tab.setContent(pv.getDisplay());
-		tp_.getTabs().add(tab);
-		SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
-		selectionModel.select(tab);
-	}
+	// void pushWeclomePage() {
+	// 	Tab tab = new Tab();
+	// 	Welcome pv = new Welcome(tab);
+	// 	tab.setContent(pv.getDisplay());
+	// 	tp_.getTabs().add(tab);
+	// 	SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
+	// 	selectionModel.select(tab);
+	// }
 
 	/**
 	 * Adds a new Simulator Starter tab
