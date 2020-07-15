@@ -100,9 +100,9 @@ public class WorkbenchDashboard extends Application {
 				if (arg0.getCode() == KeyCode.G && ctrl) {
 					workbench_display_.pushGSLEPane();
 				}
-				if (arg0.getCode() == KeyCode.W && ctrl) {
-					workbench_display_.pushWeclomePage();
-				}
+				// if (arg0.getCode() == KeyCode.W && ctrl) {
+				// 	workbench_display_.pushWeclomePage();
+				// }
 				if (arg0.getCode() == KeyCode.S && ctrl) {
 					workbench_display_.pushSimStarterPage();
 				}

@@ -15,6 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.apache.jena.ext.com.google.common.io.Resources;
 
+
+// July 10th: ProVis is now being used as the welcome page
 public class Welcome extends WorkbenchApp {
 	private static final Logger LOG = Logger.getLogger(Welcome.class.getName());
 	
@@ -22,11 +24,10 @@ public class Welcome extends WorkbenchApp {
 	
 	
 	public Welcome(Tab tab) {
-		
 		super(tab);
 		LOG.info("new " + getClass().getName());
 
-		System.out.println("No soup!");
+		// System.out.println("No soup!");
 		URL is = Resources.getResource("braingrid/color-logo.png");
 		Image image = new Image(is.getFile());
 		ImageView iv = new ImageView(image);
