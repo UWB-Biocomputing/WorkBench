@@ -14,9 +14,6 @@
     </repositories>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<!--        <maven.compiler.source>13</maven.compiler.source>
-        <maven.compiler.target>13</maven.compiler.target>
-        <maven.compiler.release>13</maven.compiler.release> -->
     </properties>
     <build>
         <plugins>
@@ -64,18 +61,17 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!--For testing-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <dependencies>
-                    <dependency>
+                 <!--   <dependency>
                         <groupId>org.junit.platform</groupId>
                         <artifactId>junit-platform-surefire-provider</artifactId>
                         <version>1.1.0</version>
-                    </dependency>
+                    </dependency> -->
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
@@ -83,8 +79,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!--End for testing-->
-
+            <!--End for testing-->			
         </plugins>
     </build>
     <dependencies>
@@ -120,19 +115,16 @@
             <scope>test</scope>
         </dependency>
         <!--End Testing Dependencies-->
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>2.9.2</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.9.2</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>

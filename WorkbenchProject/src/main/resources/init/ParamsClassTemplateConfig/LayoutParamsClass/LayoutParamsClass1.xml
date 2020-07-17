@@ -3,6 +3,6 @@
     <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">workbenchconfigfiles/NList/ActiveNList1.xml</activeNListFileName>
         <inhNListFileName name="inhNListFileName" type="InputFile">workbenchconfigfiles/NList/InhibitoryNList1.xml</inhNListFileName>
-        <prbNListFileName name="prbNListFileName" type="InputFile">workbenchconfigfiles/NList/ProbedNList1.xml</prbNListFileName>
+        <probedNListFileName name="prbNListFileName" type="InputFile">workbenchconfigfiles/NList/ProbedNList1.xml</probedNListFileName>
     </LayoutFiles>
 </LayoutParams>
