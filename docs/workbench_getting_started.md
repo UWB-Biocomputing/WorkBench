@@ -26,9 +26,12 @@ mvn -v
 
 * Type the following Maven command under the directory "Tools/Workbench/WorkbenchProject" to compile and create executable JAR file.
 ```shell
-mvn install -Dmaven.test.skip=true
+mvn clean install
 ```
-* After the project is built successfully, a JAR file "BrainGridWorkbench-1.0-SNAPSHOT.jar " will be created under the directory "Tools/Workbench/WorkbenchProject/target". Run this JAR file to start using the Workbench.
+* After the project is built successfully, a JAR file "BrainGridWorkbench-1.0-SNAPSHOT.jar " will be created under the directory "Tools/Workbench/WorkbenchProject/target". Run this JAR file to start using the Workbench. From the target folder, type the following command
+```shell
+java -jar BrainGridWorkbench-1.0-SNAPSHOT.jar
+```
 
 #### 1.2.2. NetBeans
 
