@@ -155,7 +155,7 @@ public class ScriptManager {
                 script.executeProgram("cd", cdArg);
             }
         }
-        // Record the latest commit key information\
+        // Record the latest commit key information 
         script.addVerbatimStatement("git log --pretty=format:'%H' -n 1",
                 userDir + projectname
                 + "_v"
