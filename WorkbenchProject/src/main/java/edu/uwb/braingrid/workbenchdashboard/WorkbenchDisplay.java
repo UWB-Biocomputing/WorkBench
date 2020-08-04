@@ -53,7 +53,6 @@ public class WorkbenchDisplay extends BorderPane {
 		primaryStage_ = primary_stage;
 		setTop(generateMenuBar(primaryStage_));
 		setBottom(new WorkbenchStatusBar());
-		// pushWeclomePage();
 		pushProVisStarterPage();
 		setCenter(tp_);
 	}
@@ -148,20 +147,22 @@ public class WorkbenchDisplay extends BorderPane {
 		selectionModel.select(tab);
 	}
 	
-	/**
-	 * Adds a new Welcome tab
-	 */
-	// void pushWeclomePage() {
-	// 	Tab tab = new Tab();
-	// 	Welcome pv = new Welcome(tab);
-	// 	tab.setContent(pv.getDisplay());
-	// 	tp_.getTabs().add(tab);
-	// 	SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
-	// 	selectionModel.select(tab);
-	// }
+	/******************************
+	  This was an old function that added a blank welcome pageAdds
+	 Adds a new Welcome tab
+	 ******************************
+	 void pushWeclomePage() {
+		Tab tab = new Tab();
+		Welcome pv = new Welcome(tab);
+	 	tab.setContent(pv.getDisplay());
+		tp_.getTabs().add(tab);
+	 	SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
+	 	selectionModel.select(tab);
+	 } */
 
 	/**
-	 * Adds a new Simulator Starter tab
+	 * Currently adds new sim starter tab
+	 We want it to Creates a new Simulation Starter Pop-up
 	 */
 	void pushSimStarterPage() {
 		Tab tab = new Tab();

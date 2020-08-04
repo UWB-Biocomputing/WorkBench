@@ -28,7 +28,6 @@ public class Init {
 		String folderName = "BaseTemplates";
 		File file = new File("./" + folderName);
 		if(!file.exists()) {
-			System.out.println("HERE THE FUCK I AM");
 			LOG.info("Making Folder: " + file.getAbsolutePath());
 		    file.mkdirs();
 		}
