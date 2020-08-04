@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+import java.io.File;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -85,11 +86,16 @@ public class WorkbenchDashboard extends Application {
 		Scene scene = new Scene(workbench_display_, 900, 600); // Create a scene out of the display.
 
 		// Add CSS files
-		scene.getStylesheets().add("resources/simstarter/css/temp.css");
-		scene.getStylesheets().add("resources/simstarter/css/tempII.css");
-		scene.getStylesheets().add("resources/nledit/css/design.css");
-		scene.getStylesheets().add("resources/workbenchdisplay/css/design.css");
-		scene.getStylesheets().add("resources/provvisualizer/css/design.css");
+		scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/temp.css")).toURI().toURL().toExternalForm());
+		scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/tempII.css")).toURI().toURL().toExternalForm());
+		scene.getStylesheets().add((new File("../src/main/resources/nledit/css/design.css")).toURI().toURL().toExternalForm());
+		scene.getStylesheets().add((new File("../src/main/resources/workbenchdisplay/css/design.css")).toURI().toURL().toExternalForm());
+		scene.getStylesheets().add((new File("../src/main/resources/provvisualizer/css/design.css")).toURI().toURL().toExternalForm());
+
+		// scene.getStylesheets().add("resources/simstarter/css/tempII.css");
+		// scene.getStylesheets().add("resources/nledit/css/design.css");
+		// scene.getStylesheets().add("resources/workbenchdisplay/css/design.css");
+		// scene.getStylesheets().add("resources/provvisualizer/css/design.css");
 		// Create Events
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
