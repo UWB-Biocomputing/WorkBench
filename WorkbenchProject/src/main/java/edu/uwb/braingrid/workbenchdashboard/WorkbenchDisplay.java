@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
+import edu.uwb.braingrid.workbench.ui.NewProjectDialog; ///added for wizard
+//NewProject Dialog called in following
+//import edu.uwb.braingrid.workbench.ui.WorkbenchControlFrame;
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit;
 import edu.uwb.braingrid.workbenchdashboard.provis.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStarter;
@@ -76,7 +79,7 @@ public class WorkbenchDisplay extends BorderPane {
 	private Menu generateMenuFile(Stage primary_stage) {
 		Menu file_menu = new Menu("_File");
 		file_menu.getItems().add(generateMenuNew(primary_stage));
-		file_menu.getItems().add(new MenuItem("Open"));
+		file_menu.getItems().add(generateMenuItemOpen());
 		file_menu.getItems().add(generateMenuRecentProjects());
 		return file_menu;
 	}
@@ -84,6 +87,16 @@ public class WorkbenchDisplay extends BorderPane {
 	private Menu generateMenuRecentProjects() {
 		Menu recent_proj_menu = new Menu("Recent Projects");
 		return recent_proj_menu;
+	}
+	
+	private MenuItem generateMenuItemOpen() {
+		// Generate menu item
+		MenuItem open_menu = new MenuItem("Open");
+		// Define functionality
+		open_menu.setOnAction(event -> {
+			pushSimStarterPage();
+		});
+		return open_menu;
 	}
 
 	private Menu generateMenuNew(Stage primary_stage) {
@@ -102,7 +115,8 @@ public class WorkbenchDisplay extends BorderPane {
 
 		// Define Functionality
 		simstarter.setOnAction(event -> {
-			pushSimStarterPage();
+			//pushSimStarterPage();
+			pushSimWizPop();
 		});
 
 		// Generate Items
@@ -161,8 +175,7 @@ public class WorkbenchDisplay extends BorderPane {
 	 } */
 
 	/**
-	 * Currently adds new sim starter tab
-	 We want it to Creates a new Simulation Starter Pop-up
+	 * adds new sim starter tab
 	 */
 	void pushSimStarterPage() {
 		Tab tab = new Tab();
@@ -171,6 +184,16 @@ public class WorkbenchDisplay extends BorderPane {
 		tp_.getTabs().add(tab);
 		SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
 		selectionModel.select(tab);
+	}
+	
+	/**
+	 * IN PROGRESS implementation of simWiz
+	 We want it to Creates a new Simulation Starter Pop-up
+	 Parameter = false so that dashboard is not disabled
+	 */
+	void pushSimWizPop() {
+		NewProjectDialog simStartWiz = new NewProjectDialog(false);
+		//WorkbenchControlFrame wcf = new WorkbenchControlFrame();
 	}
 
 	/**
