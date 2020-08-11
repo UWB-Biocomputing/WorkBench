@@ -35,6 +35,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
@@ -62,6 +63,17 @@ public class GPatternPanel extends Pane {
 	public static final int idxACT = 1;
 
 	public GPatternPanel() {
+		
+		String radio_style =
+        "-fx-display:inline-block;" +
+		"-fx-padding: 0 0 20 0;" ;
+		
+		String lbl_style =
+        "-fx-display:inline-block;";
+
+		String tfield_style =
+        "-fx-display:inline-block;";
+
 
 		ToggleGroup bgroup = new ToggleGroup();
 		btns[idxREG] = new RadioButton("Regular pattern");
@@ -69,17 +81,25 @@ public class GPatternPanel extends Pane {
 		btns[idxREG].setToggleGroup(bgroup);
 		btns[idxRND].setToggleGroup(bgroup);
 		VBox vb_radio_btns = new VBox(btns[idxREG], btns[idxRND]);
+		vb_radio_btns.setStyle(radio_style);
 		btns[idxREG].setSelected(true);
 		
 		tfields[idxINH] = new TextField();
-		labels[idxINH] = new Label("<html>Inhibitory<br>neurons ratio:</html>");
+		labels[idxINH] = new Label("Inhibitory neurons ratio:");
 		tfields[idxACT] = new TextField();
-		labels[idxACT] = new Label("<html>Active<br>neurons ratio:</html>");
+		labels[idxACT] = new Label("Active neurons ratio:");
 		VBox vb_lbls = new VBox(labels[idxINH], labels[idxACT]);
+		vb_lbls.setStyle(lbl_style);
 		VBox vb_tfield = new VBox(tfields[idxINH], tfields[idxACT]);
-		
-		HBox hbox = new HBox(vb_radio_btns, vb_lbls, vb_tfield);
-		getChildren().add(hbox);
+		vb_tfield.setStyle(tfield_style);
+		Text instruc = new Text("Please enter a decimal <= 1 for each. The sum should also be <= 1.");
+
+		HBox lbl_tfield = new HBox(vb_lbls, vb_tfield);
+		VBox allItems = new VBox( vb_radio_btns, instruc, lbl_tfield);
+		allItems.setStyle("-fx-padding: 20 0 20 20");
+
+
+		getChildren().add(allItems);
 		
 	}
 }
