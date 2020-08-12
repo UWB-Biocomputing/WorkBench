@@ -13,9 +13,12 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
+//////////////
 import edu.uwb.braingrid.workbench.ui.NewProjectDialog; ///added for wizard
 //NewProject Dialog called in following
-//import edu.uwb.braingrid.workbench.ui.WorkbenchControlFrame;
+
+import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStarter;
+///////////////////
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit;
 import edu.uwb.braingrid.workbenchdashboard.provis.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStarter;
@@ -178,12 +181,13 @@ public class WorkbenchDisplay extends BorderPane {
 	 * adds new sim starter tab
 	 */
 	void pushSimStarterPage() {
-		Tab tab = new Tab();
-		SimStarter pv = new SimStarter(tab);
-		tab.setContent(pv.getDisplay());
-		tp_.getTabs().add(tab);
-		SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
-		selectionModel.select(tab);
+		//Tab tab = new Tab();
+		//SimStarter pv = new SimStarter(tab);
+		SimStarter pv = new SimStarter();
+		//tab.setContent(pv.getDisplay());
+		//tp_.getTabs().add(tab);
+		//SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
+		//selectionModel.select(tab);
 	}
 	
 	/**
@@ -192,8 +196,10 @@ public class WorkbenchDisplay extends BorderPane {
 	 Parameter = false so that dashboard is not disabled
 	 */
 	void pushSimWizPop() {
-		NewProjectDialog simStartWiz = new NewProjectDialog(false);
-		//WorkbenchControlFrame wcf = new WorkbenchControlFrame();
+		//NewProjectDialog simStartWiz = new NewProjectDialog(false);
+		//WorkbenchManager WMsimStart = new WorkbenchManager();
+		SimStarter simStartWiz = new SimStarter();
+		simStartWiz.newProject();
 	}
 
 	/**

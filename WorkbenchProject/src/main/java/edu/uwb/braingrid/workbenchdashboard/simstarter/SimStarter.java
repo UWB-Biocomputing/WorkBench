@@ -1,11 +1,12 @@
 package edu.uwb.braingrid.workbenchdashboard.simstarter;
 
 import java.util.logging.Logger;
-
 import javax.swing.JFileChooser;
-
 import edu.uwb.braingrid.workbench.WorkbenchManager;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
+//dev imports
+//import edu.uwb.braingrid.workbench.ui.WorkbenchControlFrame;
+import edu.uwb.braingrid.workbench.SimStartWiz;
+//end dev imports
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -15,21 +16,20 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class SimStarter extends WorkbenchApp {
+public class SimStarter {
 	private static final Logger LOG = Logger.getLogger(SimStarter.class.getName());
-	public SimStarter(Tab tab) {
-		super(tab);
+	public SimStarter() { //Tab tab    was param
+		//super(tab);
 		LOG.info("new " + getClass().getName());
-		// initMenu();
 		ssas_ = new SimStarterAttributesSelector(this, workbenchMgr);
 		sim_starter_tool_bar_ = new SimStarterToolBar(this);
 		bp_.setTop(sim_starter_tool_bar_);
 		disableProjectAttributeRelatedButtons();
-		initCenter();
-		super.setTitle("SimStarter");
+		//initCenter();
+		//super.setTitle("SimStarter");
 	}
 
-	@Override
+/*	@Override
 	public boolean close() {
 		// TODO Auto-generated method stub
 		return true;
@@ -39,7 +39,7 @@ public class SimStarter extends WorkbenchApp {
 	public Node getDisplay() {
 		return bp_;
 	}
-
+*/
 	public void newProject() {
 		if (workbenchMgr.newProject()) {
 			ssas_.resetUILabelText();
@@ -49,7 +49,11 @@ public class SimStarter extends WorkbenchApp {
 			ssas_.disableConfigure(false);
 			ssas_.disableSpecifyScript(false);
 			sim_starter_tool_bar_.disableSave(false);
-			super.setTitle(workbenchMgr.getProjectName());
+		//	super.setTitle(workbenchMgr.getProjectName());
+			//NEXT CLICK CONFIGURE BUTTON VIRTUALLY
+			//WorkbenchControlFrame wcf = new WorkbenchControlFrame();
+			SimStartWiz ssw = new SimStartWiz();
+			
 		}
 		setMsg();
 	}
