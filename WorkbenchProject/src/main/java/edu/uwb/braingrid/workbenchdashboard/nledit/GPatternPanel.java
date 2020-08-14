@@ -92,7 +92,7 @@ public class GPatternPanel extends Pane {
 		vb_lbls.setStyle(lbl_style);
 		VBox vb_tfield = new VBox(tfields[idxINH], tfields[idxACT]);
 		vb_tfield.setStyle(tfield_style);
-		Text instruc = new Text("Please enter a decimal <= 1 for each. The sum should also be <= 1.");
+		Text instruc = new Text("Please enter a decimal <= 1.0 for each. The sum should also be <= 1.0");
 
 		HBox lbl_tfield = new HBox(vb_lbls, vb_tfield);
 		VBox allItems = new VBox( vb_radio_btns, instruc, lbl_tfield);

@@ -678,7 +678,7 @@ public class NLedit extends WorkbenchApp {
 		HBox hbox = new HBox(yes, no);
 		hbox.setAlignment(Pos.CENTER);
 		VBox vbox = new VBox(myPanel, hbox);
-		Scene dialogScene = new Scene(vbox, 500, 150);
+		Scene dialogScene = new Scene(vbox, 500, 300);
 		// dialogScene.getStylesheets().add("//style sheet of your choice");
 		dialog.setScene(dialogScene);
 		dialog.show();
@@ -738,7 +738,7 @@ public class NLedit extends WorkbenchApp {
 		HBox hbox = new HBox(yes, no);
 		hbox.setAlignment(Pos.CENTER);
 		VBox vbox = new VBox(myPanel, hbox);
-		Scene dialogScene = new Scene(vbox, 500, 150);
+		Scene dialogScene = new Scene(vbox, 500, 300);
 		// dialogScene.getStylesheets().add("//style sheet of your choice");
 		dialog.setScene(dialogScene);
 		dialog.show();
@@ -770,8 +770,8 @@ public class NLedit extends WorkbenchApp {
 	private Button print_item_btn_ = new Button("Print");
 	private Button bcell_item_btn_ = new Button("Zoom In");
 	private Button scell_item_btn_ = new Button("Zoom Out");
-	private Button gpat_item_btn_ = new Button("_Generate pattern...");
-	private Button aprb_item_btn_ = new Button("_Arrange probes...");
+	private Button gpat_item_btn_ = new Button("_Generate pattern");
+	private Button aprb_item_btn_ = new Button("_Arrange probes");
 	private Button sdat_item_btn_ = new Button("Stats");
 
 	private ToggleGroup editGroup = new ToggleGroup();
