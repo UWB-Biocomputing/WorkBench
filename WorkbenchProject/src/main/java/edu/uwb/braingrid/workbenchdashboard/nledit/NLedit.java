@@ -217,6 +217,8 @@ public class NLedit extends WorkbenchApp {
 
 		TextField txtfld_x = new TextField("10");
 		TextField txtfld_y = new TextField("10");
+
+	
 		Button btn_submit = new Button("Submit");
 		btn_submit.setOnAction(event -> {
 			int sizeX = 0, sizeY = 0;
@@ -275,9 +277,21 @@ public class NLedit extends WorkbenchApp {
 		rptButton.setToggleGroup(toggle_group);
 		altButton.setToggleGroup(toggle_group);
 
-		HBox hbox_bottom = new HBox(lbl_sizeX, txtfld_x, lbl_sizeY, txtfld_y, btn_submit, newButton, rptButton,
-				altButton, gpat_item_btn_, aprb_item_btn_);
+		HBox hbox_patternGen = new HBox(gpat_item_btn_, aprb_item_btn_);
+		hbox_patternGen.setSpacing(10);
+
+		HBox hbox_sizeX = new HBox(lbl_sizeX, txtfld_x);
+		HBox hbox_sizeY = new HBox(lbl_sizeY, txtfld_y);
+		HBox hbox_resize = new HBox(hbox_sizeX, hbox_sizeY, btn_submit);
+		hbox_resize.setSpacing(10);
+
+		HBox hbox_left = new HBox(hbox_resize, newButton, rptButton,
+		altButton);
+		hbox_left.setSpacing(20);
+
+		HBox hbox_bottom = new HBox(hbox_left, hbox_patternGen);
 		hbox_bottom.getStyleClass().add("sizebox");
+		hbox_bottom.setSpacing(200);
 		bp_.setBottom(hbox_bottom);
 	}
 
