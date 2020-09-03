@@ -512,6 +512,7 @@ public class WorkbenchManager {
         boolean success = false;
         ScriptManager sm = new ScriptManager();
         try {
+			System.out.println("PROBLEM OCCURS IN runScript() in WorkbenchManger BECAUSE PROJECTMGR IS NULL");
             String scriptPath = projectMgr.getScriptCanonicalFilePath();
             String[] neuronLists
                     = FileManager.getFileManager().getNeuronListFilenames(projectMgr.getName());
@@ -522,7 +523,7 @@ public class WorkbenchManager {
             projectMgr.setScriptRanAt();
             messageAccumulator += sm.getOutstandingMessages();
         } catch (JSchException | SftpException |
-                IOException e) {
+                IOException | NullPointerException e) {
             messageAccumulator += "\n" + "Script did not run do to "
                     + e.getClass() + "...\n";
             messageAccumulator += "Exception message: " + e.getMessage();
@@ -546,7 +547,6 @@ public class WorkbenchManager {
      * @return
      */
     public boolean initProject(String name, boolean provEnabled) {
- 
     	LOG.info("Initializing a New Project: " + name);
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
@@ -554,6 +554,7 @@ public class WorkbenchManager {
         /* Create a new project */
         try {
             // make a new project (with new XML doc model)
+System.out.println("JUST ABOUT TO MAKE PROJECTMGR CALED IN WORKBENCHMANGER");
             projectMgr = new ProjectMgr(name, false);
             messageAccumulator += "\n" + "New project specified\n";
 
@@ -574,7 +575,7 @@ public class WorkbenchManager {
             } else {
                 prov = null;
             }
-        } catch (IOException | ParserConfigurationException | SAXException e) {
+        } catch (IOException | ParserConfigurationException | SAXException | NullPointerException e) {
             success = false;
             messageAccumulator += "\n"
                     + "Exception occurred while constructing project XML"
@@ -589,6 +590,9 @@ public class WorkbenchManager {
             DateTime.recordAccumulatedProvTiming("WorkbenchManager", "initProject",
                     accumulatedTime);
         }
+		//below is test of projectMgr and may not be valid, keep an eye on if this is null or not
+		String scriptPath = projectMgr.getScriptCanonicalFilePath();
+		System.out.println("PROBLEM OCCURS IN initProject IN WorkbenchManager....projectMgr is:   "+scriptPath);
         return success;
     }
 

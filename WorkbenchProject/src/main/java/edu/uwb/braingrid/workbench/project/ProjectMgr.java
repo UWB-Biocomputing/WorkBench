@@ -106,7 +106,6 @@ public class ProjectMgr {
      */
     public ProjectMgr(String rootNodeName, boolean load)
             throws ParserConfigurationException, IOException, SAXException, NullPointerException {
-
         initState();
         name = rootNodeName.split("\\.")[0];
         LOG.info("New Project Manager for project: " + name);

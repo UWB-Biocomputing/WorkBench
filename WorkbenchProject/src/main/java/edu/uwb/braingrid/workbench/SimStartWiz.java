@@ -379,7 +379,7 @@ public class SimStartWiz {
             projectTitleTextLabel.setText(workbenchMgr.getProjectName());
             viewProvenanceMenuItem.setEnabled(workbenchMgr.isProvEnabled());
         }
-        setMsg();
+     //   setMsg();
       //  pack();
     }//GEN-LAST:event_newProjectMenuItemActionPerformed
 
@@ -508,18 +508,14 @@ public class SimStartWiz {
      *
      * @param evt - The event that triggered this action
      */
-    private void configureSimulationButton() {
-		System.out.println("MADE IT THIS FAR******************************");
+    private void configureSimulation() {
 		if (workbenchMgr.runScript()) {
-			System.out.println("MADE IT THIS FAR22******************************");
 			workbenchMgr.invalidateScriptGenerated();
 			workbenchMgr.invalidateScriptRan();
 			workbenchMgr.invalidateScriptAnalyzed();
 			updateProjectOverview();
 		}
-		System.out.println("MADE IT THIS FAR333******************************");
-
-        setMsg();
+     //   setMsg();
        // pack();
     }
 
@@ -545,7 +541,7 @@ public class SimStartWiz {
     private javax.swing.JLabel ProjectTitleLabel;
     private javax.swing.JButton analyzeOutputButton;
     private javax.swing.JLabel analyzeOutputSatusLabel;
-    private javax.swing.JButton configureSimulationButton;
+ //   private javax.swing.JButton configureSimulationButton;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JLabel generatedScriptFilenameLabel;
@@ -590,15 +586,8 @@ public class SimStartWiz {
 		System.out.println("entering SimStartWiz");
         initComponents();
         initCustomMembers();
-		
-		System.out.println("SHOULD MAKE IT THIS FAR");
-		//newProjectMenuItem();
-		
-		System.out.println("@@@@@@@@@@@@@@@@@@ MAKE IT THIS FAR");
-		configureSimulationButton();
+		configureSimulation();
 		System.out.println("End of SimStartWiz()");
-		
-      //  center();
     }
 
     private void initCustomMembers() {
@@ -643,7 +632,7 @@ public class SimStartWiz {
      * project being loaded or initialized.
      */
     private void enableInitialButtons() {
-        configureSimulationButton.setEnabled(true);
+      //  configureSimulationButton.setEnabled(true);
         specifyScriptButton.setEnabled(true);
         saveProjectMenuItem.setEnabled(true);
     }
