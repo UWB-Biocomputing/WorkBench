@@ -345,13 +345,6 @@ public class SimStartWiz {
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {analyzeOutputButton, analyzeOutputSatusLabel, configureSimulationButton, generatedScriptFilenameLabel, outputFilenameLabel, runScriptButton, runScriptStatusLabel, scriptGenerateButton, scriptGeneratedLabel, scriptSpecificationLabel, scriptSpecifiedLabel, scriptStatusMsgLabel, simulationConfigurationLabel, simulationLabel, specifyScriptButton});
 	*/
-		System.out.println("SHOULD MAKE IT THIS FAR");
-		newProjectMenuItem();
-		
-		System.out.println("@@@@@@@@@@@@@@@@@@ MAKE IT THIS FAR");
-		configureSimulationButton();
-		
-		//////////////////////////Why is the configure window not coming up from a virtual click?
 		
        // pack();
 
@@ -381,7 +374,7 @@ public class SimStartWiz {
     private void newProjectMenuItem() {//GEN-FIRST:event_newProjectMenuItemActionPerformed
         if (workbenchMgr.newProject()) {
             resetUILabelText();
-            transferProgressBar.setVisible(false);
+ //           transferProgressBar.setVisible(false);
             enableInitialButtons();
             projectTitleTextLabel.setText(workbenchMgr.getProjectName());
             viewProvenanceMenuItem.setEnabled(workbenchMgr.isProvEnabled());
@@ -578,7 +571,7 @@ public class SimStartWiz {
     private javax.swing.JLabel simulationLabel;
     private javax.swing.JButton specifyScriptButton;
     private javax.swing.JMenu toolsMenu;
-    private javax.swing.JProgressBar transferProgressBar;
+  //  private javax.swing.JProgressBar transferProgressBar;  //May want this in future for progress bar
     private javax.swing.JMenu viewMenu;
     private javax.swing.JMenuItem viewProvenanceMenuItem;
     // End of variables declaration//GEN-END:variables
@@ -593,17 +586,25 @@ public class SimStartWiz {
      * Responsible for allocating this frame and initializing auto-generated, as
      * well as custom, members
      */
-    public void SimStartWiz() {
+    public SimStartWiz() {
 		System.out.println("entering SimStartWiz");
         initComponents();
         initCustomMembers();
+		
+		System.out.println("SHOULD MAKE IT THIS FAR");
+		//newProjectMenuItem();
+		
+		System.out.println("@@@@@@@@@@@@@@@@@@ MAKE IT THIS FAR");
+		configureSimulationButton();
+		System.out.println("End of SimStartWiz()");
+		
       //  center();
     }
 
     private void initCustomMembers() {
         workbenchMgr = new WorkbenchManager();
 
-        transferProgressBar.setVisible(false);
+    //    transferProgressBar.setVisible(false);
     }
     // </editor-fold>
 
@@ -657,7 +658,7 @@ public class SimStartWiz {
         generatedScriptFilenameLabel.setText("None");
         scriptStatusMsgLabel.setText("None");
         outputFilenameLabel.setText("None");
-        transferProgressBar.setValue(0);
+   //     transferProgressBar.setValue(0);
     }
 
     private void updateSimOverview() {

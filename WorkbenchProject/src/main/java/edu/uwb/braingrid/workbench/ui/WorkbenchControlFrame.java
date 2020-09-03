@@ -81,7 +81,7 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
         analyzeOutputSatusLabel.setText("Execution:");
 
         scriptSpecifiedLabel.setText("Script:");
-
+// Commented during dev of simStarter wizard
         configureSimulationButton.setText("Configure");
         configureSimulationButton.setEnabled(false);
         configureSimulationButton.addActionListener(new java.awt.event.ActionListener() {
@@ -350,7 +350,13 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {ProjectTitleLabel, projectTitleTextLabel});
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {analyzeOutputButton, analyzeOutputSatusLabel, configureSimulationButton, generatedScriptFilenameLabel, outputFilenameLabel, runScriptButton, runScriptStatusLabel, scriptGenerateButton, scriptGeneratedLabel, scriptSpecificationLabel, scriptSpecifiedLabel, scriptStatusMsgLabel, simulationConfigurationLabel, simulationLabel, specifyScriptButton});
-
+		
+		System.out.println("SHOULD MAKE IT THIS FAR");
+		enableInitialButtons();
+		configureSimulationButton.doClick();
+		System.out.println("@@@@@@@@@@@@@@@@@@ MAKE IT THIS FAR");
+		//////////////////////////Why is the configure window not coming up from a virtual click?
+		
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -460,7 +466,7 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
      *
      * @param evt - The event that triggered this action
      */
-    private void analyzeOutputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeOutputButtonActionPerformed
+    public void analyzeOutputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeOutputButtonActionPerformed
         long timeCompleted = workbenchMgr.analyzeScriptOutput();
         if (timeCompleted != DateTime.ERROR_TIME) {
             analyzeOutputButton.setEnabled(false);
@@ -512,16 +518,20 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
      *
      * @param evt - The event that triggered this action
      */
-    private void configureSimulationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureSimulationButtonActionPerformed
-        if (workbenchMgr.configureSimulation()) {
-            workbenchMgr.invalidateScriptGenerated();
-            workbenchMgr.invalidateScriptRan();
-            workbenchMgr.invalidateScriptAnalyzed();
-            updateProjectOverview();
-        }
+    private void configureSimulationButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		System.out.println("MADE IT THIS FAR******************************");
+		if (workbenchMgr.runScript()) {
+			System.out.println("MADE IT THIS FAR22******************************");
+			workbenchMgr.invalidateScriptGenerated();
+			workbenchMgr.invalidateScriptRan();
+			workbenchMgr.invalidateScriptAnalyzed();
+			updateProjectOverview();
+		}
+		System.out.println("MADE IT THIS FAR333******************************");
+
         setMsg();
         pack();
-    }//GEN-LAST:event_configureSimulationButtonActionPerformed
+    }
 
     private void viewProvenanceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProvenanceMenuItemActionPerformed
         pack();
