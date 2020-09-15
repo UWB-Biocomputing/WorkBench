@@ -112,7 +112,6 @@ public class WorkbenchManager {
     	LOG.info("Making New Project");
         boolean success = false;
         // Ask the user for a new project name (validation in dialogue)
-        
         NewProjectDialog npd = new NewProjectDialog(true);
 
         if (npd.getSuccess()) {

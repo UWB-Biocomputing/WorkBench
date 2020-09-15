@@ -21,7 +21,7 @@ public class SimStarter {
 	public SimStarter() { //Tab tab    was param
 		//super(tab);
 		LOG.info("new " + getClass().getName());
-		ssas_ = new SimStarterAttributesSelector(this, workbenchMgr);
+		ssas_ = new SimStarterAttributesSelector(this, workbenchManager);
 		sim_starter_tool_bar_ = new SimStarterToolBar(this);
 		bp_.setTop(sim_starter_tool_bar_);
 		disableProjectAttributeRelatedButtons();
@@ -41,25 +41,25 @@ public class SimStarter {
 	}
 */
 	public void newProject() {
-		if (workbenchMgr.newProject()) {
+		if (workbenchManager.newProject()) {
 			ssas_.resetUILabelText();
 			progress_bar_.setVisible(false);
-			current_proj_lbl_.setText(workbenchMgr.getProjectName());
-			sim_starter_tool_bar_.disableProvidence(!workbenchMgr.isProvEnabled());
+			current_proj_lbl_.setText(workbenchManager.getProjectName());
+			sim_starter_tool_bar_.disableProvidence(!workbenchManager.isProvEnabled());
 			ssas_.disableConfigure(false);
 			ssas_.disableSpecifyScript(false);
 			sim_starter_tool_bar_.disableSave(false);
-		//	super.setTitle(workbenchMgr.getProjectName());
+		//	super.setTitle(workbenchManager.getProjectName());
 			//NEXT CLICK CONFIGURE BUTTON VIRTUALLY
 			//WorkbenchControlFrame wcf = new WorkbenchControlFrame();
-			SimStartWiz ssw = new SimStartWiz();
-			
+			ssw = new SimStartWiz(workbenchManager);
+			System.out.println("***************SimStartWiz activated via SimStarter newProject called from WorkbenchDisplay");
 		}
 		setMsg();
 	}
 
 	public void openProject() {
-		int code = workbenchMgr.openProject();
+		int code = workbenchManager.openProject();
 		switch (code) {
 		case JFileChooser.APPROVE_OPTION:
 			updateProjectOverview();
@@ -76,17 +76,17 @@ public class SimStarter {
 	}
 
 	public void saveProject() {
-		workbenchMgr.saveProject();
+		workbenchManager.saveProject();
 		setMsg();
 	}
 
 	public void viewProvenance() {
 		setMsg();
-		workbenchMgr.viewProvenance();
+		workbenchManager.viewProvenance();
 	}
 
 	public void manageParamsClasses() {
-		if (workbenchMgr.configureParamsClasses()) {
+		if (workbenchManager.configureParamsClasses()) {
 			updateProjectOverview();
 		}
 		setMsg();
@@ -103,8 +103,8 @@ public class SimStarter {
 
 	public void updateProjectOverview() {
 		ssas_.resetUILabelText();
-		current_proj_lbl_.setText(workbenchMgr.getProjectName());
-		// transferProgressBar.setVisible(workbenchMgr.isSimExecutionRemote());
+		current_proj_lbl_.setText(workbenchManager.getProjectName());
+		// transferProgressBar.setVisible(workbenchManager.isSimExecutionRemote());
 		ssas_.updateProject();
 		// enableInitialButtons();
 	}
@@ -121,7 +121,7 @@ public class SimStarter {
 	 *
 	 */
 	public void setMsg() {
-		msgText.setText(workbenchMgr.getMessages());
+		msgText.setText(workbenchManager.getMessages());
 	}
 
 	
@@ -132,7 +132,8 @@ public class SimStarter {
 	private ProgressBar progress_bar_ = new ProgressBar(0);
 	private TextArea msgText = new TextArea("");
 
-	private WorkbenchManager workbenchMgr = new WorkbenchManager();
+	private WorkbenchManager workbenchManager = new WorkbenchManager();
 	private SimStarterToolBar sim_starter_tool_bar_;
 	private SimStarterAttributesSelector ssas_;
+	private SimStartWiz ssw;
 }

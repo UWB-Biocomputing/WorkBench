@@ -196,10 +196,10 @@ public class WorkbenchDisplay extends BorderPane {
 	 Parameter = false so that dashboard is not disabled
 	 */
 	void pushSimWizPop() {
-		//NewProjectDialog simStartWiz = new NewProjectDialog(false);
+		//NewProjectDialog simStarter = new NewProjectDialog(false);
 		//WorkbenchManager WMsimStart = new WorkbenchManager();
-		SimStarter simStartWiz = new SimStarter();
-		simStartWiz.newProject();
+		SimStarter simStarter = new SimStarter();
+		simStarter.newProject();
 	}
 
 	/**
