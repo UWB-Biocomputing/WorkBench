@@ -6,6 +6,7 @@ import edu.uwb.braingrid.workbench.SystemConfig;
 import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer.InputType;
+//import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -31,7 +32,8 @@ import org.xml.sax.SAXException;
  * Dynamic Input Configuration Dialog The GUI is built dynamically according to
  * the input Configuration XML file.
  * 
- * @author Tom Wong
+ * @author Tom Wong & Joseph Conquest
+ * @version 1.1
  */
 public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 	/**
@@ -52,7 +54,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 
 		tabs = new javax.swing.JTabbedPane();
 		cancelButton = new javax.swing.JButton();
-		okButton = new javax.swing.JButton();
+		nextButton = new javax.swing.JButton();
 		buildButton = new javax.swing.JButton();
 		configFilename_textField = new javax.swing.JTextField();
 		configFilename_label = new javax.swing.JLabel();
@@ -73,10 +75,10 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 			}
 		});
 
-		okButton.setText("OK");
-		okButton.addActionListener(new java.awt.event.ActionListener() {
+		nextButton.setText("Next");
+		nextButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				okButtonActionPerformed(evt);
+				runButtonActionPerformed(evt);
 			}
 		});
 
@@ -102,7 +104,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
 								.addComponent(buildButton).addGap(18, 18, 18).addComponent(configFilename_label)
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(configFilename_textField).addGap(18, 18, 18).addComponent(okButton)
+								.addComponent(configFilename_textField).addGap(18, 18, 18).addComponent(nextButton)
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(cancelButton))
 						.addGroup(layout.createSequentialGroup().addComponent(messageLabel)
@@ -123,7 +125,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(cancelButton).addComponent(okButton).addComponent(buildButton)
+								.addComponent(cancelButton).addComponent(nextButton).addComponent(buildButton)
 								.addComponent(configFilename_textField, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(configFilename_label))
@@ -148,7 +150,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 			if (fileName != null && !fileName.isEmpty()) {
 				fileName = icm.buildAndPersist(projectName, fileName);
 				if (fileName != null) {
-					okButton.setEnabled(true);
+					nextButton.setEnabled(true);
 					lastBuiltFile = fileName;
 					messageLabelText
 							.setText("<html><span style=\"color:green\">" + FileManager.getSimpleFilename(fileName)
@@ -165,9 +167,10 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 		}
 	}// GEN-LAST:event_buildButtonActionPerformed
 
-	private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
-		okClicked = true;
+	private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
+		runClicked = true;
 		setVisible(false);
+//		simulationRuntimePanel = new SimulationRuntimeDialog();
 	}// GEN-LAST:event_okButtonActionPerformed
 
 	private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelButtonActionPerformed
@@ -182,7 +185,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 	private javax.swing.JSeparator jSeparator1;
 	private javax.swing.JLabel messageLabel;
 	private javax.swing.JLabel messageLabelText;
-	private javax.swing.JButton okButton;
+	private javax.swing.JButton nextButton;
 	private javax.swing.JTabbedPane tabs;
 	// End of variables declaration//GEN-END:variables
 	// </editor-fold>
@@ -192,13 +195,15 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 	private Document xmlDoc = null;
 	private ArrayList<JTextField> paramsTextFields = new ArrayList<>();
 	private JTextField stateOutputFileNameTextField = null;
-	private boolean okClicked = false;
+	private boolean runClicked = false;
 	private String lastBuiltFile = null;
 	private String lastStateOutputFileName = null;
 	private String projectName = null;
 	private ArrayList<String> tabPaths = new ArrayList<>();
 	private static final Logger LOG = Logger.getLogger(DynamicInputConfigurationDialog.class.getName());
 	// </editor-fold>
+	
+//	private SimulationRuntimeDialog simulationRuntimePanel;
 
 	// <editor-fold defaultstate="collapsed" desc="Construction">
 	/**
@@ -243,7 +248,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 				configFilename_textField.setText(configFile.getName());
 			}
 			setPreferredSize(new Dimension(700, 365));
-			okButton.setEnabled(false);
+			nextButton.setEnabled(false);
 
 			// show window center-screen
 			pack();
@@ -418,12 +423,12 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 
 	// <editor-fold defaultstate="collapsed" desc="Getters/Setters">
 	public boolean getSuccess() {
-		return okClicked;
+		return runClicked;
 	}
 
 	public String getBuiltFile() {
 		String builtFile = null;
-		if (okClicked) {
+		if (runClicked) {
 			builtFile = lastBuiltFile;
 		}
 		return builtFile;
@@ -431,7 +436,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 
 	public String getStateOutputFilename() {
 		String fileName = null;
-		if (okClicked) {
+		if (runClicked) {
 			fileName = lastStateOutputFileName;
 		}
 		return fileName;

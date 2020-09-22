@@ -42,6 +42,9 @@ public class SimStartWiz {
 			workbenchManager.invalidateScriptAnalyzed();
 		}
 		workbenchManager.configureSimulation();
+		workbenchManager.specifyScript();
+		workbenchManager.generateScript();
+		workbenchManager.runScript();
      //   setMsg();
        // pack();
     }
