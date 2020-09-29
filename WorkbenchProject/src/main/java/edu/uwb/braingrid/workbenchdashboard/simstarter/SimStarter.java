@@ -24,7 +24,7 @@ public class SimStarter {
 		ssas_ = new SimStarterAttributesSelector(this, workbenchManager);
 		sim_starter_tool_bar_ = new SimStarterToolBar(this);
 		bp_.setTop(sim_starter_tool_bar_);
-		disableProjectAttributeRelatedButtons();
+//		disableProjectAttributeRelatedButtons();
 		//initCenter();
 		//super.setTitle("SimStarter");
 	}

@@ -181,7 +181,7 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
                 openProjectMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(openProjectMenuItem);
+      //  fileMenu.add(openProjectMenuItem);
 
         saveProjectMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveProjectMenuItem.setText("Save");

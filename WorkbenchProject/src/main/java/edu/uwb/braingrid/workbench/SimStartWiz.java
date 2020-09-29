@@ -2,6 +2,7 @@ package edu.uwb.braingrid.workbench;
 
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
+import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Date;
@@ -17,23 +18,17 @@ import javax.swing.JFileChooser;
 public class SimStartWiz {
 
     /**
-	 * 
+	 * Class Variables and objects
 	 */
 	private static final long serialVersionUID = 1L;
-
-
-    private void initComponents() {
-
-    }// </editor-fold>//GEN-END:initComponents
-
+	private WorkbenchManager workbenchManager;
 
     /**
+	 * configureSimulation()
      * Prompts the user to select files for the simulation input. InputAnalyzer
      * files are created with NLEdit or by hand in XML. InputAnalyzer files
      * represent lists of neurons with regard to their position in a neuron
      * array (e.g. position 12 is x: 1, y: 2 on a 10x10 grid)
-     *
-     * @param evt - The event that triggered this action
      */
     private void configureSimulation() {
 		if (workbenchManager.runScript()) {
@@ -45,18 +40,17 @@ public class SimStartWiz {
 		workbenchManager.specifyScript();
 		workbenchManager.generateScript();
 		workbenchManager.runScript();
-     //   setMsg();
+		SimulationRuntimeDialog srd = new SimulationRuntimeDialog();
+        //setMsg();
        // pack();
     }
-
-    // <editor-fold defaultstate="collapsed" desc="Custom Members">
-    private WorkbenchManager workbenchManager;
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Construction">
+ 
     /**
+	 * SimStartWiz(WorkbenchManager workbenchManager)
      * Responsible for allocating this frame and initializing auto-generated, as
      * well as custom, members
+	 *
+	 * @param workbenchManager required for simulation initialization
      */
     public SimStartWiz(WorkbenchManager workbenchManager) {
 		System.out.println("entering SimStartWiz");
@@ -65,7 +59,6 @@ public class SimStartWiz {
 		System.out.println("End of SimStartWiz()");
     }
 
-    // </editor-fold>
 
  //  @Override
     /**

@@ -42,7 +42,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 
 		codeRepositoryLocationLabel = new javax.swing.JLabel();
 		codeRepositoryLocationTextField = new javax.swing.JTextField();
-		okButton = new javax.swing.JButton();
+		runButton = new javax.swing.JButton();
 		cancelButton = new javax.swing.JButton();
 		simulatorLocationTextField = new javax.swing.JTextField();
 		simulatorFolderLocationLabel = new javax.swing.JLabel();
@@ -85,11 +85,11 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 			}
 		});
 
-		okButton.setText("OK");
-		okButton.setEnabled(false);
-		okButton.addActionListener(new java.awt.event.ActionListener() {
+		runButton.setText("Run");
+		runButton.setEnabled(false);
+		runButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				okButtonActionPerformed(evt);
+				runButtonActionPerformed(evt);
 			}
 		});
 
@@ -213,7 +213,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
 								.addGroup(layout.createSequentialGroup().addComponent(messageContentLabel)
 										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(okButton)
+										.addComponent(runButton)
 										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(cancelButton))
 								.addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -353,7 +353,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 								.addGroup(layout.createSequentialGroup()
 										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(cancelButton).addComponent(okButton))
+												.addComponent(cancelButton).addComponent(runButton))
 										.addContainerGap())
 								.addComponent(messageContentLabel))));
 
@@ -364,7 +364,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 		cancel();
 	}// GEN-LAST:event_cancelButtonActionPerformed
 
-	private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
+	private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
 		specifySimulator();
 	}// GEN-LAST:event_okButtonActionPerformed
 
@@ -404,7 +404,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 
 	private void simulatorLocationTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_simulatorLocationTextFieldKeyReleased
 		simulatorLocationChanged();
-		if (okButton.isEnabled()) {
+		if (runButton.isEnabled()) {
 			if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 				specifySimulator();
 			}
@@ -412,7 +412,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 	}// GEN-LAST:event_simulatorLocationTextFieldKeyReleased
 
 	private void codeRepositoryLocationTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_codeRepositoryLocationTextFieldKeyReleased
-		if (okButton.isEnabled()) {
+		if (runButton.isEnabled()) {
 			if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 				specifySimulator();
 			}
@@ -420,7 +420,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 	}// GEN-LAST:event_codeRepositoryLocationTextFieldKeyReleased
 
 	private void versionAnnotationTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_versionAnnotationTextFieldKeyReleased
-		if (okButton.isEnabled()) {
+		if (runButton.isEnabled()) {
 			if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 				specifySimulator();
 			}
@@ -443,7 +443,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 	private javax.swing.JTextField hostAddressTextField;
 	private javax.swing.JSeparator jSeparator2;
 	private javax.swing.JLabel messageContentLabel;
-	private javax.swing.JButton okButton;
+	private javax.swing.JButton runButton;
 	private javax.swing.JPasswordField passwordField;
 	private javax.swing.JLabel passwordLabel;
 	private javax.swing.JLabel remoteSpecMessageContentLabel;
@@ -863,9 +863,9 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 		boolean emptyHostAddr = hostAddressTextField.getText().equals("");
 		// set ok enabled based on required fields filled
 		if (remoteExecution) {
-			okButton.setEnabled(!nullLocation && !simulatorLocationEmpty && !nullHostAddr && !emptyHostAddr);
+			runButton.setEnabled(!nullLocation && !simulatorLocationEmpty && !nullHostAddr && !emptyHostAddr);
 		} else {
-			okButton.setEnabled(!nullLocation && !simulatorLocationEmpty);
+			runButton.setEnabled(!nullLocation && !simulatorLocationEmpty);
 		}
 	}
 	// </editor-fold>

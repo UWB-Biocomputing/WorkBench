@@ -6,7 +6,8 @@ import edu.uwb.braingrid.workbench.SystemConfig;
 import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer.InputType;
-//import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
+
+import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -78,7 +79,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 		nextButton.setText("Next");
 		nextButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				runButtonActionPerformed(evt);
+				nextButtonActionPerformed(evt);
 			}
 		});
 
@@ -167,10 +168,9 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 		}
 	}// GEN-LAST:event_buildButtonActionPerformed
 
-	private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
+	private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
 		runClicked = true;
 		setVisible(false);
-//		simulationRuntimePanel = new SimulationRuntimeDialog();
 	}// GEN-LAST:event_okButtonActionPerformed
 
 	private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelButtonActionPerformed
@@ -203,7 +203,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 	private static final Logger LOG = Logger.getLogger(DynamicInputConfigurationDialog.class.getName());
 	// </editor-fold>
 	
-//	private SimulationRuntimeDialog simulationRuntimePanel;
+	private SimulationRuntimeDialog simulationRuntimePanel;
 
 	// <editor-fold defaultstate="collapsed" desc="Construction">
 	/**
