@@ -110,7 +110,7 @@ public class WorkbenchDashboard extends Application {
 				// 	workbench_display_.pushWeclomePage();
 				// }
 				if (arg0.getCode() == KeyCode.S && ctrl) {
-					workbench_display_.pushSimStarterPage();
+					workbench_display_.pushSimWizPop();
 				}
 				if (arg0.getCode() == KeyCode.P && ctrl) {
 					workbench_display_.pushProVisStarterPage();

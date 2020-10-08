@@ -34,7 +34,7 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 		
 		//ButtonType cancelButton = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 		
-		Label outputTextFieldLabel = new Label("Execution stack trace: ");
+		Label outputTextFieldLabel = new Label("Simulation Status: ");
 
 		TextArea outputtextArea = new TextArea("Script Generated...\nRunning Script..");
 		outputtextArea.setEditable(false);

@@ -6,6 +6,7 @@ import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Date;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /**
@@ -20,8 +21,9 @@ public class SimStartWiz {
     /**
 	 * Class Variables and objects
 	 */
+	private static final Logger LOG = Logger.getLogger(SimStartWiz.class.getName());
 	private static final long serialVersionUID = 1L;
-	private WorkbenchManager workbenchManager;
+	private WorkbenchManager workbenchManager = new WorkbenchManager();
 
     /**
 	 * configureSimulation()
@@ -50,13 +52,12 @@ public class SimStartWiz {
      * Responsible for allocating this frame and initializing auto-generated, as
      * well as custom, members
 	 *
-	 * @param workbenchManager required for simulation initialization
      */
-    public SimStartWiz(WorkbenchManager workbenchManager) {
-		System.out.println("entering SimStartWiz");
-		this.workbenchManager = workbenchManager;
-		configureSimulation();
-		System.out.println("End of SimStartWiz()");
+    public SimStartWiz() {
+		LOG.info("new " + getClass().getName());
+		if (workbenchManager.newProject()) {
+			configureSimulation();
+		}
     }
 
 

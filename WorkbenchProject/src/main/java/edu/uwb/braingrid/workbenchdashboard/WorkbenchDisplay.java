@@ -13,15 +13,10 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
-//////////////
-import edu.uwb.braingrid.workbench.ui.NewProjectDialog; ///added for wizard
-//NewProject Dialog called in following
-
-import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStarter;
-///////////////////
+import edu.uwb.braingrid.workbench.SimStartWiz;
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit;
 import edu.uwb.braingrid.workbenchdashboard.provis.ProVis;
-import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStarter;
+import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 import edu.uwb.braingrid.workbenchdashboard.userView.UserView;
 import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
@@ -34,7 +29,7 @@ import org.eclipse.jgit.api.errors.TransportException;
 
 /**
  * Defines the main display of the screen along with global functionality.
- * @author Max Wright
+ * @author Max Wright, extended and updated by Joe Conquest
  */
 public class WorkbenchDisplay extends BorderPane {	
 	private static final Logger LOG = Logger.getLogger(WorkbenchDisplay.class.getName());
@@ -97,7 +92,7 @@ public class WorkbenchDisplay extends BorderPane {
 		MenuItem open_menu = new MenuItem("Open");
 		// Define functionality
 		open_menu.setOnAction(event -> {
-			pushSimStarterPage();
+			pushSimOpen();
 		});
 		return open_menu;
 	}
@@ -118,7 +113,6 @@ public class WorkbenchDisplay extends BorderPane {
 
 		// Define Functionality
 		simstarter.setOnAction(event -> {
-			//pushSimStarterPage();
 			pushSimWizPop();
 		});
 
@@ -150,8 +144,6 @@ public class WorkbenchDisplay extends BorderPane {
 		return repo_menu;
 	}
 	
-	
-
 	/**
 	 * Adds a new Growth Simulator Layout Editor tab
 	 */
@@ -164,42 +156,19 @@ public class WorkbenchDisplay extends BorderPane {
 		selectionModel.select(tab);
 	}
 	
-	/******************************
-	  This was an old function that added a blank welcome pageAdds
-	 Adds a new Welcome tab
-	 ******************************
-	 void pushWeclomePage() {
-		Tab tab = new Tab();
-		Welcome pv = new Welcome(tab);
-	 	tab.setContent(pv.getDisplay());
-		tp_.getTabs().add(tab);
-	 	SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
-	 	selectionModel.select(tab);
-	 } */
-
 	/**
-	 * adds new sim starter tab
+	 * initializes SimManager and allows the opening of project specification
 	 */
-	void pushSimStarterPage() {
-		//Tab tab = new Tab();
-		//SimStarter pv = new SimStarter(tab);
-		SimStarter pv = new SimStarter();
-		//tab.setContent(pv.getDisplay());
-		//tp_.getTabs().add(tab);
-		//SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
-		//selectionModel.select(tab);
+	void pushSimOpen() {
+		SimManager pv = new SimManager();
+		pv.openProject();
 	}
 	
 	/**
-	 * IN PROGRESS implementation of simWiz
-	 We want it to Creates a new Simulation Starter Pop-up
-	 Parameter = false so that dashboard is not disabled
+	 Creates a new Simulation Starter Pop-up
 	 */
 	void pushSimWizPop() {
-		//NewProjectDialog simStarter = new NewProjectDialog(false);
-		//WorkbenchManager WMsimStart = new WorkbenchManager();
-		SimStarter simStarter = new SimStarter();
-		simStarter.newProject();
+		SimStartWiz ssw = new SimStartWiz();
 	}
 
 	/**

@@ -2,6 +2,7 @@ package edu.uwb.braingrid.workbench.ui;
 
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
+import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 //import jdk.internal.jline.internal.Log;
 
 import java.awt.Dimension;
@@ -42,6 +43,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 
 		codeRepositoryLocationLabel = new javax.swing.JLabel();
 		codeRepositoryLocationTextField = new javax.swing.JTextField();
+//		saveButton = new javax.swing.JButton();
 		runButton = new javax.swing.JButton();
 		cancelButton = new javax.swing.JButton();
 		simulatorLocationTextField = new javax.swing.JTextField();
@@ -84,7 +86,15 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 				codeRepositoryLocationTextFieldKeyReleased(evt);
 			}
 		});
-
+		
+/*		saveButton.setText("Save");
+		saveButton.setEnabled(true);
+		saveButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerfromed(java.awt.event.ActionEvent evt) {
+				saveButtonActionPerformed(evt);
+			}
+		});
+*/
 		runButton.setText("Run");
 		runButton.setEnabled(false);
 		runButton.addActionListener(new java.awt.event.ActionListener() {
@@ -363,6 +373,11 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 	private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelButtonActionPerformed
 		cancel();
 	}// GEN-LAST:event_cancelButtonActionPerformed
+	
+//	private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_saveButtonActionPerformed
+//		SimManager sm = new SimManager();
+//		sm.saveProject();
+//	}// GEN-LAST:event_saveButtonActionPerformed
 
 	private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
 		specifySimulator();
@@ -443,6 +458,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 	private javax.swing.JTextField hostAddressTextField;
 	private javax.swing.JSeparator jSeparator2;
 	private javax.swing.JLabel messageContentLabel;
+//	private javax.swing.JButton saveButton;
 	private javax.swing.JButton runButton;
 	private javax.swing.JPasswordField passwordField;
 	private javax.swing.JLabel passwordLabel;

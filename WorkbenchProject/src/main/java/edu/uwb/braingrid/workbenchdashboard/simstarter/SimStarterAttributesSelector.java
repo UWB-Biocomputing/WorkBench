@@ -10,8 +10,8 @@ import javafx.scene.layout.GridPane;
 
 public class SimStarterAttributesSelector extends GridPane {
 	
-	public SimStarterAttributesSelector(SimStarter simstarter, WorkbenchManager workbmgr) {
-		simstarter_ = simstarter;
+	public SimStarterAttributesSelector(SimManager simManager, WorkbenchManager workbmgr) {
+		simstarter_ = simManager;
 		workbenchMgr = workbmgr;
 		initAttributes();
 		initAttributeDisplayGridPane();
@@ -241,5 +241,5 @@ public class SimStarterAttributesSelector extends GridPane {
 	private Label analyze_output_sts_out_lbl_ = new Label();
 	
 	private WorkbenchManager workbenchMgr;
-	private SimStarter simstarter_;
+	private SimManager simstarter_;
 }
