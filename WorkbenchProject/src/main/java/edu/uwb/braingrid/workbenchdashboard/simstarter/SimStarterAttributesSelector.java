@@ -12,7 +12,7 @@ public class SimStarterAttributesSelector extends GridPane {
 	
 	public SimStarterAttributesSelector(SimManager simManager, WorkbenchManager workbmgr) {
 		simstarter_ = simManager;
-		workbenchMgr = workbmgr;
+		workbenchManager = workbmgr;
 		initAttributes();
 		initAttributeDisplayGridPane();
 	}
@@ -36,14 +36,6 @@ public class SimStarterAttributesSelector extends GridPane {
 	
 	public void disableSpecifyScript(boolean val) {
 		specify_script_btn_.setDisable(val);
-	}
-	
-	public void disableButtons() {
-		configure_sim_btn_.setDisable(true);
-		specify_script_btn_.setDisable(true);
-		script_gen_btn_.setDisable(true);
-		run_script_btn_.setDisable(true);
-		analyze_output_btn_.setDisable(true);
 	}
 	
 	public void updateProject() {
@@ -116,10 +108,10 @@ public class SimStarterAttributesSelector extends GridPane {
 	 *            - The event that triggered this action
 	 */
 	private void specifyScriptButtonActionPerformed() {// GEN-FIRST:event_specifyScriptButtonActionPerformed
-		if (workbenchMgr.specifyScript()) {
-			workbenchMgr.invalidateScriptGenerated();
-			workbenchMgr.invalidateScriptRan();
-			workbenchMgr.invalidateScriptAnalyzed();
+		if (workbenchManager.specifyScript()) {
+			workbenchManager.invalidateScriptGenerated();
+			workbenchManager.invalidateScriptRan();
+			workbenchManager.invalidateScriptAnalyzed();
 			simstarter_.updateProjectOverview();
 			script_gen_btn_.setDisable(false);
 		}
@@ -134,7 +126,7 @@ public class SimStarterAttributesSelector extends GridPane {
 	 *            - The event that triggered this action
 	 */
 	private void analyzeOutputButtonActionPerformed() {
-		long timeCompleted = workbenchMgr.analyzeScriptOutput();
+		long timeCompleted = workbenchManager.analyzeScriptOutput();
 		if (timeCompleted != DateTime.ERROR_TIME) {
 			analyze_output_sts_out_lbl_.setText("Completed at: " + DateTime.getTime(timeCompleted));
 		} else {
@@ -144,7 +136,7 @@ public class SimStarterAttributesSelector extends GridPane {
 	}
 
 	private void scriptGenerateButtonActionPerformed() {// GEN-FIRST:event_scriptGenerateButtonActionPerformed
-		if (workbenchMgr.generateScript()) {
+		if (workbenchManager.generateScript()) {
 			simstarter_.updateProjectOverview();
 			script_gen_btn_.setDisable(true);
 			run_script_btn_.setDisable(false);
@@ -161,7 +153,7 @@ public class SimStarterAttributesSelector extends GridPane {
 	 * @param evt
 	 */
 	private void runScriptButtonActionPerformed() {// GEN-FIRST:event_runScriptButtonActionPerformed
-		if (workbenchMgr.runScript()) {
+		if (workbenchManager.runScript()) {
 			String time = DateTime.getTime(new Date().getTime());
 			String msg = "Script execution started at: " + time;
 			simulation_out_lbl_.setText(msg);
@@ -181,10 +173,10 @@ public class SimStarterAttributesSelector extends GridPane {
 	 *            - The event that triggered this action
 	 */
 	private void configureSimulationButtonActionPerformed() {// GEN-FIRST:event_configureSimulationButtonActionPerformed
-		if (workbenchMgr.configureSimulation()) {
-			workbenchMgr.invalidateScriptGenerated();
-			workbenchMgr.invalidateScriptRan();
-			workbenchMgr.invalidateScriptAnalyzed();
+		if (workbenchManager.configureSimulation()) {
+			workbenchManager.invalidateScriptGenerated();
+			workbenchManager.invalidateScriptRan();
+			workbenchManager.invalidateScriptAnalyzed();
 			simstarter_.updateProjectOverview();
 		}
 		simstarter_.setMsg();
@@ -192,31 +184,31 @@ public class SimStarterAttributesSelector extends GridPane {
 	}// GEN-LAST:event_configureSimulationButtonActionPerformed
 	
 	private void updateSimOverview() {
-		String overview = workbenchMgr.getSimulationOverview();
+		String overview = workbenchManager.getSimulationOverview();
 		script_specify_out_lbl_.setText(overview);
 	}
 
 	private void displaySimConfigFile() {
-		String labelText = workbenchMgr.getSimConfigFileOverview();
+		String labelText = workbenchManager.getSimConfigFileOverview();
 		simulation_out_lbl_.setText(labelText);
 	}
 
 	private void displayScriptGenerationOverview() {
-		String filename = workbenchMgr.getScriptPath();
+		String filename = workbenchManager.getScriptPath();
 		if (filename != null) {
 			script_generated_out_lbl_.setText(filename);
 		}
 	}
 
 	private void displayScriptRunOverview() {
-		String runAtMsg = workbenchMgr.getScriptRunOverview();
+		String runAtMsg = workbenchManager.getScriptRunOverview();
 		if (runAtMsg != null) {
 			run_script_out_lbl_.setText(runAtMsg);
 		}
 	}
 
 	private void displayScriptAnalysisOverview() {
-		String overview = workbenchMgr.getScriptAnalysisOverview();
+		String overview = workbenchManager.getScriptAnalysisOverview();
 		if (overview != null) {
 			analyze_output_sts_out_lbl_.setText(overview);
 		}
@@ -240,6 +232,6 @@ public class SimStarterAttributesSelector extends GridPane {
 	private Label run_script_out_lbl_ = new Label();
 	private Label analyze_output_sts_out_lbl_ = new Label();
 	
-	private WorkbenchManager workbenchMgr;
+	private WorkbenchManager workbenchManager;
 	private SimManager simstarter_;
 }

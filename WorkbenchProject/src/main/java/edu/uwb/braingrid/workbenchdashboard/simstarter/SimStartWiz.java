@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbench;
+package edu.uwb.braingrid.workbenchdashboard.simstarter;
 
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javafx.scene.control.TextArea;
 
 /**
  * The SimStartWiz is responsible for handling all back-end events associated with
@@ -24,6 +25,8 @@ public class SimStartWiz {
 	private static final Logger LOG = Logger.getLogger(SimStartWiz.class.getName());
 	private static final long serialVersionUID = 1L;
 	private WorkbenchManager workbenchManager = new WorkbenchManager();
+	private SimulationRuntimeDialog srd;
+	private TextArea msgText = new TextArea("");
 
     /**
 	 * configureSimulation()
@@ -32,21 +35,79 @@ public class SimStartWiz {
      * represent lists of neurons with regard to their position in a neuron
      * array (e.g. position 12 is x: 1, y: 2 on a 10x10 grid)
      */
-    private void configureSimulation() {
+	 private boolean configureSimulation() {
+		 boolean wasSuccessful = false;
+		 if (workbenchManager.configureSimulation()) {
+			workbenchManager.invalidateScriptGenerated();
+			workbenchManager.invalidateScriptRan();
+			workbenchManager.invalidateScriptAnalyzed();
+			wasSuccessful = true;
+		}
+		setMsg();
+		return wasSuccessful;
+	 }
+/*	 
+    private void configureSimulationOldSchool() {
 		if (workbenchManager.runScript()) {
 			workbenchManager.invalidateScriptGenerated();
 			workbenchManager.invalidateScriptRan();
 			workbenchManager.invalidateScriptAnalyzed();
 		}
-		workbenchManager.configureSimulation();
-		workbenchManager.specifyScript();
-		workbenchManager.generateScript();
-		workbenchManager.runScript();
-		SimulationRuntimeDialog srd = new SimulationRuntimeDialog();
+		if (workbenchManager.configureSimulation())
+			if(workbenchManager.specifyScript())
+				if (workbenchManager.generateScript())
+					if (workbenchManager.runScript())
+						srd = new SimulationRuntimeDialog(workbenchManager);
         //setMsg();
        // pack();
     }
- 
+ */
+	/**
+	 * Prompts the user to specify the simulator used. This should be the file that
+	 * was invoked, which used the input files specified, in order to write the
+	 * output file that was specified.
+	 */
+	private boolean specifyScript() {
+		boolean wasSuccessful = false;
+		if (workbenchManager.specifyScript()) {
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			workbenchManager.invalidateScriptGenerated();
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			workbenchManager.invalidateScriptRan();
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			workbenchManager.invalidateScriptAnalyzed();
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			wasSuccessful = true;
+		}
+		setMsg();
+		return wasSuccessful;
+	}
+	
+	private boolean generateScript() {
+		boolean wasSuccessful = false;
+		if (workbenchManager.generateScript()) {
+			wasSuccessful = true;
+		}
+		setMsg();
+		return wasSuccessful;
+	}
+	
+	/**
+	 * Runs the script on the remote host.
+	 *
+	 * Connection information is entered in a SSHConnectionDialog
+	 */
+	private boolean runScript() {
+		boolean wasSuccessful = false;
+		if (workbenchManager.runScript()) {
+			String time = DateTime.getTime(new Date().getTime());
+			String msg = "Script execution started at: " + time;
+			wasSuccessful = true;
+		}
+		setMsg();
+		return wasSuccessful;
+	}
+	
     /**
 	 * SimStartWiz(WorkbenchManager workbenchManager)
      * Responsible for allocating this frame and initializing auto-generated, as
@@ -55,9 +116,12 @@ public class SimStartWiz {
      */
     public SimStartWiz() {
 		LOG.info("new " + getClass().getName());
-		if (workbenchManager.newProject()) {
-			configureSimulation();
-		}
+		if (workbenchManager.newProject()) 
+			if(configureSimulation())
+				if(specifyScript())
+					if(generateScript())
+						if(runScript())
+							srd = new SimulationRuntimeDialog(workbenchManager);
     }
 
 
@@ -112,8 +176,8 @@ public class SimStartWiz {
      * manager.
      *
      */
-  /*   public void setMsg() {
+     public void setMsg() {
         msgText.setText(workbenchManager.getMessages());
-    } */
+    } 
     // </editor-fold>
 }

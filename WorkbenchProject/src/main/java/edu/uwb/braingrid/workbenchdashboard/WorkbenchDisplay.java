@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
-import edu.uwb.braingrid.workbench.SimStartWiz;
+import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit;
 import edu.uwb.braingrid.workbenchdashboard.provis.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
@@ -29,7 +29,7 @@ import org.eclipse.jgit.api.errors.TransportException;
 
 /**
  * Defines the main display of the screen along with global functionality.
- * @author Max Wright, extended and updated by Joe Conquest
+ * @author Max Wright, extended and updated by Joseph Conquest
  */
 public class WorkbenchDisplay extends BorderPane {	
 	private static final Logger LOG = Logger.getLogger(WorkbenchDisplay.class.getName());

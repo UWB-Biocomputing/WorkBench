@@ -67,7 +67,6 @@ public class SimManager {
 	}
 
 	public void updateProjectOverview() {
-		ssas_.resetUILabelText();
 		current_proj_lbl_.setText(workbenchManager.getProjectName());
 		// transferProgressBar.setVisible(workbenchManager.isSimExecutionRemote());
 		ssas_.updateProject();
@@ -75,7 +74,7 @@ public class SimManager {
 	}
 
 	public void disableProjectAttributeRelatedButtons() {
-		ssas_.disableButtons();
+	//	ssas_.disableButtons();
 	}
 
 	/**

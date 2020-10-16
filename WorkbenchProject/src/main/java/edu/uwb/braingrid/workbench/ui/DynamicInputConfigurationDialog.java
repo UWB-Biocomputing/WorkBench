@@ -7,7 +7,6 @@ import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer.InputType;
 
-import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -33,7 +32,7 @@ import org.xml.sax.SAXException;
  * Dynamic Input Configuration Dialog The GUI is built dynamically according to
  * the input Configuration XML file.
  * 
- * @author Tom Wong & Joseph Conquest
+ * @author Tom Wong Extended by Joseph Conquest
  * @version 1.1
  */
 public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
@@ -203,7 +202,6 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 	private static final Logger LOG = Logger.getLogger(DynamicInputConfigurationDialog.class.getName());
 	// </editor-fold>
 	
-	private SimulationRuntimeDialog simulationRuntimePanel;
 
 	// <editor-fold defaultstate="collapsed" desc="Construction">
 	/**
