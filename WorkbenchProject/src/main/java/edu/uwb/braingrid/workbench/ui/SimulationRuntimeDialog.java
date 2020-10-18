@@ -92,10 +92,22 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 		long timeCompleted = workbenchManager.analyzeScriptOutput();
 		if (timeCompleted != DateTime.ERROR_TIME) {
 			outputtextArea.appendText("\nCompleted at: " + DateTime.getTime(timeCompleted));
+			setMsg();
+			
 		} else {
 			outputtextArea.appendText("\nScript execution incomplete, try again later.");
+			setMsg();
 		}
 	}
-
+	
+	/**
+     * Sets the workbench message content. The content of this message is based
+     * on the accumulated messages of produced by the functions of the workbench
+     * manager.
+     *
+     */
+     public void setMsg() {
+        outputtextArea.setText(workbenchManager.getMessages());
+    } 
 
 }
