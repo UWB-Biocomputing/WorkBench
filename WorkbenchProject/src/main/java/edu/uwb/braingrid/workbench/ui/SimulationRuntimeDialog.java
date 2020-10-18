@@ -8,7 +8,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.GridPane;
+import javafx.scene.Node;
 import javafx.stage.Modality;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets; 
 
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
@@ -28,6 +31,8 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 	private WorkbenchManager workbenchManager;
 	private Button analyzeButton;
 	private TextArea outputtextArea;
+	private Label outputTextFieldLabel;
+	private GridPane pane;
 	
 	
 	public SimulationRuntimeDialog(WorkbenchManager wbmng, TextArea simStatusOutput) {
@@ -46,29 +51,36 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 		initModality(Modality.NONE);
 		setResizable(true);
 		
-		Label outputTextFieldLabel = new Label("Simulation Status: ");
-		analyzeButton = new Button("Analyze");
-		analyzeButton.setOnAction(e -> analyzeButtonActionEvent());
+		outputTextFieldLabel = new Label("Simulation Status: ");
 
 		outputtextArea.setEditable(false);
 		outputtextArea.setWrapText(true);	
 		outputtextArea.setMaxWidth(Double.MAX_VALUE);
 		outputtextArea.setMaxHeight(Double.MAX_VALUE);
 		
-		GridPane pane = new GridPane();
+		analyzeButton = new Button("Analyze");
+		analyzeButton.setOnAction(e -> analyzeButtonActionEvent());
+		
+		pane = new GridPane();
+		pane.setPadding(new Insets(10,10,0,10));
+		pane.setVgap(5);
+		pane.setHgap(5);
 		pane.setVgrow(outputtextArea, Priority.ALWAYS);
 		pane.setHgrow(outputtextArea, Priority.ALWAYS);
 		pane.setMaxWidth(Double.MAX_VALUE);
+		pane.setHalignment(analyzeButton, HPos.RIGHT);
 		pane.add(outputTextFieldLabel, 0, 0);
 		pane.add(outputtextArea, 0, 1);
 		pane.add(analyzeButton, 0, 2);
-
-		getDialogPane().setContent(pane);
-		getDialogPane().setPrefSize(600,490);
 		
-		ButtonType exitButton = new ButtonType("Close", ButtonData.CANCEL_CLOSE);
-		getDialogPane().getButtonTypes().add(exitButton);
-
+		getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+		getDialogPane().setContent(pane);
+		getDialogPane().setPrefSize(650,490);
+		
+		//enable window closing
+		Node closeButton = getDialogPane().lookupButton(ButtonType.CLOSE);
+        closeButton.managedProperty().bind(closeButton.visibleProperty());
+        closeButton.setVisible(false);
 		
 	}
 	
