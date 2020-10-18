@@ -2,7 +2,6 @@ package edu.uwb.braingrid.workbench.ui;
 
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
-//import jdk.internal.jline.internal.Log;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -12,6 +11,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 /**
  * Specifies the context for a simulation execution script. For example, should
  * the sequential version of the simulator be used to perform the simulation, or
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * the content of the execution script to be generated; they also determine how
  * and where the script will be executed.
  *
- * @author Del Davis extended by Joseph Conquest
+ * @author Del Davis
  */
 public class ScriptSpecificationDialog extends javax.swing.JDialog {
 
@@ -39,7 +39,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 	// <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-
+		
 		codeRepositoryLocationLabel = new javax.swing.JLabel();
 		codeRepositoryLocationTextField = new javax.swing.JTextField();
 		runButton = new javax.swing.JButton();
@@ -363,10 +363,6 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 	private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelButtonActionPerformed
 		cancel();
 	}// GEN-LAST:event_cancelButtonActionPerformed
-	
-//	private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_saveButtonActionPerformed
-//		workbenchManager.saveProject();
-//	}// GEN-LAST:event_saveButtonActionPerformed
 
 	private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
 		specifySimulator();
@@ -466,7 +462,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 	private javax.swing.JTextField versionAnnotationTextField;
 	// End of variables declaration//GEN-END:variables
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="Custom Members">
 	/* Custom Members */
 	public static final String LINUX_USERNAME_PATTERN = "^[a-z][a-z0-9\\-]*$";

@@ -30,13 +30,17 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 	private TextArea outputtextArea;
 	
 	
-	public SimulationRuntimeDialog(WorkbenchManager wbmng) {
-		LOG.info("Opening Simulation Runtime Dialog for Sim Execution");
+	public SimulationRuntimeDialog(WorkbenchManager wbmng, TextArea simStatusOutput) {
+		LOG.info("new " + getClass().getName());
 		workbenchManager = wbmng;
+		outputtextArea = simStatusOutput;
 		initComponents();
 		show();
 	}
 	
+	/**
+	* Responsible for initalizing Simulation Runtime dialog and its components
+	*/
 	private void initComponents() {
 		setTitle("Simulation Runtime Environment");
 		initModality(Modality.NONE);
@@ -46,10 +50,8 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 		analyzeButton = new Button("Analyze");
 		analyzeButton.setOnAction(e -> analyzeButtonActionEvent());
 
-		outputtextArea = new TextArea("Script Generated...\nRunning Script..");
 		outputtextArea.setEditable(false);
-		outputtextArea.setWrapText(true);
-		
+		outputtextArea.setWrapText(true);	
 		outputtextArea.setMaxWidth(Double.MAX_VALUE);
 		outputtextArea.setMaxHeight(Double.MAX_VALUE);
 		
@@ -59,11 +61,10 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 		pane.setMaxWidth(Double.MAX_VALUE);
 		pane.add(outputTextFieldLabel, 0, 0);
 		pane.add(outputtextArea, 0, 1);
-		pane.add(analyzeButton, 1, 2);
+		pane.add(analyzeButton, 0, 2);
 
-		// Set expandable Exception into the dialog pane.
-		//getDialogPane().setExpandableContent(pane);
 		getDialogPane().setContent(pane);
+		getDialogPane().setPrefSize(600,490);
 		
 		ButtonType exitButton = new ButtonType("Close", ButtonData.CANCEL_CLOSE);
 		getDialogPane().getButtonTypes().add(exitButton);
@@ -71,12 +72,16 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 		
 	}
 	
+	/**
+	* analyze action event checks script output to determine if simulation is
+	* complete and updates outputTextArea accordingly
+	*/
 	private void analyzeButtonActionEvent() {
 		long timeCompleted = workbenchManager.analyzeScriptOutput();
 		if (timeCompleted != DateTime.ERROR_TIME) {
-			System.out.println("Completed at: " + DateTime.getTime(timeCompleted));
+			outputtextArea.appendText("\nCompleted at: " + DateTime.getTime(timeCompleted));
 		} else {
-			System.out.println("Script execution incomplete, try again later.");
+			outputtextArea.appendText("\nScript execution incomplete, try again later.");
 		}
 	}
 
