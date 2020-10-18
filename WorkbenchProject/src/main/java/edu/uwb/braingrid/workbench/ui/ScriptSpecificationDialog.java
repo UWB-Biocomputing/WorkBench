@@ -2,6 +2,7 @@ package edu.uwb.braingrid.workbench.ui;
 
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
+import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

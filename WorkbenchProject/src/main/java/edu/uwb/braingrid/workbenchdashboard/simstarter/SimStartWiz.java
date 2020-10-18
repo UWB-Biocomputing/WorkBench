@@ -27,6 +27,7 @@ public class SimStartWiz {
 	private WorkbenchManager workbenchManager = new WorkbenchManager();
 	private SimulationRuntimeDialog srd;
 	private TextArea msgText = new TextArea("");
+	private SimManager simManager;
 
     /**
 	 * configureSimulation()
@@ -97,13 +98,21 @@ public class SimStartWiz {
      */
     public SimStartWiz() {
 		LOG.info("new " + getClass().getName());
+		boolean cancelButtonClicked = false;
 		if (workbenchManager.newProject()) { 
-			if(configureSimulation())
-				if(specifyScript())
+			if(configureSimulation()) {
+				if(specifyScript()) {
 					if(generateScript()) 
 						if(runScript())
 							srd = new SimulationRuntimeDialog(workbenchManager, msgText);
+				}
+				else {
+					cancelButtonClicked = true;
+				}
+			}
 		}
+		simManager = new SimManager(workbenchManager);
+		if(cancelButtonClicked) simManager.saveProject();
     }
 
    /**

@@ -14,13 +14,15 @@ import javafx.scene.layout.VBox;
 
 public class SimManager {
 	private static final Logger LOG = Logger.getLogger(SimManager.class.getName());
-	public SimManager() { //Tab tab    was param
-		//super(tab);
+	public SimManager() { 
 		LOG.info("new " + getClass().getName());
+		workbenchManager = new WorkbenchManager();
 //		ssas_ = new SimStarterAttributesSelector(this, workbenchManager);
-//		disableProjectAttributeRelatedButtons();
-		//initCenter();
-		//super.setTitle("SimManager");
+	}
+	
+	public SimManager(WorkbenchManager wbmng) {
+		LOG.info("new " + getClass().getName());
+		workbenchManager = wbmng;
 	}
 
 	public void openProject() {
@@ -35,7 +37,7 @@ public class SimManager {
 			break;
 		case WorkbenchManager.EXCEPTION_OPTION:
 		default:
-			ssas_.resetUILabelText();
+			//ssas_.resetUILabelText();
 			break;
 		}
 	}
@@ -57,19 +59,10 @@ public class SimManager {
 		setMsg();
 	}
 
-	private void initCenter() {
-		project_title_label_.setText("Current Project: ");
-		current_proj_lbl_.setText("None");
-		HBox proj = new HBox(project_title_label_, current_proj_lbl_);
-		// VBox center = new VBox(proj, initAttributeDisplay(), msgText);
-		VBox center = new VBox(proj, ssas_, msgText);
-		bp_.setCenter(center);
-	}
-
 	public void updateProjectOverview() {
 		current_proj_lbl_.setText(workbenchManager.getProjectName());
 		// transferProgressBar.setVisible(workbenchManager.isSimExecutionRemote());
-		ssas_.updateProject();
+//		ssas_.updateProject();
 		// enableInitialButtons();
 	}
 
@@ -94,6 +87,6 @@ public class SimManager {
 	private ProgressBar progress_bar_ = new ProgressBar(0);
 	private TextArea msgText = new TextArea("");
 
-	private WorkbenchManager workbenchManager = new WorkbenchManager();
-	private SimStarterAttributesSelector ssas_;
+	private WorkbenchManager workbenchManager;
+//	private SimStarterAttributesSelector ssas_;
 }
