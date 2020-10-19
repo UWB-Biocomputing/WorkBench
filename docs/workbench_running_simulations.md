@@ -41,7 +41,7 @@
 
 * The Simulation Runtime Window is displayed. The simulation will need time to run on the local or remote machine before completing. Give the simulation a few minutes to run to completion.
 
-![alt text](images/SimulationRuntimeEnvironment.png "Runtime Environment")
+![alt text](images/SimulationRuntimeEnvironment.PNG "Runtime Environment")
  
 * Press the “Analyze” button to download simulation results after the completion of the simulation.
 
