@@ -351,12 +351,6 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {analyzeOutputButton, analyzeOutputSatusLabel, configureSimulationButton, generatedScriptFilenameLabel, outputFilenameLabel, runScriptButton, runScriptStatusLabel, scriptGenerateButton, scriptGeneratedLabel, scriptSpecificationLabel, scriptSpecifiedLabel, scriptStatusMsgLabel, simulationConfigurationLabel, simulationLabel, specifyScriptButton});
 		
-		System.out.println("SHOULD MAKE IT THIS FAR");
-		enableInitialButtons();
-		configureSimulationButton.doClick();
-		System.out.println("@@@@@@@@@@@@@@@@@@ MAKE IT THIS FAR");
-		//////////////////////////Why is the configure window not coming up from a virtual click?
-		
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
