@@ -17,7 +17,6 @@ public class SimManager {
 	public SimManager() { 
 		LOG.info("new " + getClass().getName());
 		workbenchManager = new WorkbenchManager();
-//		ssas_ = new SimStarterAttributesSelector(this, workbenchManager);
 	}
 	
 	public SimManager(WorkbenchManager wbmng) {
@@ -37,7 +36,6 @@ public class SimManager {
 			break;
 		case WorkbenchManager.EXCEPTION_OPTION:
 		default:
-			//ssas_.resetUILabelText();
 			break;
 		}
 	}
@@ -62,12 +60,6 @@ public class SimManager {
 	public void updateProjectOverview() {
 		current_proj_lbl_.setText(workbenchManager.getProjectName());
 		// transferProgressBar.setVisible(workbenchManager.isSimExecutionRemote());
-//		ssas_.updateProject();
-		// enableInitialButtons();
-	}
-
-	public void disableProjectAttributeRelatedButtons() {
-	//	ssas_.disableButtons();
 	}
 
 	/**
@@ -88,5 +80,4 @@ public class SimManager {
 	private TextArea msgText = new TextArea("");
 
 	private WorkbenchManager workbenchManager;
-//	private SimStarterAttributesSelector ssas_;
 }
