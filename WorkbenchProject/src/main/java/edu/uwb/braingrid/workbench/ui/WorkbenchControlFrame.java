@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
  * The workbench control frame is responsible for specifying BrainGrid project
  * files. It is the center of all input specification and provenance recording.
  *
- * @author Del Davis
+ * @author Del Davis, Edited and Updated by Joseph Conquest
  * @version 0.1
  */
 public class WorkbenchControlFrame extends javax.swing.JFrame {
@@ -32,7 +32,6 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
     private void initComponents() {
 		
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("BrainGrid Workbench");
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(414, 378));
 		

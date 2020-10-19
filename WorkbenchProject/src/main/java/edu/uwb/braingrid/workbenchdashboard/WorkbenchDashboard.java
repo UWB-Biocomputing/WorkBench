@@ -27,7 +27,7 @@ import org.apache.jena.ext.com.google.common.io.Resources;
 
 /**
  * Workbench Dashboard Application, contains main
- * @author Max Wright
+ * @author Max Wright, Extended by Joseph Conquest
  *
  */
 public class WorkbenchDashboard extends Application {
@@ -92,10 +92,6 @@ public class WorkbenchDashboard extends Application {
 		scene.getStylesheets().add((new File("../src/main/resources/workbenchdisplay/css/design.css")).toURI().toURL().toExternalForm());
 		scene.getStylesheets().add((new File("../src/main/resources/provvisualizer/css/design.css")).toURI().toURL().toExternalForm());
 
-		// scene.getStylesheets().add("resources/simstarter/css/tempII.css");
-		// scene.getStylesheets().add("resources/nledit/css/design.css");
-		// scene.getStylesheets().add("resources/workbenchdisplay/css/design.css");
-		// scene.getStylesheets().add("resources/provvisualizer/css/design.css");
 		// Create Events
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -106,9 +102,6 @@ public class WorkbenchDashboard extends Application {
 				if (arg0.getCode() == KeyCode.G && ctrl) {
 					workbench_display_.pushGSLEPane();
 				}
-				// if (arg0.getCode() == KeyCode.W && ctrl) {
-				// 	workbench_display_.pushWeclomePage();
-				// }
 				if (arg0.getCode() == KeyCode.S && ctrl) {
 					workbench_display_.pushSimWizPop();
 				}
@@ -133,6 +126,7 @@ public class WorkbenchDashboard extends Application {
 
 		URL is = Resources.getResource("braingrid/color-logo.png");
 		Image image = new Image(is.getFile());
+		primaryStage.setTitle("BrainGrid Workbench");
 
 		primaryStage.getIcons().add(image);
 		
