@@ -12,7 +12,7 @@ import javafx.scene.control.TextArea;
 
 /**
  * The SimStartWiz is responsible for handling all back-end events associated with
- * 	running the simulation start wizard. This code was adapted from Davis WorkbenchControlFrame
+ * 	running the simulation start wizard.
  *
  * @author Joseph Conquest
  * @version 1.0
