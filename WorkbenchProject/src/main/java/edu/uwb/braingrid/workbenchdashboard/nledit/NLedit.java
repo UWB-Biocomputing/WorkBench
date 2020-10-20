@@ -217,6 +217,8 @@ public class NLedit extends WorkbenchApp {
 
 		TextField txtfld_x = new TextField("10");
 		TextField txtfld_y = new TextField("10");
+
+	
 		Button btn_submit = new Button("Submit");
 		btn_submit.setOnAction(event -> {
 			int sizeX = 0, sizeY = 0;
@@ -275,9 +277,21 @@ public class NLedit extends WorkbenchApp {
 		rptButton.setToggleGroup(toggle_group);
 		altButton.setToggleGroup(toggle_group);
 
-		HBox hbox_bottom = new HBox(lbl_sizeX, txtfld_x, lbl_sizeY, txtfld_y, btn_submit, newButton, rptButton,
-				altButton, gpat_item_btn_, aprb_item_btn_);
+		HBox hbox_patternGen = new HBox(gpat_item_btn_, aprb_item_btn_);
+		hbox_patternGen.setSpacing(10);
+
+		HBox hbox_sizeX = new HBox(lbl_sizeX, txtfld_x);
+		HBox hbox_sizeY = new HBox(lbl_sizeY, txtfld_y);
+		HBox hbox_resize = new HBox(hbox_sizeX, hbox_sizeY, btn_submit);
+		hbox_resize.setSpacing(10);
+
+		HBox hbox_left = new HBox(hbox_resize, newButton, rptButton,
+		altButton);
+		hbox_left.setSpacing(20);
+
+		HBox hbox_bottom = new HBox(hbox_left, hbox_patternGen);
 		hbox_bottom.getStyleClass().add("sizebox");
+		hbox_bottom.setSpacing(200);
 		bp_.setBottom(hbox_bottom);
 	}
 
@@ -678,7 +692,7 @@ public class NLedit extends WorkbenchApp {
 		HBox hbox = new HBox(yes, no);
 		hbox.setAlignment(Pos.CENTER);
 		VBox vbox = new VBox(myPanel, hbox);
-		Scene dialogScene = new Scene(vbox, 500, 150);
+		Scene dialogScene = new Scene(vbox, 500, 300);
 		// dialogScene.getStylesheets().add("//style sheet of your choice");
 		dialog.setScene(dialogScene);
 		dialog.show();
@@ -738,7 +752,7 @@ public class NLedit extends WorkbenchApp {
 		HBox hbox = new HBox(yes, no);
 		hbox.setAlignment(Pos.CENTER);
 		VBox vbox = new VBox(myPanel, hbox);
-		Scene dialogScene = new Scene(vbox, 500, 150);
+		Scene dialogScene = new Scene(vbox, 500, 300);
 		// dialogScene.getStylesheets().add("//style sheet of your choice");
 		dialog.setScene(dialogScene);
 		dialog.show();
@@ -770,8 +784,8 @@ public class NLedit extends WorkbenchApp {
 	private Button print_item_btn_ = new Button("Print");
 	private Button bcell_item_btn_ = new Button("Zoom In");
 	private Button scell_item_btn_ = new Button("Zoom Out");
-	private Button gpat_item_btn_ = new Button("_Generate pattern...");
-	private Button aprb_item_btn_ = new Button("_Arrange probes...");
+	private Button gpat_item_btn_ = new Button("_Generate pattern");
+	private Button aprb_item_btn_ = new Button("_Arrange probes");
 	private Button sdat_item_btn_ = new Button("Stats");
 
 	private ToggleGroup editGroup = new ToggleGroup();

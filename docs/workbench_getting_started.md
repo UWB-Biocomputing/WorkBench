@@ -45,6 +45,10 @@ java -jar BrainGridWorkbench-1.0-SNAPSHOT.jar
 
 ![alt text](images/NetbeansOpenProject.png "Open the Maven project.")
 
-* After the project is opened, you can compile and build it by pressing the "Clean and Build Project" Menu option in NetBeans. Or, you can run the program directly.
+* After the project is opened, you can compile and build it by pressing the "Clean and Build Project" Menu option in NetBeans.
  
-* After the project is built successfully, it will generate a JAR file " BrainGridWorkbench-1.0-SNAPSHOT.jar " under the directory "Tools/Workbench/WorkbenchProject/target". Run this JAR file to start using the Workbench.
+* After the project is built successfully, it will generate a JAR file " BrainGridWorkbench-1.0-SNAPSHOT.jar " under the directory "Tools/Workbench/WorkbenchProject/target". Navigate to this directory and run this JAR file to start using the Workbench.
+
+```shell
+java -jar BrainGridWorkbench-1.0-SNAPSHOT.jar
+```
