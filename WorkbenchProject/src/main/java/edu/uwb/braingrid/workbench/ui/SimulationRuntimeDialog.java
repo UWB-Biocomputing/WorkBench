@@ -93,7 +93,7 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
 		if (timeCompleted != DateTime.ERROR_TIME) {
 			outputtextArea.appendText("\nCompleted at: " + DateTime.getTime(timeCompleted));
 			setMsg();
-			
+			workbenchManager.saveProject();
 		} else {
 			outputtextArea.appendText("\nScript execution incomplete, try again later.");
 			setMsg();
