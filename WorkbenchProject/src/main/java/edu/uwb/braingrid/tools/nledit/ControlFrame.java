@@ -160,7 +160,6 @@ public class ControlFrame extends JFrame implements ActionListener {
     @SuppressWarnings("deprecation")
 	public void init(int sizeX, int sizeY) {
         Container c = getContentPane();
-
         // build menu items
         // File menu
         menuBar.add(fileMenu);
