@@ -48,18 +48,16 @@ public class ProVisCtrl {
 			(float) 0.75, true);
 
 //	private GraphicsContext gc;
+	private ProVis proVis_;
 	private Model provModel;
 	private AnimationTimer timer;
 	private double zoomRatio = 1;
 	private Node draggedNode;
 	private double zoomSpeed = .2;
-	private ProVis proVis_;
 
 	private double[] pressedXY;
-
 	private double[] displayWindowLocation = new double[] { 0, 0 };
 	private double[] displayWindowSize = new double[] { 10000, 10000 };
-
 	private double[] displayWindowLocationTmp;
 
 	private AuthenticationInfo authenticationInfo = null;
@@ -71,10 +69,14 @@ public class ProVisCtrl {
 	private ToggleSwitch showNodeIds;
 	private ToggleSwitch showRelationships;
 	private ToggleSwitch showLegend;
+	private ToggleSwitch builderModeToggle;
 	private Button chooseFileBtn;
+	private Button validateActivityButton;
+	
+	private boolean buildModeON = false;
 
 	public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider, ToggleSwitch stopForces,
-			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, Button chooseFileBtn) {
+			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button chooseFileBtn, Button validateActivityBtn) {
 		this.proVis_ = proVis;
 		this.visCanvas = visCanvas;
 		this.canvasPane = canvasPane;
@@ -83,7 +85,9 @@ public class ProVisCtrl {
 		this.showNodeIds = showNodeIds;
 		this.showRelationships = showRelationships;
 		this.showLegend = showLegend;
+		this.builderModeToggle = builderModetggl;
 		this.chooseFileBtn = chooseFileBtn;
+		this.validateActivityButton = validateActivityBtn;
 		initialize();
 	}
 
@@ -152,6 +156,20 @@ public class ProVisCtrl {
 				}
 			}
 		});
+		
+		builderModeToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+				if (new_val) {
+					System.out.println("Builder Mode ON");
+					buildModeON = true;
+				} 
+				else if (old_val){
+					System.out.println("Builder Mode OFF");
+					buildModeON = false;
+				}
+
+			}
+		});
 
 		chooseFileBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -169,6 +187,13 @@ public class ProVisCtrl {
 					initNodeEdge(selectedFile.getAbsolutePath());
 					proVis_.setTitle(selectedFile.getName());
 				}
+			}
+		});
+		
+		validateActivityButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("Validation button CLICKED****************************");
 			}
 		});
 	}

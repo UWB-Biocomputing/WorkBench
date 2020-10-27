@@ -32,14 +32,15 @@ public class ProVis extends WorkbenchApp {
 		show_node_ids_.setMnemonicParsing(false);
 		show_relationships_.setMnemonicParsing(false);
 		show_legend_.setMnemonicParsing(false);
+		builderModeToggle.setMnemonicParsing(false);
 
 		pro_vis_ctrl_ = new ProVisCtrl(this, vis_canvas_, canvas_pane_, adjust_force_slider_, stop_forces_,
-				show_node_ids_, show_relationships_, show_legend_, choose_file_btn_);
+				show_node_ids_, show_relationships_, show_legend_, builderModeToggle, choose_file_btn_, validateActivityButton);
 
 		canvas_pane_.getChildren().add(vis_canvas_);
 
-		VBox vb = new VBox(stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
-				choose_file_btn_);
+		VBox vb = new VBox(stop_forces_, show_node_ids_, show_relationships_, show_legend_, builderModeToggle, adjust_force_slider_,
+				choose_file_btn_, validateActivityButton);
 		vb.getStyleClass().add("controls");
 		bp_.setCenter(canvas_pane_);
 		bp_.setRight(vb);
@@ -68,7 +69,9 @@ public class ProVis extends WorkbenchApp {
 	private ToggleSwitch show_node_ids_ = new ToggleSwitch("All Vertex IDs");
 	private ToggleSwitch show_relationships_ = new ToggleSwitch("All Relationships");
 	private ToggleSwitch show_legend_ = new ToggleSwitch("Legend");
+	private ToggleSwitch builderModeToggle = new ToggleSwitch("Builder Mode");
 	private Button choose_file_btn_ = new Button("Choose File");
+	private Button validateActivityButton = new Button("Validate Activity");
 	@SuppressWarnings("unused")
 	private ProVisCtrl pro_vis_ctrl_; // Keep a reference, not sure if the object will still exist if not. TODO Move
 										// ProVisCtrl to over here
