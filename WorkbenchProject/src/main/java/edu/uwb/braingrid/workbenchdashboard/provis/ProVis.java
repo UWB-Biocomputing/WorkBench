@@ -20,6 +20,7 @@ public class ProVis extends WorkbenchApp {
 	public ProVis(Tab tab) {
 		super(tab);
 		LOG.info("new " + getClass().getName());
+		
 		adjust_force_slider_.setBlockIncrement(20);
 		adjust_force_slider_.setMajorTickUnit(20);
 		//adjust_force_slider_.setMinorTickCount(1);

@@ -6,7 +6,6 @@ import com.jcraft.jsch.SftpException;
 
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.provenance.ProvMgr;
-import edu.uwb.braingrid.tools.nledit.ControlFrame;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.project.ProjectMgr;
 import edu.uwb.braingrid.workbench.script.Script;
@@ -38,7 +37,7 @@ import org.xml.sax.SAXException;
  * Manages all of the operations for the workbench. In turn, the operations
  * manage instances of the related data.
  *
- * @author Del Davis
+ * @author Del Davis, Modified and Updated by Joseph Conquest
  */
 public class WorkbenchManager {
 
@@ -299,19 +298,6 @@ public class WorkbenchManager {
             DateTime.recordAccumulatedProvTiming("WorkbenchManager", "saveProject",
                     accumulatedTime);
         }
-    }
-
-    /**
-     * Starts the neuron list editor. Depending on whether provenance is enabled
-     * or not, this may be the workbench version of NLEdit or an external jar
-     * located in the tools folder
-     *
-     * @param parent - The frame to used to simulate modal invocation of NLEdit.
-     * In other words the frame that should be disabled while NLEdit is not
-     * disposed
-     */
-    public void launchNLEdit(WorkbenchControlFrame parent) {
-        runInternalNLEdit(parent);
     }
 
     /**
@@ -642,12 +628,6 @@ System.out.println("JUST ABOUT TO MAKE PROJECTMGR CALED IN WORKBENCHMANGER");
         }
     }
     // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Private Helpers">
-    private void runInternalNLEdit(WorkbenchControlFrame workbench) {
-        messageAccumulator += "\n" + "NLEdit launched...";
-        ControlFrame.runNLEdit(workbench, this);
-    }
 
     /**
      * Delivers a full system-dependent canonical form of the path to the

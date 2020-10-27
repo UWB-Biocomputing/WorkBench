@@ -20,7 +20,6 @@ import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 import edu.uwb.braingrid.workbenchdashboard.userView.UserView;
 import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
-import edu.uwb.braingrid.workbenchdashboard.welcome.Welcome;
 import javafx.stage.Stage;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
