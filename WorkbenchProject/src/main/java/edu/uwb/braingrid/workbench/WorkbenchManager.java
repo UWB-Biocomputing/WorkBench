@@ -1,5 +1,4 @@
 package edu.uwb.braingrid.workbench;
-/////////////////CLEANED
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
@@ -310,7 +309,7 @@ public class WorkbenchManager {
      * @return True if at least one input file was added to the project
      * successfully
      */
-    public boolean addInputs() {
+  /*  public boolean addInputs() {
         boolean inputAdded = false;
         JFileChooser chooser = new JFileChooser(getWorkingDirectory());
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -348,7 +347,7 @@ public class WorkbenchManager {
         }
         return inputAdded;
     }
-
+*/
     /**
      * Updates the simulation specification for the currently open project based
      * on user inputs entered in a SimulationSpecificationDialog
@@ -539,7 +538,6 @@ public class WorkbenchManager {
         /* Create a new project */
         try {
             // make a new project (with new XML doc model)
-System.out.println("JUST ABOUT TO MAKE PROJECTMGR CALED IN WORKBENCHMANGER");
             projectMgr = new ProjectMgr(name, false);
             messageAccumulator += "\n" + "New project specified\n";
 
@@ -591,7 +589,7 @@ System.out.println("JUST ABOUT TO MAKE PROJECTMGR CALED IN WORKBENCHMANGER");
      * @param uri - The file location
      * @param type - The type of input file
      */
-    public void addInputFile(String uri, InputAnalyzer.InputType type) {
+  //  public void addInputFile(String uri, InputAnalyzer.InputType type) {
 //        /* add prov */
 //        if (projectMgr.isProvenanceEnabled()) {
 //            prov.addEntity(uri, type.toString(), false, false);
@@ -608,7 +606,7 @@ System.out.println("JUST ABOUT TO MAKE PROJECTMGR CALED IN WORKBENCHMANGER");
 //            messageAccumulator += "\n" + uri
 //                    + " successfully added as a project input" + "\n";
 //        }
-    }
+//    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Data Manipulation">

@@ -14,6 +14,7 @@ import edu.uwb.braingrid.workbench.data.OutputAnalyzer;
 import edu.uwb.braingrid.workbench.model.ExecutedCommand;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 import edu.uwb.braingrid.workbench.project.ProjectMgr;
+import edu.uwb.braingrid.workbench.project.ProjectManager;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 import java.awt.Desktop;
@@ -35,11 +36,12 @@ import org.xml.sax.SAXException;
 /**
  * Manages script creation, script execution, and script output analysis.
  *
- * @author Del Davis
+ * @author Del Davis, extended by Joseph Conquest
  */
 public class ScriptManager {
 
     private String outstandingMessages;
+	//private ProjectManager projectManager = new ProjectManager();
     
     /**
      * Responsible for construction of the script manager and initialization of
@@ -571,7 +573,6 @@ public class ScriptManager {
             if (Desktop.isDesktopSupported() && fm.isWindowsSystem()) {
                 Desktop dt = Desktop.getDesktop();
                //  dt.open(scriptTargetPath.toFile());
-                System.out.println(cmd);
                 Runtime.getRuntime().exec("cmd.exe /c start " + cmd); // Windows
             } else {
             	LOG.info("Running in Console: " + cmd);
@@ -813,9 +814,9 @@ public class ScriptManager {
                 + fm.getFolderDelimiter();
         new File(localSimResultsFolder).mkdirs();
         // calculate simulation history dump filename to write
-        String historyDumpFilename = projectMgr
-                .determineProjectOutputLocation()
-                + projectMgr.getSimStateOutputFile();
+        String historyDumpFilename = projectMgr.determineProjectOutputLocation()
+                + projectMgr.getSimStateOutputFile();		 
+		 
         // run simulation here or on another machine?
         boolean remote = simSpec.isRemote();
         if (remote) {

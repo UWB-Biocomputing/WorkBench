@@ -7,7 +7,6 @@ import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer.InputType;
 
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -23,7 +22,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-
 import org.w3c.dom.*;
 import javax.xml.xpath.*;
 import org.xml.sax.SAXException;
@@ -33,7 +31,7 @@ import org.xml.sax.SAXException;
  * the input Configuration XML file.
  * 
  * @author Tom Wong Extended by Joseph Conquest
- * @version 1.1
+ * @version 1.2
  */
 public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 	/**
@@ -138,10 +136,11 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 		// gather param values
 		ArrayList<String> paramStrs = new ArrayList<>();
 		for (int i = 0; i < paramsTextFields.size(); i++) {
-			paramStrs.add(paramsTextFields.get(i).getText());
-		}
-
-		lastStateOutputFileName = stateOutputFileNameTextField.getText();
+			if(i == 8) //node corresponds to stateOutputFileName, replace buggy default name
+				paramStrs.add(setOutputFileName(paramsTextFields.get(i).getText()));
+			else paramStrs.add(paramsTextFields.get(i).getText());
+		}	
+		lastStateOutputFileName = setOutputFileName(stateOutputFileNameTextField.getText());
 
 		icm.updateParamValues(paramStrs);
 
@@ -337,7 +336,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 
 							if (nodeName.equals(SystemConfig.STATE_OUTPUT_FILE_NAME_TAG_NAME)) {
 								stateOutputFileNameTextField = field;
-								lastStateOutputFileName = field.getText();
+								lastStateOutputFileName = setOutputFileName(field.getText());
 							}
 							paramsTextFields.add(field);
 							contentPanel.add(subPanel);
@@ -459,4 +458,29 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 		setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 	}
 	// </editor-fold>
+	
+	/**
+	* Helper function ensures stateOutputFileName has "results/" as prefix and ".xml" as postfix 
+	*/
+	private String ensureValidOutputName(String outputName) {
+		if(outputName.length() < 8 || outputName.substring(0,8).equals("results/") == false) {
+			outputName = "results/"+outputName; 
+		}
+		if(outputName.substring(outputName.length() - 4, outputName.length()).equals(".xml") == false) {
+			outputName = outputName + ".xml";
+		}
+		return outputName;	
+	}
+	
+	private String setOutputFileName(String ofn) {
+		String defaultLastStateOutputFileName = "results/tR_1.9--fE_0.98_historyDump_1.xml";
+		String lsofn = null;
+		if(defaultLastStateOutputFileName.equals(ofn)) {
+			lsofn = "results/historyDump_" + configFilename_textField.getText();
+		}
+		else {//user input to sim output textfield
+			lsofn = ensureValidOutputName(ofn);
+		}
+		return lsofn;
+	}
 }

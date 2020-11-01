@@ -191,7 +191,9 @@ public class ProvenanceVisualizerController {
 		visCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				System.out.println("*********************Mouse has been Pressed");
 				if (event.isPrimaryButtonDown()) {
+					System.out.println("*********************Mouse has been Pressed");
 					draggedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
 							event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
 					pressedXY = new double[] { event.getX() / zoomRatio, event.getY() / zoomRatio };
@@ -206,7 +208,9 @@ public class ProvenanceVisualizerController {
 		visCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				System.out.println("*********************Mouse has been Clicked");
 				if (event.getButton().equals(MouseButton.PRIMARY)) {
+					System.out.println("*********************Mouse has been Clicked");
 					if (event.getClickCount() == 1) {
 						Edge edge = dataProvGraph.getSelectedEdge(event.getX() / zoomRatio + displayWindowLocation[0],
 								event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio);
