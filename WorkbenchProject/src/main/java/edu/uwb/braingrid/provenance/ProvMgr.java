@@ -1,5 +1,5 @@
 package edu.uwb.braingrid.provenance;
-/////////////////CLEANED
+
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -52,8 +52,8 @@ import org.apache.jena.riot.RiotNotFoundException;
  *
  * <hr><i>Required Libraries: All libraries included within Apache Jena 2.1</i>
  *
- * @author Del Davis
- * @version 0.1
+ * @author Del Davis, Extended by Joseph Conquest
+ * @version 1.2
  */
 public class ProvMgr {
 
@@ -869,6 +869,7 @@ public class ProvMgr {
     /**
      * Writes the model to the file with the output filename specified during
      * construction or initialization
+	 * also writes provenance of completed projects to UniversalProvenance.ttl
      *
      * @param project - The project that this provenance is recorded for. The
      * project maintains its name, which is used as the base name for the
@@ -881,6 +882,11 @@ public class ProvMgr {
         (new File(directory)).mkdirs();
         model.write(new FileOutputStream(directory + project.getName()
                 + ".ttl", false), "TURTLE");
+		//add provenance to UniversalProvenance.ttl	
+		directory = project.determineUniversalProvOutputLocation();
+		(new File(directory)).mkdirs();
+        model.write(new FileOutputStream(directory + "UniversalProvenance"
+                + ".ttl", true), "TURTLE");
     }
 
     /**

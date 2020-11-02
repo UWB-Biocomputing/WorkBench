@@ -36,8 +36,8 @@ import org.xml.sax.SAXException;
  * Note: Provenance support is dealt with after the project manager is
  * constructed
  *
- * @author Del Davis
- * @version 0.1
+ * @author Del Davis, Extended by Joseph Conquest
+ * @version 1.2
  */
 public class ProjectMgr {
 
@@ -279,6 +279,21 @@ public class ProjectMgr {
         String provOutputLocation = projectDirectory
                 + "provenance"
                 + FileManager.getFileManager().getFolderDelimiter();
+        return provOutputLocation;
+    }
+	
+	/**
+     * Determines the folder location for storing provenance data for in
+     * relation to all other projects
+	 *
+     * @return The path to the provenance folder for the specified project
+     * @throws IOException
+     */
+    public String determineUniversalProvOutputLocation()
+            throws IOException {
+		String workingDirectory = FileManager.getCanonicalWorkingDirectory();
+        String ps = FileManager.getFileManager().getFolderDelimiter();
+        String provOutputLocation = workingDirectory + ps + "projects" + ps;
         return provOutputLocation;
     }
 
