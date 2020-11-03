@@ -13,10 +13,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 
 /**
 * Code that builds and substantiates ProVis tab in WorkbenchApp
@@ -55,8 +58,13 @@ public class ProVis extends WorkbenchApp {
 		
 		initLabelsandTextFields();
 
-		VBox vb = new VBox(visualizerControlLabel, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
-				builderControlLabel, builderModeToggle, buidlerLabelsandTextfields, validateActivityButton);
+	//	VBox vb = new VBox(visualizerControlLabel, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
+	//			builderControlLabel, builderModeToggle, buidlerLabelsandTextfields, validateActivityButton);
+		VBox vb = new VBox();
+		vb.setSpacing(10);
+		vb.getChildren().addAll(visualizerControlLabel, visualizerControlSeparator, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
+				controlPanelSeparator, builderControlLabel, builderControlSeparator, builderModeToggle, buidlerLabelsandTextfields, validateActivityButton);
+	
 		vb.getStyleClass().add("controls");
 		bp_.setCenter(canvas_pane_);
 		bp_.setRight(vb);
@@ -84,6 +92,12 @@ public class ProVis extends WorkbenchApp {
 		bGVersionTextField.setEditable(false);
 		
 		buidlerLabelsandTextfields = new GridPane();
+		buidlerLabelsandTextfields.setHgap(5);
+		buidlerLabelsandTextfields.setVgap(5);
+		buidlerLabelsandTextfields.setPadding(new Insets(5));
+		
+		
+		
 		buidlerLabelsandTextfields.add(selectedInputLabel,0,0);
 		buidlerLabelsandTextfields.add(inputTextField,1,0);
 		buidlerLabelsandTextfields.add(selectedProbedLabel,0,1);
@@ -107,10 +121,10 @@ public class ProVis extends WorkbenchApp {
 	private ToggleSwitch show_relationships_ = new ToggleSwitch("All Relationships");
 	private ToggleSwitch show_legend_ = new ToggleSwitch("Legend");
 	private ToggleSwitch builderModeToggle = new ToggleSwitch("Builder Mode");
-	private Button choose_file_btn_ = new Button("Choose File");
-	private Button validateActivityButton = new Button("Validate Activity");
-	private Label visualizerControlLabel = new Label("Visualizer Control"); 
-	private Label builderControlLabel = new Label("Builder Control");
+	private Button choose_file_btn_ = new Button("Import Provenance File");
+	private Button validateActivityButton = new Button("Re-Run Activity");
+	private Label visualizerControlLabel = new Label("VISUALIZER CONTROL"); 
+	private Label builderControlLabel = new Label("BUILDER CONTROL");
 	private Label selectedInputLabel = new Label("Input: ");
 	private Label selectedProbedLabel = new Label("Probed: ");
 	private Label selectedActiveLabel = new Label("Active: ");
@@ -121,6 +135,9 @@ public class ProVis extends WorkbenchApp {
 	private TextField activeTextField = new TextField();   
 	private TextField inhibitoryTextField = new TextField();
 	private TextField bGVersionTextField = new TextField();
+	private Separator controlPanelSeparator = new Separator();
+	private Separator visualizerControlSeparator = new Separator();
+	private Separator builderControlSeparator = new Separator();
 	private GridPane buidlerLabelsandTextfields;
 	private ProVisCtrl pro_vis_ctrl_; 
 }
