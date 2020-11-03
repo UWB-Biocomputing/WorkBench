@@ -42,7 +42,12 @@ import org.controlsfx.control.ToggleSwitch;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
-
+/**
+* Class contains the functionality of ProVis nodes, toggles, buttons, and updates textfields in control panel
+*
+* @author Tom Wong, Joseph Conquest, and unIdentified contributor
+* @version 1.2.2
+*/
 public class ProVisCtrl {
 	private Graph dataProvGraph;
 	private LinkedHashMap<String, AuthenticationInfo> authInfoCache = new LinkedHashMap<String, AuthenticationInfo>(5,
@@ -54,6 +59,7 @@ public class ProVisCtrl {
 	private AnimationTimer timer;
 	private double zoomRatio = 1;
 	private Node draggedNode;
+	private Node selectedNode;
 	private double zoomSpeed = .2;
 
 	private double[] pressedXY;
@@ -263,6 +269,17 @@ public class ProVisCtrl {
 
 						if (edge != null) {
 							dataProvGraph.addOrRemoveDispRelationship(edge);
+						}
+						if(buildModeON) {
+							System.out.println("Moused clicked with Build Mode on");
+							selectedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
+							event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
+							if(selectedNode == null) {
+								System.out.println("Someone clicked, but not on a node");
+							}
+							else{
+								System.out.println("A node has been selected");
+							}
 						}
 					}
 				}

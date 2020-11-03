@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -55,9 +54,6 @@ public class ProVis extends WorkbenchApp {
 		
 		initLabelsandTextFields();
 
-	//	VBox vb = new VBox(visualizerControlLabel, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
-	//			builderControlLabel, builderModeToggle, inputLabandText, probedLabandText, actLabandText, inhibLabandText, bgVersionLabandText, 
-	//			validateActivityButton);
 		VBox vb = new VBox(visualizerControlLabel, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
 				builderControlLabel, builderModeToggle, buidlerLabelsandTextfields, validateActivityButton);
 		vb.getStyleClass().add("controls");
@@ -97,13 +93,7 @@ public class ProVis extends WorkbenchApp {
 		buidlerLabelsandTextfields.add(inhibitoryTextField,1,3);
 		buidlerLabelsandTextfields.add(selectedBGVersionLabel,0,4);
 		buidlerLabelsandTextfields.add(bGVersionTextField,1,4);
-	/*	
-		inputLabandText = new HBox(selectedInputLabel, inputTextField);
-		probedLabandText = new HBox(selectedProbedLabel, probedTextField);
-		actLabandText = new HBox(selectedActiveLabel, activeTextField);
-		inhibLabandText = new HBox(selectedInhibitoryLabel, inhibitoryTextField);
-		bgVersionLabandText = new HBox(selectedBGVersionLabel, bGVersionTextField);
-		*/
+
 	}
 
 	// private SplitPane sp_ = new SplitPane();
@@ -130,11 +120,6 @@ public class ProVis extends WorkbenchApp {
 	private TextField activeTextField = new TextField();   
 	private TextField inhibitoryTextField = new TextField();
 	private TextField bGVersionTextField = new TextField();
-	private HBox inputLabandText;
-	private HBox probedLabandText;
-	private HBox actLabandText;
-	private HBox inhibLabandText;
-	private HBox bgVersionLabandText;
 	private GridPane buidlerLabelsandTextfields;
 
 	@SuppressWarnings("unused")
