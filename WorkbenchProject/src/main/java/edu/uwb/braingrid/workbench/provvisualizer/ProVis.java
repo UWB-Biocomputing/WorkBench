@@ -116,10 +116,10 @@ public class ProVis extends WorkbenchApp {
 	private VisCanvas vis_canvas_ = new VisCanvas();
 	private BorderPane canvas_pane_ = new BorderPane();
 	private Slider adjust_force_slider_ = new Slider(1.0, 100, 10);
-	private ToggleSwitch stop_forces_ = new ToggleSwitch("Stop Vertices");
-	private ToggleSwitch show_node_ids_ = new ToggleSwitch("All Vertex IDs");
+	private ToggleSwitch stop_forces_ = new ToggleSwitch("Stop Vertices     ");
+	private ToggleSwitch show_node_ids_ = new ToggleSwitch("All Vertex IDs     ");
 	private ToggleSwitch show_relationships_ = new ToggleSwitch("All Relationships");
-	private ToggleSwitch show_legend_ = new ToggleSwitch("Legend");
+	private ToggleSwitch show_legend_ = new ToggleSwitch("Legend              ");
 	private ToggleSwitch builderModeToggle = new ToggleSwitch("Builder Mode");
 	private Button choose_file_btn_ = new Button("Import Provenance File");
 	private Button reRunActivityButton = new Button("Re-Run Activity");
