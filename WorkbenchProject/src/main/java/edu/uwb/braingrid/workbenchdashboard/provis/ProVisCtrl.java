@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -72,11 +73,17 @@ public class ProVisCtrl {
 	private ToggleSwitch builderModeToggle;
 	private Button chooseFileBtn;
 	private Button validateActivityButton;
+	private TextField inputTextField;
+	private TextField probedTextField;
+	private TextField activeTextField;
+	private TextField inhibitoryTextField;
+	private TextField bGVersionTextField;
 	
 	private boolean buildModeON = false;
 
 	public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider, ToggleSwitch stopForces,
-			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button chooseFileBtn, Button validateActivityBtn) {
+			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button chooseFileBtn, 
+			TextField inputTextField, TextField probedTextField, TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, Button validateActivityBtn) {
 		this.proVis_ = proVis;
 		this.visCanvas = visCanvas;
 		this.canvasPane = canvasPane;
@@ -88,6 +95,11 @@ public class ProVisCtrl {
 		this.builderModeToggle = builderModetggl;
 		this.chooseFileBtn = chooseFileBtn;
 		this.validateActivityButton = validateActivityBtn;
+		this.inputTextField = inputTextField;
+		this.probedTextField = probedTextField;
+		this.activeTextField = activeTextField;
+		this.inhibitoryTextField = inhibitoryTextField;
+		this.bGVersionTextField = bGVersionTextField;
 		initialize();
 	}
 
