@@ -1,8 +1,10 @@
-package edu.uwb.braingrid.workbench.provvisualizer.controller;
-//THIS CODE IS NOT BEING USED BY ANY CLASS AND IS A CANDIDATE FOR REMOVAL. NOTED 11/3/2020 BY JOSEPH CONQUEST
+package edu.uwb.braingrid.workbench.provvisualizer;
+
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ConnectionUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.FileUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ProvUtility;
+import edu.uwb.braingrid.workbench.provvisualizer.controller.AuthenticationController;
+import edu.uwb.braingrid.workbench.provvisualizer.controller.TextComparisonController;
 import edu.uwb.braingrid.workbench.provvisualizer.factory.EdgeFactory;
 import edu.uwb.braingrid.workbench.provvisualizer.factory.NodeFactory;
 import edu.uwb.braingrid.workbench.provvisualizer.model.*;
@@ -16,64 +18,96 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.RDFDataMgr;
+import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
-
-public class ProvenanceVisualizerController {
+/**
+* Class contains the functionality of ProVis nodes, toggles, buttons, and updates textfields in control panel
+*
+* @author Tom Wong, Joseph Conquest, and unIdentified contributor
+* @version 1.2.2
+*/
+public class ProVisCtrl {
 	private Graph dataProvGraph;
 	private LinkedHashMap<String, AuthenticationInfo> authInfoCache = new LinkedHashMap<String, AuthenticationInfo>(5,
 			(float) 0.75, true);
 
 //	private GraphicsContext gc;
+	private ProVis proVis_;
 	private Model provModel;
 	private AnimationTimer timer;
 	private double zoomRatio = 1;
 	private Node draggedNode;
+	private Node selectedNode;
 	private double zoomSpeed = .2;
 
 	private double[] pressedXY;
-
 	private double[] displayWindowLocation = new double[] { 0, 0 };
 	private double[] displayWindowSize = new double[] { 10000, 10000 };
-
 	private double[] displayWindowLocationTmp;
 
 	private AuthenticationInfo authenticationInfo = null;
 
-	@FXML
 	private VisCanvas visCanvas;
-	@FXML
-	private AnchorPane canvasPane;
-	@FXML
+	private BorderPane canvasPane;
 	private Slider adjustForceSlider;
-	@FXML
 	private ToggleSwitch stopForces;
-	@FXML
 	private ToggleSwitch showNodeIds;
-	@FXML
 	private ToggleSwitch showRelationships;
-	@FXML
 	private ToggleSwitch showLegend;
-	@FXML
+	private ToggleSwitch builderModeToggle;
 	private Button chooseFileBtn;
+	private Button validateActivityButton;
+	private TextField inputTextField;
+	private TextField probedTextField;
+	private TextField activeTextField;
+	private TextField inhibitoryTextField;
+	private TextField bGVersionTextField;
+	
+	private boolean buildModeON = false;
+
+	public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider, ToggleSwitch stopForces,
+			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button chooseFileBtn, 
+			TextField inputTextField, TextField probedTextField, TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, Button validateActivityBtn) {
+		this.proVis_ = proVis;
+		this.visCanvas = visCanvas;
+		this.canvasPane = canvasPane;
+		this.adjustForceSlider = adjustForceSlider;
+		this.stopForces = stopForces;
+		this.showNodeIds = showNodeIds;
+		this.showRelationships = showRelationships;
+		this.showLegend = showLegend;
+		this.builderModeToggle = builderModetggl;
+		this.chooseFileBtn = chooseFileBtn;
+		this.validateActivityButton = validateActivityBtn;
+		this.inputTextField = inputTextField;
+		this.probedTextField = probedTextField;
+		this.activeTextField = activeTextField;
+		this.inhibitoryTextField = inhibitoryTextField;
+		this.bGVersionTextField = bGVersionTextField;
+		initialize();
+	}
 
 	/**
 	 * Initializes the controller.
@@ -140,6 +174,20 @@ public class ProvenanceVisualizerController {
 				}
 			}
 		});
+		
+		builderModeToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+				if (new_val) {
+					System.out.println("Builder Mode ON");
+					buildModeON = true;
+				} 
+				else if (old_val){
+					System.out.println("Builder Mode OFF");
+					buildModeON = false;
+				}
+
+			}
+		});
 
 		chooseFileBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -155,7 +203,15 @@ public class ProvenanceVisualizerController {
 				if (selectedFile != null) {
 					dataProvGraph.clearNodesNEdges();
 					initNodeEdge(selectedFile.getAbsolutePath());
+					proVis_.setTitle(selectedFile.getName());
 				}
+			}
+		});
+		
+		validateActivityButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("Validation button CLICKED****************************");
 			}
 		});
 	}
@@ -191,9 +247,7 @@ public class ProvenanceVisualizerController {
 		visCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("*********************Mouse has been Pressed");
 				if (event.isPrimaryButtonDown()) {
-					System.out.println("*********************Mouse has been Pressed");
 					draggedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
 							event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
 					pressedXY = new double[] { event.getX() / zoomRatio, event.getY() / zoomRatio };
@@ -208,15 +262,24 @@ public class ProvenanceVisualizerController {
 		visCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("*********************Mouse has been Clicked");
 				if (event.getButton().equals(MouseButton.PRIMARY)) {
-					System.out.println("*********************Mouse has been Clicked");
 					if (event.getClickCount() == 1) {
 						Edge edge = dataProvGraph.getSelectedEdge(event.getX() / zoomRatio + displayWindowLocation[0],
 								event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio);
 
 						if (edge != null) {
 							dataProvGraph.addOrRemoveDispRelationship(edge);
+						}
+						if(buildModeON) {
+							System.out.println("Moused clicked with Build Mode on");
+							selectedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
+							event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
+							if(selectedNode == null) {
+								System.out.println("Someone clicked, but not on a node");
+							}
+							else{
+								System.out.println("A node has been selected");
+							}
 						}
 					}
 				}
@@ -414,7 +477,6 @@ public class ProvenanceVisualizerController {
 			} else {
 				return false;
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -422,6 +484,7 @@ public class ProvenanceVisualizerController {
 	}
 
 	private void initNodeEdge(String provFileURI) {
+		LOG.info("Init Node Edge");
 		provModel = RDFDataMgr.loadModel(provFileURI);
 		StmtIterator iter = provModel.listStatements();
 		NodeFactory nodeFactory = NodeFactory.getInstance();
@@ -562,5 +625,8 @@ public class ProvenanceVisualizerController {
 		dataProvGraph.generateCommitRelationships(visCanvas.getWidth(), visCanvas.getHeight());
 		// set neighbors
 		dataProvGraph.setNeighbors();
+		LOG.info("End Node Edge");
 	}
+	
+	private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
 }

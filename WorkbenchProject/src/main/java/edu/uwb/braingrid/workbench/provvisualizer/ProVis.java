@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbenchdashboard.provis;
+package edu.uwb.braingrid.workbench.provvisualizer;
 
 import java.util.logging.Logger;
 

@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
+import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit;
-import edu.uwb.braingrid.workbenchdashboard.provis.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 import edu.uwb.braingrid.workbenchdashboard.userView.UserView;
