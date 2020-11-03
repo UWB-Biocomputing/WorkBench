@@ -1,5 +1,6 @@
-package edu.uwb.braingrid.workbench.provvisualizer;
+package edu.uwb.braingrid.workbench.provvisualizer.controller;
 
+import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ConnectionUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.FileUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ProvUtility;

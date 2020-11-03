@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.controlsfx.control.ToggleSwitch;
 
 import edu.uwb.braingrid.workbench.provvisualizer.view.VisCanvas;
+import edu.uwb.braingrid.workbench.provvisualizer.controller.ProVisCtrl;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -121,8 +122,5 @@ public class ProVis extends WorkbenchApp {
 	private TextField inhibitoryTextField = new TextField();
 	private TextField bGVersionTextField = new TextField();
 	private GridPane buidlerLabelsandTextfields;
-
-	@SuppressWarnings("unused")
-	private ProVisCtrl pro_vis_ctrl_; // Keep a reference, not sure if the object will still exist if not. TODO Move
-										// ProVisCtrl to over here
+	private ProVisCtrl pro_vis_ctrl_; 
 }
