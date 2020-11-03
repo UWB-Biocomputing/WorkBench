@@ -79,7 +79,8 @@ public class ProVisCtrl {
 	private ToggleSwitch showLegend;
 	private ToggleSwitch builderModeToggle;
 	private Button chooseFileBtn;
-	private Button validateActivityButton;
+	private Button reRunActivityButton;
+	private Button buildFromPrevButton;
 	private TextField inputTextField;
 	private TextField probedTextField;
 	private TextField activeTextField;
@@ -90,7 +91,8 @@ public class ProVisCtrl {
 
 	public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider, ToggleSwitch stopForces,
 			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button chooseFileBtn, 
-			TextField inputTextField, TextField probedTextField, TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, Button validateActivityBtn) {
+			TextField inputTextField, TextField probedTextField, TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, 
+			Button validateActivityBtn, Button buildFromPrevButton) {
 		this.proVis_ = proVis;
 		this.visCanvas = visCanvas;
 		this.canvasPane = canvasPane;
@@ -101,7 +103,8 @@ public class ProVisCtrl {
 		this.showLegend = showLegend;
 		this.builderModeToggle = builderModetggl;
 		this.chooseFileBtn = chooseFileBtn;
-		this.validateActivityButton = validateActivityBtn;
+		this.reRunActivityButton = validateActivityBtn;
+		this.buildFromPrevButton = buildFromPrevButton;
 		this.inputTextField = inputTextField;
 		this.probedTextField = probedTextField;
 		this.activeTextField = activeTextField;
@@ -209,10 +212,17 @@ public class ProVisCtrl {
 			}
 		});
 		
-		validateActivityButton.setOnAction(new EventHandler<ActionEvent>() {
+		reRunActivityButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Validation button CLICKED****************************");
+				System.out.println("Re-Run button CLICKED****************************");
+			}
+		});
+		
+		buildFromPrevButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("Derive button CLICKED****************************");
 			}
 		});
 	}

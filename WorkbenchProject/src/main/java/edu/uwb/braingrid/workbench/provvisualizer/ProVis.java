@@ -52,18 +52,18 @@ public class ProVis extends WorkbenchApp {
 
 		pro_vis_ctrl_ = new ProVisCtrl(this, vis_canvas_, canvas_pane_, adjust_force_slider_, stop_forces_,
 				show_node_ids_, show_relationships_, show_legend_, builderModeToggle, choose_file_btn_, 
-				inputTextField, probedTextField, activeTextField, inhibitoryTextField, bGVersionTextField, validateActivityButton);
+				inputTextField, probedTextField, activeTextField, inhibitoryTextField, bGVersionTextField, reRunActivityButton, buildFromPrevButton);
 
 		canvas_pane_.getChildren().add(vis_canvas_);
 		
 		initLabelsandTextFields();
 
 	//	VBox vb = new VBox(visualizerControlLabel, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
-	//			builderControlLabel, builderModeToggle, buidlerLabelsandTextfields, validateActivityButton);
+	//			builderControlLabel, builderModeToggle, buidlerLabelsandTextfields, reRunActivityButton);
 		VBox vb = new VBox();
 		vb.setSpacing(10);
 		vb.getChildren().addAll(visualizerControlLabel, visualizerControlSeparator, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
-				controlPanelSeparator, builderControlLabel, builderControlSeparator, builderModeToggle, buidlerLabelsandTextfields, validateActivityButton);
+				controlPanelSeparator, builderControlLabel, builderControlSeparator, builderModeToggle, buidlerLabelsandTextfields, reRunActivityButton, buildFromPrevButton);
 	
 		vb.getStyleClass().add("controls");
 		bp_.setCenter(canvas_pane_);
@@ -122,7 +122,8 @@ public class ProVis extends WorkbenchApp {
 	private ToggleSwitch show_legend_ = new ToggleSwitch("Legend");
 	private ToggleSwitch builderModeToggle = new ToggleSwitch("Builder Mode");
 	private Button choose_file_btn_ = new Button("Import Provenance File");
-	private Button validateActivityButton = new Button("Re-Run Activity");
+	private Button reRunActivityButton = new Button("Re-Run Activity");
+	private Button buildFromPrevButton = new Button("Derive New Activity");
 	private Label visualizerControlLabel = new Label("VISUALIZER CONTROL"); 
 	private Label builderControlLabel = new Label("BUILDER CONTROL");
 	private Label selectedInputLabel = new Label("Input: ");
