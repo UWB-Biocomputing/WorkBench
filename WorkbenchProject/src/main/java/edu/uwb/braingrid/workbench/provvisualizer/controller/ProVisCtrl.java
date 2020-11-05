@@ -41,8 +41,10 @@ import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.Scanner;
 /**
 * Class contains the functionality of ProVis nodes, toggles, buttons, and updates textfields in control panel
 *
@@ -88,6 +90,9 @@ public class ProVisCtrl {
 	private TextField bGVersionTextField;
 	
 	private boolean buildModeON = false;
+	private String bGVersionSelected;
+	
+	private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
 
 	public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider, ToggleSwitch stopForces,
 			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button chooseFileBtn, 
@@ -283,11 +288,9 @@ public class ProVisCtrl {
 							dataProvGraph.addOrRemoveDispRelationship(edge);
 						}
 						if(buildModeON) {
-							System.out.println("Moused clicked with Build Mode on");
 							selectedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
 							event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
 							if(selectedNode != null) {
-								System.out.println("A node has been selected");
 								popBuildControlDisplay(selectedNode);
 								enableBuildandRerunButtons(true);
 							}
@@ -654,18 +657,33 @@ public class ProVisCtrl {
 	* Sets up necessary information for builder action to occur
 	*/
 	private void popBuildControlDisplay(Node selectedNode) {
-		System.out.println("Populating textfields with selected Activity's information");
+		boolean parseNodeFileSuccess = false;
 		if (selectedNode instanceof ActivityNode) {
 			System.out.println("Selected Node activity Node");
+			System.out.println("Node Id: "+ selectedNode.getId()+
+				"\nNode displayId: " + selectedNode.getDisplayId() +
+				"\nNode label: "+ selectedNode.getLabel());
 		}
 		else if (selectedNode instanceof AgentNode) {
-			System.out.println("Selected Node AgentNode Node");
+			System.out.println("Selected Node AgentNode Node is Red Diamond");
+			System.out.println("Node Id: "+ selectedNode.getId()+
+				"\nNode displayId: " + selectedNode.getDisplayId() +
+				"\nNode label: "+ selectedNode.getLabel()); 
 		}
 		else if (selectedNode instanceof EntityNode) {
 			System.out.println("Selected Node EntityNode Node");	
+			System.out.println("Node Id: "+ selectedNode.getId()+
+				"\nNode displayId: " + selectedNode.getDisplayId() +
+				"\nNode label: "+ selectedNode.getLabel()); 
+			parseNodeFileSuccess = parseEntityNodeFile(selectedNode);
 		}
 		else if (selectedNode instanceof CommitNode) {
 			System.out.println("Selected Node CommitNode Node");
+			System.out.println("Node Id: "+ selectedNode.getId()+
+				"\nNode displayId: " + selectedNode.getDisplayId() +
+				"\nNode label: "+ selectedNode.getLabel());
+			bGVersionTextField.appendText(selectedNode.getDisplayId());
+			bGVersionSelected = selectedNode.getDisplayId();
 		}
 		else {
 			System.out.println("No Node type detected");
@@ -676,9 +694,35 @@ public class ProVisCtrl {
 	* Clears the textfields for all selected node information for builder input
 	*/
 	private void clearBuildControlDisplay() {
-		System.out.println("TODO: clear textfields in builder control. see ProVisCtrl.java");
-		
+		inputTextField.clear();
+		probedTextField.clear();
+		activeTextField.clear();
+		inhibitoryTextField.clear();
+		bGVersionTextField.clear();
 	}
 	
-	private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
+	private boolean parseEntityNodeFile(Node selectedNode) {
+		if(selectedNode == null) return false;
+		if(downloadNodeFile(selectedNode)) {
+			loadFile(FileUtility.getNodeFileLocalAbsolutePath(selectedNode)); //FileUtility.getNodeFileLocalAbsolutePath(selectedNode)
+		}
+		return true;
+	}
+	
+	 public boolean loadFile(String filePath){
+        Scanner in = null;
+        try {
+            in= new Scanner(new File(filePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+			return false;
+        }
+
+        in.useDelimiter("\\A");
+		while(in.hasNext()) {
+			System.out.println(in.next());
+		}
+		return true;
+    }
+
 }
