@@ -708,6 +708,7 @@ public class ProVisCtrl {
 	*/
 	private boolean parseEntityNodeFile(Node selectedNode) {
 		boolean selectedNodeFileReady = false;
+		char typeOfNode = 'N';
 		if(selectedNode == null) return false;
 		
 		selectedNodeFileReady = checkIfNodeFileExists(selectedNode);
@@ -715,26 +716,72 @@ public class ProVisCtrl {
 			selectedNodeFileReady = downloadNodeFile(selectedNode);
 		}
 		if(selectedNodeFileReady) {
-			return loadFile(FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
+			typeOfNode = loadFile(FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
 		}
 		
-		return false;
+		if(typeOfNode == 'N') return false;
+		else if(typeOfNode == 'S') {
+			inputTextField.clear();
+			inputTextField.appendText(selectedNode.getDisplayId());
+		}
+		else if(typeOfNode == 'I') {
+			inhibitoryTextField.clear();
+			inhibitoryTextField.appendText(selectedNode.getDisplayId());
+		}
+		else if(typeOfNode == 'A') {
+			activeTextField.clear();
+			activeTextField.appendText(selectedNode.getDisplayId());
+		}
+		else if(typeOfNode == 'P') {
+			probedTextField.clear();
+			probedTextField.appendText(selectedNode.getDisplayId());
+		}
+		return true;
 	}
 	
-	private boolean loadFile(String filePath){
+	/**
+	*
+	* Returns char N for failure, A = Active, I = inhibitory, P = probed, S = Sim Input
+	*/ 
+	private char loadFile(String filePath){
         Scanner in = null;
         try {
             in= new Scanner(new File(filePath));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-			return false;
+			return 'N';
         }
 
-        in.useDelimiter("\\A");
-		while(in.hasNext()) {
-			System.out.println(in.next());
+        in.useDelimiter("\\A");		
+		in.nextLine();
+		String determineType = in.nextLine();
+		System.out.print(determineType.substring(0,3));
+		System.out.print(determineType.substring(0,3));
+		if(determineType.substring(0,3) == "<A>"){
+			System.out.println("Node Type is Active");
+			setNLEditforBuild('A', determineType);
+			return 'A';
 		}
-		return true;
+		else if(determineType.substring(0,3) == "<I>"){
+			System.out.println("Node Type is Inhibitory");
+			setNLEditforBuild('I', determineType);
+			return 'I';
+		}
+		else if(determineType.substring(0,3) == "<P>"){
+			System.out.println("Node Type is Probed");
+			setNLEditforBuild('P', determineType);
+			return 'P';
+		}
+		else if(determineType.substring(0,12) == "<!<SimState>") {
+			//Do nothing, this is a ouput file
+		}
+		else { // simulation input file
+			while(in.hasNextLine()) {
+				System.out.println(in.next());
+			}
+			return 'S';
+		}
+		return 'N';
     }
 	
 	/**
@@ -748,6 +795,10 @@ public class ProVisCtrl {
 		
 		
 		enableBuildandRerunButtons(true);
+	}
+	
+	private void setNLEditforBuild(char inputType, String input) {
+		System.out.println("TODO: add input for NLEDit file to sim wiz for build");
 	}
 
 }
