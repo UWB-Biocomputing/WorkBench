@@ -128,6 +128,7 @@ public class ProVisCtrl {
 
 		initMouseEvents();
 		initGUIEvents();
+		enableBuildandRerunButtons(false);
 
 		timer = new AnimationTimer() {
 			@Override
@@ -182,12 +183,12 @@ public class ProVisCtrl {
 		builderModeToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
 				if (new_val) {
-					System.out.println("Builder Mode ON");
 					buildModeON = true;
 				} 
 				else if (old_val){
-					System.out.println("Builder Mode OFF");
 					buildModeON = false;
+					enableBuildandRerunButtons(false);
+					clearBuildControlDisplay();
 				}
 
 			}
@@ -285,11 +286,10 @@ public class ProVisCtrl {
 							System.out.println("Moused clicked with Build Mode on");
 							selectedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
 							event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
-							if(selectedNode == null) {
-								System.out.println("Someone clicked, but not on a node");
-							}
-							else{
+							if(selectedNode != null) {
 								System.out.println("A node has been selected");
+								popBuildControlDisplay(selectedNode);
+								enableBuildandRerunButtons(true);
 							}
 						}
 					}
@@ -637,6 +637,47 @@ public class ProVisCtrl {
 		// set neighbors
 		dataProvGraph.setNeighbors();
 		LOG.info("End Node Edge");
+	}
+	
+	/**
+	* enables/disables Re-run Activity and Build from Previous buttons.
+	* enables when bool enable = true. occurs with builder mode toggle on and single 
+	* click by user on node. Disable occurs when builder mode is toggled off
+	*/
+	private void enableBuildandRerunButtons(boolean enable) {
+		reRunActivityButton.setDisable(!enable);
+		buildFromPrevButton.setDisable(!enable);
+	}
+	
+	/**
+	* Populates textfields in builder control given node input selected by user.
+	* Sets up necessary information for builder action to occur
+	*/
+	private void popBuildControlDisplay(Node selectedNode) {
+		System.out.println("Populating textfields with selected Activity's information");
+		if (selectedNode instanceof ActivityNode) {
+			System.out.println("Selected Node activity Node");
+		}
+		else if (selectedNode instanceof AgentNode) {
+			System.out.println("Selected Node AgentNode Node");
+		}
+		else if (selectedNode instanceof EntityNode) {
+			System.out.println("Selected Node EntityNode Node");	
+		}
+		else if (selectedNode instanceof CommitNode) {
+			System.out.println("Selected Node CommitNode Node");
+		}
+		else {
+			System.out.println("No Node type detected");
+		}
+	}
+	
+	/**
+	* Clears the textfields for all selected node information for builder input
+	*/
+	private void clearBuildControlDisplay() {
+		System.out.println("TODO: clear textfields in builder control. see ProVisCtrl.java");
+		
 	}
 	
 	private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
