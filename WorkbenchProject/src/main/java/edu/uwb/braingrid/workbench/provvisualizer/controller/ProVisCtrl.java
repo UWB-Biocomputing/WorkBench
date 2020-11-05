@@ -291,8 +291,7 @@ public class ProVisCtrl {
 							selectedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
 							event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
 							if(selectedNode != null) {
-								popBuildControlDisplay(selectedNode);
-								enableBuildandRerunButtons(true);
+								prepBuildInputParams(selectedNode);
 							}
 						}
 					}
@@ -656,13 +655,14 @@ public class ProVisCtrl {
 	* Populates textfields in builder control given node input selected by user.
 	* Sets up necessary information for builder action to occur
 	*/
-	private void popBuildControlDisplay(Node selectedNode) {
+	private void prepBuildInputParams(Node selectedNode) {
 		boolean parseNodeFileSuccess = false;
 		if (selectedNode instanceof ActivityNode) {
 			System.out.println("Selected Node activity Node");
 			System.out.println("Node Id: "+ selectedNode.getId()+
 				"\nNode displayId: " + selectedNode.getDisplayId() +
 				"\nNode label: "+ selectedNode.getLabel());
+			getActivityNodes(selectedNode);
 		}
 		else if (selectedNode instanceof AgentNode) {
 			System.out.println("Selected Node AgentNode Node is Red Diamond");
@@ -700,16 +700,28 @@ public class ProVisCtrl {
 		inhibitoryTextField.clear();
 		bGVersionTextField.clear();
 	}
-	
+	/**
+	* check if the files exist in local file system
+	* download the files if they are not in the file system.
+	* call loadFile if success in opening
+	* returns true if successful loadFile completion
+	*/
 	private boolean parseEntityNodeFile(Node selectedNode) {
+		boolean selectedNodeFileReady = false;
 		if(selectedNode == null) return false;
-		if(downloadNodeFile(selectedNode)) {
-			loadFile(FileUtility.getNodeFileLocalAbsolutePath(selectedNode)); //FileUtility.getNodeFileLocalAbsolutePath(selectedNode)
+		
+		selectedNodeFileReady = checkIfNodeFileExists(selectedNode);
+		if (!selectedNodeFileReady) {
+			selectedNodeFileReady = downloadNodeFile(selectedNode);
 		}
-		return true;
+		if(selectedNodeFileReady) {
+			return loadFile(FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
+		}
+		
+		return false;
 	}
 	
-	 public boolean loadFile(String filePath){
+	private boolean loadFile(String filePath){
         Scanner in = null;
         try {
             in= new Scanner(new File(filePath));
@@ -724,5 +736,18 @@ public class ProVisCtrl {
 		}
 		return true;
     }
+	
+	/**
+	* For each of the child nodes of the activity:
+	*  - parse the child to determine type
+	*  - collect parameter info in memory for build settings
+	*  - display parameter info on build control textfields
+	*  - enable build button and re-run button
+	*/
+	private void getActivityNodes(Node selectedNode) {
+		
+		
+		enableBuildandRerunButtons(true);
+	}
 
 }
