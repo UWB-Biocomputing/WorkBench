@@ -658,30 +658,15 @@ public class ProVisCtrl {
 	private void prepBuildInputParams(Node selectedNode) {
 		boolean parseNodeFileSuccess = false;
 		if (selectedNode instanceof ActivityNode) {
-			System.out.println("Selected Node activity Node");
-			System.out.println("Node Id: "+ selectedNode.getId()+
-				"\nNode displayId: " + selectedNode.getDisplayId() +
-				"\nNode label: "+ selectedNode.getLabel());
 			getActivityNodes(selectedNode);
 		}
 		else if (selectedNode instanceof AgentNode) {
-			System.out.println("Selected Node AgentNode Node is Red Diamond");
-			System.out.println("Node Id: "+ selectedNode.getId()+
-				"\nNode displayId: " + selectedNode.getDisplayId() +
-				"\nNode label: "+ selectedNode.getLabel()); 
+ 
 		}
 		else if (selectedNode instanceof EntityNode) {
-			System.out.println("Selected Node EntityNode Node");	
-			System.out.println("Node Id: "+ selectedNode.getId()+
-				"\nNode displayId: " + selectedNode.getDisplayId() +
-				"\nNode label: "+ selectedNode.getLabel()); 
 			parseNodeFileSuccess = parseEntityNodeFile(selectedNode);
 		}
 		else if (selectedNode instanceof CommitNode) {
-			System.out.println("Selected Node CommitNode Node");
-			System.out.println("Node Id: "+ selectedNode.getId()+
-				"\nNode displayId: " + selectedNode.getDisplayId() +
-				"\nNode label: "+ selectedNode.getLabel());
 			bGVersionTextField.appendText(selectedNode.getDisplayId());
 			bGVersionSelected = selectedNode.getDisplayId();
 		}
@@ -755,29 +740,26 @@ public class ProVisCtrl {
         in.useDelimiter("\\A");		
 		in.nextLine();
 		String determineType = in.nextLine();
-		System.out.print(determineType.substring(0,3));
-		System.out.print(determineType.substring(0,3));
-		if(determineType.substring(0,3) == "<A>"){
-			System.out.println("Node Type is Active");
+		determineType = determineType.substring(0,3);
+		if(determineType.equals("<A>")){
 			setNLEditforBuild('A', determineType);
 			return 'A';
 		}
-		else if(determineType.substring(0,3) == "<I>"){
-			System.out.println("Node Type is Inhibitory");
+		else if(determineType.equals("<I>")){
 			setNLEditforBuild('I', determineType);
 			return 'I';
 		}
-		else if(determineType.substring(0,3) == "<P>"){
-			System.out.println("Node Type is Probed");
+		else if(determineType.equals("<P>")){
 			setNLEditforBuild('P', determineType);
 			return 'P';
 		}
-		else if(determineType.substring(0,12) == "<!<SimState>") {
+		else if(determineType.equals("<!-")) {
 			//Do nothing, this is a ouput file
 		}
 		else { // simulation input file
 			while(in.hasNextLine()) {
-				System.out.println(in.next());
+				in.nextLine();
+				//System.out.println(in.next());
 			}
 			return 'S';
 		}
