@@ -411,6 +411,8 @@ public class WorkbenchManager {
 			simulatorSpecification.setSHA1CheckoutKey(commitVersion);
 			simulatorSpecification.setSourceCodeUpdating("Pull");
 			simulatorSpecification.setBuildOption("Build");
+			//simulatorSpecifications.setCodeLocations(String URL);
+			simulatorSpecification.setSimulatorFolder("BrainGrid/");
             spd = new ScriptSpecificationDialog(true, simulatorSpecification);	
         } else {
 			System.out.println("WENT OVER HERE WORKBENCHMANAGER");
