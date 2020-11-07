@@ -173,7 +173,7 @@ public class WorkbenchManager {
     	String projectName = getProjectName();
     	LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
-       System.out.println("ToDO: use inputPreset to initialize builder");
+       System.out.println("ToDO: use inputPreset to initialize builder ###########################");
         if (!projectName.equals("None")) {
             String configFilename = projectMgr.getSimConfigFilename();
             InputConfigClassSelectionDialog iccsd
