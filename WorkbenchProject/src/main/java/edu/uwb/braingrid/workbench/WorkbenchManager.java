@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -133,6 +134,46 @@ public class WorkbenchManager {
     	LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
        
+        if (!projectName.equals("None")) {
+            String configFilename = projectMgr.getSimConfigFilename();
+            InputConfigClassSelectionDialog iccsd
+                    = new InputConfigClassSelectionDialog(projectName, true, configFilename);
+            if (success = iccsd.getSuccess()) {
+                DynamicInputConfigurationDialog icd
+                        = new DynamicInputConfigurationDialog(projectName, true, configFilename, iccsd.getInputConfigMgr());
+                String simulationConfigurationFile = null;
+                String stateOutputFilename = null;
+                if (success = icd.getSuccess()) {
+                    simulationConfigurationFile = icd.getBuiltFile();
+                    stateOutputFilename = icd.getStateOutputFilename();
+                    if (simulationConfigurationFile != null && stateOutputFilename != null) {
+                        projectMgr.addSimConfigFile(simulationConfigurationFile);
+                        projectMgr.setSimStateOutputFile(stateOutputFilename);
+                        if (projectMgr.isProvenanceEnabled()) {
+                            prov.addFileGeneration("simulation_input_file_generation",
+                                    null, "workbench", null, false,
+                                    simulationConfigurationFile, null, null);
+                        }
+                    } else {
+                        success = false;
+                    }
+                }
+            }
+        }
+        return success;
+    }
+	
+	/**
+     * Allows the user to configure the input for the simulation.
+     *
+     * @return True if the user followed through on the specification, False if
+     * the user canceled the specification.
+     */
+    public boolean configureSimulation(ArrayList<String> inputPresets) {
+    	String projectName = getProjectName();
+    	LOG.info("Configuring Simulation for " + projectName);
+        boolean success = true;
+       System.out.println("ToDO: use inputPreset to initialize builder");
         if (!projectName.equals("None")) {
             String configFilename = projectMgr.getSimConfigFilename();
             InputConfigClassSelectionDialog iccsd

@@ -49,6 +49,28 @@ public class SimStartWiz {
 		setMsg();
 		return wasSuccessful;
 	 }
+	 
+	 /**
+	 * configureSimulation()
+     * Prompts the user to select files for the simulation input. InputAnalyzer
+     * files are created with NLEdit or by hand in XML. InputAnalyzer files
+     * represent lists of neurons with regard to their position in a neuron
+     * array (e.g. position 12 is x: 1, y: 2 on a 10x10 grid)
+	 *
+	 * @param simInputPresets contains strings of inputs for configuring Sim
+     */
+	 private boolean configureSimulation(ArrayList<String> simInputPresets) {
+		 if(simInputPresets == null) return configureSimulation();
+		 boolean wasSuccessful = false;
+		 if (workbenchManager.configureSimulation(simInputPresets)) {
+			workbenchManager.invalidateScriptGenerated();
+			workbenchManager.invalidateScriptRan();
+			workbenchManager.invalidateScriptAnalyzed();
+			wasSuccessful = true;
+		}
+		setMsg();
+		return wasSuccessful;
+	 }
 
 	/**
 	 * Prompts the user to specify the simulator used. This should be the file that
@@ -74,21 +96,13 @@ public class SimStartWiz {
 	 * @param runtimeSpecifcations is git commit version to be pulled
 	 */
 	private boolean specifyScript(String runtimeSpecifcations) {
+		if(runtimeSpecifcations == null) return specifyScript();
 		boolean wasSuccessful = false;
-		if(runtimeSpecifcations != null){
-			System.out.println("Specifying Script with commit pre-set");
-			if (workbenchManager.specifyScript(runtimeSpecifcations)) {
-			workbenchManager.invalidateScriptGenerated();
-			workbenchManager.invalidateScriptRan();
-			workbenchManager.invalidateScriptAnalyzed();
-			wasSuccessful = true;
-			}
-		}
-		else if (workbenchManager.specifyScript()) {
-			workbenchManager.invalidateScriptGenerated();
-			workbenchManager.invalidateScriptRan();
-			workbenchManager.invalidateScriptAnalyzed();
-			wasSuccessful = true;
+		if (workbenchManager.specifyScript(runtimeSpecifcations)) {
+		workbenchManager.invalidateScriptGenerated();
+		workbenchManager.invalidateScriptRan();
+		workbenchManager.invalidateScriptAnalyzed();
+		wasSuccessful = true;
 		}
 		setMsg();
 		return wasSuccessful;
@@ -149,7 +163,7 @@ public class SimStartWiz {
 		LOG.info("new " + getClass().getName());
 		boolean cancelButtonClicked = false;
 		if (workbenchManager.newProject()) { 
-			if(configureSimulation()) {
+			if(configureSimulation(simSpecifications)) {
 				if(specifyScript(runtimeSpecifcations)) {
 					if(generateScript()) 
 						if(runScript())

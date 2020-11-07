@@ -674,6 +674,7 @@ public class ProVisCtrl {
 		else if (selectedNode instanceof CommitNode) {
 			bGVersionTextField.appendText(selectedNode.getDisplayId());
 			bGVersionSelected = selectedNode.getDisplayId();
+			buildFromPrevButton.setDisable(false);
 		}
 		else {
 			//System.out.println("No Node type detected");
@@ -690,6 +691,7 @@ public class ProVisCtrl {
 		inhibitoryTextField.clear();
 		bGVersionTextField.clear();
 	}
+	
 	/**
 	* check if the files exist in local file system
 	* download the files if they are not in the file system.
@@ -726,6 +728,7 @@ public class ProVisCtrl {
 			probedTextField.clear();
 			probedTextField.appendText(selectedNode.getDisplayId());
 		}
+		buildFromPrevButton.setDisable(false);
 		return true;
 	}
 	
@@ -762,9 +765,9 @@ public class ProVisCtrl {
 			//Do nothing, this is a ouput file
 		}
 		else { // simulation input file
-			while(in.hasNextLine()) {
-				in.nextLine();
-				//System.out.println(in.next());
+			simSpecifications = new ArrayList<String>();
+			while(in.hasNextLine()) { 
+				simSpecifications.add(in.nextLine());
 			}
 			return 'S';
 		}
