@@ -10,6 +10,7 @@ import edu.uwb.braingrid.workbench.provvisualizer.factory.EdgeFactory;
 import edu.uwb.braingrid.workbench.provvisualizer.factory.NodeFactory;
 import edu.uwb.braingrid.workbench.provvisualizer.model.*;
 import edu.uwb.braingrid.workbench.provvisualizer.view.VisCanvas;
+import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -44,6 +45,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.Scanner;
 /**
 * Class contains the functionality of ProVis nodes, toggles, buttons, and updates textfields in control panel
@@ -89,8 +91,10 @@ public class ProVisCtrl {
 	private TextField inhibitoryTextField;
 	private TextField bGVersionTextField;
 	
+	private SimStartWiz simStartWiz;
 	private boolean buildModeON = false;
 	private String bGVersionSelected;
+	ArrayList<String> simSpecifications = null;
 	
 	private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
 
@@ -229,6 +233,7 @@ public class ProVisCtrl {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Derive button CLICKED****************************");
+				simStartWiz = new SimStartWiz(simSpecifications, bGVersionSelected);
 			}
 		});
 	}
@@ -671,7 +676,7 @@ public class ProVisCtrl {
 			bGVersionSelected = selectedNode.getDisplayId();
 		}
 		else {
-			System.out.println("No Node type detected");
+			//System.out.println("No Node type detected");
 		}
 	}
 	

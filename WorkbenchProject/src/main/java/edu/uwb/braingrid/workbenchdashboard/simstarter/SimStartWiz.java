@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Date;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javafx.scene.control.TextArea;
 
@@ -28,6 +29,7 @@ public class SimStartWiz {
 	private SimulationRuntimeDialog srd;
 	private TextArea msgText = new TextArea("");
 	private SimManager simManager;
+	private String commitVersionSelected = null;
 
     /**
 	 * configureSimulation()
@@ -56,6 +58,33 @@ public class SimStartWiz {
 	private boolean specifyScript() {
 		boolean wasSuccessful = false;
 		if (workbenchManager.specifyScript()) {
+			workbenchManager.invalidateScriptGenerated();
+			workbenchManager.invalidateScriptRan();
+			workbenchManager.invalidateScriptAnalyzed();
+			wasSuccessful = true;
+		}
+		setMsg();
+		return wasSuccessful;
+	}
+	
+	/**
+	 * Prompts the user to specify the simulator used. This should be the file that
+	 * was invoked, which used the input files specified, in order to write the
+	 * output file that was specified.
+	 * @param runtimeSpecifcations is git commit version to be pulled
+	 */
+	private boolean specifyScript(String runtimeSpecifcations) {
+		boolean wasSuccessful = false;
+		if(runtimeSpecifcations != null){
+			System.out.println("Specifying Script with commit pre-set");
+			if (workbenchManager.specifyScript(runtimeSpecifcations)) {
+			workbenchManager.invalidateScriptGenerated();
+			workbenchManager.invalidateScriptRan();
+			workbenchManager.invalidateScriptAnalyzed();
+			wasSuccessful = true;
+			}
+		}
+		else if (workbenchManager.specifyScript()) {
 			workbenchManager.invalidateScriptGenerated();
 			workbenchManager.invalidateScriptRan();
 			workbenchManager.invalidateScriptAnalyzed();
@@ -114,6 +143,26 @@ public class SimStartWiz {
 		simManager = new SimManager(workbenchManager);
 		if(cancelButtonClicked) simManager.saveProject();
     }
+	
+	public SimStartWiz(ArrayList<String> simSpecifications, String runtimeSpecifcations) {
+		System.out.println("Entering SimStartWiz with runtimeSpecifcations:"+runtimeSpecifcations);
+		LOG.info("new " + getClass().getName());
+		boolean cancelButtonClicked = false;
+		if (workbenchManager.newProject()) { 
+			if(configureSimulation()) {
+				if(specifyScript(runtimeSpecifcations)) {
+					if(generateScript()) 
+						if(runScript())
+							srd = new SimulationRuntimeDialog(workbenchManager, msgText);
+				}
+				else {
+					cancelButtonClicked = true;
+				}
+			}
+		}
+		simManager = new SimManager(workbenchManager);
+		if(cancelButtonClicked) simManager.saveProject();
+	}
 
    /**
      * Sets the workbench message content. The content of this message is based

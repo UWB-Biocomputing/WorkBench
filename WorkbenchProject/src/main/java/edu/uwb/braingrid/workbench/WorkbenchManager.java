@@ -37,6 +37,7 @@ import org.xml.sax.SAXException;
  * manage instances of the related data.
  *
  * @author Del Davis, Modified and Updated by Joseph Conquest
+ * @version 1.3
  */
 public class WorkbenchManager {
 
@@ -363,6 +364,56 @@ public class WorkbenchManager {
         if (simulatorSpecification != null) {
             spd = new ScriptSpecificationDialog(true, simulatorSpecification);
         } else {
+            spd = new ScriptSpecificationDialog(true);
+        }
+        boolean success = spd.getSuccess();
+        if (success) {
+            simulatorSpecification = spd.toSimulatorSpecification();
+            String locale = simulatorSpecification.getSimulationLocale();
+            String remote = SimulationSpecification.REMOTE_EXECUTION;
+            if (locale.equals(remote)) {
+                hostAddr = simulatorSpecification.getHostAddr();
+            } else {
+                hostAddr = "";
+            }
+            projectMgr.addSimulator(locale,
+                    hostAddr, simulatorSpecification.getSimulatorFolder(),
+                    simulatorSpecification.getSimulationType(),
+                    simulatorSpecification.getCodeLocation(),
+                    simulatorSpecification.getVersionAnnotation(),
+                    simulatorSpecification.getSourceCodeUpdating(),
+                    simulatorSpecification.getSHA1CheckoutKey(),
+                    simulatorSpecification.getBuildOption());
+            updateSimSpec();
+            messageAccumulator += "\n" + "New simulation specified\n";
+        } else {
+            messageAccumulator += "\n"
+                    + "New simulator specification canceled\n";
+        }
+        return success;
+    }
+	
+	/**
+     * Updates the simulation specification for the currently open project based
+     * on user inputs entered in a SimulationSpecificationDialog
+     *
+     * @return True if the user clicked the OkButton in the
+     * SimulationSpecificationDialog (which validates required input in order
+     * for the action to be performed)
+     */
+    public boolean specifyScript(String commitVersion) {
+    	LOG.info("Specifying Script");
+        String hostAddr;
+        ScriptSpecificationDialog spd;
+        if (commitVersion != null) {
+			System.out.println("WENT IN HERE WORKBENCHMANAGER");
+			simulatorSpecification = new SimulationSpecification();
+			simulatorSpecification.setSHA1CheckoutKey(commitVersion);
+			simulatorSpecification.setSourceCodeUpdating("Pull");
+			simulatorSpecification.setBuildOption("Build");
+            spd = new ScriptSpecificationDialog(true, simulatorSpecification);	
+        } else {
+			System.out.println("WENT OVER HERE WORKBENCHMANAGER");
             spd = new ScriptSpecificationDialog(true);
         }
         boolean success = spd.getSuccess();
