@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.util.Date;
 import java.util.logging.Logger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javafx.scene.control.TextArea;
 
@@ -16,7 +17,7 @@ import javafx.scene.control.TextArea;
  * 	running the simulation start wizard.
  *
  * @author Joseph Conquest
- * @version 1.0
+ * @version 1.3
  */
 public class SimStartWiz {
 
@@ -32,7 +33,6 @@ public class SimStartWiz {
 	private String commitVersionSelected = null;
 
     /**
-	 * configureSimulation()
      * Prompts the user to select files for the simulation input. InputAnalyzer
      * files are created with NLEdit or by hand in XML. InputAnalyzer files
      * represent lists of neurons with regard to their position in a neuron
@@ -51,7 +51,6 @@ public class SimStartWiz {
 	 }
 	 
 	 /**
-	 * configureSimulation()
      * Prompts the user to select files for the simulation input. InputAnalyzer
      * files are created with NLEdit or by hand in XML. InputAnalyzer files
      * represent lists of neurons with regard to their position in a neuron
@@ -59,10 +58,10 @@ public class SimStartWiz {
 	 *
 	 * @param simInputPresets contains strings of inputs for configuring Sim
      */
-	 private boolean configureSimulation(ArrayList<String> simInputPresets) {
-		 if(simInputPresets == null) return configureSimulation();
+	 private boolean configureSimulation(ArrayList<String> simInputPresets, HashMap<Character,String> nListPresets) {
+		 if(simInputPresets == null && nListPresets == null) return configureSimulation();
 		 boolean wasSuccessful = false;
-		 if (workbenchManager.configureSimulation(simInputPresets)) {
+		 if (workbenchManager.configureSimulation(simInputPresets, nListPresets)) {
 			workbenchManager.invalidateScriptGenerated();
 			workbenchManager.invalidateScriptRan();
 			workbenchManager.invalidateScriptAnalyzed();
@@ -158,12 +157,12 @@ public class SimStartWiz {
 		if(cancelButtonClicked) simManager.saveProject();
     }
 	
-	public SimStartWiz(ArrayList<String> simSpecifications, String runtimeSpecifcations) {
+	public SimStartWiz(ArrayList<String> simSpecifications, String runtimeSpecifcations, HashMap<Character, String> nListPresets) {
 		System.out.println("Entering SimStartWiz with runtimeSpecifcations:"+runtimeSpecifcations);
 		LOG.info("new " + getClass().getName());
 		boolean cancelButtonClicked = false;
 		if (workbenchManager.newProject()) { 
-			if(configureSimulation(simSpecifications)) {
+			if(configureSimulation(simSpecifications, nListPresets)) {
 				if(specifyScript(runtimeSpecifcations)) {
 					if(generateScript()) 
 						if(runScript())

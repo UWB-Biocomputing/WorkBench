@@ -259,7 +259,7 @@ public class ProVisCtrl {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Derive button CLICKED****************************");
-				simStartWiz = new SimStartWiz(simSpecifications, bGVersionSelected);
+				simStartWiz = new SimStartWiz(simSpecifications, bGVersionSelected, nListPresets);
 			}
 		});
 	}
