@@ -317,16 +317,21 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 							subLayout.setAutoCreateGaps(true);
 							label = new JLabel(((Element) param).getAttribute(SystemConfig.NAME_ATTRIBUTE_NAME));
 							
-							
-							if(nListPresets != null) {
-								System.out.println("Current Label: "+ label.getText());
-							}
-							
 							JTextField field = new JTextField(param.getTextContent());
 							String nodeName = ((Element) param).getNodeName();
 							String type = ((Element) param).getAttribute("type");
 							if (type.equals("InputFile")) {
-					System.out.println("$%^### "+ field.getText() +" 00000000000000000000000000000000000");
+								if(nListPresets != null) { //check if user provided presets for NList
+									if(label.getText().equals("activeNListFileName") && nListPresets.containsKey('A')){
+										field.setText(nListPresets.get('A'));
+									}
+									else if(label.getText().equals("inhNListFileName") && nListPresets.containsKey('I')) {
+										field.setText(nListPresets.get('I'));
+									}
+									else if(label.getText().equals("prbNListFileName") && nListPresets.containsKey('P')) {
+										field.setText(nListPresets.get('P'));
+									}
+								}
 								JButton button = new JButton("Import");
 								button.addActionListener(new ImportFileButtonListener(
 										SystemConfig.TAG_NAME_INPUT_TYPE_MAPPING.get(nodeName), field));

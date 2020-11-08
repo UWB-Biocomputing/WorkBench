@@ -483,7 +483,6 @@ public class ProVisCtrl {
 				downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath, nodeFileLclPath,
 						authenticationInfo);
 			}
-			;
 		}
 
 		if (downloadSuccess) {
@@ -816,11 +815,12 @@ public class ProVisCtrl {
 		enableBuildandRerunButtons(true);
 	}
 	
+	/**
+	* adds NList inputs selected by user to simStartWiz called by buildFromPrevButton
+	*/
 	private void setNLEditforBuild(char inputType, Node inputNode) {
-		System.out.println("TODO: add input for NLEDit file to sim wiz for build");
-		System.out.println("Input type: " +inputType);
-		System.out.println(FileUtility.getNodeFileLocalAbsolutePath(inputNode));
-		nListPresets.put(inputType, FileUtility.getNodeFileLocalAbsolutePath(inputNode));
+		String inputLocal = "workbenchconfigfiles/NList/" + inputNode.getDisplayId();
+		nListPresets.put(inputType, inputLocal);
 	}
 	
 	/**
