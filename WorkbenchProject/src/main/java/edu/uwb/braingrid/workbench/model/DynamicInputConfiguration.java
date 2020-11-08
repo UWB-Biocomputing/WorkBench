@@ -1,5 +1,4 @@
 package edu.uwb.braingrid.workbench.model;
-// CLEANED
 
 import edu.uwb.braingrid.workbench.SystemConfig;
 import java.io.File;

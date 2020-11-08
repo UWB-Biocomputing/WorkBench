@@ -141,7 +141,7 @@ public class WorkbenchManager {
                     = new InputConfigClassSelectionDialog(projectName, true, configFilename);
             if (success = iccsd.getSuccess()) {
                 DynamicInputConfigurationDialog icd
-                        = new DynamicInputConfigurationDialog(projectName, true, configFilename, iccsd.getInputConfigMgr());
+                        = new DynamicInputConfigurationDialog(projectName, true, configFilename, iccsd.getInputConfigMgr(), null);
                 String simulationConfigurationFile = null;
                 String stateOutputFilename = null;
                 if (success = icd.getSuccess()) {
@@ -175,7 +175,7 @@ public class WorkbenchManager {
     	LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
        System.out.println("ToDO: use inputPreset to initialize builder ###########################");
-	   if(nListPresets != null) System.out.println("We have recieved NList presets "+nListPresets.isEmpty());
+	   if(nListPresets != null) System.out.println("We have recieved NList presets "+ !nListPresets.isEmpty());
 	   else System.out.println("We have NOT recieved NList presets");
         if (!projectName.equals("None")) {
             String configFilename = projectMgr.getSimConfigFilename();
@@ -183,7 +183,7 @@ public class WorkbenchManager {
                     = new InputConfigClassSelectionDialog(projectName, true, configFilename);
             if (success = iccsd.getSuccess()) {
                 DynamicInputConfigurationDialog icd
-                        = new DynamicInputConfigurationDialog(projectName, true, configFilename, iccsd.getInputConfigMgr());
+                        = new DynamicInputConfigurationDialog(projectName, true, configFilename, iccsd.getInputConfigMgr(), nListPresets);
                 String simulationConfigurationFile = null;
                 String stateOutputFilename = null;
                 if (success = icd.getSuccess()) {

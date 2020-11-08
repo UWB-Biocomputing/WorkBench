@@ -201,21 +201,26 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 	private static final Logger LOG = Logger.getLogger(DynamicInputConfigurationDialog.class.getName());
 	// </editor-fold>
 	
+	private HashMap<Character,String> nListPresets = null;
 
 	// <editor-fold defaultstate="collapsed" desc="Construction">
 	/**
 	 * 
+	 public DynamicInputConfigurationDialog(String projectName, boolean modal, String configFilename,
+			DynamicInputConfigurationManager aIcm, HashMap<Character,String> nListPresets) {
+		
 	 * @param projectName
 	 * @param modal
 	 * @param configFilename
 	 * @param aIcm
 	 */
 	public DynamicInputConfigurationDialog(String projectName, boolean modal, String configFilename,
-			DynamicInputConfigurationManager aIcm) {
+			DynamicInputConfigurationManager aIcm, HashMap<Character,String> nListPresets) {
 		LOG.info("New " + getClass().getName() + " for " + projectName);
 		initComponents();
 		setModal(modal);
 		this.projectName = projectName;
+		this.nListPresets = nListPresets;
 		try {
 			icm = aIcm;
 			xmlDoc = icm.getInputConfigDoc();
@@ -311,11 +316,17 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 							subPanel.setLayout(subLayout);
 							subLayout.setAutoCreateGaps(true);
 							label = new JLabel(((Element) param).getAttribute(SystemConfig.NAME_ATTRIBUTE_NAME));
-
+							
+							
+							if(nListPresets != null) {
+								System.out.println("Current Label: "+ label.getText());
+							}
+							
 							JTextField field = new JTextField(param.getTextContent());
 							String nodeName = ((Element) param).getNodeName();
 							String type = ((Element) param).getAttribute("type");
 							if (type.equals("InputFile")) {
+					System.out.println("$%^### "+ field.getText() +" 00000000000000000000000000000000000");
 								JButton button = new JButton("Import");
 								button.addActionListener(new ImportFileButtonListener(
 										SystemConfig.TAG_NAME_INPUT_TYPE_MAPPING.get(nodeName), field));
@@ -335,6 +346,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 							}
 
 							if (nodeName.equals(SystemConfig.STATE_OUTPUT_FILE_NAME_TAG_NAME)) {
+								field.setText(setOutputFileName(field.getText()));
 								stateOutputFileNameTextField = field;
 								lastStateOutputFileName = setOutputFileName(field.getText());
 							}
@@ -476,7 +488,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 		String defaultLastStateOutputFileName = "results/tR_1.9--fE_0.98_historyDump_1.xml";
 		String lsofn = null;
 		if(defaultLastStateOutputFileName.equals(ofn)) {
-			lsofn = "results/historyDump_" + configFilename_textField.getText();
+			lsofn = "results/historyDump_" + projectName;
 		}
 		else {//user input to sim output textfield
 			lsofn = ensureValidOutputName(ofn);
