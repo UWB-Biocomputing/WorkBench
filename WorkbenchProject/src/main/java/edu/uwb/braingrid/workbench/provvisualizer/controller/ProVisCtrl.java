@@ -46,6 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 /**
 * Class contains the functionality of ProVis nodes, toggles, buttons, and updates textfields in control panel
@@ -86,6 +87,7 @@ public class ProVisCtrl {
 	private Button importFileBtn;
 	private Button reRunActivityButton;
 	private Button buildFromPrevButton;
+	private Button clearPresetsButton;
 	private TextField inputTextField;
 	private TextField probedTextField;
 	private TextField activeTextField;
@@ -96,12 +98,14 @@ public class ProVisCtrl {
 	private boolean buildModeON = false;
 	private String bGVersionSelected;
 	ArrayList<String> simSpecifications = null;
+	HashMap<Character, String> nListPresets = new HashMap<Character, String>();
 	
 	private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
 
 	public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider, ToggleSwitch stopForces,
-			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button importFileBtn, Button chooseFileBtn, 
-			TextField inputTextField, TextField probedTextField, TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, 
+			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, 
+			Button importFileBtn, Button chooseFileBtn, TextField inputTextField, TextField probedTextField, 
+			TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, Button clearPresetsButton,
 			Button validateActivityBtn, Button buildFromPrevButton) {
 		this.proVis_ = proVis;
 		this.visCanvas = visCanvas;
@@ -114,6 +118,7 @@ public class ProVisCtrl {
 		this.builderModeToggle = builderModetggl;
 		this.importFileBtn = importFileBtn;
 		this.chooseFileBtn = chooseFileBtn;
+		this.clearPresetsButton = clearPresetsButton;
 		this.reRunActivityButton = validateActivityBtn;
 		this.buildFromPrevButton = buildFromPrevButton;
 		this.inputTextField = inputTextField;
@@ -230,6 +235,16 @@ public class ProVisCtrl {
 			@Override
 			public void handle(ActionEvent event) {
 				openUniversalProvenance();
+			}
+		});
+		
+		clearPresetsButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				clearBuildControlDisplay();
+				bGVersionSelected = null;
+				simSpecifications = null;
+				nListPresets.clear();
 			}
 		});
 		
@@ -665,6 +680,7 @@ public class ProVisCtrl {
 	private void enableBuildandRerunButtons(boolean enable) {
 		reRunActivityButton.setDisable(!enable);
 		buildFromPrevButton.setDisable(!enable);
+		clearPresetsButton.setDisable(!enable);
 	}
 	
 	/**
@@ -689,7 +705,9 @@ public class ProVisCtrl {
 		}
 		else {
 			//System.out.println("No Node type detected");
+			return;
 		}
+		clearPresetsButton.setDisable(false);
 	}
 	
 	/**
@@ -730,14 +748,17 @@ public class ProVisCtrl {
 		else if(typeOfNode == 'I') {
 			inhibitoryTextField.clear();
 			inhibitoryTextField.appendText(selectedNode.getDisplayId());
+			setNLEditforBuild(typeOfNode, selectedNode);
 		}
 		else if(typeOfNode == 'A') {
 			activeTextField.clear();
 			activeTextField.appendText(selectedNode.getDisplayId());
+			setNLEditforBuild(typeOfNode, selectedNode);
 		}
 		else if(typeOfNode == 'P') {
 			probedTextField.clear();
 			probedTextField.appendText(selectedNode.getDisplayId());
+			setNLEditforBuild(typeOfNode, selectedNode);
 		}
 		buildFromPrevButton.setDisable(false);
 		return true;
@@ -758,18 +779,15 @@ public class ProVisCtrl {
 
         in.useDelimiter("\\A");		
 		in.nextLine();
-		String determineType = in.nextLine();
-		determineType = determineType.substring(0,3);
+		String inputFromSelected = in.nextLine();
+		String determineType = inputFromSelected.substring(0,3);
 		if(determineType.equals("<A>")){
-			setNLEditforBuild('A', determineType);
 			return 'A';
 		}
 		else if(determineType.equals("<I>")){
-			setNLEditforBuild('I', determineType);
 			return 'I';
 		}
 		else if(determineType.equals("<P>")){
-			setNLEditforBuild('P', determineType);
 			return 'P';
 		}
 		else if(determineType.equals("<!-")) {
@@ -798,8 +816,11 @@ public class ProVisCtrl {
 		enableBuildandRerunButtons(true);
 	}
 	
-	private void setNLEditforBuild(char inputType, String input) {
+	private void setNLEditforBuild(char inputType, Node inputNode) {
 		System.out.println("TODO: add input for NLEDit file to sim wiz for build");
+		System.out.println("Input type: " +inputType);
+		System.out.println(FileUtility.getNodeFileLocalAbsolutePath(inputNode));
+		nListPresets.put(inputType, FileUtility.getNodeFileLocalAbsolutePath(inputNode));
 	}
 	
 	/**
