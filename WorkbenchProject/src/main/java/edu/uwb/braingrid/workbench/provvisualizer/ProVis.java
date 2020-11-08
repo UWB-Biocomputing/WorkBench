@@ -28,7 +28,7 @@ import javafx.geometry.Insets;
 * Updates in this class should be reflected in ProVisCtrl.java
 *
 * @author Joseph Conquest and Tom Wong
-* @version 1.2
+* @version 1.3
 */
 public class ProVis extends WorkbenchApp {
 	private static final Logger LOG = Logger.getLogger(ProVis.class.getName());
@@ -51,24 +51,24 @@ public class ProVis extends WorkbenchApp {
 		builderModeToggle.setMnemonicParsing(false);
 
 		pro_vis_ctrl_ = new ProVisCtrl(this, vis_canvas_, canvas_pane_, adjust_force_slider_, stop_forces_,
-				show_node_ids_, show_relationships_, show_legend_, builderModeToggle, choose_file_btn_, 
+				show_node_ids_, show_relationships_, show_legend_, builderModeToggle, import_file_btn_, choose_file_btn_, 
 				inputTextField, probedTextField, activeTextField, inhibitoryTextField, bGVersionTextField, reRunActivityButton, buildFromPrevButton);
 
 		canvas_pane_.getChildren().add(vis_canvas_);
 		
 		initLabelsandTextFields();
 
-	//	VBox vb = new VBox(visualizerControlLabel, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
-	//			builderControlLabel, builderModeToggle, buidlerLabelsandTextfields, reRunActivityButton);
 		VBox vb = new VBox();
 		vb.setSpacing(10);
-		vb.getChildren().addAll(visualizerControlLabel, visualizerControlSeparator, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
+		vb.getChildren().addAll(visualizerControlLabel, visualizerControlSeparator, import_file_btn_, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
 				controlPanelSeparator, builderControlLabel, builderControlSeparator, builderModeToggle, buidlerLabelsandTextfields, reRunActivityButton, buildFromPrevButton);
 	
 		vb.getStyleClass().add("controls");
 		bp_.setCenter(canvas_pane_);
 		bp_.setRight(vb);
-
+		
+		//pro_vis_ctrl_.openUniversalProvenance();
+		
 		super.setTitle("ProVis");   
 	}
 
@@ -121,7 +121,8 @@ public class ProVis extends WorkbenchApp {
 	private ToggleSwitch show_relationships_ = new ToggleSwitch("All Relationships");
 	private ToggleSwitch show_legend_ = new ToggleSwitch("Legend              ");
 	private ToggleSwitch builderModeToggle = new ToggleSwitch("Builder Mode");
-	private Button choose_file_btn_ = new Button("Import Provenance File");
+	private Button choose_file_btn_ = new Button("Choose Provenance");
+	private Button import_file_btn_ = new Button("Import Provenance");
 	private Button reRunActivityButton = new Button("Re-Run Activity");
 	private Button buildFromPrevButton = new Button("Derive New Activity");
 	private Label visualizerControlLabel = new Label("VISUALIZER CONTROL"); 

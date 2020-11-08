@@ -83,6 +83,7 @@ public class ProVisCtrl {
 	private ToggleSwitch showLegend;
 	private ToggleSwitch builderModeToggle;
 	private Button chooseFileBtn;
+	private Button importFileBtn;
 	private Button reRunActivityButton;
 	private Button buildFromPrevButton;
 	private TextField inputTextField;
@@ -99,7 +100,7 @@ public class ProVisCtrl {
 	private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
 
 	public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider, ToggleSwitch stopForces,
-			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button chooseFileBtn, 
+			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, Button importFileBtn, Button chooseFileBtn, 
 			TextField inputTextField, TextField probedTextField, TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, 
 			Button validateActivityBtn, Button buildFromPrevButton) {
 		this.proVis_ = proVis;
@@ -111,6 +112,7 @@ public class ProVisCtrl {
 		this.showRelationships = showRelationships;
 		this.showLegend = showLegend;
 		this.builderModeToggle = builderModetggl;
+		this.importFileBtn = importFileBtn;
 		this.chooseFileBtn = chooseFileBtn;
 		this.reRunActivityButton = validateActivityBtn;
 		this.buildFromPrevButton = buildFromPrevButton;
@@ -148,7 +150,9 @@ public class ProVisCtrl {
 				dataProvGraph.drawOnCanvas(visCanvas, displayWindowLocation, displayWindowSize, zoomRatio);
 			}
 		};
-
+		
+	//	openUniversalProvenance();
+		
 		timer.start();
 	}
 
@@ -219,6 +223,13 @@ public class ProVisCtrl {
 					initNodeEdge(selectedFile.getAbsolutePath());
 					proVis_.setTitle(selectedFile.getName());
 				}
+			}
+		});
+		
+		importFileBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				openUniversalProvenance();
 			}
 		});
 		
@@ -789,6 +800,19 @@ public class ProVisCtrl {
 	
 	private void setNLEditforBuild(char inputType, String input) {
 		System.out.println("TODO: add input for NLEDit file to sim wiz for build");
+	}
+	
+	/**
+	* open universalProvenance.ttl in projects dir if exists
+	*/
+	public void openUniversalProvenance() {
+		File universalProvenance = null;
+		universalProvenance = new File(System.getProperty("user.dir") + File.separator + "projects" + File.separator + "UniversalProvenance.ttl");
+		if (universalProvenance != null) {
+			dataProvGraph.clearNodesNEdges();
+			initNodeEdge(universalProvenance.getAbsolutePath());
+			proVis_.setTitle(universalProvenance.getName());
+		}
 	}
 
 }
