@@ -169,11 +169,10 @@ public class WorkbenchManager {
      * @return True if the user followed through on the specification, False if
      * the user canceled the specification.
      */
-    public boolean configureSimulation(String inputPresets, HashMap<Character,String> nListPresets) { //provide path of input selected, 
+    public boolean configureSimulation(String inputPresets, HashMap<Character,String> nListPresets) {
     	String projectName = getProjectName();
     	LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
-       System.out.println("TODO: use inputPreset to initialize builder ######################################################");
         if (!projectName.equals("None")) {
 			String configFilename = inputPresets;
             InputConfigClassSelectionDialog iccsd

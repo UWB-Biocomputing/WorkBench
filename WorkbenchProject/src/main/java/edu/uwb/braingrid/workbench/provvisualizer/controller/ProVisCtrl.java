@@ -46,6 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Scanner;
 /**
 * Class contains the functionality of ProVis nodes, toggles, buttons, and updates textfields in control panel
@@ -662,23 +663,21 @@ public class ProVisCtrl {
 	* Sets up necessary information for builder action to occur
 	*/
 	private void prepBuildInputParams(Node selectedNode) {
-		boolean parseNodeFileSuccess = false;
 		if (selectedNode instanceof ActivityNode) {
 			getActivityNodes(selectedNode);
 		}
 		else if (selectedNode instanceof AgentNode) {
- 
+			//no meaningful builder input preset provided by AgentNode
 		}
 		else if (selectedNode instanceof EntityNode) {
-			parseNodeFileSuccess = parseEntityNodeFile(selectedNode);
+			parseEntityNodeFile(selectedNode);
 		}
 		else if (selectedNode instanceof CommitNode) {
 			bGVersionTextField.appendText(selectedNode.getDisplayId());
 			bGVersionSelected = selectedNode.getDisplayId();
 			buildFromPrevButton.setDisable(false);
 		}
-		else {
-			//System.out.println("No Node type detected");
+		else {//System.out.println("No Node type detected");
 			return;
 		}
 		clearPresetsButton.setDisable(false);
@@ -781,8 +780,12 @@ public class ProVisCtrl {
 	*  - enable build button and re-run button
 	*/
 	private void getActivityNodes(Node selectedNode) {
-		
 		System.out.println("TODO: implement getActivityNodes in ProVisCtrl");
+		ArrayList<Node> neighborNodes = selectedNode.getNeighborNodes();
+		for(Node neighbor : neighborNodes) {
+			prepBuildInputParams(neighbor);
+			System.out.println("FOR LOOOOOOOP CHECK IT OUT: "+neighbor.getDisplayId());
+		}
 		enableBuildButton(true);
 	}
 	
