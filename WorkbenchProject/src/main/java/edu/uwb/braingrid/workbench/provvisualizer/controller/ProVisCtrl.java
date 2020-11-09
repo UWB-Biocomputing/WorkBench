@@ -719,6 +719,8 @@ public class ProVisCtrl {
 		else if(typeOfNode == 'S') {
 			inputTextField.clear();
 			inputTextField.appendText(selectedNode.getDisplayId());
+			System.out.println("FILE PATH FOR INPUT: "+FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
+			simSpecifications.add(FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
 		}
 		else if(typeOfNode == 'I') {
 			inhibitoryTextField.clear();
@@ -770,7 +772,8 @@ public class ProVisCtrl {
 		else { // simulation input file
 			simSpecifications = new ArrayList<String>();
 			while(in.hasNextLine()) { 
-				simSpecifications.add(in.nextLine());
+				//simSpecifications.add(in.nextLine());
+				in.nextLine();
 			}
 			return 'S';
 		}

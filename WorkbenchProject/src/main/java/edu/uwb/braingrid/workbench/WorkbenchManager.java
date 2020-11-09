@@ -165,18 +165,18 @@ public class WorkbenchManager {
     }
 	
 	/**
-     * Allows the user to configure the input for the simulation.
+     * Allows the user to configure the input for the simulation via interactions with ProVis
      *
      * @return True if the user followed through on the specification, False if
      * the user canceled the specification.
      */
-    public boolean configureSimulation(ArrayList<String> inputPresets, HashMap<Character,String> nListPresets) {
+    public boolean configureSimulation(ArrayList<String> inputPresets, HashMap<Character,String> nListPresets) { //provide path of input selected, 
     	String projectName = getProjectName();
     	LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
        System.out.println("TODO: use inputPreset to initialize builder ######################################################");
         if (!projectName.equals("None")) {
-            String configFilename = projectMgr.getSimConfigFilename();
+			String configFilename = inputPresets.get(0);
             InputConfigClassSelectionDialog iccsd
                     = new InputConfigClassSelectionDialog(projectName, true, configFilename);
             if (success = iccsd.getSuccess()) {
@@ -342,55 +342,6 @@ public class WorkbenchManager {
         }
     }
 
-    /**
-     * Opens input files from any reachable file system location. These files
-     * are added to the project and overwrite any previously opened files of the
-     * same neuron list type.
-     * 
-     * NOTE: DEAD CODE
-     *
-     * @return True if at least one input file was added to the project
-     * successfully
-     */
-  /*  public boolean addInputs() {
-        boolean inputAdded = false;
-        JFileChooser chooser = new JFileChooser(getWorkingDirectory());
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "XML file (*.xml)", "xml");
-        chooser.addChoosableFileFilter(filter);
-        chooser.setFileFilter(filter);
-        chooser.setMultiSelectionEnabled(true);
-        String dialogTitle = "Select Input Files for a Simulation";
-        chooser.setDialogTitle(dialogTitle);
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            InputAnalyzer.InputType type;
-            File[] files = chooser.getSelectedFiles();
-            File f;
-            for (int i = 0, im = files.length; i < im; i++) {
-                f = files[i];
-                try {
-                    type = InputAnalyzer.getInputType(f.getAbsoluteFile());
-                    if (type != InputAnalyzer.InputType.INVALID) {
-                        addInputFile(f.getAbsolutePath().toString(), type);
-                        inputAdded = true;
-                    } else {
-                        messageAccumulator += "\n" + f.getAbsolutePath()
-                                + " could not be added...\n no supported neuron"
-                                + " list detected in file.\n";
-                    }
-                } catch (ParserConfigurationException | SAXException |
-                        IOException e) {
-                    messageAccumulator += "\n" + f.getAbsolutePath()
-                            + " could not be added due to an error parsing"
-                            + " the document...\n";
-                }
-            }
-        } else {
-            messageAccumulator += "\n" + "Input Selection Cancelled\n";
-        }
-        return inputAdded;
-    }
-*/
     /**
      * Updates the simulation specification for the currently open project based
      * on user inputs entered in a SimulationSpecificationDialog

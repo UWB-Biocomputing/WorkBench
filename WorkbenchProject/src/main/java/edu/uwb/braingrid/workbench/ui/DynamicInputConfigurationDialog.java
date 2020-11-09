@@ -136,12 +136,11 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 		// gather param values
 		ArrayList<String> paramStrs = new ArrayList<>();
 		for (int i = 0; i < paramsTextFields.size(); i++) {
-			if(i == 8) //node corresponds to stateOutputFileName, replace buggy default name
-				paramStrs.add(setOutputFileName(paramsTextFields.get(i).getText()));
-			else paramStrs.add(paramsTextFields.get(i).getText());
+				paramStrs.add(paramsTextFields.get(i).getText());
 		}	
-		lastStateOutputFileName = setOutputFileName(stateOutputFileNameTextField.getText());
 
+		lastStateOutputFileName = ensureValidOutputName(stateOutputFileNameTextField.getText());
+		
 		icm.updateParamValues(paramStrs);
 
 		try {
@@ -352,9 +351,9 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 							}
 
 							if (nodeName.equals(SystemConfig.STATE_OUTPUT_FILE_NAME_TAG_NAME)) {
-								field.setText(setOutputFileName(field.getText()));
+								field.setText(setInitialOutputFilename());
 								stateOutputFileNameTextField = field;
-								lastStateOutputFileName = setOutputFileName(field.getText());
+								lastStateOutputFileName = field.getText();
 							}
 							paramsTextFields.add(field);
 							contentPanel.add(subPanel);
@@ -491,16 +490,8 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 		return outputName;	
 	}
 	
-	private String setOutputFileName(String ofn) {
-		String defaultLastStateOutputFileName = "results/tR_1.9--fE_0.98_historyDump_1.xml";
-		String lsofn = null;
-		if(defaultLastStateOutputFileName.equals(ofn)) {
-			lsofn = "results/historyDump_" + projectName;
-		}
-		else {//user input to sim output textfield
-			lsofn = ensureValidOutputName(ofn);
-		}
-		return lsofn;
+	private String setInitialOutputFilename() {
+		return "results/historyDump_" + projectName;
 	}
 	
 	private void importNeuronList(InputType type, JTextField field, String path) {	
