@@ -39,7 +39,6 @@ public class ProVis extends WorkbenchApp {
 		
 		adjust_force_slider_.setBlockIncrement(20);
 		adjust_force_slider_.setMajorTickUnit(20);
-		//adjust_force_slider_.setMinorTickCount(1);
 		adjust_force_slider_.setShowTickLabels(true);
 		adjust_force_slider_.setShowTickMarks(true);
 		adjust_force_slider_.setSnapToTicks(true);
@@ -68,8 +67,6 @@ public class ProVis extends WorkbenchApp {
 		bp_.setCenter(canvas_pane_);
 		bp_.setRight(vb);
 		
-		//pro_vis_ctrl_.openUniversalProvenance();
-		
 		super.setTitle("ProVis");   
 	}
 
@@ -97,8 +94,6 @@ public class ProVis extends WorkbenchApp {
 		buidlerLabelsandTextfields.setVgap(5);
 		buidlerLabelsandTextfields.setPadding(new Insets(5));
 		
-		
-		
 		buidlerLabelsandTextfields.add(selectedInputLabel,0,0);
 		buidlerLabelsandTextfields.add(inputTextField,1,0);
 		buidlerLabelsandTextfields.add(selectedProbedLabel,0,1);
@@ -112,7 +107,6 @@ public class ProVis extends WorkbenchApp {
 
 	}
 
-	// private SplitPane sp_ = new SplitPane();
 	BorderPane bp_ = new BorderPane();
 	private VisCanvas vis_canvas_ = new VisCanvas();
 	private BorderPane canvas_pane_ = new BorderPane();

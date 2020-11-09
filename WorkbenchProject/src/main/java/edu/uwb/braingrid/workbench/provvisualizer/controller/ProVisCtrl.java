@@ -58,8 +58,6 @@ public class ProVisCtrl {
 	private Graph dataProvGraph;
 	private LinkedHashMap<String, AuthenticationInfo> authInfoCache = new LinkedHashMap<String, AuthenticationInfo>(5,
 			(float) 0.75, true);
-
-//	private GraphicsContext gc;
 	private ProVis proVis_;
 	private Model provModel;
 	private AnimationTimer timer;
@@ -134,7 +132,6 @@ public class ProVisCtrl {
 	public void initialize() {
 		dataProvGraph = new Graph();
 		dataProvGraph.setC3(adjustForceSlider.getValue() * 1500);
-//		gc = visCanvas.getGraphicsContext2D();
 
 		// Bind canvas size to stack pane size.
 		visCanvas.widthProperty().bind(canvasPane.widthProperty());
@@ -153,8 +150,6 @@ public class ProVisCtrl {
 				dataProvGraph.drawOnCanvas(visCanvas, displayWindowLocation, displayWindowSize, zoomRatio);
 			}
 		};
-		
-	//	openUniversalProvenance();
 		
 		timer.start();
 	}
@@ -493,14 +488,12 @@ public class ProVisCtrl {
 			AuthenticationController controller = loader.getController();
 			controller.setHostname(hostname);
 			controller.setUsername(username);
-
 			controller.setOkBtnCallback(authInfo -> authenticationInfo = authInfo);
 
 			Stage modal_dialog = new Stage(StageStyle.DECORATED);
 			modal_dialog.initModality(Modality.WINDOW_MODAL);
 			modal_dialog.initOwner(canvasPane.getScene().getWindow());
 			Scene scene = new Scene(parent);
-
 			modal_dialog.setScene(scene);
 			modal_dialog.setTitle("Login");
 			modal_dialog.showAndWait();
@@ -540,8 +533,7 @@ public class ProVisCtrl {
 						}
 
 						dataProvGraph.addNode(node);
-					} else {
-						// create Activity Node
+					} else { // create Activity Node
 						Node activityNode = nodeFactory.createActivityNode();
 						activityNode.setId(subjectStr).setX(Math.random() * visCanvas.getWidth())
 								.setY(Math.random() * visCanvas.getHeight());
@@ -550,8 +542,7 @@ public class ProVisCtrl {
 				} else if (objectStr.equals(ProvUtility.PROV_SW_AGENT)) {
 					if (dataProvGraph.isNodeAdded(subjectStr)) {
 						dataProvGraph.addNode(nodeFactory.convertToAgentNode(dataProvGraph.getNode(subjectStr)));
-					} else {
-						// create Agent Node
+					} else { // create Agent Node
 						Node agentNode = nodeFactory.createAgentNode();
 						agentNode.setId(subjectStr).setX(Math.random() * visCanvas.getWidth())
 								.setY(Math.random() * visCanvas.getHeight());
@@ -559,14 +550,12 @@ public class ProVisCtrl {
 					}
 				} else if (objectStr.equals(ProvUtility.PROV_ENTITY)) {
 					if (dataProvGraph.isNodeAdded(subjectStr)) {
-						if (dataProvGraph.getNode(subjectStr).getLabel().equals("commit")) {
-							// convert to commit node
+						if (dataProvGraph.getNode(subjectStr).getLabel().equals("commit")) { // convert to commit node
 							dataProvGraph.addNode(nodeFactory.convertToCommitNode(dataProvGraph.getNode(subjectStr)));
 						} else {
 							dataProvGraph.addNode(nodeFactory.convertToEntityNode(dataProvGraph.getNode(subjectStr)));
 						}
-					} else {
-						// create Entity Node
+					} else { // create Entity Node
 						Node entityNode = nodeFactory.createEntityNode();
 						entityNode.setId(subjectStr).setX(Math.random() * visCanvas.getWidth())
 								.setY(Math.random() * visCanvas.getHeight());
@@ -580,12 +569,10 @@ public class ProVisCtrl {
 				if (dataProvGraph.isNodeAdded(subjectStr)) {
 					dataProvGraph.getNode(subjectStr).setLabel(objectStr);
 
-					if (objectStr.equals("commit")) {
-						// convert to commit node
+					if (objectStr.equals("commit")) { // convert to commit node
 						dataProvGraph.addNode(nodeFactory.convertToCommitNode(dataProvGraph.getNode(subjectStr)));
 					}
-				} else {
-					// create a Default Node to store the label value.
+				} else { // create a Default Node to store the label value.
 					Node node = null;
 					if (objectStr.equals("commit")) {
 						node = nodeFactory.createCommitNode();
@@ -753,7 +740,6 @@ public class ProVisCtrl {
 	}
 	
 	/**
-	*
 	* Returns char N for failure, A = Active, I = inhibitory, P = probed, S = Sim Input
 	*/ 
 	private char loadFile(String filePath){
@@ -800,7 +786,7 @@ public class ProVisCtrl {
 	*/
 	private void getActivityNodes(Node selectedNode) {
 		
-		
+		System.out.println("TODO: implement getActivityNodes in ProVisCtrl");
 		enableBuildButton(true);
 	}
 	
@@ -813,6 +799,7 @@ public class ProVisCtrl {
 	
 	/**
 	* open universalProvenance.ttl in projects dir if exists
+	* display universalProvenance on ProVis
 	*/
 	public void openUniversalProvenance() {
 		File universalProvenance = null;
