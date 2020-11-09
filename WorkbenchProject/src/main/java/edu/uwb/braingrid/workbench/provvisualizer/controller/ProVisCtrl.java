@@ -85,7 +85,6 @@ public class ProVisCtrl {
 	private ToggleSwitch builderModeToggle;
 	private Button chooseFileBtn;
 	private Button importFileBtn;
-	private Button reRunActivityButton;
 	private Button buildFromPrevButton;
 	private Button clearPresetsButton;
 	private TextField inputTextField;
@@ -106,7 +105,7 @@ public class ProVisCtrl {
 			ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, 
 			Button importFileBtn, Button chooseFileBtn, TextField inputTextField, TextField probedTextField, 
 			TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, Button clearPresetsButton,
-			Button validateActivityBtn, Button buildFromPrevButton) {
+			Button buildFromPrevButton) {
 		this.proVis_ = proVis;
 		this.visCanvas = visCanvas;
 		this.canvasPane = canvasPane;
@@ -119,7 +118,6 @@ public class ProVisCtrl {
 		this.importFileBtn = importFileBtn;
 		this.chooseFileBtn = chooseFileBtn;
 		this.clearPresetsButton = clearPresetsButton;
-		this.reRunActivityButton = validateActivityBtn;
 		this.buildFromPrevButton = buildFromPrevButton;
 		this.inputTextField = inputTextField;
 		this.probedTextField = probedTextField;
@@ -144,7 +142,7 @@ public class ProVisCtrl {
 
 		initMouseEvents();
 		initGUIEvents();
-		enableBuildandRerunButtons(false);
+		enableBuildButton(false);
 
 		timer = new AnimationTimer() {
 			@Override
@@ -205,7 +203,7 @@ public class ProVisCtrl {
 				} 
 				else if (old_val){
 					buildModeON = false;
-					enableBuildandRerunButtons(false);
+					enableBuildButton(false);
 					clearBuildControlDisplay();
 				}
 
@@ -245,13 +243,6 @@ public class ProVisCtrl {
 				bGVersionSelected = null;
 				simSpecifications = null;
 				nListPresets.clear();
-			}
-		});
-		
-		reRunActivityButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				System.out.println("Re-Run button CLICKED****************************");
 			}
 		});
 		
@@ -675,8 +666,7 @@ public class ProVisCtrl {
 	* enables when bool enable = true. occurs with builder mode toggle on and single 
 	* click by user on node. Disable occurs when builder mode is toggled off
 	*/
-	private void enableBuildandRerunButtons(boolean enable) {
-		reRunActivityButton.setDisable(!enable);
+	private void enableBuildButton(boolean enable) {
 		buildFromPrevButton.setDisable(!enable);
 		clearPresetsButton.setDisable(!enable);
 	}
@@ -811,7 +801,7 @@ public class ProVisCtrl {
 	private void getActivityNodes(Node selectedNode) {
 		
 		
-		enableBuildandRerunButtons(true);
+		enableBuildButton(true);
 	}
 	
 	/**

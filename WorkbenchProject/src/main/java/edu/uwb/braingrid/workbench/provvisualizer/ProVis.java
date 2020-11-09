@@ -52,7 +52,7 @@ public class ProVis extends WorkbenchApp {
 
 		pro_vis_ctrl_ = new ProVisCtrl(this, vis_canvas_, canvas_pane_, adjust_force_slider_, stop_forces_,
 				show_node_ids_, show_relationships_, show_legend_, builderModeToggle, import_file_btn_, choose_file_btn_, 
-				inputTextField, probedTextField, activeTextField, inhibitoryTextField, bGVersionTextField, clearPresetsButton, reRunActivityButton, buildFromPrevButton);
+				inputTextField, probedTextField, activeTextField, inhibitoryTextField, bGVersionTextField, clearPresetsButton, buildFromPrevButton);
 
 		canvas_pane_.getChildren().add(vis_canvas_);
 		
@@ -60,8 +60,9 @@ public class ProVis extends WorkbenchApp {
 
 		VBox vb = new VBox();
 		vb.setSpacing(10);
-		vb.getChildren().addAll(visualizerControlLabel, visualizerControlSeparator, import_file_btn_, choose_file_btn_, stop_forces_, show_node_ids_, show_relationships_, show_legend_, adjust_force_slider_,
-				controlPanelSeparator, builderControlLabel, builderControlSeparator, builderModeToggle, buidlerLabelsandTextfields, clearPresetsButton, reRunActivityButton, buildFromPrevButton);
+		vb.getChildren().addAll(visualizerControlLabel, visualizerControlSeparator, import_file_btn_, choose_file_btn_,
+				vertexSpeedLabel, adjust_force_slider_, stop_forces_, show_node_ids_, show_relationships_, show_legend_,  controlPanelSeparator,
+				builderControlLabel, builderControlSeparator, builderModeToggle, buidlerLabelsandTextfields, clearPresetsButton, buildFromPrevButton);
 	
 		vb.getStyleClass().add("controls");
 		bp_.setCenter(canvas_pane_);
@@ -119,15 +120,15 @@ public class ProVis extends WorkbenchApp {
 	private ToggleSwitch stop_forces_ = new ToggleSwitch("Stop Vertices     ");
 	private ToggleSwitch show_node_ids_ = new ToggleSwitch("All Vertex IDs     ");
 	private ToggleSwitch show_relationships_ = new ToggleSwitch("All Relationships");
-	private ToggleSwitch show_legend_ = new ToggleSwitch("Legend              ");
+	private ToggleSwitch show_legend_ = new ToggleSwitch("Legend               ");
 	private ToggleSwitch builderModeToggle = new ToggleSwitch("Builder Mode");
 	private Button choose_file_btn_ = new Button("Choose Provenance");
 	private Button import_file_btn_ = new Button("Import Provenance");
-	private Button reRunActivityButton = new Button("Re-Run Activity");
 	private Button buildFromPrevButton = new Button("Derive New Activity");
-	private Button clearPresetsButton = new Button("Clear");
+	private Button clearPresetsButton = new Button("Clear Selected");
 	private Label visualizerControlLabel = new Label("VISUALIZER CONTROL"); 
 	private Label builderControlLabel = new Label("BUILDER CONTROL");
+	private Label vertexSpeedLabel = new Label("Vertex Speed:");
 	private Label selectedInputLabel = new Label("Input: ");
 	private Label selectedProbedLabel = new Label("Probed: ");
 	private Label selectedActiveLabel = new Label("Active: ");
