@@ -158,7 +158,6 @@ public class SimStartWiz {
     }
 	
 	public SimStartWiz(ArrayList<String> simSpecifications, String runtimeSpecifcations, HashMap<Character, String> nListPresets) {
-		System.out.println("Entering SimStartWiz with runtimeSpecifcations:"+runtimeSpecifcations);
 		LOG.info("new " + getClass().getName());
 		boolean cancelButtonClicked = false;
 		if (workbenchManager.newProject()) { 

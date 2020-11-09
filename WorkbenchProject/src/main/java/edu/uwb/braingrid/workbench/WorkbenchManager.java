@@ -448,16 +448,13 @@ public class WorkbenchManager {
         String hostAddr;
         ScriptSpecificationDialog spd;
         if (commitVersion != null) {
-			System.out.println("WENT IN HERE WORKBENCHMANAGER");
 			simulatorSpecification = new SimulationSpecification();
 			simulatorSpecification.setSHA1CheckoutKey(commitVersion);
 			simulatorSpecification.setSourceCodeUpdating("Pull");
 			simulatorSpecification.setBuildOption("Build");
-			//simulatorSpecifications.setCodeLocations(String URL);
 			simulatorSpecification.setSimulatorFolder("BrainGrid/");
             spd = new ScriptSpecificationDialog(true, simulatorSpecification);	
         } else {
-			System.out.println("WENT OVER HERE WORKBENCHMANAGER");
             spd = new ScriptSpecificationDialog(true);
         }
         boolean success = spd.getSuccess();
@@ -591,7 +588,6 @@ public class WorkbenchManager {
         boolean success = false;
         ScriptManager sm = new ScriptManager();
         try {
-			System.out.println("PROBLEM OCCURS IN runScript() in WorkbenchManger BECAUSE PROJECTMGR IS NULL");
             String scriptPath = projectMgr.getScriptCanonicalFilePath();
             String[] neuronLists
                     = FileManager.getFileManager().getNeuronListFilenames(projectMgr.getName());
@@ -668,41 +664,8 @@ public class WorkbenchManager {
             DateTime.recordAccumulatedProvTiming("WorkbenchManager", "initProject",
                     accumulatedTime);
         }
-		//below is test of projectMgr and may not be valid, keep an eye on if this is null or not
-		String scriptPath = projectMgr.getScriptCanonicalFilePath();
-		System.out.println("PROBLEM OCCURS IN initProject IN WorkbenchManager....projectMgr is:   "+scriptPath);
         return success;
     }
-
-    /**
-     * Adds an input file to the project. If provenance support is enabled the
-     * provenance of the file's creation is added to the provenance model.
-     * InputAnalyzer filenames are also added to the existing file input label.
-     *
-     * NOTE: DEAD CODE
-     * 
-     * @param uri - The file location
-     * @param type - The type of input file
-     */
-  //  public void addInputFile(String uri, InputAnalyzer.InputType type) {
-//        /* add prov */
-//        if (projectMgr.isProvenanceEnabled()) {
-//            prov.addEntity(uri, type.toString(), false, false);
-//        }
-//        /* add to project */
-//        //String toRemove = projectMgr.addInputFile(uri, type);
-//        messageAccumulator += "\n" + "Adding input: " + uri
-//                + " to the project...\n";
-//        if (toRemove != null) {
-//            messageAccumulator += "\n" + type.toString() + " neuron list input"
-//                    + toRemove + " replaced: \n" + toRemove
-//                    + " as a project input" + "\n";
-//        } else {
-//            messageAccumulator += "\n" + uri
-//                    + " successfully added as a project input" + "\n";
-//        }
-//    }
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Data Manipulation">
     private void persistProvenance() {

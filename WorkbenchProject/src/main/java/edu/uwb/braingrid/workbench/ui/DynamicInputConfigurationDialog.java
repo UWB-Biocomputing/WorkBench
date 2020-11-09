@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
  * the input Configuration XML file.
  * 
  * @author Tom Wong Extended by Joseph Conquest
- * @version 1.2
+ * @version 1.3
  */
 public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 	/**
@@ -321,17 +321,6 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 							String nodeName = ((Element) param).getNodeName();
 							String type = ((Element) param).getAttribute("type");
 							if (type.equals("InputFile")) {
-								if(nListPresets != null) { //check if user provided presets for NList
-									if(label.getText().equals("activeNListFileName") && nListPresets.containsKey('A')){
-										field.setText(nListPresets.get('A'));
-									}
-									else if(label.getText().equals("inhNListFileName") && nListPresets.containsKey('I')) {
-										field.setText(nListPresets.get('I'));
-									}
-									else if(label.getText().equals("prbNListFileName") && nListPresets.containsKey('P')) {
-										field.setText(nListPresets.get('P'));
-									}
-								}
 								JButton button = new JButton("Import");
 								button.addActionListener(new ImportFileButtonListener(
 										SystemConfig.TAG_NAME_INPUT_TYPE_MAPPING.get(nodeName), field));
@@ -341,6 +330,18 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 								subLayout.setVerticalGroup(subLayout.createSequentialGroup()
 										.addGroup(subLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 												.addComponent(label).addComponent(field).addComponent(button)));
+								if(nListPresets != null) {
+									if(label.getText().equals("activeNListFileName") && nListPresets.containsKey('A')){
+										importNeuronList(SystemConfig.TAG_NAME_INPUT_TYPE_MAPPING.get(nodeName), field, nListPresets.get('A'));
+									}
+									else if(label.getText().equals("inhNListFileName") && nListPresets.containsKey('I')) {
+										importNeuronList(SystemConfig.TAG_NAME_INPUT_TYPE_MAPPING.get(nodeName), field, nListPresets.get('I'));
+									}
+									else if(label.getText().equals("prbNListFileName") && nListPresets.containsKey('P')) {
+										importNeuronList(SystemConfig.TAG_NAME_INPUT_TYPE_MAPPING.get(nodeName), field, nListPresets.get('P'));
+									}
+									
+								}
 							} else {
 								field.setMaximumSize(new Dimension(Integer.MAX_VALUE, field.getPreferredSize().height));
 								subLayout.setHorizontalGroup(
@@ -398,6 +399,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 						"<html><span style=\"color:red\">" + e.getClass() + "occurred, import failed...</span></html>");
 				return;
 			}
+			
 			JFileChooser dlg = new JFileChooser(simConfFilesDir);
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("XML file (*.xml)", "xml");
 			dlg.addChoosableFileFilter(filter);
@@ -499,5 +501,46 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 			lsofn = ensureValidOutputName(ofn);
 		}
 		return lsofn;
+	}
+	
+	private void importNeuronList(InputType type, JTextField field, String path) {	
+		FileManager fm = FileManager.getFileManager();
+		// get starting folder
+		String simConfFilesDir;
+		try {
+			if(dirMgr.getLastDir() == dirMgr.getDefault()) {
+				simConfFilesDir = fm.getSimConfigDirectoryPath(projectName, true);
+			} else {
+				simConfFilesDir = dirMgr.getLastDir().getAbsolutePath();
+			}
+		} catch (IOException e) {
+			messageLabelText.setText(
+					"<html><span style=\"color:red\">" + e.getClass() + "occurred, import failed...</span></html>");
+			return;
+		}
+			
+		try {
+			File file = new File(path);
+			// if type is correct
+			if (InputAnalyzer.getInputType(file) == type) {
+				Path sourceFilePath = file.toPath();
+				String destPathText = fm.getNeuronListFilePath(projectName, file.getName(), true);
+				Path destFilePath = new File(destPathText).toPath();
+				if (FileManager.copyFile(sourceFilePath, destFilePath)) {
+					field.setText(
+							"workbenchconfigfiles/NList/" + fm.getSimpleFilename(destFilePath.toString()));
+					dirMgr.add(file.getParentFile());
+				}
+				messageLabelText.setText("<html><span style=\"color:green\">"
+							+ "Good!</span></html>");
+			} else {
+				messageLabelText.setText("<html><span style=\"color:orange\">"
+							+ "The selected file did not match the type: " + type.toString() + "</span></html>");
+			}
+		} catch (ParserConfigurationException | SAXException | IOException ex) {
+			messageLabelText.setText("<html><span style=\"color:red\">" + ex.getClass()
+					+ "occurred, import failed...</span></html>");
+		}
+
 	}
 }

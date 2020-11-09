@@ -258,7 +258,6 @@ public class ProVisCtrl {
 		buildFromPrevButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Derive button CLICKED****************************");
 				simStartWiz = new SimStartWiz(simSpecifications, bGVersionSelected, nListPresets);
 			}
 		});
@@ -819,8 +818,7 @@ public class ProVisCtrl {
 	* adds NList inputs selected by user to simStartWiz called by buildFromPrevButton
 	*/
 	private void setNLEditforBuild(char inputType, Node inputNode) {
-		String inputLocal = "workbenchconfigfiles/NList/" + inputNode.getDisplayId();
-		nListPresets.put(inputType, inputLocal);
+		nListPresets.put(inputType, FileUtility.getNodeFileLocalAbsolutePath(inputNode));
 	}
 	
 	/**
