@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Date;
 import java.util.logging.Logger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javafx.scene.control.TextArea;
@@ -58,7 +57,7 @@ public class SimStartWiz {
 	 *
 	 * @param simInputPresets contains strings of inputs for configuring Sim
      */
-	 private boolean configureSimulation(ArrayList<String> simInputPresets, HashMap<Character,String> nListPresets) {
+	 private boolean configureSimulation(String simInputPresets, HashMap<Character,String> nListPresets) {
 		 if(simInputPresets == null && nListPresets == null) return configureSimulation();
 		 boolean wasSuccessful = false;
 		 if (workbenchManager.configureSimulation(simInputPresets, nListPresets)) {
@@ -157,7 +156,7 @@ public class SimStartWiz {
 		if(cancelButtonClicked) simManager.saveProject();
     }
 	
-	public SimStartWiz(ArrayList<String> simSpecifications, String runtimeSpecifcations, HashMap<Character, String> nListPresets) {
+	public SimStartWiz(String simSpecifications, String runtimeSpecifcations, HashMap<Character, String> nListPresets) {
 		LOG.info("new " + getClass().getName());
 		boolean cancelButtonClicked = false;
 		if (workbenchManager.newProject()) { 

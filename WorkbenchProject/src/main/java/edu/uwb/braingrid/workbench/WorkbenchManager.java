@@ -24,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JFileChooser;
@@ -170,13 +169,13 @@ public class WorkbenchManager {
      * @return True if the user followed through on the specification, False if
      * the user canceled the specification.
      */
-    public boolean configureSimulation(ArrayList<String> inputPresets, HashMap<Character,String> nListPresets) { //provide path of input selected, 
+    public boolean configureSimulation(String inputPresets, HashMap<Character,String> nListPresets) { //provide path of input selected, 
     	String projectName = getProjectName();
     	LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
        System.out.println("TODO: use inputPreset to initialize builder ######################################################");
         if (!projectName.equals("None")) {
-			String configFilename = inputPresets.get(0);
+			String configFilename = inputPresets;
             InputConfigClassSelectionDialog iccsd
                     = new InputConfigClassSelectionDialog(projectName, true, configFilename);
             if (success = iccsd.getSuccess()) {

@@ -45,7 +45,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedHashMap;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 /**
@@ -94,7 +93,7 @@ public class ProVisCtrl {
 	private SimStartWiz simStartWiz;
 	private boolean buildModeON = false;
 	private String bGVersionSelected;
-	ArrayList<String> simSpecifications = null;
+	String simSpecifications = null;
 	HashMap<Character, String> nListPresets = new HashMap<Character, String>();
 	
 	private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
@@ -719,8 +718,7 @@ public class ProVisCtrl {
 		else if(typeOfNode == 'S') {
 			inputTextField.clear();
 			inputTextField.appendText(selectedNode.getDisplayId());
-			System.out.println("FILE PATH FOR INPUT: "+FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
-			simSpecifications.add(FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
+			simSpecifications = FileUtility.getNodeFileLocalAbsolutePath(selectedNode);
 		}
 		else if(typeOfNode == 'I') {
 			inhibitoryTextField.clear();
@@ -770,11 +768,6 @@ public class ProVisCtrl {
 			//Do nothing, this is a ouput file
 		}
 		else { // simulation input file
-			simSpecifications = new ArrayList<String>();
-			while(in.hasNextLine()) { 
-				//simSpecifications.add(in.nextLine());
-				in.nextLine();
-			}
 			return 'S';
 		}
 		return 'N';
