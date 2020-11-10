@@ -671,7 +671,13 @@ public class ProVisCtrl {
 			}
 		}
 		else if (selectedNode instanceof AgentNode) {
-			//no meaningful builder input preset provided by AgentNode
+			ArrayList<Node> neighbors = selectedNode.getNeighborNodes();
+			for(Node neighbor : neighbors) {
+				if(neighbor instanceof CommitNode) {
+					prepBuildInputParams(neighbor);
+					return;
+				}
+			}			
 		}
 		else if (selectedNode instanceof EntityNode) {
 			parseEntityNodeFile(selectedNode);
