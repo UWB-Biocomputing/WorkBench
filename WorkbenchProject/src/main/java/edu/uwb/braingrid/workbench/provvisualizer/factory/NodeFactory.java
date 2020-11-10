@@ -2,8 +2,9 @@ package edu.uwb.braingrid.workbench.provvisualizer.factory;
 
 import edu.uwb.braingrid.workbench.provvisualizer.model.*;
 import javafx.scene.paint.Color;
-
 import javax.swing.text.html.parser.Entity;
+import java.util.ArrayList;
+
 
 public class NodeFactory {
     private static NodeFactory nodeFactory;
@@ -79,7 +80,7 @@ public class NodeFactory {
     public ActivityNode convertToActivityNode(Node node){
         ActivityNode activityNode = createActivityNode();
         activityNode.setId(node.getId()).setX(node.getX()).setY(node.getY()).setLabel(node.getLabel());
-
+		
         return activityNode;
     }
 

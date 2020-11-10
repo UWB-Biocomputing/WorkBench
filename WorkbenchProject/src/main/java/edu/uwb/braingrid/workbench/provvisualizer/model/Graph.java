@@ -99,6 +99,10 @@ public class Graph {
             selectedActivityNodes.add(node);
         }
     }
+	
+	public HashSet<ActivityNode> getSelectedActivityNodes() {
+		return selectedActivityNodes;
+	}
 
     public Node getNode(String nodeId){
         if(this.nodes.containsKey(nodeId)) {
@@ -141,8 +145,9 @@ public class Graph {
         String bgReposPath = FileManager.getBrainGridRepoDirectory();
         if(!Files.exists(Paths.get(bgReposPath))) {
             try {
+				System.out.println("Repo manager: "+RepoManager.getMasterBranchDirectory());
                 git = Git.cloneRepository()
-                        .setURI(RepoManager.getMasterBranchDirectory())
+                        .setURI("https://github.com/UWB-Biocomputing/BrainGrid.git") //SHOULD THIS BE BRAINGRID OR WORKBENCH? WAS RepoManager.getMasterBranchDirectory()
                         .setDirectory(new File(bgReposPath))
                         .call();
             } catch (GitAPIException e) {
@@ -175,6 +180,7 @@ public class Graph {
                 e.printStackTrace();
             }
         }
+		
         RevWalk walker = new RevWalk(git.getRepository());
         List<RevCommit> commits = new ArrayList<>();
         try {
@@ -340,6 +346,8 @@ public class Graph {
                         toNode.isInDisplayWindow(displayWindowLocation, displayWindowSize)) {
                     drawEdge(gc, fromNode, toNode, edge.isDashline(), displayWindowLocation, zoomRatio,edge == mouseOnEdge);
                 }
+				//Initialize edge to node relationship
+				
             }
         }
 

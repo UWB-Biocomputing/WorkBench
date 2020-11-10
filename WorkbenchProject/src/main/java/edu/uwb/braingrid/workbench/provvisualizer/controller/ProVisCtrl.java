@@ -46,6 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
@@ -643,13 +644,12 @@ public class ProVisCtrl {
 		}
 
 		dataProvGraph.generateCommitRelationships(visCanvas.getWidth(), visCanvas.getHeight());
-		// set neighbors
 		dataProvGraph.setNeighbors();
 		LOG.info("End Node Edge");
 	}
 	
 	/**
-	* enables/disables Re-run Activity and Build from Previous buttons.
+	* enables/disables  Build from Previous buttons
 	* enables when bool enable = true. occurs with builder mode toggle on and single 
 	* click by user on node. Disable occurs when builder mode is toggled off
 	*/
@@ -663,8 +663,12 @@ public class ProVisCtrl {
 	* Sets up necessary information for builder action to occur
 	*/
 	private void prepBuildInputParams(Node selectedNode) {
+		
 		if (selectedNode instanceof ActivityNode) {
-			getActivityNodes(selectedNode);
+			ArrayList<Node> neighbors = selectedNode.getNeighborNodes();
+			for(Node neighbor : neighbors) {
+				prepBuildInputParams(neighbor);
+			}
 		}
 		else if (selectedNode instanceof AgentNode) {
 			//no meaningful builder input preset provided by AgentNode
@@ -771,23 +775,6 @@ public class ProVisCtrl {
 		}
 		return 'N';
     }
-	
-	/**
-	* For each of the child nodes of the activity:
-	*  - parse the child to determine type
-	*  - collect parameter info in memory for build settings
-	*  - display parameter info on build control textfields
-	*  - enable build button and re-run button
-	*/
-	private void getActivityNodes(Node selectedNode) {
-		System.out.println("TODO: implement getActivityNodes in ProVisCtrl");
-		ArrayList<Node> neighborNodes = selectedNode.getNeighborNodes();
-		for(Node neighbor : neighborNodes) {
-			prepBuildInputParams(neighbor);
-			System.out.println("FOR LOOOOOOOP CHECK IT OUT: "+neighbor.getDisplayId());
-		}
-		enableBuildButton(true);
-	}
 	
 	/**
 	* adds NList inputs selected by user to simStartWiz called by buildFromPrevButton

@@ -16,7 +16,7 @@ public class Node {
     private double height;
     private Color color;
     private String label;
-    private ArrayList<Node> neighborNodes ;
+    private ArrayList<Node> neighborNodes;
     private boolean absoluteXY ;
 
     public Node() {
