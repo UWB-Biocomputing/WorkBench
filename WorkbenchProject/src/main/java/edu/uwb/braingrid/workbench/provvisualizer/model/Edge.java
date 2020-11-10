@@ -8,7 +8,7 @@ public class Edge {
     private boolean dashline = false;
     private String fromNodeId;
     private String toNodeId;
-    private String relationship ;
+    private String relationship;
 
     public Edge() {
     }
