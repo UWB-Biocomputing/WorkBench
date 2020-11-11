@@ -29,6 +29,12 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+* Main Logic for the ProVis graph, containing nodes and edges of graph
+*
+* @author Tom Wong, Extended by Joseph Conquest
+* @version 1.2
+*/
 public class Graph {
     public static final double LABEL_FONT_SIZE = 20;
 
@@ -827,6 +833,14 @@ public class Graph {
     public void setShowAllRelationships(boolean showAllRelationships) {
         this.showAllRelationships = showAllRelationships;
     }
+	
+	public void clearAllIdsRelationships() {
+		showAllNodeIds = false;
+		showAllRelationships = false;
+		dispNodeIds.clear();
+		dispRelationships.clear();
+		selectedActivityNodes.clear();
+	}
 
     public Node getMouseOnNode() {
         return this.mouseOnNode;

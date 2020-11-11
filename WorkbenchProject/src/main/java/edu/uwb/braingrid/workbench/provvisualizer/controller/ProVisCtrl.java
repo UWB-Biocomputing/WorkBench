@@ -218,6 +218,7 @@ public class ProVisCtrl {
 				selectedFile = fileChooser.showOpenDialog(canvasPane.getScene().getWindow());
 
 				if (selectedFile != null) {
+					dataProvGraph.clearAllIdsRelationships();
 					dataProvGraph.clearNodesNEdges();
 					initNodeEdge(selectedFile.getAbsolutePath());
 					proVis_.setTitle(selectedFile.getName());
@@ -228,6 +229,8 @@ public class ProVisCtrl {
 		importFileBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				dataProvGraph.clearAllIdsRelationships();
+				dataProvGraph.clearNodesNEdges();
 				openUniversalProvenance();
 			}
 		});
@@ -422,7 +425,6 @@ public class ProVisCtrl {
 
 	private boolean checkIfNodeFileExists(Node node) {
 		File nodeFile = new File(FileUtility.getNodeFileLocalAbsolutePath(node));
-
 		return nodeFile.exists();
 	}
 
