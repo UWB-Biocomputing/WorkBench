@@ -26,7 +26,7 @@ mvn -v
 
 * Type the following Maven command under the directory "Tools/Workbench/WorkbenchProject" to compile and create executable JAR file.
 ```shell
-mvn clean install
+mvn install
 ```
 * After the project is built successfully, a JAR file "BrainGridWorkbench-1.0-SNAPSHOT.jar " will be created under the directory "Tools/Workbench/WorkbenchProject/target". Run this JAR file to start using the Workbench. From the target folder, type the following command
 ```shell
