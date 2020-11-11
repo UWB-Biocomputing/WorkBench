@@ -27,7 +27,7 @@
 
 ![alt text](images/WorkbenchSetParams3.png "Press OK")
  
-* Setup the parameters for script generation. The “SHA1 Checkout Key” is the commit number. If it is blank, it will checkout the latest version. Make sure to specify the Simulation Folder Location. 
+* Setup the parameters for script generation. The “SHA1 Checkout Key” is the commit number. If it is blank, it will checkout the latest version. Make sure to specify the Simulation Folder Location. If you are using a particular commit of BrainGrid, it is recommended to specify a unique Simulation Folder Location that has not been used by a previous BrainGrid build to ensure the provenance graph layout does not have overlapping Agent nodes. This will occur if you use multiple different BrainGrid versions in the same Simulation Folder. Also ensure that you have "Pull" and "Build" selected if using a particular commit.
 
 ![alt text](images/WorkbenchScriptSpecification.png "Script Specification")
  
