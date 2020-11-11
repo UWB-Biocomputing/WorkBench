@@ -220,6 +220,8 @@ public class ProVisCtrl {
 				if (selectedFile != null) {
 					dataProvGraph.clearAllIdsRelationships();
 					dataProvGraph.clearNodesNEdges();
+					showNodeIds.setSelected(false);
+					showRelationships.setSelected(false);
 					initNodeEdge(selectedFile.getAbsolutePath());
 					proVis_.setTitle(selectedFile.getName());
 				}
@@ -231,6 +233,8 @@ public class ProVisCtrl {
 			public void handle(ActionEvent event) {
 				dataProvGraph.clearAllIdsRelationships();
 				dataProvGraph.clearNodesNEdges();
+				showNodeIds.setSelected(false);
+				showRelationships.setSelected(false);
 				openUniversalProvenance();
 			}
 		});

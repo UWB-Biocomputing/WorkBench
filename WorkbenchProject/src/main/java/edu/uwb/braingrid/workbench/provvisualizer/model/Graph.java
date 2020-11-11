@@ -98,7 +98,8 @@ public class Graph {
     }
 
     public void addOrRemoveSelectedActivityNode(ActivityNode node){
-        if(selectedActivityNodes.contains(node)) {
+        clearAllIdsRelationships();
+		if(selectedActivityNodes.contains(node)) {
             selectedActivityNodes.remove(node);
         }
         else {
