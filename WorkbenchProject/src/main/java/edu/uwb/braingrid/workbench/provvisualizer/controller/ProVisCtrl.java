@@ -632,26 +632,21 @@ public class ProVisCtrl {
 					dataProvGraph.addNode(activityNode);
 				}
 			} else if (!predicateStr.equals(ProvUtility.PROV_AT_LOCATION) && stmt.getObject().isURIResource()) {
-				// Skip "wasGeneratedBY" edge to avoid duplicate relationship display temporary,
-				// will find out a better
-				// way to display two or more relationship later
+				// Skip "wasGeneratedBY" edge to avoid duplicate relationship display temporary, will find out a better way to display two or more relationship later
 				if (stmt.getPredicate().toString().equals(ProvUtility.PROV_WAS_GENERATED_BY)) {
 					continue;
 				}
-
 				// create a Default Node to store the label value.
 				Edge defaultEdge = edgeFactory.createDefaultEdge();
 				defaultEdge.setFromNodeId(stmt.getSubject().toString()).setToNodeId(stmt.getObject().toString())
 						.setRelationship(stmt.getPredicate().toString());
 				dataProvGraph.addEdge(defaultEdge);
 			}
-			// System.out.println(stmt.getSubject().toString() + " " +
-			// stmt.getPredicate().toString() + " " + stmt.getObject().toString());
+			// System.out.println(stmt.getSubject().toString() + " " + stmt.getPredicate().toString() + " " + stmt.getObject().toString());
 		}
 
 		dataProvGraph.generateCommitRelationships(visCanvas.getWidth(), visCanvas.getHeight());
 		dataProvGraph.setNeighbors();
-		LOG.info("End Node Edge");
 	}
 	
 	/**

@@ -37,51 +37,44 @@ public class Init {
 	
 	private static void initParamsClassTemplateConfig() throws IOException {
 		String root = "ParamsClassTemplateConfig";
-		//added below
-		File file = new File("./" + root);
-	//	if(!file.exists()) {
-		//added above
-			String connections = "ConnectionsParamsClass";
-			String layout = "LayoutParamsClass";
-			String neurons = "NeuronsParamsClass";
-			String synapses = "SynapsesParamsClass";
-			String[] subdirs = {connections, layout, neurons, synapses};
-			String outputRootPath = "./" + root + "/";
-			for(String dir : subdirs) {
-				LOG.info("Making Folder: " + outputRootPath + dir);
-				Init.mkdirs(outputRootPath + dir);
-			}
-			
-			String resourceRootPath = "/init/" + root + "/";
-			
-			// Init ParamsClassTemplateConfig
-			LOG.info("Initializing " + root + " resources");
-			String[] paramsFiles = {"AllParamsClasses.xml", "AllParamsClasses.xsd"};
-			Init.initFiles("/init/" + root, "./" + root, paramsFiles);
-			
-			// Init ConnectionsParamsClass
-			LOG.info("Initializing " + connections + " resources");
-			String[] connSubdirFiles = {"ConnGrowth.xml", "ConnStatic.xml"};
-			Init.initFiles(resourceRootPath + connections, outputRootPath + connections, connSubdirFiles);
-			
-			// Init  "LayoutParamsClass";
-			LOG.info("Initializing " + layout + " resources");
-			
-			LOG.info("WARNING: fixed layout issue occurs hear");////////////////////////////////////////////////////////////
-			
-			String[] laySubdirFiles = {"DynamicLayout.xml", "FixedLayout.xml", "LayoutParamsClass1.xml"};
-			Init.initFiles(resourceRootPath + layout, outputRootPath + layout, laySubdirFiles);
-			
-			// Init "NeuronsParamsClass";
-			LOG.info("Initializing " + neurons + " resources");
-			String[] neuSubdirFiles = {"AllIZHNeurons.xml", "AllLIFNeurons.xml"};
-			Init.initFiles(resourceRootPath + neurons, outputRootPath + neurons, neuSubdirFiles);
-			
-			// Init "SynapsesParamsClass";
-			LOG.info("Initializing " + synapses + " resources");
-			String[] synSubdirFiles = {"AllDSSynapses.xml", "AllDynamicSTDPSynapses.xml", "AllSpikingSynapses.xml", "AllSTDPSynapses.xml"};
-			Init.initFiles(resourceRootPath + synapses, outputRootPath + synapses, synSubdirFiles);
-	//	} else System.out.println("File already present! Make sure that this code works if the file is not there!!");
+		String connections = "ConnectionsParamsClass";
+		String layout = "LayoutParamsClass";
+		String neurons = "NeuronsParamsClass";
+		String synapses = "SynapsesParamsClass";
+		String[] subdirs = {connections, layout, neurons, synapses};
+		String outputRootPath = "./" + root + "/";
+		for(String dir : subdirs) {
+			LOG.info("Making Folder: " + outputRootPath + dir);
+			Init.mkdirs(outputRootPath + dir);
+		}
+		
+		String resourceRootPath = "/init/" + root + "/";
+		
+		// Init ParamsClassTemplateConfig
+		LOG.info("Initializing " + root + " resources");
+		String[] paramsFiles = {"AllParamsClasses.xml", "AllParamsClasses.xsd"};
+		Init.initFiles("/init/" + root, "./" + root, paramsFiles);
+		
+		// Init ConnectionsParamsClass
+		LOG.info("Initializing " + connections + " resources");
+		String[] connSubdirFiles = {"ConnGrowth.xml", "ConnStatic.xml"};
+		Init.initFiles(resourceRootPath + connections, outputRootPath + connections, connSubdirFiles);
+		
+		// Init  "LayoutParamsClass";
+		LOG.info("Initializing " + layout + " resources");
+		
+		String[] laySubdirFiles = {"DynamicLayout.xml", "FixedLayout.xml", "LayoutParamsClass1.xml"};
+		Init.initFiles(resourceRootPath + layout, outputRootPath + layout, laySubdirFiles);
+		
+		// Init "NeuronsParamsClass";
+		LOG.info("Initializing " + neurons + " resources");
+		String[] neuSubdirFiles = {"AllIZHNeurons.xml", "AllLIFNeurons.xml"};
+		Init.initFiles(resourceRootPath + neurons, outputRootPath + neurons, neuSubdirFiles);
+		
+		// Init "SynapsesParamsClass";
+		LOG.info("Initializing " + synapses + " resources");
+		String[] synSubdirFiles = {"AllDSSynapses.xml", "AllDynamicSTDPSynapses.xml", "AllSpikingSynapses.xml", "AllSTDPSynapses.xml"};
+		Init.initFiles(resourceRootPath + synapses, outputRootPath + synapses, synSubdirFiles);
 	}
 	
 	private static void initRootFiles() throws IOException {
