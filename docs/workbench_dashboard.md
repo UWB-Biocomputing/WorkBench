@@ -31,7 +31,7 @@ Note that you will need to run a simulation before this file contains provenance
 ![alt text](images/DashboardLegend.PNG "The legend")
 
 #### 3.2.3. Show labels
-1. Move a mouse on a node or a edge to display the label of the node or edge. Click on the node or edge to keep showing the label when the mouse is not on the node or edge.
+1. Move a mouse on a node or a edge to display the label of the node or edge. Click on the node or edge to keep showing the label. Double click anywhere on the screen to deselect all nodes and edges.
 ![alt text](images/DashboardCheckLabels.PNG "Show labels")
 
 #### 3.2.4. Move nodes around
