@@ -24,7 +24,7 @@ Note that you will need to run a simulation before this file contains provenance
 ![alt text](images/ChooseProvenanceFile.PNG "The initial UI")
 
 3. The visualization may looks similar to the screen dump below. It is a node-link diagram. To check the meanings of the nodes, display the legend by using the "Legend" toggle button at the right side.
-![alt text](images/DashboardInitialVisualization.png "The initial visualization")
+![alt text](images/DashboardInitialVisualization.PNG "The initial visualization")
 
 #### 3.2.2. Show a legend
 1. The Legend explains the meaning of each node.
