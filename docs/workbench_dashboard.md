@@ -66,7 +66,7 @@ Note that you will need to run a simulation before this file contains provenance
 * Note that Simulation Parameter Information and BrainGrid Version can be updated in the builder after clicking "Derive New Activity" 
 
 #### 3.3.3 An Activity can be replicated and re-ran as well. This is accomplished by clicking an Activity node with the "Builder Mode" toggled on. 
-* Note that this makes an exact replica of the selected activity and only requires the user to specify the Simulation Folder Location (see 
+* Note that this makes an exact replica of the selected activity and only requires the user to specify the Simulation Folder Location (see 3.3.6, bullet 2) 
 ![alt text](images/ReRunAnActivity.PNG "ReRun An Activity")
 
 #### 3.3.4 When you are ready to derive a new activity, click "Derive New Activity". This will prompt you to provide a name for the derived activity.
