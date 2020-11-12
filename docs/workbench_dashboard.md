@@ -59,7 +59,7 @@ Note that you will need to run a simulation before this file contains provenance
 1. Input files, including the simulation input file and the 3 types of layout files, and BrainGrid commits can be selected by clicking on the nodes you wish to use as presets.
 ![alt text](images/SelectComponentsToBuild.PNG "Select Components To Build")
 
-2. In the example above, each of the selected presets came from a different activity and all presets have been selected. 
+2. In the example above, each of the selected presets came from a different activity and all presets for the builder have been selected. 
 * Note that we can derive a new activity with as few presets as desired. 
 * Note that we can change a selected preset by clicking on another node of the same type. 
 * Clicking "Clear Selected" will deselect all the selected preset. 
