@@ -54,10 +54,10 @@
 The generated script files do the following steps.
 1. Creates a directory at the given "Simulation Folder Location," if it does not already exist, and navigates to that directory
 2. If "Pull" is selected:
-2.1. Clones the BrainGrid repository 
-2.2. Uses the most recent commit of BrainGridCheckout OR the revision specified in SHA1 field of the script configuration dialog.
+* 2.1. Clones the BrainGrid repository 
+* 2.2. Uses the most recent commit of BrainGridCheckout OR the revision specified in the SHA1 field of the script configuration dialog.
 3. If "Build" is selected:
-3.1 Executes "make -clean" to remove any existing binary files from the repository directory.
-3.2 Executes "make" to build the BrainGrid simulator.
+* 3.1 Executes "make -clean" to remove any existing binary files from the repository directory.
+* 3.2 Executes "make" to build the BrainGrid simulator.
 4. Runs the simulation by calling the simulator with the corresponding parameters.
 
