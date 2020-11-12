@@ -1,7 +1,7 @@
 # WorkBench
 To start using WorkBench, clone the repository and use 'mvn install' to compile the pom.xml builder file in  \WorkBench\WorkbenchProject\
 
-The current release of BrainGrid requires particular releases of JDK 8 to work correctly. Java 1.8.0_111 and 1.8.0-144 are known to work.
+The current release of BrainGrid requires particular releases of JDK 8 to work correctly. Java 1.8.0_111 and 1.8.0_144 are known to work.
 
 From the \target\ folder, use 'java -jar BrainGridWorkbench-1.0-SNAPSHOT.jar' to run the application.
 
