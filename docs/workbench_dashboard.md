@@ -79,7 +79,8 @@ Note that you will need to run a simulation before this file contains provenance
 * The "Message:" field will be updated to show "successfully persisted..." if the build was successful. Click the "Next" button.
 ![alt text](images/SimulatorConfig3Derived.PNG "Simulator Config3 Derived")
 
-6. After clicking "Next", the Script Specification dialog will appear as shown below. Note that the SHA1 Checkout Key has been preset, with both "Pull" and "Build" selected. To ensure we do not interfere with previous projects, provide a unique "Simulation Folder Location". After doing so, click the "Run" button to execute the simulation.
+6. After clicking "Next", the Script Specification dialog will appear as shown below. Note that the SHA1 Checkout Key has been preset, with both "Pull" and "Build" selected. 
+*To ensure we do not interfere with previous projects, provide a unique "Simulation Folder Location". After doing so, click the "Run" button to execute the simulation.
 ![alt text](images/SpecifyScriptDerived.PNG "Specify Script Derived")
 
 7. The Runtime Environment Window will pop-up after clicking "Run". Provide the simulation enough time to complete, then click the analyze button. If you see output matching what is shown below, you have successful collected the project's provenance.
