@@ -39,7 +39,7 @@
 
 ![alt text](images/WorkbenchCredential.png "Credential")
 
-* The Simulation Runtime Window is displayed. The simulation will need time to run on the local or remote machine before completing. Give the simulation a few minutes to run to completion.
+* The Simulation Runtime Window is displayed. The simulation will need time to run on the local or remote machine before completing. Give the simulation the necessary time to complete execution.
 
 ![alt text](images/SimulationRuntimeEnvironment.PNG "Runtime Environment")
  
@@ -47,13 +47,17 @@
 
 ![alt text](images/WorkbenchAnalyzeButton.png "Analyze")
  
-* The execution time of the simulation depends on various factors, such as the configuration file, the available resources on the remote machine. So, if the simulation is not completed or unexpected errors occur during the execution, a message will be displayed to indicate that the download of execution result failed. Then, users need to investigate on the remote machine to find out the root cause.
+* The execution time of the simulation depends on various factors, such as the configuration file, and the available resources on the remote machine. If the simulation hass not completed or an unexpected error occurs during execution, a message will be displayed to indicate that the download of execution result failed. The user then needs to investigate the root cause on the remote machine.
  
 
 ### 2.2. About the generated script files
 The generated script files do the following steps.
-1. Make an empty directory and clone the BrainGrid repository.
-2. Checkout the revision specified in SHA1 field of the script configuration dialog.
-3. Execute "make -clean" to remove any existing binary files from the repository directory.
-4. Execute "make" to build the simulator.
-5. Run the simulation by calling the simulator with the corresponding parameters.
+1. Creates a directory at the given "Simulation Folder Location," if it does not already exist, and navigates to that directory
+2. If "Pull" is selected:
+2.1. Clones the BrainGrid repository 
+2.2. Uses the most recent commit of BrainGridCheckout OR the revision specified in SHA1 field of the script configuration dialog.
+3. If "Build" is selected:
+3.1 Executes "make -clean" to remove any existing binary files from the repository directory.
+3.2 Executes "make" to build the BrainGrid simulator.
+4. Runs the simulation by calling the simulator with the corresponding parameters.
+
