@@ -20,11 +20,11 @@ mvn install
 Note that you will need to run a simulation before this file contains provenance. Alternatively, you can choose a provenance file to view by clicking the "Choose Provenance" button.
 ![alt text](images/WorkbenchHome.png "The initial UI")
 
-2. The provenance file should be a Turtle File (.ttl) with [PROV-O standard](https://www.w3.org/TR/2013/REC-prov-o-20130430/).
+2. The provenance file should be a Turtle File (.ttl) with [PROV-O standard](https://www.w3.org/TR/2013/REC-prov-o-20130430/). The generated provenance files for each individual simulation can be found in /WorkbenchProject/target/projects/NameOfSimulation/provenance/NameOfSimulation.ttl 
 ![alt text](images/ChooseProvenanceFile.PNG "The initial UI")
 
 3. The visualization may looks similar to the screen dump below. It is a node-link diagram. To check the meanings of the nodes, display the legend by using the "Legend" toggle button at the right side.
-![alt text](images/DashboardInitialVisualization.PNG "The initial visualization")
+![alt text](images/DashboardInitialVisualization.png "The initial visualization")
 
 #### 3.2.2. Show a legend
 1. The Legend explains the meaning of each node.
