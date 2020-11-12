@@ -311,6 +311,7 @@ public class ProVisCtrl {
 						if (edge != null) {
 							dataProvGraph.addOrRemoveDispRelationship(edge);
 						}
+						
 						if(buildModeON) {
 							selectedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
 							event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
@@ -318,6 +319,9 @@ public class ProVisCtrl {
 								prepBuildInputParams(selectedNode);
 							}
 						}
+					}
+					else if (event.getClickCount() == 2) {
+						dataProvGraph.clearAllIdsRelationships();
 					}
 				}
 			}
