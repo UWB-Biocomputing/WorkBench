@@ -63,31 +63,41 @@ Note that you will need to run a simulation before this file contains provenance
 * Note that we can derive a new activity with as few presets as desired. 
 * Note that we can change a selected preset by clicking on another node of the same type. 
 * Clicking "Clear Selected" will deselect all the selected preset. 
-* When you are ready to derive a new activity, click "Derive New Activity". This will prompt you to provide a name for the derived activity.
+* Note that Simulation Parameter Information and BrainGrid Version can be updated in the builder after clicking "Derive New Activity" 
+
+#### 3.3.3 An Activity can be replicated and re-ran as well. This is accomplished by clicking an Activity node with the "Builder Mode" toggled on. 
+* Note that this makes an exact replica of the selected activity and only requires the user to specify the Simulation Folder Location (see 
+![alt text](images/ReRunAnActivity.PNG "ReRun An Activity")
+
+#### 3.3.4 When you are ready to derive a new activity, click "Derive New Activity". This will prompt you to provide a name for the derived activity.
 ![alt text](images/ProvideDerivedActivityName.PNG "Provide Derived Activity Name")
 
-3. After entering a name for the simulation, click "OK". The Parameter Class Specification Dialog will appear next, click "OK"
+1. After entering a name for the simulation, click "OK". The Parameter Class Specification Dialog will appear next, click "OK"
 ![alt text](images/SimulatorConfig1Derived.PNG "Simulator Config1 Derived")
 
-4. The Simulation Configuration dialog will open next. Note that we see the input parameters have been preset from the values provided by the selected simulation input. 
+#### 3.3.5 The Simulation Configuration dialog will open next. 
+* Note that we see the input parameters have been preset from the values provided by the selected simulation input. 
 * Note that the "Message:" field above the "Build" button displays "Good!". This is because we have provided presets for the Layout Parameters, which have been automatically imported into the project for us.
 ![alt text](images/SimulatorConfig2Derived.PNG "Simulator Config2 Derived")
 
-5. Click on the "LayoutParams" tab to observe the Layout Parameters that have been imported as presets. 
+1. Click on the "LayoutParams" tab to observe the Layout Parameters that have been imported as presets. 
 * Note that in this example, we have provided all 3 inputs as presets. If one does not provide a preset for a Layout Parameter, one needs to import a file for that parameter at this time. 
 * After ensuring that we have made any adjustments to the SimInfoParams we desire and have imported any LayoutParams that have not been preset, click "Build". 
 * The "Message:" field will be updated to show "successfully persisted..." if the build was successful. Click the "Next" button.
 ![alt text](images/SimulatorConfig3Derived.PNG "Simulator Config3 Derived")
 
-6. After clicking "Next", the Script Specification dialog will appear as shown below. Note that the SHA1 Checkout Key has been preset, with both "Pull" and "Build" selected. 
+#### 3.3.6  After clicking "Next", the Script Specification dialog will appear as shown below.
+* Note that the SHA1 Checkout Key has been preset, with both "Pull" and "Build" selected. 
 * To ensure we do not interfere with previous projects, provide a unique "Simulation Folder Location". 
 * After doing so, click the "Run" button to execute the simulation.
 ![alt text](images/SpecifyScriptDerived.PNG "Specify Script Derived")
 
-7. The Runtime Environment Window will pop-up after clicking "Run". Provide the simulation enough time to complete, then click the analyze button. If you see output matching what is shown below, you have successful collected the project's provenance.
+#### 3.3.7 The Runtime Environment Window will pop-up after clicking "Run". 
+1. Provide the simulation enough time to complete, then click the analyze button. 
+2. If you see output matching what is shown below, you have successful collected the project's provenance.
 ![alt text](images/WorkbenchAnalyzeButton.png "Workbench Analyze Button")
 
-8. Close the Runtime Environment Window and click the "Import Provenance" button to reload the universal provenance and see your new project as it relates to all other activities.
+#### 3.3.8 Close the Runtime Environment Window and click the "Import Provenance" button to reload the universal provenance and see your new project as it relates to all other activities.
 
 
 ### 3.4. Technologies and third party libraries
