@@ -49,7 +49,38 @@ Note that you will need to run a simulation before this file contains provenance
 2. After releasing the left mouse button, a side-by-side text view window is displayed. Green lines indicate changed lines. Red lines indicate added lines. Grey lines indicate deleted lines.
 ![alt text](images/ComparingArtifacts2.png "Comparing artifacts2.")
 
-### 3.3. Technologies and third party libraries
+### 3.3. Dashboard Builder
+
+#### 3.3.1. Enable Builder Mode
+1. From the "Builder Control" Panel to the right-hand side, toggle "Builder Mode" on.
+![alt text](images/SelectBuilderMode.PNG "Select Builder Mode")
+
+#### 3.3.2 Select components of previous activities to build derive a new activity
+1. Input files, including the simulation input file and the 3 types of layout files, and BrainGrid commits can be selected by clicking on the nodes you wish to use as presets.
+![alt text](images/SelectComponentsToBuild.PNG "Select Components To Build")
+
+2. In the example above, each of the selected presets came from a different activity and all presets have been selected. Note that we can derive a new activity with as few presets as desired. Also note that we can change a selected preset by clicking on another node of the same type. Clicking "Clear Selected" will deselect all the selected preset. When you are ready to derive a new activity, click "Derive New Activity". This will prompt you to provide a name for the derived activity.
+![alt text](images/ProvideDerivedActivityName.PNG "Provide Derived Activity Name")
+
+3. After entering a name for the simulation, click "OK". The Parameter Class Specification Dialog will appear next, click "OK"
+![alt text](images/SimulatorConfig1Derived.PNG "Simulator Config1 Derived")
+
+4. The Simulation Configuration dialog will open next. Note that we see the input parameters have been preset from the values provided by the selected simulation input. Also Note that the "Message:" field above the "Build" button displays "Good!". This is because we have provided presets for the Layout Parameters, which have been automatically imported into the project for us.
+![alt text](images/SimulatorConfig2Derived.PNG "Simulator Config2 Derived")
+
+5. Click on the "LayoutParams" tab to observe the Layout Parameters that have been imported as presets. Note that in this example, we have provided all 3 inputs as presets. If one does not provide a preset for a Layout Parameter, one needs to import a file for that parameter at this time. After ensuring that we have made any adjustments to the SimInfoParams we desire and have imported any LayoutParams that have not been preset, click "Build". The "Message:" field will be updated to show "successfully persisted..." if the build was successful. Click the "Next" button.
+![alt text](images/SimulatorConfig3Derived.PNG "Simulator Config3 Derived")
+
+6. After clicking "Next", the Script Specification dialog will appear as shown below. Note that the SHA1 Checkout Key has been preset, with both "Pull" and "Build" selected. To ensure we do not interfere with previous projects, provide a unique "Simulation Folder Location". After doing so, click the "Run" button to execute the simulation.
+![alt text](images/SpecifyScriptDerived.PNG "Specify Script Derived")
+
+7. The Runtime Environment Window will pop-up after clicking "Run". Provide the simulation enough time to complete, then click the analyze button. If you see output matching what is shown below, you have successful collected the project's provenance.
+![alt text](images/WorkbenchAnalyzeButton.PNG "Workbench Analyze Button")
+
+8. Close the Runtime Environment Window and click the "Import Provenance" button to reload the universal provenance and see your new project as it relates to all other activities.
+
+
+### 3.4. Technologies and third party libraries
 The following technologies and libraries were used to build Workbench Dashboard.
 * [Java 8](https://docs.oracle.com/javase/8/docs/)
 * [JavaFX](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm#JFXST784)
