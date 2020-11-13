@@ -71,7 +71,7 @@ public class ScriptManager {
             SimulationSpecification simSpec, String simConfigFilename) {
         boolean success;
         FileManager fileMgr = FileManager.getFileManager();
-        String userDir = fileMgr.getUserDir();
+        String userDir = "/home/user/";
         String folderDelimiter = fileMgr.getFolderDelimiter();
         if (simSpec.isRemote()) {
             userDir = "~/";
