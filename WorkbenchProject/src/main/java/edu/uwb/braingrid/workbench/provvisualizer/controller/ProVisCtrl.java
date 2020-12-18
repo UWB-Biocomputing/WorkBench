@@ -530,9 +530,20 @@ public class ProVisCtrl {
 
 		while (iter.hasNext()) {
 			stmt = iter.nextStatement();
-			if (stmt.getSubject().toString().contains("local:"))
-				continue;
-			String predicateStr = stmt.getPredicate().toString();
+
+			if (stmt.getSubject().toString().contains("local:")) {
+                            System.out.println("Continuing on stmt subject: " + stmt.getSubject().toString());
+                            // continue;
+                        }
+                        String predicateStr = stmt.getPredicate().toString();
+
+                        System.out.println("iterator stmt subject: " + stmt.getSubject().toString());
+                        System.out.println("\t\tobject: " + stmt.getObject().toString());
+                        System.out.println("\t\tpredicate: " + stmt.getObject().toString());
+                        
+                        // TODO: Figure out why .xml files referenced in .ttl files have invalid paths. (Default to ~/<filename>.xml instead of their actual location in the working directory.)
+                        // TODO: Figure out why output files aren't included in the provenance data
+
 			if (predicateStr.equals(ProvUtility.RDF_TYPE)) {
 				String subjectStr = stmt.getSubject().toString();
 				String objectStr = stmt.getObject().toString();

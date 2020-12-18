@@ -124,11 +124,12 @@ public class WorkbenchDashboard extends Application {
 			
 		});
 
-		URL is = Resources.getResource("braingrid/color-logo.png");
-		Image image = new Image(is.getFile());
+		// URL is = Resources.getResource("braingrid/color-logo.png");
+                // System.out.println(is.getPath());
+		// Image image = new Image(is.getFile());
 		primaryStage.setTitle("BrainGrid Workbench");
 
-		primaryStage.getIcons().add(image);
+		// primaryStage.getIcons().add(image);
 		
 		primaryStage.setScene(scene);
 		primaryStage.setMaximized(true);
