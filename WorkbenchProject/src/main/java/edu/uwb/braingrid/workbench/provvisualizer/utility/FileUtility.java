@@ -38,8 +38,7 @@ public class FileUtility {
     }
 
     public static String getNodeFileLocalAbsolutePath(Node node){
-        return System.getProperty("user.dir") + File.separator + ARTIFACTS_DIR + File.separator +
-                getNodeFileLocalRelativePath(node);
+        return getNodeFileLocalRelativePath(node);
     }
 
     public static List<String> fileToLines(String filename) {
