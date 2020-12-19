@@ -1,0 +1,880 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T05:40:20.406Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T05:40:20.405Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/pktest2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pktest2.xml> .
+
+<local:/home/tori/active.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/active.xml> .
+
+<local:/home/tori/inhib.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/inhib.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/active.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/probed.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/scripts/pktest2_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/inhib.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T05:40:20.405Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T05:40:20.398Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/scripts/pktest2_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pktest2_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T05:40:20.41Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T05:40:20.41Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/active.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/active.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T05:40:20.409Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T05:40:20.409Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/inhib.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inhib.xml> .
+
+<local:/home/tori/pktest2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/pktest2.xml> .
+
+<local:/home/tori/pktest2_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/scripts/pktest2_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/pktest2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/pktest2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T05:40:20.408Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T05:40:20.407Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/probed.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/probed.xml> .
+
+<local:/home/tori/probed.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/NList/probed.xml> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.958Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.957Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/pktest3.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pktest3.xml> .
+
+<local:/home/tori/active.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/active.xml> .
+
+<local:/home/tori/inhib.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/inhib.xml> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/pktest3.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/pktest3.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/scripts/pktest3_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.957Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.955Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/scripts/pktest3_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pktest3_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.961Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.96Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/active.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/active.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.96Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.959Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/inhib.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inhib.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/pktest3.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/inhib.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.959Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.958Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/probed.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/probed.xml> .
+
+<local:/home/tori/probed.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/probed.xml> .
+
+<local:/home/tori/pktest3_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/scripts/pktest3_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/active.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/pktest3.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/probed.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.661Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.66Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/gftest1.xml> .
+
+<local:/home/tori/active.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/active.xml> .
+
+<local:/home/tori/inhib.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/inhib.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/active.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/probed.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/scripts/gftest1_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/gftest1.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml> .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.659Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.657Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/scripts/gftest1_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/gftest1_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.663Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.663Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/active.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/active.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.662Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.662Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/inhib.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inhib.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.662Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.661Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/probed.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/probed.xml> .
+
+<local:/home/tori/probed.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/probed.xml> .
+
+<local:/home/tori/gftest1_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/scripts/gftest1_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/inhib.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T04:18:51.178Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T04:18:51.178Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/randomthing2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/randomthing2.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/act2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/inh2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/inh2.xml> .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T04:18:51.177Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T04:18:51.175Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/scripts/randomthing2_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/randomthing2_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T04:18:51.181Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T04:18:51.181Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/inh2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inh2.xml> .
+
+<local:/home/tori/pbd2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/pbd2.xml> .
+
+<local:/home/tori/randomthing2_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/scripts/randomthing2_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/scripts/randomthing2_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T04:18:51.181Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T04:18:51.18Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/act2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/act2.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/randomthing2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/inh2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T04:18:51.18Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T04:18:51.179Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/pbd2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pbd2.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/randomthing2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/pbd2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/randomthing2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/randomthing2.xml> .
+
+<local:/home/tori/act2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/randomthing2/configfiles/NList/act2.xml> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:49.876Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:49.875Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/beepboop12.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/scripts/beepboop12_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:/home/tori/beepboop12_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/scripts/beepboop12_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/beepboop12.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml> .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:49.874Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:49.868Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/scripts/beepboop12_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/beepboop12_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:56.398Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:56.397Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/inh2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inh2.xml> .
+
+<local:/home/tori/inh2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/inh2.xml> .
+
+<local:/home/tori/pbd2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/pbd2.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:56.396Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:56.395Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/act2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/act2.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/act2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:56.395Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:56.393Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/pbd2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pbd2.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/inh2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/pbd2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/act2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/act2.xml> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.627Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.626Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/attemptA.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/attemptA.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/act_B.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/inh_B.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/attemptA.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/attemptA.xml> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/pbd_B.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/pbd_B.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/scripts/attemptA_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/attemptA.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.625Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.619Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/scripts/attemptA_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/attemptA_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.63Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.629Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/inh_B.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inh_B.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.629Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.628Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/pbd_B.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pbd_B.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/attemptA.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:/home/tori/act_B.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/act_B.xml> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.628Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.627Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/act_B.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/act_B.xml> .
+
+<local:/home/tori/inh_B.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/inh_B.xml> .
+
+<local:/home/tori/attemptA_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/scripts/attemptA_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/pbd_B.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/attemptB.xml>
+        a                    prov:Entity ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/attemptB.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:/home/tori/attemptB_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/scripts/attemptB_script1.sh> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:53:33.279Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:53:33.278Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/attemptB.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/attemptB.xml> .
+
+<local:/home/tori/inh_Bmore.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/inh_Bmore.xml> .
+
+<local:/home/tori/attemptB.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/attemptB.xml> .
+
+<local:/home/tori/act_Bmore.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/act_Bmore.xml> .
+
+<local:/home/tori/pbd_Bmore.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/pbd_Bmore.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/attemptB.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/act_Bmore.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/pbd_Bmore.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:53:33.278Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:53:33.276Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/scripts/attemptB_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/attemptB_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:53:33.282Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:53:33.282Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/act_Bmore.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/act_Bmore.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/inh_Bmore.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:53:33.281Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:53:33.28Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/inh_Bmore.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inh_Bmore.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/attemptB.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:53:33.28Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:53:33.279Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/NList/pbd_Bmore.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pbd_Bmore.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/scripts/attemptB_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/active.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-19T04:14:45.71Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-19T04:14:45.709Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/practice.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/practice.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/probed.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/active.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/active.xml> .
+
+<local:/home/tori/inhib.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/inhib.xml> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/inhib.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/practice.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-19T04:14:45.708Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-19T04:14:45.705Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/scripts/practice_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/practice_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-19T04:14:45.713Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-19T04:14:45.712Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/active.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/active.xml> .
+
+<local:/home/tori/practice_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/scripts/practice_script1.sh> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-19T04:14:45.712Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-19T04:14:45.711Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/inhib.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inhib.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/practice.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-19T04:14:45.711Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-19T04:14:45.71Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/probed.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/probed.xml> .
+
+<local:/home/tori/probed.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/NList/probed.xml> .
+
+<local:/home/tori/practice.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/configfiles/practice.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/practice/scripts/practice_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .

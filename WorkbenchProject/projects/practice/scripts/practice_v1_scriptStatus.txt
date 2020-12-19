@@ -1,0 +1,45 @@
+version: 1
+simExecutable: growth
+simInputs: practice.xml
+simOutputs: output.xml
+endSimSpec: 
+command: mkdir -p /home/tori/BrainGrid
+time started: 1608351285
+exit status: 0
+time completed: 1608351285
+command: cd /home/tori/BrainGrid
+time started: 1608351285
+exit status: 0
+time completed: 1608351285
+command: git log --pretty=format:'%H' -n 1
+time started: 1608351285
+exit status: 128
+time completed: 1608351285
+command: mkdir /home/tori/BrainGrid/results
+time started: 1608351285
+exit status: 1
+time completed: 1608351285
+command: mkdir -p /home/tori/BrainGrid/workbenchconfigfiles/NList
+time started: 1608351285
+exit status: 0
+time completed: 1608351285
+command: mv -f /home/tori/practice.xml /home/tori/BrainGrid/workbenchconfigfiles/practice.xml
+time started: 1608351285
+exit status: 0
+time completed: 1608351285
+command: mv -f /home/tori/probed.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/probed.xml
+time started: 1608351285
+exit status: 0
+time completed: 1608351285
+command: mv -f /home/tori/inhib.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/inhib.xml
+time started: 1608351285
+exit status: 0
+time completed: 1608351285
+command: mv -f /home/tori/active.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/active.xml
+time started: 1608351285
+exit status: 0
+time completed: 1608351285
+command: ./growth -t workbenchconfigfiles/practice.xml
+time started: 1608351285
+exit status: 127
+time completed: 1608351285

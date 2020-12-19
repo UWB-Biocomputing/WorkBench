@@ -1,0 +1,108 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.661Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.66Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/gftest1.xml> .
+
+<local:/home/tori/active.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/active.xml> .
+
+<local:/home/tori/inhib.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/inhib.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/active.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/probed.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/scripts/gftest1_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/gftest1.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml> .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.659Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.657Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/scripts/gftest1_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/gftest1_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.663Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.663Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/active.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/active.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.662Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.662Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/inhib.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inhib.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T03:24:47.662Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T03:24:47.661Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/probed.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/probed.xml> .
+
+<local:/home/tori/probed.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/probed.xml> .
+
+<local:/home/tori/gftest1_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/scripts/gftest1_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/NList/inhib.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .

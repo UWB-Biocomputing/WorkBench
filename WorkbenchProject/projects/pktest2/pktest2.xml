@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="pktest2">
+  <provenance enabled="true">
+    <location>/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/provenance/</location>
+  </provenance>
+  <scriptVersion>
+    <version>1</version>
+  </scriptVersion>
+  <simConfigFile simulationConfigurationFile="results/historyDump_pktest2.xml">/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/configfiles/pktest2.xml</simConfigFile>
+  <simulator>
+    <executionMachine>Local</executionMachine>
+    <version/>
+    <repository>https://github.com/UWB-Biocomputing/BrainGrid.git</repository>
+    <hostname/>
+    <simulatorFolder>BrainGrid</simulatorFolder>
+    <ProcessingTycpe>Sequential</ProcessingTycpe>
+    <sourceCodeUpdating>Pull</sourceCodeUpdating>
+    <SHA1Key/>
+    <BuildOption>Build</BuildOption>
+  </simulator>
+  <script atMillis="1608183620425" completedAt="1608183620000" outputAnalyzed="true" ran="true">
+    <file>/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest2/scripts/pktest2_script1.sh</file>
+  </script>
+</project>

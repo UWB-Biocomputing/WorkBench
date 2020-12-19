@@ -1,0 +1,53 @@
+version: 1
+simExecutable: growth
+simInputs: pktest3.xml
+simOutputs: output.xml
+endSimSpec: 
+command: mkdir -p /home/tori/BrainGrid
+time started: 1608185797
+exit status: 0
+time completed: 1608185797
+command: cd /home/tori/BrainGrid
+time started: 1608185797
+exit status: 0
+time completed: 1608185797
+command: git log --pretty=format:'%H' -n 1
+time started: 1608185797
+exit status: 127
+time completed: 1608185797
+command: make -s clean
+time started: 1608185797
+exit status: 2
+time completed: 1608185797
+command: make -s growth CUSEHDF5='no'
+time started: 1608185797
+exit status: 2
+time completed: 1608185797
+command: mkdir /home/tori/BrainGrid/results
+time started: 1608185797
+exit status: 1
+time completed: 1608185797
+command: mkdir -p /home/tori/BrainGrid/workbenchconfigfiles/NList
+time started: 1608185797
+exit status: 0
+time completed: 1608185797
+command: mv -f /home/tori/pktest3.xml /home/tori/BrainGrid/workbenchconfigfiles/pktest3.xml
+time started: 1608185797
+exit status: 0
+time completed: 1608185797
+command: mv -f /home/tori/probed.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/probed.xml
+time started: 1608185797
+exit status: 0
+time completed: 1608185797
+command: mv -f /home/tori/inhib.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/inhib.xml
+time started: 1608185797
+exit status: 0
+time completed: 1608185797
+command: mv -f /home/tori/active.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/active.xml
+time started: 1608185797
+exit status: 0
+time completed: 1608185797
+command: ./growth -t workbenchconfigfiles/pktest3.xml
+time started: 1608185797
+exit status: 127
+time completed: 1608185797

@@ -1,0 +1,108 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:49.876Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:49.875Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/beepboop12.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/scripts/beepboop12_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:/home/tori/beepboop12_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/scripts/beepboop12_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/beepboop12.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml> .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:49.874Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:49.868Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/scripts/beepboop12_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/beepboop12_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:56.398Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:56.397Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/inh2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inh2.xml> .
+
+<local:/home/tori/inh2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/inh2.xml> .
+
+<local:/home/tori/pbd2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/pbd2.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:56.396Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:56.395Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/act2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/act2.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/act2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T05:03:56.395Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T05:03:56.393Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/pbd2.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pbd2.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/inh2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/pbd2.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/act2.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/NList/act2.xml> .

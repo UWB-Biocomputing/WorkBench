@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="gftest1">
+  <provenance enabled="true">
+    <location>/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/provenance/</location>
+  </provenance>
+  <scriptVersion>
+    <version>1</version>
+  </scriptVersion>
+  <simConfigFile simulationConfigurationFile="results/historyDump_gftest1.xml">/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/configfiles/gftest1.xml</simConfigFile>
+  <simulator>
+    <executionMachine>Local</executionMachine>
+    <version/>
+    <repository>https://github.com/UWB-Biocomputing/BrainGrid.git</repository>
+    <hostname/>
+    <simulatorFolder>BrainGrid</simulatorFolder>
+    <ProcessingTycpe>Sequential</ProcessingTycpe>
+    <sourceCodeUpdating>Pull</sourceCodeUpdating>
+    <SHA1Key>b9021a1 </SHA1Key>
+    <BuildOption>Build</BuildOption>
+  </simulator>
+  <script atMillis="1608261887668" completedAt="1608261887000" outputAnalyzed="true" ran="true">
+    <file>/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/gftest1/scripts/gftest1_script1.sh</file>
+  </script>
+</project>

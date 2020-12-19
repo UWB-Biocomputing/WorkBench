@@ -1,0 +1,65 @@
+version: 1
+simExecutable: growth
+simInputs: gftest1.xml
+simOutputs: output.xml
+endSimSpec: 
+command: mkdir -p /home/tori/BrainGrid
+time started: 1608261887
+exit status: 0
+time completed: 1608261887
+command: git clone https://github.com/UWB-Biocomputing/BrainGrid.git /home/tori/BrainGrid
+time started: 1608261887
+exit status: 128
+time completed: 1608261887
+command: cd /home/tori/BrainGrid
+time started: 1608261887
+exit status: 0
+time completed: 1608261887
+command: git pull
+time started: 1608261887
+exit status: 128
+time completed: 1608261887
+command: git checkout b9021a1 
+time started: 1608261887
+exit status: 128
+time completed: 1608261887
+command: git log --pretty=format:'%H' -n 1
+time started: 1608261887
+exit status: 128
+time completed: 1608261887
+command: make -s clean
+time started: 1608261887
+exit status: 2
+time completed: 1608261887
+command: make -s growth CUSEHDF5='no'
+time started: 1608261887
+exit status: 2
+time completed: 1608261887
+command: mkdir /home/tori/BrainGrid/results
+time started: 1608261887
+exit status: 1
+time completed: 1608261887
+command: mkdir -p /home/tori/BrainGrid/workbenchconfigfiles/NList
+time started: 1608261887
+exit status: 0
+time completed: 1608261887
+command: mv -f /home/tori/gftest1.xml /home/tori/BrainGrid/workbenchconfigfiles/gftest1.xml
+time started: 1608261887
+exit status: 0
+time completed: 1608261887
+command: mv -f /home/tori/probed.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/probed.xml
+time started: 1608261887
+exit status: 0
+time completed: 1608261887
+command: mv -f /home/tori/inhib.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/inhib.xml
+time started: 1608261887
+exit status: 0
+time completed: 1608261887
+command: mv -f /home/tori/active.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/active.xml
+time started: 1608261887
+exit status: 0
+time completed: 1608261887
+command: ./growth -t workbenchconfigfiles/gftest1.xml
+time started: 1608261887
+exit status: 127
+time completed: 1608261887

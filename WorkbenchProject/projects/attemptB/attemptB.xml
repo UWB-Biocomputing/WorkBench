@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="attemptB">
+  <provenance enabled="true">
+    <location>/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/provenance/</location>
+  </provenance>
+  <scriptVersion>
+    <version>1</version>
+  </scriptVersion>
+  <simConfigFile simulationConfigurationFile="results/historyDump_attemptB.xml">/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/configfiles/attemptB.xml</simConfigFile>
+  <simulator>
+    <executionMachine>Local</executionMachine>
+    <version/>
+    <repository>https://github.com/UWB-Biocomputing/BrainGrid.git</repository>
+    <hostname/>
+    <simulatorFolder>BrainGrid</simulatorFolder>
+    <ProcessingTycpe>Sequential</ProcessingTycpe>
+    <sourceCodeUpdating>None</sourceCodeUpdating>
+    <SHA1Key/>
+    <BuildOption>Pre-built</BuildOption>
+  </simulator>
+  <script atMillis="1608335613286" completedAt="1608335613000" outputAnalyzed="true" ran="true">
+    <file>/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptB/scripts/attemptB_script1.sh</file>
+  </script>
+</project>

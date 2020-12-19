@@ -1,0 +1,53 @@
+version: 1
+simExecutable: growth
+simInputs: randomthing2.xml
+simOutputs: output.xml
+endSimSpec: 
+command: mkdir -p /home/tori/BrainGrid
+time started: 1608265131
+exit status: 0
+time completed: 1608265131
+command: cd /home/tori/BrainGrid
+time started: 1608265131
+exit status: 0
+time completed: 1608265131
+command: git log --pretty=format:'%H' -n 1
+time started: 1608265131
+exit status: 128
+time completed: 1608265131
+command: make -s clean
+time started: 1608265131
+exit status: 2
+time completed: 1608265131
+command: make -s growth CUSEHDF5='no'
+time started: 1608265131
+exit status: 2
+time completed: 1608265131
+command: mkdir /home/tori/BrainGrid/results
+time started: 1608265131
+exit status: 1
+time completed: 1608265131
+command: mkdir -p /home/tori/BrainGrid/workbenchconfigfiles/NList
+time started: 1608265131
+exit status: 0
+time completed: 1608265131
+command: mv -f /home/tori/randomthing2.xml /home/tori/BrainGrid/workbenchconfigfiles/randomthing2.xml
+time started: 1608265131
+exit status: 0
+time completed: 1608265131
+command: mv -f /home/tori/pbd2.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/pbd2.xml
+time started: 1608265131
+exit status: 0
+time completed: 1608265131
+command: mv -f /home/tori/act2.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/act2.xml
+time started: 1608265131
+exit status: 0
+time completed: 1608265131
+command: mv -f /home/tori/inh2.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/inh2.xml
+time started: 1608265131
+exit status: 0
+time completed: 1608265131
+command: ./growth -t workbenchconfigfiles/randomthing2.xml
+time started: 1608265131
+exit status: 127
+time completed: 1608265131

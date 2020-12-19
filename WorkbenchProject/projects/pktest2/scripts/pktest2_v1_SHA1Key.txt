@@ -1,0 +1,1 @@
+/home/tori/pktest2_script1.sh: 29: git: not found

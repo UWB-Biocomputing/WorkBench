@@ -1,0 +1,108 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.958Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.957Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/pktest3.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pktest3.xml> .
+
+<local:/home/tori/active.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/active.xml> .
+
+<local:/home/tori/inhib.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/inhib.xml> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/pktest3.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/pktest3.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/scripts/pktest3_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.957Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.955Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/scripts/pktest3_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pktest3_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.961Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.96Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/active.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/active.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.96Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.959Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/inhib.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inhib.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/pktest3.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/inhib.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-17T06:16:36.959Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-17T06:16:36.958Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/probed.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/probed.xml> .
+
+<local:/home/tori/probed.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/probed.xml> .
+
+<local:/home/tori/pktest3_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/scripts/pktest3_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/active.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/pktest3.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/pktest3/configfiles/NList/probed.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .

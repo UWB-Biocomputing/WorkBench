@@ -1,0 +1,53 @@
+version: 1
+simExecutable: growth
+simInputs: beepboop12.xml
+simOutputs: output.xml
+endSimSpec: 
+command: mkdir -p /home/tori/BrainGrid
+time started: 1608267836
+exit status: 0
+time completed: 1608267836
+command: cd /home/tori/BrainGrid
+time started: 1608267836
+exit status: 0
+time completed: 1608267836
+command: git log --pretty=format:'%H' -n 1
+time started: 1608267836
+exit status: 128
+time completed: 1608267836
+command: make -s clean
+time started: 1608267836
+exit status: 2
+time completed: 1608267836
+command: make -s growth CUSEHDF5='no'
+time started: 1608267836
+exit status: 2
+time completed: 1608267836
+command: mkdir /home/tori/BrainGrid/results
+time started: 1608267836
+exit status: 1
+time completed: 1608267836
+command: mkdir -p /home/tori/BrainGrid/workbenchconfigfiles/NList
+time started: 1608267836
+exit status: 0
+time completed: 1608267836
+command: mv -f /home/tori/beepboop12.xml /home/tori/BrainGrid/workbenchconfigfiles/beepboop12.xml
+time started: 1608267836
+exit status: 0
+time completed: 1608267836
+command: mv -f /home/tori/pbd2.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/pbd2.xml
+time started: 1608267836
+exit status: 0
+time completed: 1608267836
+command: mv -f /home/tori/act2.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/act2.xml
+time started: 1608267836
+exit status: 0
+time completed: 1608267836
+command: mv -f /home/tori/inh2.xml /home/tori/BrainGrid/workbenchconfigfiles/NList/inh2.xml
+time started: 1608267836
+exit status: 0
+time completed: 1608267836
+command: ./growth -t workbenchconfigfiles/beepboop12.xml
+time started: 1608267836
+exit status: 127
+time completed: 1608267836

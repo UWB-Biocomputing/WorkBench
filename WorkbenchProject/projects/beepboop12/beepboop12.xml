@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="beepboop12">
+  <provenance enabled="true">
+    <location>/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/provenance/</location>
+  </provenance>
+  <scriptVersion>
+    <version>1</version>
+  </scriptVersion>
+  <simConfigFile simulationConfigurationFile="results/historyDump_beepboop12.xml">/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/configfiles/beepboop12.xml</simConfigFile>
+  <simulator>
+    <executionMachine>Local</executionMachine>
+    <version/>
+    <repository>https://github.com/UWB-Biocomputing/BrainGrid.git</repository>
+    <hostname/>
+    <simulatorFolder>BrainGrid</simulatorFolder>
+    <ProcessingTycpe>Sequential</ProcessingTycpe>
+    <sourceCodeUpdating>None</sourceCodeUpdating>
+    <SHA1Key/>
+    <BuildOption>Build</BuildOption>
+  </simulator>
+  <script atMillis="1608267836425" completedAt="1608267836000" outputAnalyzed="true" ran="true">
+    <file>/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/beepboop12/scripts/beepboop12_script1.sh</file>
+  </script>
+</project>

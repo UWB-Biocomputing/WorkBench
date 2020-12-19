@@ -1,0 +1,108 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <MrsK@174.61.130.233#> .
+
+<local:copy_SimConfig_forScript_v>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.627Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.626Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/attemptA.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/attemptA.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/act_B.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/inh_B.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:/home/tori/attemptA.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:generated       <local:copy_SimConfig_forScript_v> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/attemptA.xml> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:/home/tori/pbd_B.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_1forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/pbd_B.xml> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/scripts/attemptA_script1.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/attemptA.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:copy_Script_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.625Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.619Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/scripts/attemptA_script1.sh> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/attemptA_script1.sh> .
+
+<local:copy_NList_2forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.63Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.629Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/inh_B.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/inh_B.xml> .
+
+<local:copy_NList_1forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.629Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.628Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/pbd_B.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/pbd_B.xml> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/attemptA.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:/home/tori/act_B.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_0forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/act_B.xml> .
+
+<local:copy_NList_0forScript_v1>
+        a                       prov:Activity ;
+        rdfs:label              "copy" ;
+        prov:endedAtTime        "2020-12-18T23:43:22.628Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:startedAtTime      "2020-12-18T23:43:22.627Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/act_B.xml> ;
+        prov:wasAssociatedWith  <local:workbench> ;
+        prov:wasGeneratedBy     <local:/home/tori/act_B.xml> .
+
+<local:/home/tori/inh_B.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:generated       <local:copy_NList_2forScript_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/inh_B.xml> .
+
+<local:/home/tori/attemptA_script1.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:generated       <local:copy_Script_v1> ;
+        prov:wasDerivedFrom  <local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/scripts/attemptA_script1.sh> .
+
+<local:/home/tori/Documents/GitHub/WorkBench/WorkbenchProject/projects/attemptA/configfiles/NList/pbd_B.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
