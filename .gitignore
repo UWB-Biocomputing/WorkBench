@@ -36,6 +36,17 @@ IOCP Debug/
 IOCP Release/
 OMP Debug/
 
+
+#################
+## IntelliJ
+#################
+
+.idea/
+*.iws
+*.iml
+*.ipr
+
+
 #################
 ## Eclipse
 #################
@@ -205,6 +216,7 @@ pip-log.txt
 
 # Mac
 .DS_Store
+
 
 #############
 ## Linux
