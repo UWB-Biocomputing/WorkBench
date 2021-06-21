@@ -58,7 +58,7 @@
 
   <!-- Checks that a package-info.java file exists for each package.     -->
   <!-- See https://checkstyle.org/config_javadoc.html#JavadocPackage -->
-  <module name="JavadocPackage"/>
+  <!-- <module name="JavadocPackage"/> -->
 
   <!-- Checks whether files end with a new line.                        -->
   <!-- See https://checkstyle.org/config_misc.html#NewlineAtEndOfFile -->
@@ -73,6 +73,7 @@
   <module name="FileLength"/>
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
+    <property name="max" value="120"/>
   </module>
 
   <!-- Checks for whitespace                               -->
@@ -102,7 +103,9 @@
     <module name="InvalidJavadocPosition"/>
     <module name="JavadocMethod"/>
     <module name="JavadocType"/>
-    <module name="JavadocVariable"/>
+    <module name="JavadocVariable">
+      <property name="scope" value="package"/>
+    </module>
     <module name="JavadocStyle"/>
     <module name="MissingJavadocMethod"/>
 
@@ -162,7 +165,10 @@
     <!-- See https://checkstyle.org/config_coding.html -->
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
-    <module name="HiddenField"/>
+    <module name="HiddenField">
+      <property name="ignoreSetter" value="true"/>
+      <property name="ignoreConstructorParameter" value="true"/>
+    </module>
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
     <module name="MagicNumber"/>
