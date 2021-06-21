@@ -86,17 +86,17 @@ public class WorkbenchManager {
     }
     
     private void initFileOutput() {
-		FileHandler handler = null;
-		try {
-			handler = new FileHandler("WD-WorkbenchManager-log.%u");
-		} catch (SecurityException | IOException e) {
-			LOG.severe(e.getMessage());
-		}
-		if(handler != null) {
-			LOG.getParent().getHandlers()[0].setLevel(LoggerHelper.MIN_LOG_LEVEL);
-			LOG.getParent().addHandler(handler);
-		}
-	}
+        FileHandler handler = null;
+        try {
+            handler = new FileHandler("WD-WorkbenchManager-log.%u");
+        } catch (SecurityException | IOException e) {
+            LOG.severe(e.getMessage());
+        }
+        if(handler != null) {
+            LOG.getParent().getHandlers()[0].setLevel(LoggerHelper.MIN_LOG_LEVEL);
+            LOG.getParent().addHandler(handler);
+        }
+    }
     
     // </editor-fold>
 
@@ -109,7 +109,7 @@ public class WorkbenchManager {
      * difference being the messages that will be delivered through getMsg
      */
     public boolean newProject() {
-    	LOG.info("Making New Project");
+        LOG.info("Making New Project");
         boolean success = false;
         // Ask the user for a new project name (validation in dialogue)
         NewProjectDialog npd = new NewProjectDialog(true);
@@ -130,8 +130,8 @@ public class WorkbenchManager {
      * the user canceled the specification.
      */
     public boolean configureSimulation() {
-    	String projectName = getProjectName();
-    	LOG.info("Configuring Simulation for " + projectName);
+        String projectName = getProjectName();
+        LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
        
         if (!projectName.equals("None")) {
@@ -162,19 +162,19 @@ public class WorkbenchManager {
         }
         return success;
     }
-	
-	/**
+    
+    /**
      * Allows the user to configure the input for the simulation via interactions with ProVis
      *
      * @return True if the user followed through on the specification, False if
      * the user canceled the specification.
      */
     public boolean configureSimulation(String inputPresets, HashMap<Character,String> nListPresets) {
-    	String projectName = getProjectName();
-    	LOG.info("Configuring Simulation for " + projectName);
+        String projectName = getProjectName();
+        LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
         if (!projectName.equals("None")) {
-			String configFilename = inputPresets;
+            String configFilename = inputPresets;
             InputConfigClassSelectionDialog iccsd
                     = new InputConfigClassSelectionDialog(projectName, true, configFilename);
             if (success = iccsd.getSuccess()) {
@@ -349,7 +349,7 @@ public class WorkbenchManager {
      * for the action to be performed)
      */
     public boolean specifyScript() {
-    	LOG.info("Specifying Script");
+        LOG.info("Specifying Script");
         String hostAddr;
         ScriptSpecificationDialog spd;
         if (simulatorSpecification != null) {
@@ -383,8 +383,8 @@ public class WorkbenchManager {
         }
         return success;
     }
-	
-	/**
+    
+    /**
      * Updates the simulation specification for the currently open project based
      * on user inputs entered in a SimulationSpecificationDialog
      *
@@ -393,16 +393,16 @@ public class WorkbenchManager {
      * for the action to be performed)
      */
     public boolean specifyScript(String commitVersion) {
-    	LOG.info("Specifying Script");
+        LOG.info("Specifying Script");
         String hostAddr;
         ScriptSpecificationDialog spd;
         if (commitVersion != null) {
-			simulatorSpecification = new SimulationSpecification();
-			simulatorSpecification.setSHA1CheckoutKey(commitVersion);
-			simulatorSpecification.setSourceCodeUpdating("Pull");
-			simulatorSpecification.setBuildOption("Build");
-			simulatorSpecification.setSimulatorFolder("BrainGrid/");
-            spd = new ScriptSpecificationDialog(true, simulatorSpecification);	
+            simulatorSpecification = new SimulationSpecification();
+            simulatorSpecification.setSHA1CheckoutKey(commitVersion);
+            simulatorSpecification.setSourceCodeUpdating("Pull");
+            simulatorSpecification.setBuildOption("Build");
+            simulatorSpecification.setSimulatorFolder("BrainGrid/");
+            spd = new ScriptSpecificationDialog(true, simulatorSpecification);
         } else {
             spd = new ScriptSpecificationDialog(true);
         }
@@ -488,7 +488,7 @@ public class WorkbenchManager {
      * otherwise false
      */
     public boolean generateScript() {
-    	LOG.info("Generate Script for " + projectMgr.getName());
+        LOG.info("Generate Script for " + projectMgr.getName());
         boolean success;
         success = false;
         Script script = ScriptManager.
@@ -571,7 +571,7 @@ public class WorkbenchManager {
      * @return
      */
     public boolean initProject(String name, boolean provEnabled) {
-    	LOG.info("Initializing a New Project: " + name);
+        LOG.info("Initializing a New Project: " + name);
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
         boolean success = true;

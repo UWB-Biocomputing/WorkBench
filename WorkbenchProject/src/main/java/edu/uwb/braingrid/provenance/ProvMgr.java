@@ -84,7 +84,7 @@ public class ProvMgr {
      * @throws java.io.IOException, RiotNotFoundException
      */
     public ProvMgr(ProjectMgr project, boolean load) throws IOException {
-    	LOG.info("New Provenance Manager for " + project.getName());
+        LOG.info("New Provenance Manager for " + project.getName());
         if (load) {
             load(project);
         } else {
@@ -869,7 +869,7 @@ public class ProvMgr {
     /**
      * Writes the model to the file with the output filename specified during
      * construction or initialization
-	 * also writes provenance of completed projects to UniversalProvenance.ttl
+     * also writes provenance of completed projects to UniversalProvenance.ttl
      *
      * @param project - The project that this provenance is recorded for. The
      * project maintains its name, which is used as the base name for the
@@ -882,9 +882,9 @@ public class ProvMgr {
         (new File(directory)).mkdirs();
         model.write(new FileOutputStream(directory + project.getName()
                 + ".ttl", false), "TURTLE");
-		//add provenance to UniversalProvenance.ttl	
-		directory = project.determineUniversalProvOutputLocation();
-		(new File(directory)).mkdirs();
+        //add provenance to UniversalProvenance.ttl
+        directory = project.determineUniversalProvOutputLocation();
+        (new File(directory)).mkdirs();
         model.write(new FileOutputStream(directory + "UniversalProvenance"
                 + ".ttl", true), "TURTLE");
     }

@@ -35,7 +35,7 @@ public class DynamicInputConfigurationManager {
      */
     public DynamicInputConfigurationManager(String configFilename) throws SAXException,
             IOException, ParserConfigurationException, Exception {
-    	LOG.info("New " + getClass().getName());
+        LOG.info("New " + getClass().getName());
         inputConfigBuilder = new DynamicInputConfigurationBuilder();
         if (configFilename != null) {
             inputConfig = inputConfigBuilder.load(configFilename);

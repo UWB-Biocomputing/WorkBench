@@ -281,17 +281,17 @@ public class ProjectMgr {
                 + FileManager.getFileManager().getFolderDelimiter();
         return provOutputLocation;
     }
-	
-	/**
+
+    /**
      * Determines the folder location for storing provenance data for in
      * relation to all other projects
-	 *
+     *
      * @return The path to the provenance folder for the specified project
      * @throws IOException
      */
     public String determineUniversalProvOutputLocation()
             throws IOException {
-		String workingDirectory = FileManager.getCanonicalWorkingDirectory();
+        String workingDirectory = FileManager.getCanonicalWorkingDirectory();
         String ps = FileManager.getFileManager().getFolderDelimiter();
         String provOutputLocation = workingDirectory + ps + "projects" + ps;
         return provOutputLocation;

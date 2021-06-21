@@ -41,7 +41,7 @@ import org.xml.sax.SAXException;
 public class ScriptManager {
 
     private String outstandingMessages;
-	//private ProjectManager projectManager = new ProjectManager();
+    //private ProjectManager projectManager = new ProjectManager();
     
     /**
      * Responsible for construction of the script manager and initialization of
@@ -277,17 +277,17 @@ public class ScriptManager {
             String scriptPath, String scriptVersion, String[] nListFilenames,
             String simConfigFilename)
             throws JSchException, FileNotFoundException, SftpException {
-    	
+        
         boolean success;
         String executionMachine = simSpec.getSimulationLocale();
         String remoteExecution = SimulationSpecification.REMOTE_EXECUTION;
         // run script remotely?
         if (executionMachine.equals(remoteExecution)) {
-        	LOG.info("Running Remote Script: " + scriptPath);
+            LOG.info("Running Remote Script: " + scriptPath);
             success = runRemoteScript(provMgr, simSpec, scriptPath,
                     scriptVersion, nListFilenames, simConfigFilename);
         } else { // or run it locally
-        	LOG.info("Running Local Script " + scriptPath);
+            LOG.info("Running Local Script " + scriptPath);
             success = runLocalScript(provMgr, simSpec, scriptPath,
                     scriptVersion, nListFilenames, simConfigFilename);
         }
@@ -450,7 +450,7 @@ public class ScriptManager {
             SimulationSpecification simSpec, String scriptLocation,
             String scriptVersion, String[] inputFilenames,
             String simConfigFilename) {
-    	LOG.info("Running Local Script");
+        LOG.info("Running Local Script");
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
         boolean success = true;
@@ -575,7 +575,7 @@ public class ScriptManager {
                //  dt.open(scriptTargetPath.toFile());
                 Runtime.getRuntime().exec("cmd.exe /c start " + cmd); // Windows
             } else {
-            	LOG.info("Running in Console: " + cmd);
+                LOG.info("Running in Console: " + cmd);
                 Runtime.getRuntime().exec(cmd); // Unix ?
             }
         } catch (SecurityException e) {
@@ -604,9 +604,9 @@ public class ScriptManager {
                     accumulatedTime);
         }
         if(success) {
-        	LOG.info("Script " + scriptTargetPath + " Ran Succsesfully");
+            LOG.info("Script " + scriptTargetPath + " Ran Succsesfully");
         } else {
-        	LOG.info("Script " + scriptTargetPath + " Failed");
+            LOG.info("Script " + scriptTargetPath + " Failed");
         }
         
         return success;
@@ -815,8 +815,8 @@ public class ScriptManager {
         new File(localSimResultsFolder).mkdirs();
         // calculate simulation history dump filename to write
         String historyDumpFilename = projectMgr.determineProjectOutputLocation()
-                + projectMgr.getSimStateOutputFile();		 
-		 
+                + projectMgr.getSimStateOutputFile();
+         
         // run simulation here or on another machine?
         boolean remote = simSpec.isRemote();
         if (remote) {

@@ -99,17 +99,17 @@ public class Graph {
 
     public void addOrRemoveSelectedActivityNode(ActivityNode node){
         clearAllIdsRelationships();
-		if(selectedActivityNodes.contains(node)) {
+        if(selectedActivityNodes.contains(node)) {
             selectedActivityNodes.remove(node);
         }
         else {
             selectedActivityNodes.add(node);
         }
     }
-	
-	public HashSet<ActivityNode> getSelectedActivityNodes() {
-		return selectedActivityNodes;
-	}
+    
+    public HashSet<ActivityNode> getSelectedActivityNodes() {
+        return selectedActivityNodes;
+    }
 
     public Node getNode(String nodeId){
         if(this.nodes.containsKey(nodeId)) {
@@ -152,7 +152,7 @@ public class Graph {
         String bgReposPath = FileManager.getBrainGridRepoDirectory();
         if(!Files.exists(Paths.get(bgReposPath))) {
             try {
-				System.out.println("Repo manager: "+RepoManager.getMasterBranchDirectory());
+                System.out.println("Repo manager: "+RepoManager.getMasterBranchDirectory());
                 git = Git.cloneRepository()
                         .setURI("https://github.com/UWB-Biocomputing/BrainGrid.git") //SHOULD THIS BE BRAINGRID OR WORKBENCH? WAS RepoManager.getMasterBranchDirectory()
                         .setDirectory(new File(bgReposPath))
@@ -187,7 +187,7 @@ public class Graph {
                 e.printStackTrace();
             }
         }
-		
+        
         RevWalk walker = new RevWalk(git.getRepository());
         List<RevCommit> commits = new ArrayList<>();
         try {
@@ -353,8 +353,8 @@ public class Graph {
                         toNode.isInDisplayWindow(displayWindowLocation, displayWindowSize)) {
                     drawEdge(gc, fromNode, toNode, edge.isDashline(), displayWindowLocation, zoomRatio,edge == mouseOnEdge);
                 }
-				//Initialize edge to node relationship
-				
+                //Initialize edge to node relationship
+                
             }
         }
 
@@ -834,14 +834,14 @@ public class Graph {
     public void setShowAllRelationships(boolean showAllRelationships) {
         this.showAllRelationships = showAllRelationships;
     }
-	
-	public void clearAllIdsRelationships() {
-		showAllNodeIds = false;
-		showAllRelationships = false;
-		dispNodeIds.clear();
-		dispRelationships.clear();
-		selectedActivityNodes.clear();
-	}
+    
+    public void clearAllIdsRelationships() {
+        showAllNodeIds = false;
+        showAllRelationships = false;
+        dispNodeIds.clear();
+        dispRelationships.clear();
+        selectedActivityNodes.clear();
+    }
 
     public Node getMouseOnNode() {
         return this.mouseOnNode;

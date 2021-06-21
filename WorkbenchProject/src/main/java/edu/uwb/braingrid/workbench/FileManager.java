@@ -47,7 +47,7 @@ public final class FileManager {
      * thread.
      */
     private FileManager() {
-    	LOG.info("New " + getClass().getName());
+        LOG.info("New " + getClass().getName());
         String osName = System.getProperty("os.name").toLowerCase();
         isWindowsSystem = osName.startsWith("windows");
         folderDelimiter = isWindowsSystem ? "\\" : "/";
@@ -330,16 +330,16 @@ public final class FileManager {
     }
     
     public static void updateStaticVals(FileManagerShared obj) {
-    	setBrainGridRepoDirectory(obj.getBrainGridRepoDirectory());
+        setBrainGridRepoDirectory(obj.getBrainGridRepoDirectory());
     }
     
     public static String getBrainGridRepoDirectory() {
-		return FileManager.brainGridRepoDirectory;
-	}
+        return FileManager.brainGridRepoDirectory;
+    }
 
-	public static void setBrainGridRepoDirectory(String brainGridRepoDirectory) {
-		FileManager.brainGridRepoDirectory = brainGridRepoDirectory;
-	}
+    public static void setBrainGridRepoDirectory(String brainGridRepoDirectory) {
+        FileManager.brainGridRepoDirectory = brainGridRepoDirectory;
+    }
 
-	private static String brainGridRepoDirectory = DirMgr.getBrainGridRepoDirectory() ;
+    private static String brainGridRepoDirectory = DirMgr.getBrainGridRepoDirectory() ;
 }

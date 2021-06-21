@@ -17,11 +17,11 @@ import javax.swing.JFileChooser;
 public class WorkbenchControlFrame extends javax.swing.JFrame {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	// <editor-fold defaultstate="collapsed" desc="Auto-Generated">
+    // <editor-fold defaultstate="collapsed" desc="Auto-Generated">
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,15 +30,15 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
     @SuppressWarnings({"deprecation" })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-		
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(414, 378));
-		
+        
         transferProgressBar = new javax.swing.JProgressBar();
         transferProgressBar.setAlignmentX(-0.5F);
         transferProgressBar.setFocusable(false);
-		
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 

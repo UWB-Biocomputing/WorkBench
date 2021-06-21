@@ -21,45 +21,45 @@ import edu.uwb.braingrid.workbenchdashboard.threads.RunUpdateRepo;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 
 public class RepoManager {
-	public static final String MASTER_BRANCH_NAME = "master";
-	private static boolean updatingBranch = false;
+    public static final String MASTER_BRANCH_NAME = "master";
+    private static boolean updatingBranch = false;
 
-	
-	public static void updateMaster()  throws InvalidRemoteException, TransportException, GitAPIException, IOException{
-		LOG.info("Updating Master Branch");
-		updatingBranch = true;
-		Git git;
-		String masterBranchPath = RepoManager.getMasterBranchDirectory();
-		if(Files.exists(Paths.get(masterBranchPath))) {
-			LOG.info("Pulling Fresh Repo");
-			git = Git.open(new File(masterBranchPath));
+    
+    public static void updateMaster()  throws InvalidRemoteException, TransportException, GitAPIException, IOException{
+        LOG.info("Updating Master Branch");
+        updatingBranch = true;
+        Git git;
+        String masterBranchPath = RepoManager.getMasterBranchDirectory();
+        if(Files.exists(Paths.get(masterBranchPath))) {
+            LOG.info("Pulling Fresh Repo");
+            git = Git.open(new File(masterBranchPath));
             git.pull().call();
-		} else {
-			LOG.info("Updating Repo");
-			git = Git.cloneRepository()
-	                .setURI(ProvVisGlobal.BG_REPOSITORY_URI)
-	                .setDirectory(new File(masterBranchPath))
-	                .call();
-		}
-		updatingBranch = false;
-	}
-	
-	public static boolean isUpdating() {
-		return updatingBranch;
-	}
-	
-	
-	
-	public static void getMasterBranch() {
-		RunUpdateRepo updateRepo = new RunUpdateRepo();
-		updateRepo.start();
-	}
-	
-	public static String getMasterBranchDirectory() {
-		return User.user.getBrainGridRepoDirectory() + File.separator + MASTER_BRANCH_NAME;
-	}
-	
-	public static List<String> fetchGitBranches()
+        } else {
+            LOG.info("Updating Repo");
+            git = Git.cloneRepository()
+                    .setURI(ProvVisGlobal.BG_REPOSITORY_URI)
+                    .setDirectory(new File(masterBranchPath))
+                    .call();
+        }
+        updatingBranch = false;
+    }
+    
+    public static boolean isUpdating() {
+        return updatingBranch;
+    }
+    
+    
+    
+    public static void getMasterBranch() {
+        RunUpdateRepo updateRepo = new RunUpdateRepo();
+        updateRepo.start();
+    }
+    
+    public static String getMasterBranchDirectory() {
+        return User.user.getBrainGridRepoDirectory() + File.separator + MASTER_BRANCH_NAME;
+    }
+    
+    public static List<String> fetchGitBranches()
     {
         Collection<Ref> refs;
         List<String> branches = new ArrayList<String>();
@@ -82,6 +82,6 @@ public class RepoManager {
         }
         return branches;
     }
-	
-	private static final Logger LOG = Logger.getLogger(RepoManager.class.getName());
+    
+    private static final Logger LOG = Logger.getLogger(RepoManager.class.getName());
 }
