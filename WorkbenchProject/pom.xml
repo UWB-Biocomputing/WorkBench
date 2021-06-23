@@ -81,6 +81,7 @@
                 </dependencies>
             </plugin>
             <!--End for testing-->
+            <!-- Configure Checkstyle plugin as a build element -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -92,6 +93,10 @@
                         <version>8.43</version>
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <configLocation>${checkstyle.config.location}</configLocation>
+                    <failOnViolation>false</failOnViolation>
+                </configuration>
                 <executions>
                     <execution>
                         <id>checkstyle</id>
@@ -101,13 +106,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <configLocation>${checkstyle.config.location}</configLocation>
-                    <failsOnError>true</failsOnError>
-                    <consoleOutput>true</consoleOutput>
-                    <violationSeverity>warning</violationSeverity>
-                    <failOnViolation>true</failOnViolation>
-                </configuration>
             </plugin>
         </plugins>
     </build>

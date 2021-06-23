@@ -56,6 +56,16 @@
     <property name="optional" value="true"/>
   </module>
 
+  <!-- https://checkstyle.org/config_filters.html#SuppressionSingleFilter -->
+  <module name="SuppressionSingleFilter">
+    <property name="checks" value="MissingJavadocMethod"/>
+    <property name="files" value="ProvOntology.java"/>
+  </module>
+  <module name="SuppressionSingleFilter">
+    <property name="checks" value="MagicNumber"/>
+    <property name="files" value="Graph.java"/>
+  </module>
+
   <!-- Checks that a package-info.java file exists for each package.     -->
   <!-- See https://checkstyle.org/config_javadoc.html#JavadocPackage -->
   <!-- <module name="JavadocPackage"/> -->
@@ -108,6 +118,7 @@
     </module>
     <module name="JavadocStyle"/>
     <module name="MissingJavadocMethod"/>
+    <module name="RequireEmptyLineBeforeBlockTagGroup"/>
 
     <!-- Checks for Naming Conventions.                  -->
     <!-- See https://checkstyle.org/config_naming.html -->
@@ -133,7 +144,10 @@
     <!-- Checks for Size Violations.                    -->
     <!-- See https://checkstyle.org/config_sizes.html -->
     <module name="MethodLength"/>
-    <module name="ParameterNumber"/>
+    <module name="ParameterNumber">
+      <property name="max" value="10"/>
+      <property name="tokens" value="METHOD_DEF"/>
+    </module>
 
     <!-- Checks for whitespace                               -->
     <!-- See https://checkstyle.org/config_whitespace.html -->
@@ -188,7 +202,7 @@
     <!-- Miscellaneous other checks.                   -->
     <!-- See https://checkstyle.org/config_misc.html -->
     <module name="ArrayTypeStyle"/>
-    <module name="FinalParameters"/>
+    <module name="ParameterAssignment"/>
     <module name="TodoComment"/>
     <module name="UpperEll"/>
 
@@ -197,6 +211,13 @@
       <property name="file" value="${org.checkstyle.sun.suppressionxpathfilter.config}"
                 default="checkstyle-xpath-suppressions.xml" />
       <property name="optional" value="true"/>
+    </module>
+
+    <!-- https://checkstyle.org/config_filters.html#SuppressWithNearbyCommentFilter -->
+    <module name="SuppressWithNearbyCommentFilter">
+      <property name="commentFormat" value="@cs-\: ([\w\|]+) influence (-?\d+)"/>
+      <property name="checkFormat" value="$1"/>
+      <property name="influenceFormat" value="$2"/>
     </module>
 
   </module>
