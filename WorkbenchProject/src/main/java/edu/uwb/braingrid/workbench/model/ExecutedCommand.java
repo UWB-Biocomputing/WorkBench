@@ -1,13 +1,12 @@
 package edu.uwb.braingrid.workbench.model;
-// CLEANED
 
 import java.util.Date;
 
 /**
  * Created by Nathan on 9/1/2014. Modified by Del on 9/3/2014
  *
- * I have noooooooooooooo idea what the ExecutedCommand is. Is it a command
- * to the GUI? A command to the command line? - Max on 10/7/2018
+ * I have noooooooooooooo idea what the ExecutedCommand is. Is it a command to the GUI? A command
+ * to the command line? - Max on 10/7/2018
  */
 public class ExecutedCommand {
 
@@ -19,15 +18,14 @@ public class ExecutedCommand {
     private int exitStatus;
 
     /**
-     * Responsible for allocating this executed command and setting all members
-     * to their initial values.
+     * Responsible for allocating this executed command and setting all members to their initial
+     * values.
      *
-     * Note: The exit status is not initialized during construction in order to
-     * differentiate between the code for a normal exit or an error-state and
-     * the fact that the program did not exit
+     * Note: The exit status is not initialized during construction in order to differentiate
+     * between the code for a normal exit or an error-state and the fact that the program did not
+     * exit
      *
-     * @param newCommand - The exact command that was invoked, including all
-     * parameters
+     * @param newCommand  The exact command that was invoked, including all parameters
      */
     public ExecutedCommand(String newCommand) {
         fullCommand = newCommand;
@@ -41,9 +39,8 @@ public class ExecutedCommand {
     }
 
     /**
-     * Indicates the exact command that was invoked, including all parameters.
-     * If several commands were executed in series, this will include those as
-     * well.
+     * Indicates the exact command that was invoked, including all parameters. If several commands
+     * were executed in series, this will include those as well.
      *
      * @return The exact command that was invoked
      */
@@ -52,19 +49,17 @@ public class ExecutedCommand {
     }
 
     /**
-     * Indicates the name of the executable file which was called to invoke the
-     * command.
+     * Indicates the name of the executable file which was called to invoke the command.
      *
-     * @return - The name of the executable file which was called to execute the
-     * command. This does not include any arguments that were provided to the
-     * executable at invocation
+     * @return The name of the executable file which was called to execute the command. This does
+     *         not include any arguments that were provided to the executable at invocation
      */
     public String getSimpleCommand() {
         return simpleCommand;
     }
 
     /**
-     * Sets the date at which the command was executed
+     * Sets the date at which the command was executed.
      *
      * @param newStartedTime
      */
@@ -73,7 +68,7 @@ public class ExecutedCommand {
     }
 
     /**
-     * Provides the date when the command was executed
+     * Provides the date when the command was executed.
      *
      * @return The date when the command was executed
      */
@@ -82,17 +77,16 @@ public class ExecutedCommand {
     }
 
     /**
-     * Sets the date at which the command finished execution
+     * Sets the date at which the command finished execution.
      *
-     * @param newCompletedTime - The date at which the command completed
-     * execution
+     * @param newCompletedTime - The date at which the command completed execution
      */
     public void setTimeCompleted(Date newCompletedTime) {
         timeCompleted = newCompletedTime;
     }
 
     /**
-     * Provides the date when the command finished execution
+     * Provides the date when the command finished execution.
      *
      * @return - The date when the command finished execution
      */
@@ -101,27 +95,25 @@ public class ExecutedCommand {
     }
 
     /**
-     * Sets the exit status
+     * Sets the exit status.
      *
-     * @param newExitStatus - A value provided by processes during exit that
-     * indicates the last state. This value is used to indicate specific
-     * error-states in addition to a normal state
+     * @param newExitStatus  A value provided by processes during exit that indicates the last
+     *                       state. This value is used to indicate specific error-states in
+     *                       addition to a normal state
      */
     public void setExitStatus(int newExitStatus) {
         exitStatus = newExitStatus;
     }
 
     /**
-     * Indicates the system dependent exit status provided at process exit
+     * Indicates the system dependent exit status provided at process exit.
      *
-     * Safety Measure: Call hasCompleted, or optionally, catch the
-     * NullPointerException that may occur. The integer value associated with
-     * this function is not initialized in order to prevent erroneous
-     * assumptions about the exit status of the process. This is necessary due
+     * Safety Measure: Call hasCompleted, or optionally, catch the NullPointerException that may
+     * occur. The integer value associated with this function is not initialized in order to
+     * prevent erroneous assumptions about the exit status of the process. This is necessary due
      * to the range of values provided by exiting processes.
      *
-     * @return - An integer. The value of the integer varies by process and
-     * process state at exit
+     * @return An integer. The value of the integer varies by process and process state at exit
      * @throws NullPointerException
      */
     public int getExitStatus() throws NullPointerException {
@@ -138,9 +130,8 @@ public class ExecutedCommand {
     }
 
     /**
-     * Indicates if this command completed. The value indicating completion is
-     * set during output analysis. As such, the command may have completed after
-     * analysis
+     * Indicates if this command completed. The value indicating completion is set during output
+     * analysis. As such, the command may have completed after analysis.
      *
      * @return True if the command completed at analysis time, otherwise false
      */

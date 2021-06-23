@@ -59,8 +59,7 @@ public class ProjectData {
 
     public void addAtrributes(List<KeyValuePair> attributes) {
         for (int i = 0, im = attributes.size(); i < im; i++) {
-            this.attributes.put(attributes.get(i).getKey(),
-                    attributes.get(i).getValue());
+            this.attributes.put(attributes.get(i).getKey(), attributes.get(i).getValue());
         }
     }
 

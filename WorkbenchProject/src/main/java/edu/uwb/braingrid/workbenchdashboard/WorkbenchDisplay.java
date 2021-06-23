@@ -1,5 +1,8 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -7,10 +10,11 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
+import javafx.stage.Stage;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.TransportException;
 
 import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
 import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
@@ -20,25 +24,22 @@ import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 import edu.uwb.braingrid.workbenchdashboard.userView.UserView;
 import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
-import javafx.stage.Stage;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.TransportException;
 
 /**
  * Defines the main display of the screen along with global functionality.
+ *
  * @author Max Wright, extended and updated by Joseph Conquest
  */
 public class WorkbenchDisplay extends BorderPane {
+
     private static final Logger LOG = Logger.getLogger(WorkbenchDisplay.class.getName());
-    
+
     /**
      * The top menu bar of the screen.
      */
     private MenuBar menu_bar_;
     private Stage primaryStage_;
-    
+
     /**
      * The main content of the screen
      */
@@ -67,7 +68,7 @@ public class WorkbenchDisplay extends BorderPane {
         menu_bar_.getMenus().add(generateMenuRepo());
         return menu_bar_;
     }
-    
+
     /**
      * Generates all functionality associated with the "File" tab of the menu bar.
      * @param primary_stage The Stage of the FX program
@@ -85,7 +86,7 @@ public class WorkbenchDisplay extends BorderPane {
         Menu recent_proj_menu = new Menu("Recent Projects");
         return recent_proj_menu;
     }
-    
+
     private MenuItem generateMenuItemOpen() {
         // Generate menu item
         MenuItem open_menu = new MenuItem("Open");
@@ -129,24 +130,24 @@ public class WorkbenchDisplay extends BorderPane {
         new_menu.getItems().add(provis);
         return new_menu;
     }
-    
+
     private Menu generateMenuRepo() {
         Menu repo_menu = new Menu("_Repo");
         MenuItem updateMain = new MenuItem("Update Main");
-        
+
         updateMain.setOnAction(event -> {
             RepoManager.getMasterBranch();
         });
-        
+
         repo_menu.getItems().add(updateMain);
-        
+
         return repo_menu;
     }
-    
+
     /**
-     * Adds a new Growth Simulator Layout Editor tab
+     * Adds a new Growth Simulator Layout Editor tab.
      */
-    void pushGSLEPane() {
+    public void pushGSLEPane() {
         Tab tab = new Tab();
         NLedit pv = new NLedit(tab);
         tab.setContent(pv.getDisplay());
@@ -154,26 +155,26 @@ public class WorkbenchDisplay extends BorderPane {
         SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
         selectionModel.select(tab);
     }
-    
+
     /**
-     * initializes SimManager and allows the opening of project specification
+     * initializes SimManager and allows the opening of project specification.
      */
-    void pushSimOpen() {
+    public void pushSimOpen() {
         SimManager pv = new SimManager();
         pv.openProject();
     }
-    
+
     /**
-     Creates a new Simulation Starter Pop-up
+     Creates a new Simulation Starter Pop-up.
      */
-    void pushSimWizPop() {
+    public void pushSimWizPop() {
         SimStartWiz ssw = new SimStartWiz();
     }
 
     /**
-     * Add a new Providence Visualizer tab
+     * Add a new Providence Visualizer tab.
      */
-    void pushProVisStarterPage() {
+    public void pushProVisStarterPage() {
         Tab tab = new Tab();
         ProVis pv = new ProVis(tab);
         tab.setContent(pv.getDisplay());
@@ -181,8 +182,8 @@ public class WorkbenchDisplay extends BorderPane {
         SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
         selectionModel.select(tab);
     }
-    
-    void pushUserViewPage() {
+
+    public void pushUserViewPage() {
         Tab tab = new Tab();
         UserView uv = new UserView(tab);
         tab.setContent(uv.getDisplay());

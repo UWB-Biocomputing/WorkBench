@@ -1,14 +1,19 @@
 package edu.uwb.braingrid.workbench.provvisualizer.controller;
 
-import edu.uwb.braingrid.workbench.provvisualizer.model.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.util.function.Consumer;
 
+import edu.uwb.braingrid.workbench.provvisualizer.model.AuthenticationInfo;
+
 public class AuthenticationController {
+
     private Consumer<AuthenticationInfo> okButtonCallback;
 
     @FXML

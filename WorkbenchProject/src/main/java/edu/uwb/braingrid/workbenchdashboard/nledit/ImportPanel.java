@@ -2,14 +2,6 @@ package edu.uwb.braingrid.workbenchdashboard.nledit;
 
 import java.io.File;
 import java.io.IOException;
-
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-
-import edu.uwb.braingrid.general.FileSelectorDirMgr;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -19,22 +11,25 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
+import edu.uwb.braingrid.general.FileSelectorDirMgr;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
 
 public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
-    static final int nFields = 4; // number of input fields
-    static final int idxConfigFile = 0; // field index of configuration file
 
-    /**
-     * field index of inhibitory neurons list file
-     */
+    /** Number of input fields. */
+    public static final int nFields = 4;
+    /** Field index of configuration file. */
+    public static final int idxConfigFile = 0;
+    /** Field index of inhibitory neurons list file. */
     public static final int idxInhList = 1;
-    /**
-     * field index of active neurons list file
-     */
+    /** Field index of active neurons list file. */
     public static final int idxActList = 2;
-    /**
-     * field index of probed neurons list file
-     */
+    /** Field index of probed neurons list file. */
     public static final int idxPrbList = 3;
 
     private Label[] labels = new Label[nFields];

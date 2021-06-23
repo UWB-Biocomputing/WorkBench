@@ -8,17 +8,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Dialog for specifying a new project. This dialog is only responsible to
- * collect information from the user. All project construction continues within
- * the workbench control frame.
+ * Dialog for specifying a new project. This dialog is only responsible to collect information
+ * from the user. All project construction continues within the workbench control frame.
  *
  * @author Del Davis
  * @version 0.1
  */
 public class NewProjectDialog extends javax.swing.JDialog {
-    /**
-     * 
-     */
+
     private static final long serialVersionUID = 1L;
     private boolean isRunning = false;
     private Logger LOG = Logger.getLogger(NewProjectDialog.class.getName());
@@ -125,17 +122,16 @@ public class NewProjectDialog extends javax.swing.JDialog {
                         .addContainerGap()));
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
+    // </editor-fold>//GEN-END:initComponents
 
     /**
      * Validates the currently entered text from the project name field
      *
-     * Note: In order to be considered valid, the project name must also be a valid
-     * filename. This function relies on a static method of the
-     * edu.uwb.braingrid.provenance.ProvMgr class
+     * Note: In order to be considered valid, the project name must also be a valid filename. This
+     * function relies on a static method of the edu.uwb.braingrid.provenance.ProvMgr class.
      *
-     * @param evt
-     *            - The event that triggered this action
+     * @param evt  The event that triggered this action
      */
     private void newProjectNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_newProjectNameTextFieldKeyReleased
         /* Redirect to OK button action if enter key */
@@ -147,10 +143,9 @@ public class NewProjectDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_newProjectNameTextFieldKeyReleased
 
     /**
-     * Cancel the new project specification operation
+     * Cancel the new project specification operation.
      *
-     * @param evt
-     *            - The event that triggered this action (cancel button clicked)
+     * @param evt  The event that triggered this action (cancel button clicked)
      */
     private void newProjectCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newProjectCancelButtonActionPerformed
         isRunning = false;
@@ -158,10 +153,9 @@ public class NewProjectDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_newProjectCancelButtonActionPerformed
 
     /**
-     * Executes the specification of the new project
+     * Executes the specification of the new project.
      *
-     * @param evt
-     *            - The event that triggered this action
+     * @param evt  The event that triggered this action
      */
     private void newProjectOKButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newProjectOKButtonActionPerformed
         specifyNewProject();
@@ -185,11 +179,10 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Constructs and initializes this new project dialog
+     * Constructs and initializes this new project dialog.
      *
-     * @param modal
-     *            - True if the parent should be disabled while this dialog is open,
-     *            otherwise false
+     * @param modal  True if the parent should be disabled while this dialog is open,
+     *               otherwise false
      */
     public NewProjectDialog(boolean modal) {
         LOG.info("Opening New Project Dialog for Sim Starter");
@@ -202,7 +195,7 @@ public class NewProjectDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Centers this dialog
+     * Centers this dialog.
      */
     private void center() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -224,9 +217,8 @@ public class NewProjectDialog extends javax.swing.JDialog {
      * Note: This method relies on a static call to the ProvMgr class within the
      * ../../provenance/ package.
      *
-     * @param name
-     *            - A project name, and implicitly the basename for the resulting
-     *            provenance turtle file
+     * @param name  A project name, and implicitly the basename for the resulting
+     *              provenance turtle file
      * @return true if this project name is a valid file basename, otherwise false
      */
     private boolean validateNewProjectName() {
@@ -256,7 +248,7 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Getters">
     /**
-     * Provides the name of the new project
+     * Provides the name of the new project.
      *
      * @return The name of the new project
      */
@@ -265,20 +257,17 @@ public class NewProjectDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Indicates whether or not provenance support should be enabled for this
-     * project
+     * Indicates whether or not provenance support should be enabled for this project.
      *
-     * @return True if provenance support should be enabled for this project,
-     *         otherwise false
+     * @return True if provenance support should be enabled for this project, otherwise false
      */
     public boolean isProvEnabled() {
         return provenanceEnabledCheckbox.isSelected();
     }
 
     /**
-     * Indicates whether or not the user closed the dialog by selecting the OK
-     * option for creating a new project, or the Cancel option for canceling the
-     * operation
+     * Indicates whether or not the user closed the dialog by selecting the OK option for creating
+     * a new project, or the Cancel option for canceling the operation.
      *
      * @return True if the user selected OK, otherwise false
      */
@@ -289,13 +278,11 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Utility Functions">
     /**
-     * Performs a check on string representing a filename for adherence to Windows
-     * filename conventions. Windows need not be the platform that this function is
-     * concerned with, it just happens to have the most restrictions on filename
-     * characters
+     * Performs a check on string representing a filename for adherence to Windows filename
+     * conventions. Windows need not be the platform that this function is concerned with, it
+     * just happens to have the most restrictions on filename characters.
      *
-     * @param fileName
-     *            - string representing a filename
+     * @param fileName  String representing a filename
      * @return True if the filename specified was valid, False if not
      */
     private static boolean isValidFileName(String fileName) {

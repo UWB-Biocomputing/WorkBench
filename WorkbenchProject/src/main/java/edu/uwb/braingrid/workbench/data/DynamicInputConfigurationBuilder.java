@@ -16,13 +16,14 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * Builds the XML document used as input to a simulation
+ * Builds the XML document used as input to a simulation.
  *
  * @author Tom Wong
  */
-class DynamicInputConfigurationBuilder {
+public class DynamicInputConfigurationBuilder {
+
     /**
-     * Responsible for initializing members and constructing this builder
+     * Responsible for initializing members and constructing this builder.
      *
      * @throws ParserConfigurationException
      */
@@ -30,16 +31,17 @@ class DynamicInputConfigurationBuilder {
     }
 
     /**
-     * Writes the document representing this input configuration XML to disk
+     * Writes the document representing this input configuration XML to disk.
      *
+     * @param doc  Document representing the configuration
+     * @param filename  Name of the file to save the configuration to
      * @return The full path to the file that was persisted
      * @throws TransformerConfigurationException
      * @throws TransformerException
      * @throws java.io.IOException
      */
-    public String persist(Document aDoc, String filename)
-            throws TransformerConfigurationException, TransformerException,
-            IOException {
+    public String persist(Document doc, String filename) throws TransformerConfigurationException,
+            TransformerException, IOException {
         // create the file we want to save
         File file = new File(filename);
         // create any necessary non-existent directories
@@ -49,17 +51,15 @@ class DynamicInputConfigurationBuilder {
         Transformer t = TransformerFactory.newInstance().newTransformer();
         t.setOutputProperty(OutputKeys.INDENT, "yes");
         t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
-        t.transform(new DOMSource(aDoc), new StreamResult(file));
+        t.transform(new DOMSource(doc), new StreamResult(file));
         return filename;
     }
 
     /**
-     * Provides a new input configuration based on the content of an input
-     * configuration file.
+     * Provides a new input configuration based on the content of an input configuration file.
      *
-     * @param filename - Name of the file to read
-     * @return Input configuration representing the content of the specified
-     * file
+     * @param filename  Name of the file to read
+     * @return Input configuration representing the content of the specified file
      * @throws SAXException
      * @throws IOException
      * @throws ParserConfigurationException
@@ -68,10 +68,9 @@ class DynamicInputConfigurationBuilder {
             ParserConfigurationException {
         File file = new File(filename);
 
-        Document doc = DocumentBuilderFactory.newInstance().
-                newDocumentBuilder().parse(file);
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
         doc.getDocumentElement().normalize();
-        
+
         return new DynamicInputConfiguration(doc);
     }
 }

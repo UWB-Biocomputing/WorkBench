@@ -10,20 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import org.apache.jena.rdf.model.Resource;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
-import edu.uwb.braingrid.workbench.WorkbenchManager;
-import edu.uwb.braingrid.workbench.utils.DateTime;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
 import javafx.embed.swing.SwingNode;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -47,8 +33,23 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import org.apache.jena.rdf.model.Resource;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
+import edu.uwb.braingrid.workbench.WorkbenchManager;
+import edu.uwb.braingrid.workbench.utils.DateTime;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
 
 public class NLedit extends WorkbenchApp {
+
     private static final Logger LOG = Logger.getLogger(NLedit.class.getName());
 
     private BorderPane bp_ = new BorderPane();
@@ -96,12 +97,12 @@ public class NLedit extends WorkbenchApp {
     }
 
     /**
-     * The public function getNeuronType returns the current edit mode, which is
-     * called from LayoutPanel.
+     * The public function getNeuronType returns the current edit mode, which is called from
+     * LayoutPanel.
      *
-     * @return Current edit mode: LayoutPanel.INH - inhibitory neurons edit mode.
-     *         LayoutPanel.ACT - active neurons edit mode. LayoutPanel.PRB - probed
-     *         neurons edit mode.
+     * @return Current edit mode: LayoutPanel.INH - inhibitory neurons edit mode
+     *                            LayoutPanel.ACT - active neurons edit mode
+     *                            LayoutPanel.PRB - probed neurons edit mode
      */
     public int getNeuronType() {
         if (inhNItem.isSelected()) {
@@ -128,7 +129,6 @@ public class NLedit extends WorkbenchApp {
     }
 
     private void initToolbar() {
-
         primeButton(clear_item_btn_, "/icons/baseline-clear-black-18/1x/baseline_clear_black_18dp.png",
                 "Clear Neurons");
         clear_item_btn_.getStyleClass().add("clear-button");
@@ -170,7 +170,6 @@ public class NLedit extends WorkbenchApp {
         sdat_item_btn_.setOnAction(event -> {
             actionStatisticalData();
         });
-
         
         HBox toolbar = new HBox(bcell_item_btn_, scell_item_btn_, print_item_btn_, sdat_item_btn_, import_item_btn_, export_item_btn_, clear_item_btn_);
 
@@ -203,7 +202,6 @@ public class NLedit extends WorkbenchApp {
         TextField txtfld_x = new TextField("10");
         TextField txtfld_y = new TextField("10");
 
-    
         Button btn_submit = new Button("Submit");
         btn_submit.setOnAction(event -> {
             int sizeX = 0, sizeY = 0;
@@ -244,9 +242,8 @@ public class NLedit extends WorkbenchApp {
                     txtfld_y.setStyle("-fx-text-fill: red;");
                 }
             }
-
         });
-        
+
         gpat_item_btn_.setOnAction(event -> {
             actionGeneratePattern();
         });
@@ -254,7 +251,6 @@ public class NLedit extends WorkbenchApp {
         aprb_item_btn_.setOnAction(event -> {
             actionArrangeProbes();
         });
-        
 
         toggle_group = new ToggleGroup();
 
@@ -270,8 +266,7 @@ public class NLedit extends WorkbenchApp {
         HBox hbox_resize = new HBox(hbox_sizeX, hbox_sizeY, btn_submit);
         hbox_resize.setSpacing(10);
 
-        HBox hbox_left = new HBox(hbox_resize, newButton, rptButton,
-        altButton);
+        HBox hbox_left = new HBox(hbox_resize, newButton, rptButton, altButton);
         hbox_left.setSpacing(20);
 
         HBox hbox_bottom = new HBox(hbox_left, hbox_patternGen);
@@ -342,15 +337,12 @@ public class NLedit extends WorkbenchApp {
     }
 
     /**
-     * The function readNeuronListFromFile reads neurons list from the file
-     * specified by nameNListFile and stores neurons index in list.
+     * The function readNeuronListFromFile reads neurons list from the file specified by
+     * nameNListFile and stores neurons index in list.
      *
-     * @param nameNListFile
-     *            file path of the neurons list (xml format).
-     * @param list
-     *            array list to store neurons index.
-     * @param type
-     *            type of neurons.
+     * @param nameNListFile  file path of the neurons list (xml format)
+     * @param list  array list to store neurons index
+     * @param type  type of neurons
      */
     private void readNeuronListFromFile(String nameNListFile, ArrayList<Integer> list, int type) {
         if (nameNListFile == null || nameNListFile.length() == 0) {
@@ -505,15 +497,11 @@ public class NLedit extends WorkbenchApp {
     }
 
     /**
-     * The function writeNeuronListToFile creates a neurons list file specified by
-     * list and type.
+     * The function writeNeuronListToFile creates a neurons list file specified by list and type.
      *
-     * @param nameNListFile
-     *            file path of the neurons list.
-     * @param list
-     *            array list of neurons index.
-     * @param type
-     *            type of neurons.
+     * @param nameNListFile  File path of the neurons list
+     * @param list  Array list of neurons index
+     * @param type  Type of neurons
      */
     private void writeNeuronListToFile(String nameNListFile, ArrayList<Integer> list, int type) {
         if (nameNListFile == null || nameNListFile.length() == 0) {
@@ -553,7 +541,6 @@ public class NLedit extends WorkbenchApp {
      */
     private void actionBiggerCells() {
         layoutPanel.changeCellSize(true);
-
     }
 
     /**
@@ -602,17 +589,14 @@ public class NLedit extends WorkbenchApp {
         }
         // System.out.println("Default");
         changeLayoutSize(new Dimension(sizeX, sizeY), rtype);
-
     }
 
     /**
-     * The function changeLayoutSize generates new neurons lists of inhNList,
-     * activeNList, and activeNList, and changes the size of the layout panel.
+     * The function changeLayoutSize generates new neurons lists of inhNList, activeNList, and
+     * activeNList, and changes the size of the layout panel.
      *
-     * @param newSize
-     *            size for the new layout panel.
-     * @param rtype
-     *            repeat type, CLEAR, REPEAT, or ALT.
+     * @param newSize  Size for the new layout panel
+     * @param rtype  Repeat type, CLEAR, REPEAT, or ALT
      */
     private void changeLayoutSize(Dimension newSize, RepType rtype) {
         neurons_layout_.inhNList = nl_sim_util_.repPattern(newSize, neurons_layout_.inhNList, rtype);
@@ -706,7 +690,7 @@ public class NLedit extends WorkbenchApp {
             @Override
             public void handle(MouseEvent e) {
                 try {
-                    int numProbes = Integer.parseInt(myPanel.tfield.getText());
+                    int numProbes = Integer.parseInt(myPanel.getTField().getText());
 
                     // validate number
                     Dimension dim = layoutPanel.getLayoutSize();
@@ -723,7 +707,6 @@ public class NLedit extends WorkbenchApp {
                 } catch (NumberFormatException ne) {
                     JOptionPane.showMessageDialog(null, "Invalid number.");
                 }
-
             }
         });
         no.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {

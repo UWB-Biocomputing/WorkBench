@@ -1,13 +1,14 @@
 package edu.uwb.braingrid.workbench.ui;
 
-import edu.uwb.braingrid.provenance.ProvMgr;
-import edu.uwb.braingrid.provenance.model.ProvOntology;
-import edu.uwb.braingrid.provenance.model.ProvenanceStatement;
-import edu.uwb.braingrid.workbench.utils.DateTime;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.uwb.braingrid.provenance.ProvMgr;
+import edu.uwb.braingrid.provenance.model.ProvOntology;
+import edu.uwb.braingrid.provenance.model.ProvenanceStatement;
+import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
  * ToDo
@@ -15,11 +16,8 @@ import java.util.List;
  * @author Nathan Duncan
  */
 public class ProvenanceQueryDialog extends javax.swing.JDialog {
-    // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
 
-    /**
-     * 
-     */
+    // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings("unchecked")
@@ -41,7 +39,7 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
         setTitle("Provenance Query");
         setMinimumSize(new java.awt.Dimension(500, 200));
 
-        predicateComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
+        predicateComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"None"}));
         predicateComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 predicateComboBoxActionPerformed(evt);
@@ -210,13 +208,13 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
     List<String> predicateFullURIs = new ArrayList<>();
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Construction"> 
+    // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Constructs and initializes this provenance query dialog
+     * Constructs and initializes this provenance query dialog.
      *
-     * @param modal - True if the parent should be disabled while this dialog is
-     * open, otherwise false
-     * @param provManager - The provenance manager for the workbench
+     * @param modal  True if the parent should be disabled while this dialog is open,
+     *               otherwise false
+     * @param provManager The provenance manager for the workbench
      */
     public ProvenanceQueryDialog(boolean modal, ProvMgr provManager) {
         provMgr = provManager;
@@ -232,8 +230,7 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
         predicateFullURIs.add("");
         for (String predicate : provMgr.getPredicates()) {
             predicateFullURIs.add(predicate);
-            predicateComboBox.addItem(ProvOntology.translatePredicate(predicate,
-                    false));
+            predicateComboBox.addItem(ProvOntology.translatePredicate(predicate, false));
         }
     }
 
@@ -256,13 +253,11 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Utility">
     private void enableSearchButton() {
-        searchButton.setEnabled(isSubjectValid() || isPredicateValid()
-                || isObjectValid());
+        searchButton.setEnabled(isSubjectValid() || isPredicateValid() || isObjectValid());
     }
 
     private boolean isSubjectValid() {
-        if (subjectTextField.getText() != null
-                && !subjectTextField.getText().equals("")) {
+        if (subjectTextField.getText() != null && !subjectTextField.getText().equals("")) {
             return true;
         } else {
             return false;

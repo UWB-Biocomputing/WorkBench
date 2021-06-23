@@ -14,34 +14,33 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 /**
- * The ExportPanel class handles export xml neurons list files dialog window.
- * The window contains three input fields and Browse buttons, each of which
- * corresponds width four different kinds of files, inhibitory neuron list,
- * active neuron list, and probed neuron list files.
- * 
+ * The ExportPanel class handles export xml neurons list files dialog window. The window contains
+ * three input fields and Browse buttons, each of which corresponds width four different kinds of
+ * files, inhibitory neuron list, active neuron list, and probed neuron list files.
+ *
  * @author Fumitaka Kawasaki
  * @version 1.2
  */
 public class ExportPanel extends Pane implements EventHandler<javafx.event.ActionEvent> {
+
     private Label[] labels = new Label[3];
     public TextField[] tfields = new TextField[3];
     private Button[] btns = new Button[3];
 //    private static String nlistDir = "."; // directory for neurons list file
 
-    static final int nFields = 3; // number of input fields
-    /** field index of inhibitory neurons list file */
+    /** Number of input fields. */
+    public static final int nFields = 3;
+    /** Field index of inhibitory neurons list file. */
     public static final int idxInhList = 0;
-    /** field index of active neurons list file */
+    /** Field index of active neurons list file. */
     public static final int idxActList = 1;
-    /** field index of probed neurons list file */
+    /** Field index of probed neurons list file. */
     public static final int idxPrbList = 2;
 
     /**
-     * A class constructor, which creates UI components, and registers action
-     * listener.
-     * 
-     * @param dir
-     *            directory for neurons list file
+     * A class constructor, which creates UI components, and registers action listener.
+     *
+     * @param dir  directory for neurons list file
      */
     public ExportPanel(String dir) {
         GridPane gp = new GridPane();
@@ -69,7 +68,7 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
     }
 
     FileSelectorDirMgr filemgr = new FileSelectorDirMgr();
-    
+
     @Override
     public void handle(javafx.event.ActionEvent arg0) {
         int iSource = 0;
@@ -80,14 +79,13 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
             }
         }
         // create a file chooser
-        
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(filemgr.getLastDir());
         chooser.setTitle("Save File");
 
         ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "xml");
         chooser.setSelectedExtensionFilter(filter);
-        
+
 //        String dialogTitle = "";
         switch (iSource) {
         case idxInhList:
@@ -105,9 +103,8 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
         }
 
         File option = chooser.showSaveDialog(WorkbenchDashboard.primaryStage_);
-        
-        if (option != null) {
 
+        if (option != null) {
             tfields[iSource].setText(option.getAbsolutePath());
 //            nlistDir = option.getParent();
             filemgr.add(option.getParentFile());

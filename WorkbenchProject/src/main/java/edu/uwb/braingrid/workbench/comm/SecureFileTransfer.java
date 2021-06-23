@@ -15,23 +15,22 @@ import java.io.InputStream;
 import java.util.Date;
 
 /**
- * Provides abbreviated SSF/FTP functionality. This includes
- * uploading/downloading files and execution of commands on a remote machine.
+ * Provides abbreviated SSF/FTP functionality. This includes uploading/downloading files and
+ * execution of commands on a remote machine.
  *
  * Created by Nathan on 7/27/2014.
  */
 public class SecureFileTransfer {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
-    private final int port = 22;
+    private static final int PORT = 22;
+    private static final int BUFFER_SIZE = 1024;
     private Session session;
-    private final int BUFFER_SIZE = 1024;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Responsible for initialization of members and construction of
-     * SecureFileTransfer objects
+     * Responsible for initialization of members and construction of SecureFileTransfer objects.
      */
     public SecureFileTransfer() {
         session = null;
@@ -42,12 +41,12 @@ public class SecureFileTransfer {
     /**
      * Tests for the availability of an SFTP connection with a remote host.
      *
-     * @param timeOut - The amount of time, in milliseconds, to wait for the
-     * connection to be established. Setting this value less than zero will
-     * result in connect being called without a timeout
-     * @param hostname - The name of the host machine to connect to
-     * @param username - The user's login username
-     * @param password - The user's login password
+     * @param timeOut  The amount of time, in milliseconds, to wait for the connection to be
+     *                 established. Setting this value less than zero will result in connect
+     *                 being called without a timeout
+     * @param hostname  The name of the host machine to connect to
+     * @param username  The user's login username
+     * @param password  The user's login password
      * @return True if the connection succeeded, otherwise false
      */
     public boolean testConnection(int timeOut, String hostname, String username, char[] password) {
@@ -56,7 +55,7 @@ public class SecureFileTransfer {
             JSch jsch = new JSch();
 
             // apply user info to connection attempt
-            session = jsch.getSession(username, hostname, port);
+            session = jsch.getSession(username, hostname, PORT);
             session.setPassword(String.valueOf(password));
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
@@ -81,29 +80,24 @@ public class SecureFileTransfer {
     /**
      * Uploads a file to a specified directory on a remote machine.
      *
-     * @param fileToUpload
-     * @param remoteDirectory - the folder on the remote machine where the file
-     * should be uploaded. This is a path relative to the root connection
-     * directory for the user. On Linux systems this is the user's home folder
-     * (a.k.a ~/)
-     * @param hostname - The name of the host machine to connect to
-     * @param username - The user's login username
-     * @param password - The user's login password
-     * @param progressMonitor - An optional handler for progress reporting on
-     * the upload operation
+     * @param fileToUpload  The file to be uploaded
+     * @param remoteDirectory  The folder on the remote machine where the file should be uploaded.
+     *                         This is a path relative to the root connection directory for the
+     *                         user. On Linux systems this is the user's home folder (a.k.a ~/).
+     * @param hostname  The name of the host machine to connect to
+     * @param username  The user's login username
+     * @param password  The user's login password
+     * @param progressMonitor  An optional handler for progress reporting on the upload operation
      * @return True if the upload succeeded, otherwise false
-     * @throws JSchException
-     * @throws FileNotFoundException
-     * @throws SftpException
      */
-    public boolean uploadFile(String fileToUpload, String remoteDirectory,
-            String hostname, String username, char[] password,
-            SftpProgressMonitor progressMonitor) throws JSchException, FileNotFoundException, SftpException {
+    public boolean uploadFile(String fileToUpload, String remoteDirectory, String hostname, String username,
+            char[] password, SftpProgressMonitor progressMonitor) throws JSchException, FileNotFoundException,
+            SftpException {
         boolean success = true;
         try {
             JSch jsch = new JSch();
             // apply user info to connection attempt
-            session = jsch.getSession(username, hostname, port);
+            session = jsch.getSession(username, hostname, PORT);
             session.setPassword(String.valueOf(password));
             // generic setting up
             java.util.Properties config = new java.util.Properties();
@@ -119,8 +113,7 @@ public class SecureFileTransfer {
                     if (progressMonitor != null) {
                         channelSftp.put(new FileInputStream(f), f.getName(), progressMonitor, ChannelSftp.OVERWRITE);
                     } else {
-                        channelSftp.put(new FileInputStream(f), f.getName(),
-                                ChannelSftp.OVERWRITE);
+                        channelSftp.put(new FileInputStream(f), f.getName(), ChannelSftp.OVERWRITE);
                     }
                 } else {
                     success = false;
@@ -143,27 +136,22 @@ public class SecureFileTransfer {
     /**
      * Downloads a specified file from the remote machine.
      *
-     * @param remoteFilePath - The full path to the file on the remote machine.
-     * This is a path (including the file name) relative to the root connection
-     * directory for the user.
-     * @param localFilePath - The location on the local machine where the file
-     * should be written to
-     * @param hostname - The name of the host machine to connect to
-     * @param username - The user's login username
-     * @param password - The user's login password
+     * @param remoteFilePath  The full path to the file on the remote machine. This is a path
+     *                        (including the file name) relative to the root connection directory
+     *                        for the user.
+     * @param localFilePath  The location on the local machine where the file should be written to
+     * @param hostname  The name of the host machine to connect to
+     * @param username  The user's login username
+     * @param password  The user's login password
      * @return True if the file was downloaded successfully, otherwise false
-     * @throws JSchException
-     * @throws SftpException
      */
-    public boolean downloadFile(String remoteFilePath,
-            String localFilePath, String hostname, String username,
+    public boolean downloadFile(String remoteFilePath, String localFilePath, String hostname, String username,
             char[] password) throws JSchException, SftpException {
         boolean success = true;
-
         try {
             JSch jsch = new JSch();
             // apply user info to connection attempt
-            session = jsch.getSession(username, hostname, port);
+            session = jsch.getSession(username, hostname, PORT);
             session.setPassword(String.valueOf(password));
             // generic setting up
             java.util.Properties config = new java.util.Properties();
@@ -189,24 +177,25 @@ public class SecureFileTransfer {
     /**
      * Executes a command on the remote machine.
      *
-     * @param command - The command to execute on the remote machine.
-     * @param hostname - The name of the host machine to connect to
-     * @param username - The user's login username
-     * @param password - The user's login password
-     * @param readInputStream - Determines whether the result of the execution
-     * should be read. If the command is executed through nohup, it is possible
-     * to disconnect and leave the command running in the background. If this is
-     * set to true, the command will be executed synchronously from the
-     * viewpoint of the local machine, regardless of whether it was executed
-     * through nohup.
+     * @param command  The command to execute on the remote machine
+     * @param hostname  The name of the host machine to connect to
+     * @param username  The user's login username
+     * @param password  The user's login password
+     * @param readInputStream  Determines whether the result of the execution should be read. If
+     *                         the command is executed through nohup, it is possible to disconnect
+     *                         and leave the command running in the background. If this is set to
+     *                         true, the command will be executed synchronously from the viewpoint
+     *                         of the local machine, regardless of whether it was executed through
+     *                         nohup.
      * @return True if the command was executed successfully, otherwise false
      */
-    public boolean executeCommand(String command, String hostname, String username, char[] password, boolean readInputStream) {
+    public boolean executeCommand(String command, String hostname, String username, char[] password,
+            boolean readInputStream) {
         boolean success = false;
         try {
             JSch jsch = new JSch();
             // apply user info to connection attempt
-            session = jsch.getSession(username, hostname, port);
+            session = jsch.getSession(username, hostname, PORT);
             session.setPassword(String.valueOf(password));
             // generic setting up
             java.util.Properties config = new java.util.Properties();

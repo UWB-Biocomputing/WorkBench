@@ -4,24 +4,8 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import java.io.File;
 import java.io.IOException;
-
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -42,17 +26,32 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-/*
- * The GPatternPanel class handles generate pattern dialog window.
- * The dialog window contains two radio buttons to choose distribution patern,
- * random or regular, and two input fields to enter ratio of inhibitory, 
- * and active neurons.
- * 
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
+
+/**
+ * The GPatternPanel class handles generate pattern dialog window. The dialog window contains two
+ * radio buttons to choose distribution patern, random or regular, and two input fields to enter
+ * ratio of inhibitory, and active neurons.
+ *
  * @author Fumitaka Kawasaki
  * @version 1.2
  */
 @SuppressWarnings({ "unused" })
 public class GPatternPanel extends Pane {
+
     public RadioButton[] btns = new RadioButton[2];
     private Label[] labels = new Label[2];
     public TextField[] tfields = new TextField[2];
@@ -63,17 +62,12 @@ public class GPatternPanel extends Pane {
     public static final int idxACT = 1;
 
     public GPatternPanel() {
-        
-        String radio_style =
-        "-fx-display:inline-block;" +
-        "-fx-padding: 0 0 20 0;" ;
-        
-        String lbl_style =
-        "-fx-display:inline-block;";
 
-        String tfield_style =
-        "-fx-display:inline-block;";
+        String radio_style = "-fx-display:inline-block;" + "-fx-padding: 0 0 20 0;";
 
+        String lbl_style = "-fx-display:inline-block;";
+
+        String tfield_style = "-fx-display:inline-block;";
 
         ToggleGroup bgroup = new ToggleGroup();
         btns[idxREG] = new RadioButton("Regular pattern");
@@ -83,7 +77,7 @@ public class GPatternPanel extends Pane {
         VBox vb_radio_btns = new VBox(btns[idxREG], btns[idxRND]);
         vb_radio_btns.setStyle(radio_style);
         btns[idxREG].setSelected(true);
-        
+
         tfields[idxINH] = new TextField();
         labels[idxINH] = new Label("Inhibitory neurons ratio:");
         tfields[idxACT] = new TextField();
@@ -98,8 +92,6 @@ public class GPatternPanel extends Pane {
         VBox allItems = new VBox( vb_radio_btns, instruc, lbl_tfield);
         allItems.setStyle("-fx-padding: 20 0 20 20");
 
-
         getChildren().add(allItems);
-        
     }
 }

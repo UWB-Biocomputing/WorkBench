@@ -1,16 +1,13 @@
 package edu.uwb.braingrid.workbench.provvisualizer.controller;
 
-import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
-import edu.uwb.braingrid.workbench.provvisualizer.utility.ConnectionUtility;
-import edu.uwb.braingrid.workbench.provvisualizer.utility.FileUtility;
-import edu.uwb.braingrid.workbench.provvisualizer.utility.ProvUtility;
-import edu.uwb.braingrid.workbench.provvisualizer.controller.AuthenticationController;
-import edu.uwb.braingrid.workbench.provvisualizer.controller.TextComparisonController;
-import edu.uwb.braingrid.workbench.provvisualizer.factory.EdgeFactory;
-import edu.uwb.braingrid.workbench.provvisualizer.factory.NodeFactory;
-import edu.uwb.braingrid.workbench.provvisualizer.model.*;
-import edu.uwb.braingrid.workbench.provvisualizer.view.VisCanvas;
-import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Scanner;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -32,8 +29,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
@@ -41,24 +36,29 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.Scanner;
+import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
+import edu.uwb.braingrid.workbench.provvisualizer.utility.ConnectionUtility;
+import edu.uwb.braingrid.workbench.provvisualizer.utility.FileUtility;
+import edu.uwb.braingrid.workbench.provvisualizer.utility.ProvUtility;
+import edu.uwb.braingrid.workbench.provvisualizer.controller.AuthenticationController;
+import edu.uwb.braingrid.workbench.provvisualizer.controller.TextComparisonController;
+import edu.uwb.braingrid.workbench.provvisualizer.factory.EdgeFactory;
+import edu.uwb.braingrid.workbench.provvisualizer.factory.NodeFactory;
+import edu.uwb.braingrid.workbench.provvisualizer.model.*;
+import edu.uwb.braingrid.workbench.provvisualizer.view.VisCanvas;
+import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
+
 /**
-* Class contains the functionality of ProVis nodes, toggles, buttons, and updates textfields in control panel
-*
-* @author Tom Wong, Joseph Conquest, and unIdentified contributor
-* @version 1.2.2
-*/
+ * Class contains the functionality of ProVis nodes, toggles, buttons, and updates textfields in
+ * control panel.
+ *
+ * @author Tom Wong, Joseph Conquest, and unidentified contributor
+ * @version 1.2.2
+ */
 public class ProVisCtrl {
+
     private Graph dataProvGraph;
-    private LinkedHashMap<String, AuthenticationInfo> authInfoCache = new LinkedHashMap<String, AuthenticationInfo>(5,
-            (float) 0.75, true);
+    private LinkedHashMap<String, AuthenticationInfo> authInfoCache = new LinkedHashMap<>(5, (float) 0.75, true);
     private ProVis proVis_;
     private Model provModel;
     private AnimationTimer timer;
@@ -91,20 +91,20 @@ public class ProVisCtrl {
     private TextField activeTextField;
     private TextField inhibitoryTextField;
     private TextField bGVersionTextField;
-    
+
     private SimStartWiz simStartWiz;
     private boolean buildModeON = false;
     private String bGVersionSelected;
     String simSpecifications = null;
-    HashMap<Character, String> nListPresets = new HashMap<Character, String>();
-    
-    private static Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
+    HashMap<Character, String> nListPresets = new HashMap<>();
 
-    public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider, ToggleSwitch stopForces,
-            ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModetggl, 
-            Button importFileBtn, Button chooseFileBtn, TextField inputTextField, TextField probedTextField, 
-            TextField activeTextField, TextField inhibitoryTextField, TextField bGVersionTextField, Button clearPresetsButton,
-            Button buildFromPrevButton) {
+    private static final Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
+
+    public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider,
+            ToggleSwitch stopForces, ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend,
+            ToggleSwitch builderModetggl, Button importFileBtn, Button chooseFileBtn, TextField inputTextField,
+            TextField probedTextField, TextField activeTextField, TextField inhibitoryTextField,
+            TextField bGVersionTextField, Button clearPresetsButton, Button buildFromPrevButton) {
         this.proVis_ = proVis;
         this.visCanvas = visCanvas;
         this.canvasPane = canvasPane;
@@ -196,13 +196,11 @@ public class ProVisCtrl {
             public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
                 if (new_val) {
                     buildModeON = true;
-                } 
-                else if (old_val){
+                } else if (old_val) {
                     buildModeON = false;
                     enableBuildButton(false);
                     clearBuildControlDisplay();
                 }
-
             }
         });
 
@@ -227,7 +225,7 @@ public class ProVisCtrl {
                 }
             }
         });
-        
+
         importFileBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -238,7 +236,7 @@ public class ProVisCtrl {
                 openUniversalProvenance();
             }
         });
-        
+
         clearPresetsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -248,7 +246,7 @@ public class ProVisCtrl {
                 nListPresets.clear();
             }
         });
-        
+
         buildFromPrevButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -291,7 +289,7 @@ public class ProVisCtrl {
                 if (event.isPrimaryButtonDown()) {
                     draggedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
                             event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
-                    pressedXY = new double[] { event.getX() / zoomRatio, event.getY() / zoomRatio };
+                    pressedXY = new double[] {event.getX() / zoomRatio, event.getY() / zoomRatio};
 
                     if (draggedNode == null) {
                         displayWindowLocationTmp = displayWindowLocation.clone();
@@ -311,16 +309,15 @@ public class ProVisCtrl {
                         if (edge != null) {
                             dataProvGraph.addOrRemoveDispRelationship(edge);
                         }
-                        
-                        if(buildModeON) {
+
+                        if (buildModeON) {
                             selectedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
                             event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
-                            if(selectedNode != null) {
+                            if (selectedNode != null) {
                                 prepBuildInputParams(selectedNode);
                             }
                         }
-                    }
-                    else if (event.getClickCount() == 2) {
+                    } else if (event.getClickCount() == 2) {
                         dataProvGraph.clearAllIdsRelationships();
                     }
                 }
@@ -530,8 +527,9 @@ public class ProVisCtrl {
 
         while (iter.hasNext()) {
             stmt = iter.nextStatement();
-            if (stmt.getSubject().toString().contains("local:"))
+            if (stmt.getSubject().toString().contains("local:")) {
                 continue;
+            }
             String predicateStr = stmt.getPredicate().toString();
             if (predicateStr.equals(ProvUtility.RDF_TYPE)) {
                 String subjectStr = stmt.getSubject().toString();
@@ -652,55 +650,52 @@ public class ProVisCtrl {
         dataProvGraph.generateCommitRelationships(visCanvas.getWidth(), visCanvas.getHeight());
         dataProvGraph.setNeighbors();
     }
-    
+
     /**
-    * enables/disables  Build from Previous buttons
-    * enables when bool enable = true. occurs with builder mode toggle on and single 
-    * click by user on node. Disable occurs when builder mode is toggled off
-    */
+     * Enables or disables Build from Previous buttons. Enable occurs when builder mode is toggled
+     * on, and Disable occurs when builder mode is toggled off by user.
+     *
+     * @param enable  true if builder mode is toggled on, false otherwise
+     */
     private void enableBuildButton(boolean enable) {
         buildFromPrevButton.setDisable(!enable);
         clearPresetsButton.setDisable(!enable);
     }
-    
+
     /**
-    * Populates textfields in builder control given node input selected by user.
-    * Sets up necessary information for builder action to occur
-    */
+     * Populates textfields in builder control given node input selected by user. Sets up necessary
+     * information for builder action to occur.
+     */
     private void prepBuildInputParams(Node selectedNode) {
-        
         if (selectedNode instanceof ActivityNode) {
             ArrayList<Node> neighbors = selectedNode.getNeighborNodes();
             for(Node neighbor : neighbors) {
                 prepBuildInputParams(neighbor);
             }
-        }
-        else if (selectedNode instanceof AgentNode) {
+        } else if (selectedNode instanceof AgentNode) {
             ArrayList<Node> neighbors = selectedNode.getNeighborNodes();
             for(Node neighbor : neighbors) {
                 if(neighbor instanceof CommitNode) {
                     prepBuildInputParams(neighbor);
                     return;
                 }
-            }            
-        }
-        else if (selectedNode instanceof EntityNode) {
+            }
+        } else if (selectedNode instanceof EntityNode) {
             parseEntityNodeFile(selectedNode);
-        }
-        else if (selectedNode instanceof CommitNode) {
+        } else if (selectedNode instanceof CommitNode) {
             bGVersionTextField.appendText(selectedNode.getDisplayId());
             bGVersionSelected = selectedNode.getDisplayId();
             buildFromPrevButton.setDisable(false);
-        }
-        else {//System.out.println("No Node type detected");
+        } else {
+            //System.out.println("No Node type detected");
             return;
         }
         clearPresetsButton.setDisable(false);
     }
-    
+
     /**
-    * Clears the textfields for all selected node information for builder input
-    */
+     * Clears the textfields for all selected node information for builder input.
+     */
     private void clearBuildControlDisplay() {
         inputTextField.clear();
         probedTextField.clear();
@@ -708,43 +703,42 @@ public class ProVisCtrl {
         inhibitoryTextField.clear();
         bGVersionTextField.clear();
     }
-    
+
     /**
-    * check if the files exist in local file system
-    * download the files if they are not in the file system.
-    * call loadFile if success in opening
-    * returns true if successful loadFile completion
-    */
+     * Check if the files exist in local file system.
+     * Download the files if they are not in the file system.
+     * Call loadFile if success in opening.
+     *
+     * @return True if successful loadFile completion, otherwise false
+     */
     private boolean parseEntityNodeFile(Node selectedNode) {
         boolean selectedNodeFileReady = false;
         char typeOfNode = 'N';
-        if(selectedNode == null) return false;
+        if (selectedNode == null) return false;
         
         selectedNodeFileReady = checkIfNodeFileExists(selectedNode);
         if (!selectedNodeFileReady) {
             selectedNodeFileReady = downloadNodeFile(selectedNode);
         }
-        if(selectedNodeFileReady) {
+        if (selectedNodeFileReady) {
             typeOfNode = loadFile(FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
         }
-        
-        if(typeOfNode == 'N') return false;
-        else if(typeOfNode == 'S') {
+
+        if (typeOfNode == 'N') {
+            return false;
+        } else if (typeOfNode == 'S') {
             inputTextField.clear();
             inputTextField.appendText(selectedNode.getDisplayId());
             simSpecifications = FileUtility.getNodeFileLocalAbsolutePath(selectedNode);
-        }
-        else if(typeOfNode == 'I') {
+        } else if(typeOfNode == 'I') {
             inhibitoryTextField.clear();
             inhibitoryTextField.appendText(selectedNode.getDisplayId());
             setNLEditforBuild(typeOfNode, selectedNode);
-        }
-        else if(typeOfNode == 'A') {
+        } else if(typeOfNode == 'A') {
             activeTextField.clear();
             activeTextField.appendText(selectedNode.getDisplayId());
             setNLEditforBuild(typeOfNode, selectedNode);
-        }
-        else if(typeOfNode == 'P') {
+        } else if(typeOfNode == 'P') {
             probedTextField.clear();
             probedTextField.appendText(selectedNode.getDisplayId());
             setNLEditforBuild(typeOfNode, selectedNode);
@@ -752,11 +746,11 @@ public class ProVisCtrl {
         buildFromPrevButton.setDisable(false);
         return true;
     }
-    
+
     /**
-    * Returns char N for failure, A = Active, I = inhibitory, P = probed, S = Sim Input
-    */ 
-    private char loadFile(String filePath){
+     * Returns char N for failure, A = Active, I = inhibitory, P = probed, S = Sim Input.
+     */
+    private char loadFile(String filePath) {
         Scanner in = null;
         try {
             in= new Scanner(new File(filePath));
@@ -768,44 +762,40 @@ public class ProVisCtrl {
         in.useDelimiter("\\A");
         in.nextLine();
         String inputFromSelected = in.nextLine();
-        String determineType = inputFromSelected.substring(0,3);
-        if(determineType.equals("<A>")){
+        String determineType = inputFromSelected.substring(0, 3);
+        if (determineType.equals("<A>")) {
             return 'A';
-        }
-        else if(determineType.equals("<I>")){
+        } else if(determineType.equals("<I>")) {
             return 'I';
-        }
-        else if(determineType.equals("<P>")){
+        } else if(determineType.equals("<P>")) {
             return 'P';
-        }
-        else if(determineType.equals("<!-")) {
+        } else if(determineType.equals("<!-")) {
             //Do nothing, this is a ouput file
-        }
-        else { // simulation input file
+        } else { // simulation input file
             return 'S';
         }
         return 'N';
     }
-    
+
     /**
-    * adds NList inputs selected by user to simStartWiz called by buildFromPrevButton
-    */
+     * Adds NList inputs selected by user to simStartWiz called by buildFromPrevButton.
+     */
     private void setNLEditforBuild(char inputType, Node inputNode) {
         nListPresets.put(inputType, FileUtility.getNodeFileLocalAbsolutePath(inputNode));
     }
-    
+
     /**
-    * open universalProvenance.ttl in projects dir if exists
-    * display universalProvenance on ProVis
-    */
+     * Open universalProvenance.ttl in projects dir if exists.
+     * Display universalProvenance on ProVis.
+     */
     public void openUniversalProvenance() {
         File universalProvenance = null;
-        universalProvenance = new File(System.getProperty("user.dir") + File.separator + "projects" + File.separator + "UniversalProvenance.ttl");
+        universalProvenance = new File(System.getProperty("user.dir") + File.separator + "projects" + File.separator
+                + "UniversalProvenance.ttl");
         if (universalProvenance != null) {
             dataProvGraph.clearNodesNEdges();
             initNodeEdge(universalProvenance.getAbsolutePath());
             proVis_.setTitle(universalProvenance.getName());
         }
     }
-
 }

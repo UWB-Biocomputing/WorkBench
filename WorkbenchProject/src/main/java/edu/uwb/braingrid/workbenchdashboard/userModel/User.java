@@ -1,32 +1,27 @@
-/**
- * 
- */
 package edu.uwb.braingrid.workbenchdashboard.userModel;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.FileManagerShared;
 import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
 
 /**
- * @author Max
  *
+ * @author Max
  */
 public class User implements FileManagerShared {
-    
+
     public static User user = new User();
 
-    
     private User() {
         
     }
-    
+
     private static void initUser() {
         LOG.info("Initializing User Data");
         User.user.setRootDir(System.getProperty("user.dir"));
@@ -34,13 +29,13 @@ public class User implements FileManagerShared {
         User.user.setHomeDir(System.getProperty("user.home"));
         save();
     }
-    
+
     public static boolean load() {
         LOG.info("Loading User Information");
         ObjectMapper mapper = new ObjectMapper();
         File file = new File(USER_DATA_PATH);
         JsonNode json = null;
-        if(file.exists()) {
+        if (file.exists()) {
             try {
                 json = mapper.readTree(file);
                 User.user = mapper.readValue(new File(User.USER_DATA_PATH), User.class);
@@ -57,7 +52,7 @@ public class User implements FileManagerShared {
         LOG.info("User info loaded: "  + json.toString());
         return true;
     }
-    
+
     public static boolean save() {
         LOG.info("Saving User Data");
         ObjectMapper mapper = new ObjectMapper();
@@ -70,7 +65,7 @@ public class User implements FileManagerShared {
         }
         return true;
     }
-    
+
     public String getRootDir() {
         return this.rootDir;
     }
@@ -87,7 +82,6 @@ public class User implements FileManagerShared {
         FileManager.setBrainGridRepoDirectory(brainGridRepoDirectory);
         this.brainGridRepoDirectory = brainGridRepoDirectory;
     }
-    
 
     public String getHomeDir() {
         return homeDir;
@@ -96,8 +90,6 @@ public class User implements FileManagerShared {
     public void setHomeDir(String homeDir) {
         this.homeDir = homeDir;
     }
-
-
 
     private String brainGridRepoDirectory = "";
     private String rootDir = "";

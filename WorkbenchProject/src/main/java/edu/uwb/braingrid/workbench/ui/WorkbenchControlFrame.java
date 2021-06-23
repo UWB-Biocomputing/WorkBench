@@ -1,24 +1,22 @@
 package edu.uwb.braingrid.workbench.ui;
 
-import edu.uwb.braingrid.workbench.WorkbenchManager;
-import edu.uwb.braingrid.workbench.utils.DateTime;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Date;
 import javax.swing.JFileChooser;
 
+import edu.uwb.braingrid.workbench.WorkbenchManager;
+import edu.uwb.braingrid.workbench.utils.DateTime;
+
 /**
- * The workbench control frame is responsible for specifying BrainGrid project
- * files. It is the center of all input specification and provenance recording.
+ * The workbench control frame is responsible for specifying BrainGrid project files. It is the
+ * center of all input specification and provenance recording.
  *
  * @author Del Davis, Edited and Updated by Joseph Conquest
  * @version 0.1
  */
 public class WorkbenchControlFrame extends javax.swing.JFrame {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated">
@@ -30,15 +28,15 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
     @SuppressWarnings({"deprecation" })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(414, 378));
-        
+
         transferProgressBar = new javax.swing.JProgressBar();
         transferProgressBar.setAlignmentX(-0.5F);
         transferProgressBar.setFocusable(false);
-        
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -69,8 +67,8 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Responsible for allocating this frame and initializing auto-generated, as
-     * well as custom, members
+     * Responsible for allocating this frame and initializing auto-generated, as well as custom,
+     * members.
      */
     public WorkbenchControlFrame() {
         initComponents();
@@ -87,7 +85,7 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="UI Manipulation">
     /**
-     * Centers the frame in the operating system's GUI window
+     * Centers the frame in the operating system's GUI window.
      */
     private void center() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -104,11 +102,10 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
 
     @Override
     /**
-     * Fits the window to the maximum width and height of all the contained
-     * components. The minimum size is reset to the current size after the pack
-     * to make sure that the window can not get any smaller. As in the parent
-     * component's implementation of pack, the window will always be within the
-     * bounds of it's maximum size.
+     * Fits the window to the maximum width and height of all the contained components. The minimum
+     * size is reset to the current size after the pack to make sure that the window can not get
+     * any smaller. As in the parent component's implementation of pack, the window will always be
+     * within the bounds of it's maximum size.
      */
     public void pack() {
         super.pack();

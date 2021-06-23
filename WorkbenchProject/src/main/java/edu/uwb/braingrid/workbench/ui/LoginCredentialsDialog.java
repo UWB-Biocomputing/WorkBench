@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
 /**
- * Gathers login credentials for file uploading/downloading and execution
+ * Gathers login credentials for file uploading/downloading and execution.
  *
  * @author Del Davis
  */
@@ -158,13 +158,10 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Creates new form LoginCredentialsDialog
+     * Creates new form LoginCredentialsDialog.
      *
-     * @param hostname
-     *            - The name of the host that will be logged in to
-     * @param modal
-     *            - true if the dialog should have exclusive focus while visible,
-     *            otherwise false
+     * @param hostname  The name of the host that will be logged in to
+     * @param modal  True if the dialog should have exclusive focus while visible, otherwise false
      */
     public LoginCredentialsDialog(String hostname, boolean modal) {
         setModal(modal);
@@ -200,13 +197,12 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Provides a character array containing the users password. A copy of the
-     * character array returned by PasswordField.getPassword is returned. After the
-     * copy is retrieved, the caller should call clearPassword to set the value
-     * maintained within the dialog password to null. For security reasons, the
-     * array referenced by the returned value should be zeroed out using
-     * java.util.Arrays.fill(password, '0') after it is no longer needed and it
-     * should not be stored anywhere else.
+     * Provides a character array containing the users password. A copy of the character array
+     * returned by PasswordField.getPassword is returned. After the copy is retrieved, the caller
+     * should call clearPassword to set the value maintained within the dialog password to null.
+     * For security reasons, the array referenced by the returned value should be zeroed out using
+     * java.util.Arrays.fill(password, '0') after it is no longer needed and it should not be
+     * stored anywhere else.
      *
      * @return The users password
      * @see javax.swing.JPasswordField
@@ -217,19 +213,18 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Sets the data held by the password field to null. For security reasons, this
-     * method should be called directly after a copy of the password is retrieved.
+     * Sets the data held by the password field to null. For security reasons, this method should
+     * be called directly after a copy of the password is retrieved.
      */
     public void clearPassword() {
         passwordField.setText(null);
     }
 
     /**
-     * Indicates whether or the user selected the OK button in order to close the
-     * dialog.
+     * Indicates whether or the user selected the OK button in order to close the dialog.
      *
-     * @return True if the user clicked okay to close the dialog, otherwise false. A
-     *         true value indicates that the remote operation should proceed.
+     * @return True if the user clicked okay to close the dialog, otherwise false. A true value
+     *         indicates that the remote operation should proceed.
      */
     public boolean okClicked() {
         return okClicked;

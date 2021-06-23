@@ -1,5 +1,11 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.io.File;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,14 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.io.File;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.workbenchdashboard.threads.RunInit;
@@ -26,34 +24,31 @@ import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
 import org.apache.jena.ext.com.google.common.io.Resources;
 
 /**
- * Workbench Dashboard Application, contains main
- * @author Max Wright, Extended by Joseph Conquest
+ * Workbench Dashboard Application, contains main.
  *
+ * @author Max Wright, Extended by Joseph Conquest
  */
 public class WorkbenchDashboard extends Application {
-    /**
-     * GSLE Growth Simulation Layout Editor
-     */
+
+    /** GSLE Growth Simulation Layout Editor. */
     private WorkbenchDisplay workbench_display_;
 
     private static final Logger LOG = Logger.getLogger(WorkbenchDashboard.class.getName());
 
-    
     /**
      * Probably shouldn't exist
      * TODO: Refactor to to send the stage everywhere private
      */
     public static Stage primaryStage_;
-    
+
     /**
      * WorkbenchDashboard main executable.
      * @param args
      */
     public static void main(String[] args) {
-        
         launch(args);
     }
-    
+
     private void initFileOutput() {
         FileHandler handler = null;
         try {
@@ -62,24 +57,24 @@ public class WorkbenchDashboard extends Application {
             LOG.severe("");
             e.printStackTrace();
         }
-        if(handler != null) {
+        if (handler != null) {
             LOG.getParent().getHandlers()[0].setLevel(LoggerHelper.MIN_LOG_LEVEL);
             LOG.getParent().addHandler(handler);
         }
     }
-    
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Setup Logger
         LOG.setLevel(LoggerHelper.MIN_LOG_LEVEL);
         initFileOutput();
-        
+
         // Get system
         SystemProperties.getSysProperties();
-        
+
         //Load User
         User.load();
-        
+
         // Start Application
         LOG.info("Starting Application");
         workbench_display_ = new WorkbenchDisplay(primaryStage);  // Create main display
@@ -121,7 +116,6 @@ public class WorkbenchDashboard extends Application {
                     ctrl = false;
                 }
             }
-            
         });
 
         URL is = Resources.getResource("braingrid/color-logo.png");
@@ -129,19 +123,16 @@ public class WorkbenchDashboard extends Application {
         primaryStage.setTitle("BrainGrid Workbench");
 
         primaryStage.getIcons().add(image);
-        
+
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
-        
+
         // Init
         RunInit runInit = new RunInit();
         runInit.start();
-        
     }
-    
-    /**
-     * True only if ctrl has been pressed.
-     */
+
+    /** True only if ctrl has been pressed. */
     private boolean ctrl = false;
 }

@@ -1,10 +1,10 @@
 package edu.uwb.braingrid.workbench.provvisualizer.model;
 
-import javafx.scene.paint.Color;
 import java.util.ArrayList;
+import javafx.scene.paint.Color;
 
 /**
-* Activity Node extends Node class
+* Activity Node extends Node class.
 *
 * @author Tom Wong and Joseph Conquest
 * @version 1.2

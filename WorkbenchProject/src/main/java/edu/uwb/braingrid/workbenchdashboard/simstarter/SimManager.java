@@ -2,7 +2,6 @@ package edu.uwb.braingrid.workbenchdashboard.simstarter;
 
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import edu.uwb.braingrid.workbench.WorkbenchManager;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -12,13 +11,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import edu.uwb.braingrid.workbench.WorkbenchManager;
+
 public class SimManager {
+
     private static final Logger LOG = Logger.getLogger(SimManager.class.getName());
-    public SimManager() { 
+
+    public SimManager() {
         LOG.info("new " + getClass().getName());
         workbenchManager = new WorkbenchManager();
     }
-    
+
     public SimManager(WorkbenchManager wbmng) {
         LOG.info("new " + getClass().getName());
         workbenchManager = wbmng;
@@ -63,15 +66,14 @@ public class SimManager {
     }
 
     /**
-     * Sets the workbench message content. The content of this message is based on
-     * the accumulated messages produced by the functions of the workbench manager.
+     * Sets the workbench message content. The content of this message is based on the accumulated
+     * messages produced by the functions of the workbench manager.
      *
      */
     public void setMsg() {
         msgText.setText(workbenchManager.getMessages());
     }
 
-    
     private BorderPane bp_ = new BorderPane();
 
     private Label project_title_label_ = new Label();

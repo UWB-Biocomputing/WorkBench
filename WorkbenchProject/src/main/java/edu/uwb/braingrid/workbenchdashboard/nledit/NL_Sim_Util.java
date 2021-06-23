@@ -8,42 +8,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
-
 import javax.swing.JOptionPane;
 
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit.RepType;
 
 public class NL_Sim_Util {
-    
+
     LayoutPanel layout_panel_;
     NeuronsLayout neurons_layout_;
-    
+
     public NL_Sim_Util(LayoutPanel layout_panel, NeuronsLayout neurons_layout) {
         layout_panel_ = layout_panel;
         neurons_layout_ = neurons_layout;
     }
-    
+
     /**
-     * The function repPattern generates a new neurons list from the old list, the
-     * new size and repeat type of which are specified by parameters, newSize and
-     * rtype respectively.
+     * The function repPattern generates a new neurons list from the old list, the new size and
+     * repeat type of which are specified by parameters, newSize and rtype respectively.
      *
-     * @param newSize
-     *            size for the new pattern.
-     * @param list
-     *            the old neurons list.
-     * @param rtype
-     *            repeat type, CLEAR, REPEAT, or ALT.
-     * @return New neurons list of new size.
-     */
-    /**
-     * @param newSize
-     * @param list
-     * @param rtype
-     * @return
+     * @param newSize  size for the new pattern
+     * @param list  the old neurons list
+     * @param rtype  repeat type, CLEAR, REPEAT, or ALT
+     * @return New neurons list of new size
      */
     public ArrayList<Integer> repPattern(Dimension newSize, ArrayList<Integer> list, RepType rtype) {
-        ArrayList<Integer> newNList = new ArrayList<Integer>();
+        ArrayList<Integer> newNList = new ArrayList<>();
 
         if (rtype != RepType.CLEAR) { // if rtype is clear, we just clear the
             // list
@@ -121,35 +110,30 @@ public class NL_Sim_Util {
             }
         }
     }
-    
+
     /**
-     * The function genRandomPattern generates randomly distributed pattern of
-     * active and inhibitory neurons, each ratio of which are specified by
-     * parameters, ratioInh and ratioAct.
+     * The function genRandomPattern generates randomly distributed pattern of active and
+     * inhibitory neurons, each ratio of which are specified by parameters, ratioInh and ratioAct.
      *
-     * @param ratioInh
-     *            ratio of inhibitory neurons.
-     * @param ratioAct
-     *            ratio of active neurons.
+     * @param ratioInh  Ratio of inhibitory neurons
+     * @param ratioAct  Ratio of active neurons
      */
     public void genRandomPattern(float ratioInh, float ratioAct) {
         neurons_layout_.inhNList = getRandomPointsIndex(ratioInh, null);
         neurons_layout_.activeNList = getRandomPointsIndex(ratioAct, neurons_layout_.inhNList);
     }
-    
+
     /**
-     * The function getRandomPointsIndex generates randomly distributed pattern of
-     * neurons and returns a indexes list of it.
+     * The function getRandomPointsIndex generates randomly distributed pattern of neurons and
+     * returns a indexes list of it.
      *
-     * @param ratio
-     *            ratio of neurons.
-     * @param occupiedNList
-     *            a neurons indexes that already occupy the layout.
-     * @return an indexes of neurons generated.
+     * @param ratio  Ratio of neurons
+     * @param occupiedNList  A neurons indexes that already occupy the layout
+     * @return An indexes of neurons generated
      */
     public ArrayList<Integer> getRandomPointsIndex(float ratio, ArrayList<Integer> occupiedNList) {
-        ArrayList<Integer> newNList = new ArrayList<Integer>();
-        ArrayList<Integer> freeNList = new ArrayList<Integer>();
+        ArrayList<Integer> newNList = new ArrayList<>();
+        ArrayList<Integer> freeNList = new ArrayList<>();
         Dimension dim = layout_panel_.getLayoutSize();
         int height = dim.height;
         int width = dim.width;
@@ -174,17 +158,14 @@ public class NL_Sim_Util {
 
         return newNList;
     }
-    
+
     /**
-     * The function genRegularPattern generates regularly distributed pattern of
-     * active and inhibitory neurons, each ratio of which are specified by
-     * parameters, ratioInh and ratioAct. The function tries to locate two arrays of
-     * neurons, of which NNI is maximum.
+     * The function genRegularPattern generates regularly distributed pattern of active and
+     * inhibitory neurons, each ratio of which are specified by parameters, ratioInh and ratioAct.
+     * The function tries to locate two arrays of neurons, of which NNI is maximum.
      *
-     * @param ratioInh
-     *            ratio of inhibitory neurons.
-     * @param ratioAct
-     *            ratio of active neurons.
+     * @param ratioInh  ratio of inhibitory neurons
+     * @param ratioAct  ratio of active neurons
      */
     public void genRegularPattern(float ratioInh, float ratioAct) {
         neurons_layout_.inhNList.clear();
@@ -208,18 +189,15 @@ public class NL_Sim_Util {
 
         findLargestNNIPointsIndexPair(ratioInh, ratioAct);
     }
-    
+
     /**
-     * The function findLargestNNIPointsIndexPair generates regularly distributed
-     * pattern of active and inhibitory neurons, each ratio of which are specified
-     * by parameters, ratioInh and ratioAct. The function tries to locate two arrays
-     * of neurons, of which NNI is maximum.
+     * The function findLargestNNIPointsIndexPair generates regularly distributed pattern of
+     * active and inhibitory neurons, each ratio of which are specified by parameters, ratioInh
+     * and ratioAct. The function tries to locate two arrays of neurons, of which NNI is maximum.
      *
-     * @param ratioInh
-     *            ratio of inhibitory neurons.
-     * @param ratioAct
-     *            ratio of active neurons.
-     * @return indexes of neurons lists generated.
+     * @param ratioInh  Ratio of inhibitory neurons
+     * @param ratioAct  Ratio of active neurons
+     * @return Indexes of neurons lists generated
      */
     public void findLargestNNIPointsIndexPair(float ratioInh, float ratioAct) {
         ArrayList<Point> pts0 = new ArrayList<Point>();
@@ -240,7 +218,7 @@ public class NL_Sim_Util {
         }
         double len = Math.sqrt((double) size / (double) newNListSize);
 
-        ArrayList<Point> union = new ArrayList<Point>(pts0);
+        ArrayList<Point> union = new ArrayList<>(pts0);
         union.addAll(pts1);
         double maxNNI = calcNearestNeighborIndex(union);
         ArrayList<Point> maxPts0 = pts0;
@@ -277,25 +255,22 @@ public class NL_Sim_Util {
             neurons_layout_.activeNList = cnvPoints2IndexList(maxPts1);
         }
     }
-    
+
     /**
-     * The function getShiftedPoints gets the shifted points of array. The shift
-     * amount is specified by the parameter, sx, and sy.
+     * The function getShiftedPoints gets the shifted points of array. The shift amount is
+     * specified by the parameter, sx, and sy.
      *
-     * @param pts
-     *            a points of array to be shifted.
-     * @param sx
-     *            shift x value.
-     * @param sy
-     *            shift y value.
-     * @return a points of array shifted
+     * @param pts  points to be shifted
+     * @param sx  shift x value
+     * @param sy  shift y value
+     * @return An array of shifted points
      */
     public ArrayList<Point> getShiftedPoints(ArrayList<Point> pts, int sx, int sy) {
         Dimension dim = layout_panel_.getLayoutSize();
         int width = dim.width;
         int height = dim.height;
 
-        ArrayList<Point> sftPts = new ArrayList<Point>();
+        ArrayList<Point> sftPts = new ArrayList<>();
         Iterator<Point> iter = pts.iterator();
         while (iter.hasNext()) {
             Point pt = iter.next();
@@ -306,14 +281,13 @@ public class NL_Sim_Util {
 
         return sftPts;
     }
-    
+
     /**
-     * The function getRegularPointsIndex generates regularly distributed pattern of
-     * neurons and returns a indexes list of it.
+     * The function getRegularPointsIndex generates regularly distributed pattern of neurons and
+     * returns a indexes list of it.
      *
-     * @param ratio
-     *            ratio of neurons.
-     * @return an indexes of neurons generated.
+     * @param ratio  Ratio of neurons
+     * @return Indexes of neurons generated
      */
     public ArrayList<Integer> getRegularPointsIndex(float ratio) {
         Dimension dim = layout_panel_.getLayoutSize();
@@ -356,16 +330,15 @@ public class NL_Sim_Util {
 
         return newNList;
     }
-    
+
     /**
      * The function cnvIndexList2Points converts indexes array to points array.
      *
-     * @param nList
-     *            a indexes array.
-     * @return - a points array converted from indexes array.
+     * @param nList  an indexes array
+     * @return A points array converted from indexes array
      */
     public ArrayList<Point> cnvIndexList2Points(ArrayList<Integer> nList) {
-        ArrayList<Point> pts = new ArrayList<Point>();
+        ArrayList<Point> pts = new ArrayList<>();
 
         // convert index list to points array
         int width = layout_panel_.getLayoutSize().width;
@@ -377,13 +350,12 @@ public class NL_Sim_Util {
 
         return pts;
     }
-    
+
     /**
      * The function cnvPoints2IndexList converts points array to indexes array.
      *
-     * @param pts
-     *            a points array.
-     * @return an indexes array converted from points array.
+     * @param pts  A points array
+     * @return An indexes array converted from points array
      */
     public ArrayList<Integer> cnvPoints2IndexList(ArrayList<Point> pts) {
         int width = layout_panel_.getLayoutSize().width;
@@ -398,13 +370,12 @@ public class NL_Sim_Util {
 
         return newNList;
     }
-    
+
     /**
      * The function calcNearestNeighborIndex calculates a NNI value of points.
      *
-     * @param pts
-     *            an array of points.
-     * @return a NNI value.
+     * @param pts  An array of points
+     * @return A NNI value
      */
     public double calcNearestNeighborIndex(ArrayList<Point> pts) {
         int width = layout_panel_.getLayoutSize().width;
@@ -434,15 +405,12 @@ public class NL_Sim_Util {
 
         return avgNN / estANN;
     }
-    
 
-    
     /**
-     * The function genProbes generates a indexes list of probes of specified
-     * number, which are evenly distributed.
+     * The function genProbes generates a indexes list of probes of specified number, which are
+     * evenly distributed.
      *
-     * @param numProbes
-     *            number of probes.
+     * @param numProbes  number of probes
      */
     public void genProbes(int numProbes) {
         if (numProbes == 0) {
@@ -456,14 +424,12 @@ public class NL_Sim_Util {
 
         neurons_layout_.probedNList = getRegularPointsIndex(ratio);
     }
-    
+
     /**
-     * The function getStatisticalMsg returns a statistical message string of the
-     * layout.
+     * The function getStatisticalMsg returns a statistical message string of the layout.
      *
-     * @param bHtml
-     *            true if reruns html format message string.
-     * @return a statistical message string of the layout.
+     * @param bHtml  True if reruns html format message string
+     * @return A statistical message string of the layout
      */
     public String getStatisticalMsg(boolean bHtml) {
         String message;
@@ -508,7 +474,7 @@ public class NL_Sim_Util {
         message += tabs + "Probed neurons = " + nniPrbNList + tail;
         return message;
     }
-    
+
     /**
      * The function intersection returns intersection of two array list.
      *
@@ -527,6 +493,4 @@ public class NL_Sim_Util {
 
         return list;
     }
-    
-    
 }

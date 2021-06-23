@@ -19,53 +19,63 @@ import javax.swing.JScrollPane;
 import javafx.embed.swing.SwingNode;
 
 /**
- * The LayoutPanel class handles layout window of the Growth Simulation Layout
- * Editor. The class is a sub-class of JPanel, which shows neurons layout
- * consisting of three kind of neurons, as well as probed neurons. The panel
- * provides editable function of each neuron.
- * 
+ * The LayoutPanel class handles layout window of the Growth Simulation Layout Editor. The class
+ * is a sub-class of JPanel, which shows neurons layout consisting of three kind of neurons, as
+ * well as probed neurons. The panel provides editable function of each neuron.
+ *
  * @author Fumitaka Kawasaki
  * @version 1.2
  */
 @SuppressWarnings("serial")
 public class LayoutPanel extends JPanel implements MouseListener {
+
     private static final Logger LOG = Logger.getLogger(LayoutPanel.class.getName());
 
-    static final int defaultN = 100; // the default system size
-    static final int defaultCellWidth = 28; // the default size of each cell
+    /** The default system size. */
+    static final int defaultN = 100;
+    /** The default size of each cell. */
+    static final int defaultCellWidth = 28;
+    /** The minimum width of a cell. */
     static final int minCellWidth = 7;
+    /** The maximum width of a cell. */
     static final int maxCellWidth = 56;
-    static final Color bgColor = new Color(255, 255, 255);// white background
-    private int cellWidth; // each cell's width in the window
-    private Insets theInsets; // the insets of the window
-    private Color nColor[]; // neuron color
+    /** White background color. */
+    static final Color bgColor = new Color(255, 255, 255);
+    /** Each cell's width in the window. */
+    private int cellWidth;
+    /** The insets of the window. */
+    private Insets theInsets;
+    /** Neuron color. */
+    private Color[] nColor;
 
     // neuron type index
-    /** neuron type index for other neurons */
+    /** Neuron type index for other neurons. */
     public static final int OTR = NeuronsLayout.OTR;
-    /** neuron type index for inhibitory neurons */
+    /** Neuron type index for inhibitory neurons. */
     public static final int INH = NeuronsLayout.INH;
-    /** neuron type index for active neurons */
+    /** Neuron type index for active neurons. */
     public static final int ACT = NeuronsLayout.ACT;
-    /** neuron type index for probed neurons */
+    /** Neuron type index for probed neurons. */
     public static final int PRB = NeuronsLayout.PRB;
-    /** neuron type index for overlapping INH and ACT neurons */
+    /** Neuron type index for overlapping INH and ACT neurons. */
     public static final int OVP = NeuronsLayout.OVP;
 
-    private int xlen; // number of cells x-axis
-    private int ylen; // number of cells y-axis
+    /** Number of cells x-axis. */
+    private int xlen;
+    /** Number of cells y-axis. */
+    private int ylen;
 
-    /** minimum number of cells for x-axis */
+    /** Minimum number of cells for x-axis. */
     public static final int minXCells = 5;
-    /** minimum number of cells for y-axis */
+    /** Minimum number of cells for y-axis. */
     public static final int minYCells = 5;
-    /** maximum number of cells for x-axis */
+    /** Maximum number of cells for x-axis. */
     public static final int maxXCells = 500;
-    /** maximum number of cells for y-axis */
+    /** Maximum number of cells for y-axis. */
     public static final int maxYCells = 500;
-    /** default number of cells for x-axis */
+    /** Default number of cells for x-axis. */
     public static final int defXCells = 10;
-    /** default number of cells for y-axis */
+    /** Default number of cells for y-axis. */
     public static final int defYCells = 10;
 
     private NeuronsLayout neurons_layout_;
@@ -76,11 +86,10 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * A class constructor, which initializes global stuff.
-     * 
-     * @param ctrlFrame
-     *            reference to the control panel
+     *
+     * @param nledit
      * @param size
-     *            size of the layout.
+     * @param neurons_layout
      */
     public LayoutPanel(NLedit nledit, Dimension size, NeuronsLayout neurons_layout) {
         LOG.info("new " + getClass().getName());
@@ -112,21 +121,18 @@ public class LayoutPanel extends JPanel implements MouseListener {
     }
 
     /**
-     * Initialize graphics objects
+     * Initialize graphics objects.
      */
     public void startGraphics() {
         Graphics g = getGraphics();
         g.setColor(bgColor);
         g.fillRect(theInsets.left, theInsets.top, xlen * cellWidth, ylen * cellWidth);
-        
-        
     }
 
     /**
      * Update the graphical window.
-     * 
-     * @param g
-     *            a graphic object to draw
+     *
+     * @param g  A graphic object to draw
      */
     public void writeToGraphics(Graphics g) {
         // System.out.println(NLedit.HEADER + "Start Repaint");
@@ -228,7 +234,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * Set the scroll panel.
-     * 
+     *
      * @param scrollpane
      */
     public void setScrollPane(JScrollPane scrollpane) {
@@ -237,8 +243,8 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * Get the scroll panel.
-     * 
-     * @return reference to the scroll panel.
+     *
+     * @return Reference to the scroll panel.
      */
     public JScrollPane getScrollPane() {
         return scrollPane;
@@ -246,9 +252,8 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * Change the layout size.
-     * 
-     * @param size
-     *            new layout size.
+     *
+     * @param size  new layout size.
      */
     public void changeLayoutSize(Dimension size) {
         xlen = size.width;
@@ -259,9 +264,8 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * Change cell size.
-     * 
-     * @param inc
-     *            true when increasing cell size, false decreasing cell size.
+     *
+     * @param inc  true when increasing cell size, false decreasing cell size
      */
     public void changeCellSize(boolean inc) {
         if (inc == true && cellWidth != maxCellWidth) {
@@ -304,13 +308,11 @@ public class LayoutPanel extends JPanel implements MouseListener {
     }
 
     /**
-     * Returns the usable area of the screen where applications can place its
-     * windows. The method subtracts from the screen the area of taskbars, system
-     * menus and the like.
-     * 
-     * @param gconf
-     *            the GraphicsConfiguration of the monitor
-     * @return the rectangle of the screen where one can place windows
+     * Returns the usable area of the screen where applications can place its windows. The method
+     * subtracts from the screen the area of taskbars, system menus and the like.
+     *
+     * @param gconf  The GraphicsConfiguration of the monitor
+     * @return The rectangle of the screen where one can place windows
      */
     public static Rectangle getUsableScreenBounds(GraphicsConfiguration gconf) {
         if (gconf == null) {
@@ -334,7 +336,6 @@ public class LayoutPanel extends JPanel implements MouseListener {
     public int solution(int[] A, int[] E) {
         // write your code in Java SE 8
         // A[J] = first node
-        //
 
         int maxLen = 0;
 
@@ -372,8 +373,8 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * Gets the layout size.
-     * 
-     * @return layout size.
+     *
+     * @return layout size
      */
     public Dimension getLayoutSize() {
 
@@ -382,8 +383,8 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * Gets the cell width.
-     * 
-     * @return the cell width.
+     *
+     * @return the cell width
      */
     public int getCellWidth() {
         return cellWidth;
@@ -391,9 +392,8 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * Sets the cell width.
-     * 
-     * @param cellWidth
-     *            - cell width to set.
+     *
+     * @param cellWidth  Cell width to set
      */
     public void setCellWidth(int cellWidth) {
         this.cellWidth = cellWidth;
@@ -401,8 +401,8 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /**
      * Gets the reference to the CtrlFrame class object.
-     * 
-     * @return reference to the CtrlFrame class object.
+     *
+     * @return Reference to the CtrlFrame class object
      */
     public NLedit getCtrlFrame() {
         return nledit_;

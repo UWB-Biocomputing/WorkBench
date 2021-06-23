@@ -1,9 +1,5 @@
 package edu.uwb.braingrid.workbench.ui;
 
-import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
-import edu.uwb.braingrid.workbench.model.SimulationSpecification;
-import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -12,22 +8,21 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
+import edu.uwb.braingrid.workbench.model.SimulationSpecification;
+import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 
 /**
- * Specifies the context for a simulation execution script. For example, should
- * the sequential version of the simulator be used to perform the simulation, or
- * should the parallel version be used? Will the source code be updated first?
- * Will the simulator be executed remotely? Answers to these questions determine
- * the content of the execution script to be generated; they also determine how
- * and where the script will be executed.
+ * Specifies the context for a simulation execution script. For example, should the sequential
+ * version of the simulator be used to perform the simulation, or should the parallel version be
+ * used? Will the source code be updated first? Will the simulator be executed remotely? Answers
+ * to these questions determine the content of the execution script to be generated; they also
+ * determine how and where the script will be executed.
  *
  * @author Del Davis
  */
 public class ScriptSpecificationDialog extends javax.swing.JDialog {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
@@ -475,13 +470,11 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Responsible for allocating a new dialog, instantiating and initializing all
-     * members, and making the dialog visible
+     * Responsible for allocating a new dialog, instantiating and initializing all members, and
+     * making the dialog visible.
      *
-     * @param modal
-     *            - True if this dialog should prevent focus from shifting to it's
-     *            parent, False if the focus can shift to the parent while this
-     *            dialog is visible
+     * @param modal  True if this dialog should prevent focus from shifting to it's parent,
+     *               False if the focus can shift to the parent while this dialog is visible
      */
     public ScriptSpecificationDialog(boolean modal) {
         LOG.info("New ScriptSpecificationDialog");
@@ -659,24 +652,21 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Provides the location of the folder where the simulator will be
-     * (conditionally based on options set in the specification) cloned/checked out
-     * to, built, and executed.
+     * Provides the location of the folder where the simulator will be (conditionally based on
+     * options set in the specification) cloned/checked out to, built, and executed.
      *
-     * @return The location of the folder where the simulator will be (conditionally
-     *         based on options set in the specification) cloned/checked out to,
-     *         built, and executed.
+     * @return The location of the folder where the simulator will be (conditionally based on
+     *         options set in the specification) cloned/checked out to, built, and executed.
      */
     public String getSimulatorFolder() {
         return simulatorLocationTextField.getText();
     }
 
     /**
-     * Provides the location of the source code. If source code updating is turned
-     * off in this specification, then this location points to a folder on the
-     * machine where the simulation will take place. If source code updating is
-     * turned on in this specification, then this location points to a source code
-     * repository.
+     * Provides the location of the source code. If source code updating is turned off in this
+     * specification, then this location points to a folder on the machine where the simulation
+     * will take place. If source code updating is turned on in this specification, then this
+     * location points to a source code repository.
      *
      * @return The location of the source code
      */
@@ -685,74 +675,73 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Provides the annotation (a note) text entered by the user to describe the
-     * version of the simulator that will be executed
+     * Provides the annotation (a note) text entered by the user to describe the version of the
+     * simulator that will be executed.
      *
-     * @return The annotation (a note) text entered by the user to describe the
-     *         version of the simulator that will be executed
+     * @return The annotation (a note) text entered by the user to describe the version of the
+     *         simulator that will be executed
      */
     public String getVersionAnnotation() {
         return versionAnnotationTextField.getText();
     }
 
     /**
-     * Provides the selected option text indicating the locale relationship between
-     * where the simulator will run and the local machine
+     * Provides the selected option text indicating the locale relationship between where the
+     * simulator will run and the local machine.
      *
-     * @return The selected option text indicating the locale relationship between
-     *         where the simulator will run and the local machine
+     * @return The selected option text indicating the locale relationship between where the
+     *         simulator will run and the local machine
      */
     public String getSimulatorExecutionMachine() {
         return simulatorLocationComboBox.getSelectedItem().toString();
     }
 
     /**
-     * Provides the selected option text indicating which processor threading/core
-     * model should be used for a simulation
+     * Provides the selected option text indicating which processor threading/core model should
+     * be used for a simulation.
      *
-     * @return The selected option text indicating which processor threading/core
-     *         model should be used for a simulation
+     * @return The selected option text indicating which processor threading/core model should be
+     *         used for a simulation
      */
     public String getSimulationType() {
         return simulationTypeComboBox.getSelectedItem().toString();
     }
 
     /**
-     * Provides the selected option text indicating whether source code should be
-     * updated prior to executing the simulation
+     * Provides the selected option text indicating whether source code should be updated prior to
+     * executing the simulation.
      *
-     * @return The option selected indicating whether source code should be updated
-     *         prior to executing the simulation
+     * @return The option selected indicating whether source code should be updated prior to
+     *         executing the simulation
      */
     public String getSourceCodeUpdating() {
         return sourceCodeUpdatingComboBox.getSelectedItem().toString();
     }
 
     /**
-     * Provides the host name or address entered or an empty string if the for the
-     * respective field is null
+     * Provides the host name or address entered or an empty string if the for the respective
+     * field is null.
      *
-     * @return The host name or address entered or an empty string if the for the
-     *         respective field is null
+     * @return The host name or address entered or an empty string if the for the respective
+     *         field is null
      */
     public String getHostAddr() {
         return hostAddressTextField.getText() == null ? "" : hostAddressTextField.getText();
     }
 
     /**
-     * Provides the username entered or an empty string if the data for the field is
-     * null
+     * Provides the username entered or an empty string if the data for the field is null.
      *
-     * @return The username entered or an empty string if the data for the
-     *         respective field is null
+     * @return The username entered or an empty string if the data for the respective
+     *         field is null
      */
     public String getUsername() {
         return usernameTextField.getText() == null ? "" : usernameTextField.getText();
     }
 
     /**
-     * Indicates whether or not testing the connection to the specified host, with
-     * the login credentials provided, was successful
+     * Indicates whether or not testing the connection to the specified host, with the login
+     * credentials provided, was successful.
      *
      * @return True if the connection test was successful, otherwise false
      */
@@ -761,8 +750,8 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Provides a simulator specification with values set to their respective
-     * equivalents from this dialog
+     * Provides a simulator specification with values set to their respective equivalents from
+     * this dialog.
      *
      * @return A simulation specification populated from the state of this dialog
      */
@@ -787,7 +776,8 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         simSpec.setBuildOption(buildOption);
 
         return simSpec;
-    }// </editor-fold>
+    }
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="UI Manipulation">
     private void setRemoteRelatedComponentsEnabled(boolean enabled) {
@@ -824,15 +814,14 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         return text.matches(LINUX_USERNAME_PATTERN);
     }
 
-    /**
-     * Checks a string representing a filename for adherence to Windows filename
-     * conventions. Windows need not be the platform that this function is concerned
-     * with, it just happens to have the most restrictions on filename characters
-     *
-     * @param fileName
-     *            - string representing a filename
-     * @return True if the filename specified was valid, False if not
-     */
+//    /**
+//     * Checks a string representing a filename for adherence to Windows filename conventions.
+//     * Windows need not be the platform that this function is concerned with, it just happens to
+//     * have the most restrictions on filename characters.
+//     *
+//     * @param fileName  String representing a filename
+//     * @return True if the filename specified was valid, False if not
+//     */
 //    private static boolean isValidFilename(String fileName) {
 //        Pattern pattern = Pattern.compile(
 //                "# Match a valid Windows filename (unspecified file system).          \n"
@@ -878,7 +867,6 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
             sourceCodeUpdatingComboBox.setEnabled(false);
         } else {
             sourceCodeUpdatingComboBox.setEnabled(true);
-            
         }
     }
 }

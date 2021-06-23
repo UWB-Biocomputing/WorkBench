@@ -10,7 +10,7 @@ import java.awt.print.PrinterException;
 
 /**
  * The MyPrintable handles printing function.
- * 
+ *
  * @author Fumitaka Kawasaki
  * @version 1.2
  */
@@ -116,14 +116,11 @@ public class MyPrintable implements Printable, Pageable {
     }
 
     /**
-     * draw multi-line string
-     * 
-     * @param g
-     *            graphics object
-     * @param pf
-     *            page format
-     * @param str
-     *            string to draw
+     * Draw multi-line string.
+     *
+     * @param g  graphics object
+     * @param pf  page format
+     * @param str  string to draw
      */
     private void drawStringMultiLine(Graphics2D g, PageFormat pf, String str) {
         int x = (int) pf.getImageableX();

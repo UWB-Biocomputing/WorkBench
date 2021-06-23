@@ -1,25 +1,33 @@
 package edu.uwb.braingrid.workbench.provvisualizer.utility;
 
-import com.jcraft.jsch.*;
-import edu.uwb.braingrid.workbench.provvisualizer.model.AuthenticationInfo;
-
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ConnectionUtility {
+import edu.uwb.braingrid.workbench.provvisualizer.model.AuthenticationInfo;
+
+public final class ConnectionUtility {
+
     public static final int SFTP_PORT = 22;
 
-    public static boolean downloadFileViaSftp(String remoteFilePath,
-                                              String localFilePath, AuthenticationInfo authenticationInfo){
-        return downloadFileViaSftp(remoteFilePath,localFilePath,authenticationInfo.getHostname(),
+    private ConnectionUtility() {
+        // utility class cannot be instantiated
+    }
+
+    public static boolean downloadFileViaSftp(String remoteFilePath, String localFilePath,
+            AuthenticationInfo authenticationInfo) {
+        return downloadFileViaSftp(remoteFilePath, localFilePath, authenticationInfo.getHostname(),
                 authenticationInfo.getUsername(), authenticationInfo.getPassword().toCharArray());
     }
 
-    public static boolean downloadFileViaSftp(String remoteFilePath,
-                                String localFilePath, String hostname, String username,
-                                char[] password){
+    public static boolean downloadFileViaSftp(String remoteFilePath, String localFilePath, String hostname,
+            String username, char[] password) {
         boolean success = true;
         Session session = null;
 
@@ -37,9 +45,9 @@ public class ConnectionUtility {
             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
             channelSftp.connect();
 
-            String localFileDirectory = localFilePath.substring(0,localFilePath.lastIndexOf("/"));
+            String localFileDirectory = localFilePath.substring(0, localFilePath.lastIndexOf("/"));
             Path path = Paths.get(localFileDirectory);
-            if(!Files.exists(path)){
+            if (!Files.exists(path)) {
                 Files.createDirectories(path);
             }
             channelSftp.get(remoteFilePath, localFilePath);

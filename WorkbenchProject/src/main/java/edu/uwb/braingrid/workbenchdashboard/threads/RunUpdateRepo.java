@@ -2,7 +2,6 @@ package edu.uwb.braingrid.workbenchdashboard.threads;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -15,6 +14,7 @@ public class RunUpdateRepo extends Thread implements Runnable {
     public RunUpdateRepo() {
 
     }
+
     public void run() {
         ThreadManager.addThread("Updating Master Repo");
         try {
@@ -30,7 +30,6 @@ public class RunUpdateRepo extends Thread implements Runnable {
         }
         ThreadManager.removeThread("Updating Master Repo");
     }
-    
-    private static final Logger LOG = Logger.getLogger(RunUpdateRepo.class.getName());
 
+    private static final Logger LOG = Logger.getLogger(RunUpdateRepo.class.getName());
 }

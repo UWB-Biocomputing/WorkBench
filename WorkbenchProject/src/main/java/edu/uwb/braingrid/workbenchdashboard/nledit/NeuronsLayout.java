@@ -4,33 +4,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class NeuronsLayout {
+
     // neuron type index
-    /** neuron type index for other neurons */
+    /** Neuron type index for other neurons. */
     public static final int OTR = 0;
-    /** neuron type index for inhibitory neurons */
+    /** Neuron type index for inhibitory neurons. */
     public static final int INH = 1;
-    /** neuron type index for active neurons */
+    /** Neuron type index for active neurons. */
     public static final int ACT = 2;
-    /** neuron type index for probed neurons */
+    /** Neuron type index for probed neurons. */
     public static final int PRB = 3;
-    /** neuron type index for overlapping INH and ACT neurons */
+    /** Neuron type index for overlapping INH and ACT neurons. */
     public static final int OVP = 4;
-    
-    /** an array to store index of active neurons */
-    public ArrayList<Integer> activeNList = new ArrayList<Integer>();
-    /** an array to store index of inhibitory neurons */
-    public ArrayList<Integer> inhNList = new ArrayList<Integer>();
-    /** an array to store index of probed neurons */
-    public ArrayList<Integer> probedNList = new ArrayList<Integer>();
-    
+
+    /** An array to store index of active neurons. */
+    public ArrayList<Integer> activeNList = new ArrayList<>();
+    /** An array to store index of inhibitory neurons. */
+    public ArrayList<Integer> inhNList = new ArrayList<>();
+    /** An array to store index of probed neurons. */
+    public ArrayList<Integer> probedNList = new ArrayList<>();
+
     public NeuronsLayout() {
         
     }
-    
+
     /**
      * Returns the NeuronType of the index given
      * TODO: This needs to be turned into an enums. There are parts in the code (somewhere) that uses the int values to make decisions. 
      * Use getOrdinal() and other properties of enums to fix this.
+     *
      * @param index
      * @return
      */
@@ -46,7 +48,7 @@ public class NeuronsLayout {
         }
         return cIndex;
     }
-    
+
     static public String getNeuronTypeName(int index) {
         switch (index) {
             case NeuronsLayout.OTR: /* neuron type index for other neurons */
@@ -63,11 +65,10 @@ public class NeuronsLayout {
                 return "unknown neuron";
         }
     }
-    
+
     public boolean isProbed(int index) {
         return probedNList.contains(index);
     }
-    
 
     public void changeIndex(int neuronType, int index) {
         switch (neuronType) {

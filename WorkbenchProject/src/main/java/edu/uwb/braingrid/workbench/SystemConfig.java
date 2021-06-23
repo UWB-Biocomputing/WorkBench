@@ -1,6 +1,5 @@
 package edu.uwb.braingrid.workbench;
 
-import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import java.io.File;
 import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -8,13 +7,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import edu.uwb.braingrid.workbench.data.InputAnalyzer;
+
 /**
- * This class defines the constants and functions related to system
- * configuration
- * 
+ * This class defines the constants and functions related to system configuration.
+ *
  * @author Tom Wong
  */
 public class SystemConfig {
+
     // the base template Config file path
     public static final String BASE_TEMPLATE_INFO_XML_File_URL = "BaseTemplateConfig.xml";
 
@@ -48,11 +49,10 @@ public class SystemConfig {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                 .parse(getBaseTemplateInfoDocPath());
     }
-    
+
     public static String getBaseTemplateInfoDocPath() {
         return System.getProperty("user.dir") + File.separator + SystemConfig.BASE_TEMPLATE_INFO_XML_File_URL;
     }
-    
 
     // get the file path of the all params classes info file stored in Base Template
     // Info Document

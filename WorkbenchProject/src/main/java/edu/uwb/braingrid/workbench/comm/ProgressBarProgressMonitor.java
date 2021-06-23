@@ -1,44 +1,41 @@
 package edu.uwb.braingrid.workbench.comm;
-/////////////////CLEANED
 
 import com.jcraft.jsch.SftpProgressMonitor;
 import java.io.File;
 import javax.swing.JProgressBar;
 
 /**
- * Provides call back functions to monitor the progress of SecureFileTransfer
- * operations.
+ * Provides call back functions to monitor the progress of SecureFileTransfer operations.
  *
  * @author Del Davis
  */
 public class ProgressBarProgressMonitor implements SftpProgressMonitor {
 
-    JProgressBar bar;
-    File file = null;
-    long max;
+    private final JProgressBar bar;
+    private File file = null;
+    private long max;
 
     /**
-     * Responsible for initializing and constructing this monitor object
+     * Responsible for initializing and constructing this monitor object.
      *
-     * @param bar - The progress bar to update
-     * @param f - The file being transferred
+     * @param bar  The progress bar to update
+     * @param file  The file being transferred
      */
-    public ProgressBarProgressMonitor(JProgressBar bar, File f) {
-        if (f != null && f.exists()) {
-            file = f;
+    public ProgressBarProgressMonitor(JProgressBar bar, File file) {
+        if (file != null && file.exists()) {
+            this.file = file;
         }
         this.bar = bar;
     }
 
     /**
-     * Initializes the progress bar and file transfer progress. Will be called
-     * when new operation starts.
+     * Initializes the progress bar and file transfer progress. Will be called when new operation
+     * starts.
      *
-     * @param op - a code indicating the direction of transfer, one of PUT and
-     * GET
-     * @param src - the source file name.
-     * @param dest - the destination file name.
-     * @param max - the final count (i.e. length of file to transfer).
+     * @param op  A code indicating the direction of transfer, one of PUT and GET
+     * @param src  The source file name
+     * @param dest  The destination file name
+     * @param max  The final count (i.e. length of file to transfer)
      */
     @Override
     public void init(int op, String src, String dest, long max) {
@@ -51,11 +48,11 @@ public class ProgressBarProgressMonitor implements SftpProgressMonitor {
     }
 
     /**
-     * Updates the progress of the transfer. Will be called periodically as more
-     * data is transfered.
+     * Updates the progress of the transfer. Will be called periodically as more data is
+     * transferred.
      *
-     * @param bytes - the number of bytes transferred so far
-     * @return true if the transfer should go on, false if the transfer should
+     * @param bytes  The number of bytes transferred so far
+     * @return True if the transfer should go on, false if the transfer should
      * be cancelled.
      */
     @Override
@@ -69,8 +66,8 @@ public class ProgressBarProgressMonitor implements SftpProgressMonitor {
     }
 
     /**
-     * Will be called when the transfer ended, either because all the data was
-     * transferred, or because the transfer was cancelled.
+     * Will be called when the transfer ended, either because all the data was transferred, or
+     * because the transfer was cancelled.
      */
     @Override
     public void end() {

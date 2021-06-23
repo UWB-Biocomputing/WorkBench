@@ -1,6 +1,7 @@
 package edu.uwb.braingrid.workbenchdashboard.nledit;
 
 public class Project {
+
     private String ihbFile = "";
     private String actFile = "";
     private String prbFile = "";
@@ -32,7 +33,4 @@ public class Project {
     public void setPrbFile(String prbFile) {
         this.prbFile = prbFile;
     }
-    
-    
-    
 }

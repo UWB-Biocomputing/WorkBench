@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class VisCanvas extends Canvas {
+
     public VisCanvas() {
         // Redraw canvas when size changes.
         widthProperty().addListener(evt -> draw());
