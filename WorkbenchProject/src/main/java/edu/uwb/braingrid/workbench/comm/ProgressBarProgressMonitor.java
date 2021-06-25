@@ -52,8 +52,7 @@ public class ProgressBarProgressMonitor implements SftpProgressMonitor {
      * transferred.
      *
      * @param bytes  The number of bytes transferred so far
-     * @return True if the transfer should go on, false if the transfer should
-     * be cancelled.
+     * @return True if the transfer should go on, false if the transfer should be cancelled.
      */
     @Override
     public boolean count(long bytes) {

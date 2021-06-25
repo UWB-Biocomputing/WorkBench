@@ -42,8 +42,7 @@ public class Project {
      *
      * @return filename
      */
-    public String persist() throws ParserConfigurationException,
-            TransformerException, IOException {
+    public String persist() throws ParserConfigurationException, TransformerException, IOException {
         // Build New XML Document
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 
@@ -81,7 +80,8 @@ public class Project {
      * @param filename
      * @return this Project
      */
-    public Project load(String filename) throws SAXException, ParserConfigurationException, IOException {
+    public Project load(String filename) throws SAXException, ParserConfigurationException,
+            IOException {
         File file = new File(filename);
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
         doc.getDocumentElement().normalize();
@@ -135,8 +135,8 @@ public class Project {
     }
 
     public ProjectData getProjectData(String key) {
-        ProjectData data;
-        if ((data = projectData.get(key)) == null) {
+        ProjectData data = projectData.get(key);
+        if (data == null) {
             projectData.put(key, new ProjectData(key));
         }
         return data;
@@ -155,7 +155,7 @@ public class Project {
         }
         return determineProjectOutputLocation() + projectName + ".xml";
     }
-    
+
     public ProjectData remove(String projectDataKey) {
         return projectData.remove(projectDataKey);
     }
@@ -166,12 +166,10 @@ public class Project {
      * @return The path to the project folder for the specified project
      * @throws IOException
      */
-    public final String determineProjectOutputLocation()
-            throws IOException {
+    public final String determineProjectOutputLocation() throws IOException {
         String workingDirectory = FileManager.getCanonicalWorkingDirectory();
         String ps = FileManager.getFileManager().getFolderDelimiter();
         String projectDirectory = workingDirectory + ps + "projects" + ps + projectName + ps;
         return projectDirectory;
     }
-
 }

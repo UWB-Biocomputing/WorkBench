@@ -22,8 +22,8 @@ public final class DateTime {
     }
 
     /**
-     * Converts the number of milliseconds since January 1, 1970, 00:00:00 GMT represented by
-     * this date.
+     * Converts the number of milliseconds since January 1, 1970, 00:00:00 GMT represented by this
+     * date.
      *
      * @param millisFromEpoch  The number of milliseconds since January 1, 1970, 00:00:00 GMT
      *                         represented by this date
@@ -35,12 +35,14 @@ public final class DateTime {
         return time;
     }
 
-//    public static void recordProvTiming(String className, String functionName, String codeLine, Long startingMillis) {
+//    public static void recordProvTiming(String className, String functionName, String codeLine,
+//            Long startingMillis) {
 //        long time = (System.currentTimeMillis() - startingMillis);
 //        try {
 //            PrintWriter out = new PrintWriter(new BufferedWriter(
 //                    new FileWriter("provPerformance.txt", true)));
-//            out.println(className + "." + functionName + ",line#" + codeLine + ";milliseconds prov overhead:" + time);
+//            out.println(className + "." + functionName + ",line#" + codeLine
+//                    + ";milliseconds prov overhead:" + time);
 //            out.close();
 //        } catch (IOException e) {
 //            System.err.println("Problem in writing to the prov performance file.");
@@ -53,12 +55,13 @@ public final class DateTime {
         return millisSoFar + time;
     }
 
-    public static void recordFunctionExecutionTime(String className, String functionName, Long totalTime,
-            boolean provEnabled) {
+    public static void recordFunctionExecutionTime(String className, String functionName,
+            Long totalTime, boolean provEnabled) {
         try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("provOverhead.txt", true)));
-            out.println(className + "." + functionName + ";provEnabled=" + String.valueOf(provEnabled)
-                    + ";total milliseconds:" + totalTime);
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new FileWriter("provOverhead.txt", true)));
+            out.println(className + "." + functionName + ";provEnabled="
+                    + String.valueOf(provEnabled) + ";total milliseconds:" + totalTime);
             out.close();
         } catch (IOException e) {
             System.err.println("Problem in writing to the prov performance file.");
@@ -69,7 +72,8 @@ public final class DateTime {
     public static void recordAccumulatedProvTiming(String className, String functionName,
             Long totalProvTime) {
         try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("provOverhead.txt", true)));
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new FileWriter("provOverhead.txt", true)));
             out.println(className + "." + functionName + ";total prov overhead:" + totalProvTime);
             out.close();
         } catch (IOException e) {

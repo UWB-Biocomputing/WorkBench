@@ -8,12 +8,13 @@ public class AgentNode extends Node {
         super(width, height, color);
     }
 
-    public AgentNode(String id, double x, double y, double width, double height, Color color, String label) {
+    public AgentNode(String id, double x, double y, double width, double height, Color color,
+            String label) {
         super(id, x, y, width, height, color, label);
     }
 
     public AgentNode clone() {
-        return new AgentNode(super.getId(), super.getX(), super.getY(), super.getWidth(), super.getHeight(),
-                super.getColor(), super.getLabel());
+        return new AgentNode(super.getId(), super.getX(), super.getY(), super.getWidth(),
+                super.getHeight(), super.getColor(), super.getLabel());
     }
 }

@@ -17,73 +17,80 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import edu.uwb.braingrid.general.FileSelectorDirMgr;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 
 public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
 
     /** Number of input fields. */
-    public static final int nFields = 4;
+    public static final int NUM_FIELDS = 4;
     /** Field index of configuration file. */
-    public static final int idxConfigFile = 0;
+    public static final int IDX_CONFIG_FILE = 0;
     /** Field index of inhibitory neurons list file. */
-    public static final int idxInhList = 1;
+    public static final int IDX_INH_LIST = 1;
     /** Field index of active neurons list file. */
-    public static final int idxActList = 2;
+    public static final int IDX_ACT_LIST = 2;
     /** Field index of probed neurons list file. */
-    public static final int idxPrbList = 3;
+    public static final int IDX_PRB_LIST = 3;
 
-    private Label[] labels = new Label[nFields];
-    public TextField[] tfields = new TextField[nFields];
-    private Button[] btns = new Button[nFields];
+    private Label[] labels = new Label[NUM_FIELDS];
+    private TextField[] tFields = new TextField[NUM_FIELDS];
+    private Button[] rButtons = new Button[NUM_FIELDS];
 
-    private static String configDir = "."; // directory for configuration file
-    public static String nlistDir = "."; // directory for neurons list file
+    /** Directory for configuration file. */
+    private static String configDir = ".";
+    /** Directory for neurons list file. */
+    public static String nlistDir = ".";
+
+    private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
 
     public ImportPanel() {
         GridPane gp = new GridPane();
 
-        labels[idxConfigFile] = new Label("Configuration file:");
-        labels[idxInhList] = new Label("Inhibitory neurons list:");
-        labels[idxActList] = new Label("Active neurons list:");
-        labels[idxPrbList] = new Label("Probed neurons list:");
-        gp.getChildren().addAll(labels[idxConfigFile], labels[idxInhList], labels[idxActList], labels[idxPrbList]);
-        GridPane.setConstraints(labels[idxConfigFile], 0, 0);
-        GridPane.setConstraints(labels[idxInhList], 0, 1);
-        GridPane.setConstraints(labels[idxActList], 0, 2);
-        GridPane.setConstraints(labels[idxPrbList], 0, 3);
-        for (int i = 0; i < nFields; i++) {
-            tfields[i] = new TextField();
-            tfields[i].setEditable(true);
-            gp.getChildren().add(tfields[i]);
-            GridPane.setConstraints(tfields[i], 1, i);
-            btns[i] = new Button("Browse...");
-            btns[i].setOnAction(this);
-            gp.getChildren().add(btns[i]);
-            GridPane.setConstraints(btns[i], 2, i);
+        labels[IDX_CONFIG_FILE] = new Label("Configuration file:");
+        labels[IDX_INH_LIST] = new Label("Inhibitory neurons list:");
+        labels[IDX_ACT_LIST] = new Label("Active neurons list:");
+        labels[IDX_PRB_LIST] = new Label("Probed neurons list:");
+        gp.getChildren().addAll(labels[IDX_CONFIG_FILE], labels[IDX_INH_LIST], labels[IDX_ACT_LIST],
+                labels[IDX_PRB_LIST]);
+        GridPane.setConstraints(labels[IDX_CONFIG_FILE], 0, IDX_CONFIG_FILE);
+        GridPane.setConstraints(labels[IDX_INH_LIST], 0, IDX_INH_LIST);
+        GridPane.setConstraints(labels[IDX_ACT_LIST], 0, IDX_ACT_LIST);
+        GridPane.setConstraints(labels[IDX_PRB_LIST], 0, IDX_PRB_LIST);
+        for (int i = 0; i < NUM_FIELDS; i++) {
+            tFields[i] = new TextField();
+            tFields[i].setEditable(true);
+            gp.getChildren().add(tFields[i]);
+            GridPane.setConstraints(tFields[i], 1, i);
+            rButtons[i] = new Button("Browse...");
+            rButtons[i].setOnAction(this);
+            gp.getChildren().add(rButtons[i]);
+            GridPane.setConstraints(rButtons[i], 2, i);
         }
         getChildren().add(gp);
     }
 
-    FileSelectorDirMgr filemgr = new FileSelectorDirMgr();
+    public TextField[] getTFields() {
+        return tFields;
+    }
 
     private void importFiles(ActionEvent e) {
         int iSource = 0;
-        for (int i = 0; i < nFields; i++) {
-            if (e.getSource() == btns[i]) {
+        for (int i = 0; i < NUM_FIELDS; i++) {
+            if (e.getSource() == rButtons[i]) {
                 iSource = i;
                 break;
             }
         }
         // create a file chooser
         // String curDir;
-        // if (iSource == idxConfigFile) {
+        // if (iSource == IDX_CONFIG_FILE) {
         // curDir = configDir;
         // } else {
         // curDir = nlistDir;
         // }
 
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(filemgr.getLastDir());
+        chooser.setInitialDirectory(fileMgr.getLastDir());
 
         chooser.setTitle("Open File");
         // fileChooser.showOpenDialog(stage);
@@ -91,30 +98,30 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
         chooser.setSelectedExtensionFilter(filter);
         String dialogTitle = "";
         switch (iSource) {
-        case idxConfigFile:
+        case IDX_CONFIG_FILE:
             chooser.setInitialFileName("config");
             dialogTitle = "Configuration file";
             break;
-        case idxInhList:
+        case IDX_INH_LIST:
             chooser.setInitialFileName("inh");
             dialogTitle = "Inhibitory neurons list";
             break;
-        case idxActList:
+        case IDX_ACT_LIST:
             chooser.setInitialFileName("act");
             dialogTitle = "Active neurons list";
             break;
-        case idxPrbList:
+        case IDX_PRB_LIST:
             chooser.setInitialFileName("prb");
             dialogTitle = "Probed neurons list";
             break;
         }
         chooser.setTitle(dialogTitle);
 
-        File option = chooser.showOpenDialog(WorkbenchDashboard.primaryStage_);
+        File option = chooser.showOpenDialog(WorkbenchDisplay.getPrimaryStage());
         if (option != null) {
-            tfields[iSource].setText(option.getAbsolutePath());
-            filemgr.add(option.getParentFile());
-            if (iSource == idxConfigFile) { // configuration files is specified.
+            tFields[iSource].setText(option.getAbsolutePath());
+            fileMgr.add(option.getParentFile());
+            if (iSource == IDX_CONFIG_FILE) { // configuration files is specified.
                 // parse config file, extract names of neurons list files, and
                 // show them in the corresponding fields
                 String configFile = option.getAbsolutePath();
@@ -126,13 +133,13 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
                     Element layout = root.getChild("FixedLayout").getChild("LayoutFiles");
                     org.jdom2.Attribute attr;
                     if ((attr = layout.getAttribute("activeNListFileName")) != null) {
-                        tfields[idxActList].setText(configDir + "/" + attr.getValue());
+                        tFields[IDX_ACT_LIST].setText(configDir + "/" + attr.getValue());
                     }
                     if ((attr = layout.getAttribute("inhNListFileName")) != null) {
-                        tfields[idxInhList].setText(configDir + "/" + attr.getValue());
+                        tFields[IDX_INH_LIST].setText(configDir + "/" + attr.getValue());
                     }
                     if ((attr = layout.getAttribute("probedNListFileName")) != null) {
-                        tfields[idxPrbList].setText(configDir + "/" + attr.getValue());
+                        tFields[IDX_PRB_LIST].setText(configDir + "/" + attr.getValue());
                     }
                 } catch (JDOMException je) {
                     // System.err.println(je);

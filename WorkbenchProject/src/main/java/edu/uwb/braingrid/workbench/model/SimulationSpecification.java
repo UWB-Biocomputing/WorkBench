@@ -8,8 +8,8 @@ import edu.uwb.braingrid.workbench.project.ProjectMgr;
 
 /**
  * Data model for a simulation. Contains parameters recorded at the beginning of a script and used
- * to execute a simulation at the end of the script. Additionally contains fields used to
- * determine what setup operations will occur within the script prior to executing the simulation.
+ * to execute a simulation at the end of the script. Additionally contains fields used to determine
+ * what setup operations will occur within the script prior to executing the simulation.
  *
  * @author Del Davis
  */
@@ -45,11 +45,12 @@ public class SimulationSpecification {
     public static String getSimFilename(String simulationType) {
         String simExecutableToInvoke = null;
         if (simulationType != null) {
-            simExecutableToInvoke = simulationType.equals(SimulationSpecification.SEQUENTIAL_SIMULATION)
-                    ? "growth" : "growth_cuda";
+            simExecutableToInvoke = simulationType.equals(
+                    SimulationSpecification.SEQUENTIAL_SIMULATION) ? "growth" : "growth_cuda";
         }
         return simExecutableToInvoke;
     }
+
     private String username;
     private String hostAddress;
     private String SHA1Key;
@@ -65,10 +66,10 @@ public class SimulationSpecification {
     private List<String> simOutputs;
 
     /**
-     * Description of the execution model for a simulation (in particular, these values indicate
-     * the thread or core model used in simulation processing).
+     * Description of the execution model for a simulation (in particular, these values indicate the
+     * thread or core model used in simulation processing).
      */
-    public static enum SimulatorType {
+    public enum SimulatorType {
         /** The simulator will be executed with a single core. */
         SEQUENTIAL,
         /** The simulator will be executed through CUDA on multiple GPU cores. */
@@ -106,8 +107,8 @@ public class SimulationSpecification {
     }
 
     /**
-     * Provides a list of the simulation inputs. At the time when this function was written this
-     * can only contain a single file path. It is maintained in a list for extensibility purposes.
+     * Provides a list of the simulation inputs. At the time when this function was written this can
+     * only contain a single file path. It is maintained in a list for extensibility purposes.
      *
      * @return The list containing simulation input file locations
      */
@@ -130,17 +131,17 @@ public class SimulationSpecification {
      * Provides the location of the folder where the simulator is executed, where its code is
      * downloaded to, and where it is built.
      *
-     * @return The location of the simulator folder. If the simulator execution is specified to
-     *         take place on a remote machine, this is relative to the root directory for the user.
+     * @return The location of the simulator folder. If the simulator execution is specified to take
+     *         place on a remote machine, this is relative to the root directory for the user.
      */
     public String getSimulatorFolder() {
         return simulationFolder;
     }
 
     /**
-     * Provides the location for the simulator code. This location may be a repository depending
-     * on what the source code updating option is set to, or it may simply be a folder where the
-     * code resides if not.
+     * Provides the location for the simulator code. This location may be a repository depending on
+     * what the source code updating option is set to, or it may simply be a folder where the code
+     * resides if not.
      *
      * @return The location for the simulator code
      */
@@ -163,16 +164,16 @@ public class SimulationSpecification {
      * the workbench is running. This value corresponds to the static members REMOTE_EXECUTION or
      * LOCAL_EXECUTION.
      *
-     * @return The locale where the simulation will take place with respect to the machine where
-     *         the workbench is running.
+     * @return The locale where the simulation will take place with respect to the machine where the
+     *         workbench is running.
      */
     public String getSimulationLocale() {
         return simulationLocale;
     }
 
     /**
-     * Provides the execution model for the simulation. This value should correspond to the
-     * toString return of one of the values from the SimulatorType enumeration.
+     * Provides the execution model for the simulation. This value should correspond to the toString
+     * return of one of the values from the SimulatorType enumeration.
      *
      * @return A description of the execution model for the simulation
      * @see edu.uwb.braingrid.workbench.model.SimulationSpecification.SimulatorType
@@ -182,15 +183,14 @@ public class SimulationSpecification {
     }
 
     /**
-     * Provides a description of the source code updating type selected by the user. Possible
-     * values include GIT_PULL_AND_CLONE and GIT_NONE. GIT_PULL_AND_CLONE means that the source
-     * code should be pulled from the repository and should be built prior to execution. Whereas
-     * none, means that there is no need to update the source code prior to executing the
-     * simulator file.
+     * Provides a description of the source code updating type selected by the user. Possible values
+     * include GIT_PULL_AND_CLONE and GIT_NONE. GIT_PULL_AND_CLONE means that the source code should
+     * be pulled from the repository and should be built prior to execution. Whereas none, means
+     * that there is no need to update the source code prior to executing the simulator file.
      *
      * TODO: Move GIT_PULL_CLONE to enum
      *
-     * @return The description of the source code updating type.
+     * @return The description of the source code updating type
      */
     public String getSourceCodeUpdating() {
         return sourceCodeUpdating;
@@ -217,9 +217,9 @@ public class SimulationSpecification {
 
     /**
      * Provides the build option for the script. If this value is BUILD_BUILD_OPTION, then the
-     * script should build the simulator executable prior to starting the simulation. If this
-     * value is PRE_BUILT_BUILD_OPTION, then the script should simply start the simulation
-     * without first building the simulator.
+     * script should build the simulator executable prior to starting the simulation. If this value
+     * is PRE_BUILT_BUILD_OPTION, then the script should simply start the simulation without first
+     * building the simulator.
      *
      * TODO: Move to enum -Max
      *
@@ -230,8 +230,8 @@ public class SimulationSpecification {
     }
 
     /**
-     * Provides the username provided during a specification. This is not necessarily the login
-     * used to actually stage files and execute the script or simulation on the remote machine.
+     * Provides the username provided during a specification. This is not necessarily the login used
+     * to actually stage files and execute the script or simulation on the remote machine.
      *
      * @return The username provided during simulation specification
      */
@@ -251,9 +251,9 @@ public class SimulationSpecification {
 
     /**
      * Sets the location of the source code. If source code updating is turned off in this
-     * specification, then this location points to a folder on the machine where the simulation
-     * will take place. If source code updating is turned on in this specification, then this
-     * location points to a source code repository.
+     * specification, then this location points to a folder on the machine where the simulation will
+     * take place. If source code updating is turned on in this specification, then this location
+     * points to a source code repository.
      *
      * @param url  The location of the source code for the simulation
      */
@@ -276,7 +276,8 @@ public class SimulationSpecification {
      * Sets the locale for the simulation. This can be remote or local, but should be set based on
      * the related static strings from this class.
      *
-     * TODO: Make this an enum? -Max, or atleast move the values of REMOTE_EXECUTION and LOCAL_EXECUTION to ProjectMgr
+     * TODO: Make this an enum? -Max, or atleast move the values of REMOTE_EXECUTION and
+     *       LOCAL_EXECUTION to ProjectMgr
      *
      * @param locale  The locale for the simulation. One of the following values:
      *                SimulationSpecification.REMOTE_EXECUTION or
@@ -360,11 +361,11 @@ public class SimulationSpecification {
     }
 
     /**
-     * Adds an input file path to the list of input files for this simulation. This path is based
-     * on where the simulation was executed, not where the original input file was copied from.
+     * Adds an input file path to the list of input files for this simulation. This path is based on
+     * where the simulation was executed, not where the original input file was copied from.
      *
-     * Note: When this function was written, all executable simulators are limited to a single
-     * input file. However, input file locations are maintained in a list for extensibility.
+     * Note: When this function was written, all executable simulators are limited to a single input
+     * file. However, input file locations are maintained in a list for extensibility.
      *
      * @param input  An input file path (relative to the simulation folder) to add to the list of
      *               input files for this simulation.
@@ -374,15 +375,15 @@ public class SimulationSpecification {
     }
 
     /**
-     * Adds an output file path to the list of output files for this simulation. This path is
-     * based on where the simulation was executed, not where the output file was copied to for
-     * workbench use.
+     * Adds an output file path to the list of output files for this simulation. This path is based
+     * on where the simulation was executed, not where the output file was copied to for workbench
+     * use.
      *
      * Note: When this function was written, all executable simulators are limited to a single
      * output file. However, output file locations are maintained in a list for extensibility.
      *
-     * @param output An output file path (relative to the simulation folder) to add to the list
-     *               of output files for this simulation.
+     * @param output An output file path (relative to the simulation folder) to add to the list of
+     *               output files for this simulation.
      */
     public void addOutput(String output) {
         simOutputs.add(output);
@@ -418,8 +419,8 @@ public class SimulationSpecification {
     }
 
     /**
-     * Indicates whether or not the simulator for this simulation should be built from code that
-     * is checked out based a particular commit.
+     * Indicates whether or not the simulator for this simulation should be built from code that is
+     * checked out based a particular commit.
      *
      * @return True if the simulator for this simulation should be built from code that is checked
      *         out based a particular commit, otherwise false
@@ -454,8 +455,9 @@ public class SimulationSpecification {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), hostAddress, SHA1Key, getBuildOption(), getSourceCodeUpdating(),
-                getSimulationType(), getSimulationLocale(), simulationFolder, getVersionAnnotation(),
-                codeRepositoryLocation, getSimExecutable(), getSimInputs(), getSimOutputs());
+        return Objects.hash(getUsername(), hostAddress, SHA1Key, getBuildOption(),
+                getSourceCodeUpdating(), getSimulationType(), getSimulationLocale(),
+                simulationFolder, getVersionAnnotation(), codeRepositoryLocation,
+                getSimExecutable(), getSimInputs(), getSimOutputs());
     }
 }

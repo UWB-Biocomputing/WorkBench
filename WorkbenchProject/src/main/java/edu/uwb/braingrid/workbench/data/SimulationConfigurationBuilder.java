@@ -38,8 +38,7 @@ public class SimulationConfigurationBuilder {
      */
     public SimulationConfigurationBuilder() throws ParserConfigurationException {
         /* Build New XML Document */
-        doc = DocumentBuilderFactory.newInstance().
-                newDocumentBuilder().newDocument();
+        doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         root = doc.createElement(ROOT_TAG_NAME);
         doc.appendChild(root);
     }
@@ -66,8 +65,8 @@ public class SimulationConfigurationBuilder {
      * @throws TransformerException
      * @throws java.io.IOException
      */
-    public String persist(String filename) throws TransformerConfigurationException, TransformerException,
-            IOException {
+    public String persist(String filename) throws TransformerConfigurationException,
+            TransformerException, IOException {
         // create the file we want to save
         File file = new File(filename);
         // create any necessary non-existent directories
@@ -94,8 +93,7 @@ public class SimulationConfigurationBuilder {
             ParserConfigurationException {
         File file = new File(filename);
 
-        doc = DocumentBuilderFactory.newInstance().
-                newDocumentBuilder().parse(file);
+        doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
         doc.getDocumentElement().normalize();
 
         return new SimulationConfiguration(doc);

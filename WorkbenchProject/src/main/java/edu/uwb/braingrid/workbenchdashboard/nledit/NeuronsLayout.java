@@ -25,12 +25,12 @@ public class NeuronsLayout {
     public ArrayList<Integer> probedNList = new ArrayList<>();
 
     public NeuronsLayout() {
-        
     }
 
     /**
      * Returns the NeuronType of the index given
-     * TODO: This needs to be turned into an enums. There are parts in the code (somewhere) that uses the int values to make decisions. 
+     * TODO: This needs to be turned into an enums. There are parts in the code (somewhere) that
+     *       uses the int values to make decisions.
      * Use getOrdinal() and other properties of enums to fix this.
      *
      * @param index
@@ -38,8 +38,7 @@ public class NeuronsLayout {
      */
     public int getNeuronType(int index) {
         int cIndex = OTR;
-        if (activeNList.contains(index)
-                && inhNList.contains(index)) {
+        if (activeNList.contains(index) && inhNList.contains(index)) {
             cIndex = OVP;
         } else if (activeNList.contains(index)) {
             cIndex = ACT;
@@ -49,7 +48,7 @@ public class NeuronsLayout {
         return cIndex;
     }
 
-    static public String getNeuronTypeName(int index) {
+    public static String getNeuronTypeName(int index) {
         switch (index) {
             case NeuronsLayout.OTR: /* neuron type index for other neurons */
                 return "other neuron";
@@ -77,10 +76,10 @@ public class NeuronsLayout {
                 inhNList.add(index);
                 Collections.sort(inhNList);
                 if (activeNList.contains(index)) {
-                    activeNList.remove((Integer)index);
+                    activeNList.remove((Integer) index);
                 }
             } else {
-                inhNList.remove((Integer)index);
+                inhNList.remove((Integer) index);
             }
             break;
 
@@ -89,11 +88,12 @@ public class NeuronsLayout {
                 activeNList.add(index);
                 Collections.sort(activeNList);
                 if (inhNList.contains(index)) {
-                    // The casting is necessary. Otherwise is uses .remove(<index in the array>) vs. .remove(<an object equal to this>);
-                    inhNList.remove((Integer)index);
+                    // The casting is necessary. Otherwise is uses .remove(<index in the array>)
+                    // vs. .remove(<an object equal to this>);
+                    inhNList.remove((Integer) index);
                 }
             } else {
-                activeNList.remove((Integer)index);
+                activeNList.remove((Integer) index);
             }
             break;
 
@@ -102,7 +102,7 @@ public class NeuronsLayout {
                 probedNList.add(index);
                 Collections.sort(probedNList);
             } else {
-                probedNList.remove((Integer)index);
+                probedNList.remove((Integer) index);
             }
             break;
         }

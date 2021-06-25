@@ -1,7 +1,5 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -11,17 +9,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.TransportException;
 
-import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
 import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 import edu.uwb.braingrid.workbenchdashboard.userView.UserView;
 import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
 
@@ -34,71 +26,73 @@ public class WorkbenchDisplay extends BorderPane {
 
     private static final Logger LOG = Logger.getLogger(WorkbenchDisplay.class.getName());
 
-    /**
-     * The top menu bar of the screen.
-     */
-    private MenuBar menu_bar_;
-    private Stage primaryStage_;
+    /** The Stage of the FX program. */
+    private static Stage primaryStage;
+
+    /** The top menu bar of the screen. */
+    private MenuBar menuBar;
+
+    /** The main content of the screen. */
+    private TabPane tabPane = new TabPane();
 
     /**
-     * The main content of the screen
+     *
+     * @param primaryStage  The Stage of the FX program
      */
-    private TabPane tp_ = new TabPane();
-
-    /**
-     * 
-     * @param primary_stage The Stage object of the fx instance.
-     */
-    public WorkbenchDisplay(Stage primary_stage) {
+    public WorkbenchDisplay(Stage primaryStage) {
         LOG.info("new " + getClass().getName());
-        primaryStage_ = primary_stage;
-        setTop(generateMenuBar(primaryStage_));
+        WorkbenchDisplay.primaryStage = primaryStage;
+        setTop(generateMenuBar());
         setBottom(new WorkbenchStatusBar());
         pushProVisStarterPage();
-        setCenter(tp_);
+        setCenter(tabPane);
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
     }
 
     public MenuBar getMenuBar() {
-        return menu_bar_;
+        return menuBar;
     }
 
-    private MenuBar generateMenuBar(Stage primary_stage) {
-        menu_bar_ = new MenuBar();
-        menu_bar_.getMenus().add(generateMenuFile(primary_stage));
-        menu_bar_.getMenus().add(generateMenuRepo());
-        return menu_bar_;
+    private MenuBar generateMenuBar() {
+        menuBar = new MenuBar();
+        menuBar.getMenus().add(generateMenuFile());
+        menuBar.getMenus().add(generateMenuRepo());
+        return menuBar;
     }
 
     /**
      * Generates all functionality associated with the "File" tab of the menu bar.
-     * @param primary_stage The Stage of the FX program
+     *
      * @return A complete menu.
      */
-    private Menu generateMenuFile(Stage primary_stage) {
-        Menu file_menu = new Menu("_File");
-        file_menu.getItems().add(generateMenuNew(primary_stage));
-        file_menu.getItems().add(generateMenuItemOpen());
-        file_menu.getItems().add(generateMenuRecentProjects());
-        return file_menu;
+    private Menu generateMenuFile() {
+        Menu fileMenu = new Menu("_File");
+        fileMenu.getItems().add(generateMenuNew());
+        fileMenu.getItems().add(generateMenuItemOpen());
+        fileMenu.getItems().add(generateMenuRecentProjects());
+        return fileMenu;
     }
 
     private Menu generateMenuRecentProjects() {
-        Menu recent_proj_menu = new Menu("Recent Projects");
-        return recent_proj_menu;
+        Menu recentProjectMenu = new Menu("Recent Projects");
+        return recentProjectMenu;
     }
 
     private MenuItem generateMenuItemOpen() {
         // Generate menu item
-        MenuItem open_menu = new MenuItem("Open");
+        MenuItem openMenu = new MenuItem("Open");
         // Define functionality
-        open_menu.setOnAction(event -> {
+        openMenu.setOnAction(event -> {
             pushSimOpen();
         });
-        return open_menu;
+        return openMenu;
     }
 
-    private Menu generateMenuNew(Stage primary_stage) {
-        Menu new_menu = new Menu("_New");
+    private Menu generateMenuNew() {
+        Menu newMenu = new Menu("_New");
 
         // Generate Items
         MenuItem gsle = new MenuItem("_Growth Simulation Layout Editor");
@@ -125,23 +119,23 @@ public class WorkbenchDisplay extends BorderPane {
         });
 
         // Add
-        new_menu.getItems().add(gsle);
-        new_menu.getItems().add(simstarter);
-        new_menu.getItems().add(provis);
-        return new_menu;
+        newMenu.getItems().add(gsle);
+        newMenu.getItems().add(simstarter);
+        newMenu.getItems().add(provis);
+        return newMenu;
     }
 
     private Menu generateMenuRepo() {
-        Menu repo_menu = new Menu("_Repo");
+        Menu repoMenu = new Menu("_Repo");
         MenuItem updateMain = new MenuItem("Update Main");
 
         updateMain.setOnAction(event -> {
             RepoManager.getMasterBranch();
         });
 
-        repo_menu.getItems().add(updateMain);
+        repoMenu.getItems().add(updateMain);
 
-        return repo_menu;
+        return repoMenu;
     }
 
     /**
@@ -151,8 +145,8 @@ public class WorkbenchDisplay extends BorderPane {
         Tab tab = new Tab();
         NLedit pv = new NLedit(tab);
         tab.setContent(pv.getDisplay());
-        tp_.getTabs().add(tab);
-        SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
+        tabPane.getTabs().add(tab);
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(tab);
     }
 
@@ -178,8 +172,8 @@ public class WorkbenchDisplay extends BorderPane {
         Tab tab = new Tab();
         ProVis pv = new ProVis(tab);
         tab.setContent(pv.getDisplay());
-        tp_.getTabs().add(tab);
-        SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
+        tabPane.getTabs().add(tab);
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(tab);
     }
 
@@ -187,8 +181,8 @@ public class WorkbenchDisplay extends BorderPane {
         Tab tab = new Tab();
         UserView uv = new UserView(tab);
         tab.setContent(uv.getDisplay());
-        tp_.getTabs().add(tab);
-        SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
+        tabPane.getTabs().add(tab);
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(tab);
     }
 }

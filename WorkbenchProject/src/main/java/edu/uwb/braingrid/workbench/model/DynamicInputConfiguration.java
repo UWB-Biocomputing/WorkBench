@@ -22,17 +22,19 @@ public class DynamicInputConfiguration {
     private static final Logger LOG = Logger.getLogger(DynamicInputConfiguration.class.getName());
 
     /**
-     * Responsible for initializing containers for parameters/values and their default values,
-     * as well as constructing this input configuration object.
+     * Responsible for initializing containers for parameters/values and their default values, as
+     * well as constructing this input configuration object.
      *
      * @throws java.lang.Exception
      */
     public DynamicInputConfiguration() throws Exception {
         LOG.info("New " + getClass().getName());
         Document baseTemplateInfoDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(System.getProperty("user.dir") + File.separator + SystemConfig.BASE_TEMPLATE_INFO_XML_File_URL);
+                .parse(System.getProperty("user.dir") + File.separator
+                        + SystemConfig.BASE_TEMPLATE_INFO_XML_FILE_URL);
         Node baseTemplateNode = baseTemplateInfoDoc.getFirstChild();
-        String templatePath = ((Element) baseTemplateNode).getAttribute(SystemConfig.TEMPLATE_PATH_ATTRIBUTE_NAME);
+        String templatePath = ((Element) baseTemplateNode).getAttribute(
+                SystemConfig.TEMPLATE_PATH_ATTRIBUTE_NAME);
         inputConfig = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                 .parse(System.getProperty("user.dir") + File.separator + templatePath);
     }

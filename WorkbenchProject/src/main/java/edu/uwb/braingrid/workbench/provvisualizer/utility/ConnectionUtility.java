@@ -26,8 +26,8 @@ public final class ConnectionUtility {
                 authenticationInfo.getUsername(), authenticationInfo.getPassword().toCharArray());
     }
 
-    public static boolean downloadFileViaSftp(String remoteFilePath, String localFilePath, String hostname,
-            String username, char[] password) {
+    public static boolean downloadFileViaSftp(String remoteFilePath, String localFilePath,
+            String hostname, String username, char[] password) {
         boolean success = true;
         Session session = null;
 

@@ -24,8 +24,11 @@ public final class GraphUtility {
         return midPoint;
     }
 
-    public static double[] findPointWithAngleDistance(double[] fromPoint, double angle, double distance) {
-        double[] targetPoint = {fromPoint[0] + distance * Math.cos(angle), fromPoint[1] + distance * Math.sin(angle)};
+    public static double[] findPointWithAngleDistance(double[] fromPoint, double angle,
+            double distance) {
+        double[] targetPoint = {
+                fromPoint[0] + distance * Math.cos(angle),
+                fromPoint[1] + distance * Math.sin(angle)};
         return targetPoint;
     }
 }

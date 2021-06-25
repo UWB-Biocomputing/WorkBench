@@ -14,8 +14,8 @@ import java.util.HashSet;
 /**
  * Encapsulate a statement from an RDF model (or parts of). Provides methods of separation between
  * unique resource identifiers and their respective human-readable counterparts. In addition,
- * provenance statements eliminate abstractness concerns from RDF Model statements. For example,
- * an object may be a String literal. It may not have an associated URI. In this case, querying a
+ * provenance statements eliminate abstractness concerns from RDF Model statements. For example, an
+ * object may be a String literal. It may not have an associated URI. In this case, querying a
  * provenance statement for its object URI results in a return value of null, which is used as a
  * wildcard in future queries. Whereas, performing the respective operation on an RDF Model
  * statement would result in an exception being thrown.
@@ -55,8 +55,8 @@ public class ProvenanceStatement {
      *
      * @param subj  An RDF Resource that represents the subject of this provenance statement
      * @param pred  An RDF Resource that represents the predicate of this provenance statement
-     * @param obj  A Resource, anonymous node, or literal RDFNode that represents the object of
-     *             this provenance statement
+     * @param obj  A Resource, anonymous node, or literal RDFNode that represents the object of this
+     *             provenance statement
      */
     public ProvenanceStatement(Resource subj, Property pred, RDFNode obj) {
         subject = subj;
@@ -67,12 +67,12 @@ public class ProvenanceStatement {
     /**
      * Constructs this provenance statement based on URIs of a subject, predicate, and object.
      *
-     * @param subjURI  Identifier for a RDF Resource that represents the subject of this
-     *                 provenance statement
+     * @param subjURI  Identifier for a RDF Resource that represents the subject of this provenance
+     *                 statement
      * @param predURI  Identifier for a RDF Resource that represents the predicate of this
      *                 provenance statement
-     * @param objURI  Identifier for a Resource, anonymous node, or literal RDFNode that
-     *                represents the object of this provenance statement
+     * @param objURI  Identifier for a Resource, anonymous node, or literal RDFNode that represents
+     *                the object of this provenance statement
      */
     public ProvenanceStatement(String subjURI, String predURI, String objURI) {
         defaultModel = ModelFactory.createDefaultModel();
@@ -94,8 +94,8 @@ public class ProvenanceStatement {
     }
 
     /**
-     * Determines whether or not this provenance statement was constructed based on a statement
-     * from an RDF model.
+     * Determines whether or not this provenance statement was constructed based on a statement from
+     * an RDF model.
      *
      * @return True if this provenance statement comes from a model, otherwise false
      */
@@ -106,8 +106,8 @@ public class ProvenanceStatement {
     /**
      * Provides the original model of the RDF statement used to create this provenance statement.
      *
-     * @return The original model of the RDF statement used to create this provenance statement
-     *         or null if no statement was used to construct this provenance statement
+     * @return The original model of the RDF statement used to create this provenance statement or
+     *         null if no statement was used to construct this provenance statement
      */
     public Model getModel() {
         Model model = hasNonDefaultModel() ? statement.getModel() : null;
@@ -126,8 +126,8 @@ public class ProvenanceStatement {
     /**
      * Sets the statement of this provenance statement.
      *
-     * Warning: The subject, predicate, and object of this provenance statement will be
-     * overwritten by the respective resources of the statement provided
+     * Warning: The subject, predicate, and object of this provenance statement will be overwritten
+     * by the respective resources of the statement provided
      *
      * @param stmt  Statement from a model
      */
@@ -141,8 +141,8 @@ public class ProvenanceStatement {
     /**
      * Sets the subject for this provenance statement to the subject of an existing statement.
      *
-     * Warning: The statement of this provenance statement will be invalidated (resulting in a
-     * null reference)
+     * Warning: The statement of this provenance statement will be invalidated (resulting in a null
+     * reference)
      *
      * @param subj  An RDF Resource that represents the subject of this provenance statement
      */
@@ -154,8 +154,8 @@ public class ProvenanceStatement {
     /**
      * Sets the predicate for this provenance statement to the predicate of an existing statement.
      *
-     * Warning: The statement of this provenance statement will be invalidated (resulting in a
-     * null reference)
+     * Warning: The statement of this provenance statement will be invalidated (resulting in a null
+     * reference)
      *
      * @param pred  An RDF Resource that represents the predicate of this provenance statement
      */
@@ -167,11 +167,11 @@ public class ProvenanceStatement {
     /**
      * Sets the object of this provenance statement to the object of an existing statement.
      *
-     * Warning: The statement of this provenance statement will be invalidated (resulting in a
-     * null reference)
+     * Warning: The statement of this provenance statement will be invalidated (resulting in a null
+     * reference)
      *
-     * @param obj  A Resource, anonymous node, or literal RDFNode that represents the object of
-     *             this provenance statement
+     * @param obj  A Resource, anonymous node, or literal RDFNode that represents the object of this
+     *             provenance statement
      */
     public void setObject(RDFNode obj) {
         objectNode = obj;
@@ -181,8 +181,8 @@ public class ProvenanceStatement {
      * Sets the subject of this provenance statement from a subject created in the default model
      * based on the provided URI.
      *
-     * Warning: The statement of this provenance statement will be invalidated (resulting in a
-     * null reference)
+     * Warning: The statement of this provenance statement will be invalidated (resulting in a null
+     * reference)
      *
      * @param uri  A unique resource identifier used to construct a RDF resource representing the
      *             subject of this provenance statement
@@ -224,8 +224,8 @@ public class ProvenanceStatement {
     /**
      * Sets the predicate of this provenance statement to the predicate of an existing statement.
      *
-     * Warning: The statement of this provenance statement will be invalidated (resulting in a
-     * null reference)
+     * Warning: The statement of this provenance statement will be invalidated (resulting in a null
+     * reference)
      *
      * @param uri  A unique resource identifier used to construct a RDF resource representing the
      *             predicate of this provenance statement
@@ -237,11 +237,11 @@ public class ProvenanceStatement {
     }
 
     /**
-     * Provides the unique resource identifier for the predicate of this provenance statement or
-     * the empty string.
+     * Provides the unique resource identifier for the predicate of this provenance statement or the
+     * empty string.
      *
-     * @return The unique resource identifier for the predicate of this provenance statement or
-     *         the empty string if the predicate was not set
+     * @return The unique resource identifier for the predicate of this provenance statement or the
+     *         empty string if the predicate was not set
      */
     public String getPredicate() {
         String pred = "";
@@ -254,8 +254,8 @@ public class ProvenanceStatement {
     /**
      * Sets the object of this provenance statement to the object of an existing statement.
      *
-     * Warning: The statement of this provenance statement will be invalidated (resulting in a
-     * null reference)
+     * Warning: The statement of this provenance statement will be invalidated (resulting in a null
+     * reference)
      *
      * @param uri  A unique resource identifier used to construct a RDF resource or RDF literal
      *             representing the object of this provenance statement
@@ -273,19 +273,19 @@ public class ProvenanceStatement {
 
     /**
      * Provides a collection of provenance statements from the specified model which closely match
-     * the URIs of the subject, predicate, and object of this provenance statement. This function
-     * is less efficient than strictQuery since it matches URIs against all statements in the
-     * model. However, differences between name space prefixes (which may occur automatically when
-     * statements are loaded from disk) will be ignored. More specifically, statements match as
-     * long as the URIs from the model statement contain the URIs from this provenance statement.
-     * The subject, and/or predicate, and/or object of this provenance statement will be used as
+     * the URIs of the subject, predicate, and object of this provenance statement. This function is
+     * less efficient than strictQuery since it matches URIs against all statements in the model.
+     * However, differences between name space prefixes (which may occur automatically when
+     * statements are loaded from disk) will be ignored. More specifically, statements match as long
+     * as the URIs from the model statement contain the URIs from this provenance statement. The
+     * subject, and/or predicate, and/or object of this provenance statement will be used as
      * wildcards if null.
      *
      * @param model  The model to match statements against this
      * @param unique  Determines whether the collection should only contain unique provenance
      *                statements
-     * @return A collection of provenance statements from model which match the subject,
-     *         predicate, and object of this provenance statement
+     * @return A collection of provenance statements from model which match the subject, predicate,
+     *         and object of this provenance statement
      */
     public Collection<ProvenanceStatement> relaxedQuery(Model model, boolean unique) {
         Collection<ProvenanceStatement> uniqueCollection = new ArrayList<>();
@@ -331,8 +331,8 @@ public class ProvenanceStatement {
      * @param model  The model to match statements against this
      * @param unique  Determines whether the collection should only contain unique provenance
      *                statements
-     * @return A collection of provenance statements from model which match the subject,
-     *         predicate, and object of this provenance statement
+     * @return A collection of provenance statements from model which match the subject, predicate,
+     *         and object of this provenance statement
      */
     public Collection<ProvenanceStatement> strictQuery(Model model, boolean unique) {
         Collection<ProvenanceStatement> uniqueCollection = new ArrayList<>();

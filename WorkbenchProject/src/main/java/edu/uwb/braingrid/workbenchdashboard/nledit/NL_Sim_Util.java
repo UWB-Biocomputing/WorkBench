@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
@@ -14,12 +13,12 @@ import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit.RepType;
 
 public class NL_Sim_Util {
 
-    LayoutPanel layout_panel_;
-    NeuronsLayout neurons_layout_;
+    private LayoutPanel layoutPanel;
+    private NeuronsLayout neuronsLayout;
 
-    public NL_Sim_Util(LayoutPanel layout_panel, NeuronsLayout neurons_layout) {
-        layout_panel_ = layout_panel;
-        neurons_layout_ = neurons_layout;
+    public NL_Sim_Util(LayoutPanel layoutPanel, NeuronsLayout neuronsLayout) {
+        this.layoutPanel = layoutPanel;
+        this.neuronsLayout = neuronsLayout;
     }
 
     /**
@@ -31,20 +30,19 @@ public class NL_Sim_Util {
      * @param rtype  repeat type, CLEAR, REPEAT, or ALT
      * @return New neurons list of new size
      */
-    public ArrayList<Integer> repPattern(Dimension newSize, ArrayList<Integer> list, RepType rtype) {
+    public ArrayList<Integer> repPattern(Dimension newSize, ArrayList<Integer> list,
+            RepType rtype) {
         ArrayList<Integer> newNList = new ArrayList<>();
 
         if (rtype != RepType.CLEAR) { // if rtype is clear, we just clear the
             // list
             int newX = newSize.width;
             int newY = newSize.height;
-            Dimension size = layout_panel_.getLayoutSize();
+            Dimension size = layoutPanel.getLayoutSize();
             int sizeX = size.width;
             int sizeY = size.height;
 
-            Iterator<Integer> iter = list.iterator();
-            while (iter.hasNext()) {
-                int index = iter.next();
+            for (int index : list) {
                 int x = index % sizeX;
                 int y = index / sizeX;
                 for (int i = 0; i <= (newY / sizeY); i++) {
@@ -54,7 +52,8 @@ public class NL_Sim_Util {
                                 newNList.add((y + sizeY * i) * newX + (x + sizeX * j));
                             }
                         } else if (rtype == RepType.ALT) {
-                            int tx, ty;
+                            int tx;
+                            int ty;
                             if (j % 2 == 0) {
                                 tx = x;
                             } else {
@@ -84,12 +83,14 @@ public class NL_Sim_Util {
         GPatternPanel gpatPanel = new GPatternPanel();
         // int result = JOptionPane.showConfirmDialog(this, gpatPanel,
         // "Generate pattern", JOptionPane.OK_CANCEL_OPTION);
-        int result = JOptionPane.showConfirmDialog(layout_panel_, gpatPanel, "Generate pattern",
+        int result = JOptionPane.showConfirmDialog(layoutPanel, gpatPanel, "Generate pattern",
                 JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) { // Afirmative
             try {
-                float ratioInh = Float.parseFloat(gpatPanel.tfields[GPatternPanel.idxINH].getText());
-                float ratioAct = Float.parseFloat(gpatPanel.tfields[GPatternPanel.idxACT].getText());
+                float ratioInh = Float.parseFloat(gpatPanel.getTFields()[GPatternPanel.IDX_INH]
+                        .getText());
+                float ratioAct = Float.parseFloat(gpatPanel.getTFields()[GPatternPanel.IDX_ACT]
+                        .getText());
 
                 // validate ratios
                 if ((ratioInh < 0 || ratioInh > 1.0) || (ratioAct < 0 || ratioAct > 1.0)
@@ -97,14 +98,14 @@ public class NL_Sim_Util {
                     throw new NumberFormatException();
                 }
 
-                if (gpatPanel.btns[GPatternPanel.idxREG].isSelected()) {
+                if (gpatPanel.getRButtons()[GPatternPanel.IDX_REG].isSelected()) {
                     genRegularPattern(ratioInh, ratioAct);
-                } else if (gpatPanel.btns[GPatternPanel.idxRND].isSelected()) {
+                } else if (gpatPanel.getRButtons()[GPatternPanel.IDX_RND].isSelected()) {
                     genRandomPattern(ratioInh, ratioAct);
                 }
 
-                Graphics g = layout_panel_.getGraphics();
-                layout_panel_.writeToGraphics(g);
+                Graphics g = layoutPanel.getGraphics();
+                layoutPanel.writeToGraphics(g);
             } catch (NumberFormatException ne) {
                 JOptionPane.showMessageDialog(null, "Invalid ratio.");
             }
@@ -112,15 +113,15 @@ public class NL_Sim_Util {
     }
 
     /**
-     * The function genRandomPattern generates randomly distributed pattern of active and
-     * inhibitory neurons, each ratio of which are specified by parameters, ratioInh and ratioAct.
+     * The function genRandomPattern generates randomly distributed pattern of active and inhibitory
+     * neurons, each ratio of which are specified by parameters, ratioInh and ratioAct.
      *
      * @param ratioInh  Ratio of inhibitory neurons
      * @param ratioAct  Ratio of active neurons
      */
     public void genRandomPattern(float ratioInh, float ratioAct) {
-        neurons_layout_.inhNList = getRandomPointsIndex(ratioInh, null);
-        neurons_layout_.activeNList = getRandomPointsIndex(ratioAct, neurons_layout_.inhNList);
+        neuronsLayout.inhNList = getRandomPointsIndex(ratioInh, null);
+        neuronsLayout.activeNList = getRandomPointsIndex(ratioAct, neuronsLayout.inhNList);
     }
 
     /**
@@ -134,7 +135,7 @@ public class NL_Sim_Util {
     public ArrayList<Integer> getRandomPointsIndex(float ratio, ArrayList<Integer> occupiedNList) {
         ArrayList<Integer> newNList = new ArrayList<>();
         ArrayList<Integer> freeNList = new ArrayList<>();
-        Dimension dim = layout_panel_.getLayoutSize();
+        Dimension dim = layoutPanel.getLayoutSize();
         int height = dim.height;
         int width = dim.width;
         int size = height * width;
@@ -168,53 +169,53 @@ public class NL_Sim_Util {
      * @param ratioAct  ratio of active neurons
      */
     public void genRegularPattern(float ratioInh, float ratioAct) {
-        neurons_layout_.inhNList.clear();
-        neurons_layout_.activeNList.clear();
+        neuronsLayout.inhNList.clear();
+        neuronsLayout.activeNList.clear();
         float ratio = ratioInh + ratioAct;
         if (ratio == 0) {
             return;
         }
 
         if (ratioInh == 0) {
-            neurons_layout_.activeNList = getRegularPointsIndex(ratioAct);
+            neuronsLayout.activeNList = getRegularPointsIndex(ratioAct);
             return;
         } else if (ratioAct == 0) {
-            neurons_layout_.inhNList = getRegularPointsIndex(ratioInh);
+            neuronsLayout.inhNList = getRegularPointsIndex(ratioInh);
             return;
         }
 
         // ratioInh != 0 && ratioAct != 0
-        neurons_layout_.activeNList = getRegularPointsIndex(ratioAct);
-        neurons_layout_.inhNList = getRegularPointsIndex(ratioInh);
+        neuronsLayout.activeNList = getRegularPointsIndex(ratioAct);
+        neuronsLayout.inhNList = getRegularPointsIndex(ratioInh);
 
         findLargestNNIPointsIndexPair(ratioInh, ratioAct);
     }
 
     /**
-     * The function findLargestNNIPointsIndexPair generates regularly distributed pattern of
-     * active and inhibitory neurons, each ratio of which are specified by parameters, ratioInh
-     * and ratioAct. The function tries to locate two arrays of neurons, of which NNI is maximum.
+     * The function findLargestNNIPointsIndexPair generates regularly distributed pattern of active
+     * and inhibitory neurons, each ratio of which are specified by parameters, ratioInh and
+     * ratioAct. The function tries to locate two arrays of neurons, of which NNI is maximum.
      *
      * @param ratioInh  Ratio of inhibitory neurons
      * @param ratioAct  Ratio of active neurons
      * @return Indexes of neurons lists generated
      */
     public void findLargestNNIPointsIndexPair(float ratioInh, float ratioAct) {
-        ArrayList<Point> pts0 = new ArrayList<Point>();
-        ArrayList<Point> pts1 = new ArrayList<Point>();
-        Dimension dim = layout_panel_.getLayoutSize();
+        ArrayList<Point> pts0 = new ArrayList<>();
+        ArrayList<Point> pts1 = new ArrayList<>();
+        Dimension dim = layoutPanel.getLayoutSize();
         int height = dim.height;
         int width = dim.width;
         int size = height * width;
         int newNListSize;
         if (ratioInh > ratioAct) {
             newNListSize = (int) (size * ratioInh);
-            pts0 = cnvIndexList2Points(neurons_layout_.activeNList);
-            pts1 = cnvIndexList2Points(neurons_layout_.inhNList);
+            pts0 = cnvIndexList2Points(neuronsLayout.activeNList);
+            pts1 = cnvIndexList2Points(neuronsLayout.inhNList);
         } else {
             newNListSize = (int) (size * ratioAct);
-            pts0 = cnvIndexList2Points(neurons_layout_.inhNList);
-            pts1 = cnvIndexList2Points(neurons_layout_.activeNList);
+            pts0 = cnvIndexList2Points(neuronsLayout.inhNList);
+            pts1 = cnvIndexList2Points(neuronsLayout.activeNList);
         }
         double len = Math.sqrt((double) size / (double) newNListSize);
 
@@ -232,11 +233,11 @@ public class NL_Sim_Util {
                 int xShift1 = (int) Math.ceil((double) -xShift / 2);
                 int yShift0 = (int) Math.ceil((double) yShift / 2);
                 int yShift1 = (int) Math.ceil((double) -yShift / 2);
-                // System.out.println("xShift = " + xShift + ", xShift0 = " +
-                // xShift0 + ", xShift1 = " + xShift1);
+//                 System.out.println("xShift = " + xShift + ", xShift0 = "
+//                         + xShift0 + ", xShift1 = " + xShift1);
                 ArrayList<Point> sftPts0 = getShiftedPoints(pts0, xShift0, yShift0);
                 ArrayList<Point> sftPts1 = getShiftedPoints(pts1, xShift1, yShift1);
-                union = new ArrayList<Point>(sftPts0);
+                union = new ArrayList<>(sftPts0);
                 union.addAll(sftPts1);
                 double nni = calcNearestNeighborIndex(union);
                 if (nni > maxNNI) {
@@ -248,17 +249,17 @@ public class NL_Sim_Util {
         }
 
         if (ratioInh > ratioAct) {
-            neurons_layout_.activeNList = cnvPoints2IndexList(maxPts0);
-            neurons_layout_.inhNList = cnvPoints2IndexList(maxPts1);
+            neuronsLayout.activeNList = cnvPoints2IndexList(maxPts0);
+            neuronsLayout.inhNList = cnvPoints2IndexList(maxPts1);
         } else {
-            neurons_layout_.inhNList = cnvPoints2IndexList(maxPts0);
-            neurons_layout_.activeNList = cnvPoints2IndexList(maxPts1);
+            neuronsLayout.inhNList = cnvPoints2IndexList(maxPts0);
+            neuronsLayout.activeNList = cnvPoints2IndexList(maxPts1);
         }
     }
 
     /**
-     * The function getShiftedPoints gets the shifted points of array. The shift amount is
-     * specified by the parameter, sx, and sy.
+     * The function getShiftedPoints gets the shifted points of array. The shift amount is specified
+     * by the parameter, sx, and sy.
      *
      * @param pts  points to be shifted
      * @param sx  shift x value
@@ -266,14 +267,12 @@ public class NL_Sim_Util {
      * @return An array of shifted points
      */
     public ArrayList<Point> getShiftedPoints(ArrayList<Point> pts, int sx, int sy) {
-        Dimension dim = layout_panel_.getLayoutSize();
+        Dimension dim = layoutPanel.getLayoutSize();
         int width = dim.width;
         int height = dim.height;
 
         ArrayList<Point> sftPts = new ArrayList<>();
-        Iterator<Point> iter = pts.iterator();
-        while (iter.hasNext()) {
-            Point pt = iter.next();
+        for (Point pt : pts) {
             int x = (width + (pt.x + sx)) % width;
             int y = (height + (pt.y + sy)) % height;
             sftPts.add(new Point(x, y));
@@ -290,7 +289,7 @@ public class NL_Sim_Util {
      * @return Indexes of neurons generated
      */
     public ArrayList<Integer> getRegularPointsIndex(float ratio) {
-        Dimension dim = layout_panel_.getLayoutSize();
+        Dimension dim = layoutPanel.getLayoutSize();
         int height = dim.height;
         int width = dim.width;
         int size = height * width;
@@ -303,7 +302,8 @@ public class NL_Sim_Util {
         dim.height = ny;
 
         // find evenly spaced margin
-        double mx, my;
+        double mx;
+        double my;
         if (nx * len > width) {
             mx = (len - (nx * len - width)) / 2.0;
         } else {
@@ -318,7 +318,7 @@ public class NL_Sim_Util {
         my = Math.floor(my);
 
         // create points of array, which are regularly distributed
-        ArrayList<Point> pts = new ArrayList<Point>();
+        ArrayList<Point> pts = new ArrayList<>();
         for (double y = my; Math.round(y) < height; y += len) {
             for (double x = mx; Math.round(x) < width; x += len) {
                 pts.add(new Point((int) Math.round(x), (int) Math.round(y)));
@@ -341,10 +341,8 @@ public class NL_Sim_Util {
         ArrayList<Point> pts = new ArrayList<>();
 
         // convert index list to points array
-        int width = layout_panel_.getLayoutSize().width;
-        Iterator<Integer> iter = nList.iterator();
-        while (iter.hasNext()) {
-            int idx = iter.next();
+        int width = layoutPanel.getLayoutSize().width;
+        for (int idx : nList) {
             pts.add(new Point(idx % width, idx / width)); // Point(x, y)
         }
 
@@ -358,12 +356,10 @@ public class NL_Sim_Util {
      * @return An indexes array converted from points array
      */
     public ArrayList<Integer> cnvPoints2IndexList(ArrayList<Point> pts) {
-        int width = layout_panel_.getLayoutSize().width;
-        ArrayList<Integer> newNList = new ArrayList<Integer>();
+        int width = layoutPanel.getLayoutSize().width;
+        ArrayList<Integer> newNList = new ArrayList<>();
 
-        Iterator<Point> iter = pts.iterator();
-        while (iter.hasNext()) {
-            Point pt = iter.next();
+        for (Point pt : pts) {
             newNList.add(pt.y * width + pt.x);
         }
         Collections.sort(newNList);
@@ -378,8 +374,8 @@ public class NL_Sim_Util {
      * @return A NNI value
      */
     public double calcNearestNeighborIndex(ArrayList<Point> pts) {
-        int width = layout_panel_.getLayoutSize().width;
-        int height = layout_panel_.getLayoutSize().height;
+        int width = layoutPanel.getLayoutSize().width;
+        int height = layoutPanel.getLayoutSize().height;
 
         // calculate average nearest neighbor
         double avgNN = 0;
@@ -416,13 +412,13 @@ public class NL_Sim_Util {
         if (numProbes == 0) {
             return;
         }
-        Dimension dim = layout_panel_.getLayoutSize();
+        Dimension dim = layoutPanel.getLayoutSize();
         int height = dim.height;
         int width = dim.width;
         int size = height * width;
         float ratio = (float) numProbes / size;
 
-        neurons_layout_.probedNList = getRegularPointsIndex(ratio);
+        neuronsLayout.probedNList = getRegularPointsIndex(ratio);
     }
 
     /**
@@ -433,9 +429,14 @@ public class NL_Sim_Util {
      */
     public String getStatisticalMsg(boolean bHtml) {
         String message;
-        Dimension dsize = layout_panel_.getLayoutSize();
+        Dimension dsize = layoutPanel.getLayoutSize();
         int size = dsize.height * dsize.width;
-        String head = "", tail = "", nl = "\n", tabs = "\t\t", redh = "", redt = "";
+        String head = "";
+        String tail = "";
+        String nl = "\n";
+        String tabs = "\t\t";
+        String redh = "";
+        String redt = "";
 
         if (bHtml) {
             head = "<html>";
@@ -446,26 +447,30 @@ public class NL_Sim_Util {
             redt = "</font>";
         }
 
-        float nniInhNList = (float) calcNearestNeighborIndex(cnvIndexList2Points(neurons_layout_.inhNList));
-        float nniActNList = (float) calcNearestNeighborIndex(cnvIndexList2Points(neurons_layout_.activeNList));
-        ArrayList<Integer> union = new ArrayList<Integer>(neurons_layout_.inhNList);
-        union.addAll(neurons_layout_.activeNList);
+        float nniInhNList = (float) calcNearestNeighborIndex(
+                cnvIndexList2Points(neuronsLayout.inhNList));
+        float nniActNList = (float) calcNearestNeighborIndex(
+                cnvIndexList2Points(neuronsLayout.activeNList));
+        ArrayList<Integer> union = new ArrayList<>(neuronsLayout.inhNList);
+        union.addAll(neuronsLayout.activeNList);
         float nniUNList = (float) calcNearestNeighborIndex(cnvIndexList2Points(union));
-        float nniPrbNList = (float) calcNearestNeighborIndex(cnvIndexList2Points(neurons_layout_.probedNList));
+        float nniPrbNList = (float) calcNearestNeighborIndex(
+                cnvIndexList2Points(neuronsLayout.probedNList));
 
-        message = head + "Number of Inhibitory neurons: " + neurons_layout_.inhNList.size();
-        message += ", Ratio = " + ((float) neurons_layout_.inhNList.size() / size) + nl;
-        message += "Number of Active neurons: " + neurons_layout_.activeNList.size();
-        message += ", Ratio = " + ((float) neurons_layout_.activeNList.size() / size) + nl;
-        ArrayList<Integer> itr = intersection(neurons_layout_.inhNList, neurons_layout_.activeNList);
+        message = head + "Number of Inhibitory neurons: " + neuronsLayout.inhNList.size();
+        message += ", Ratio = " + ((float) neuronsLayout.inhNList.size() / size) + nl;
+        message += "Number of Active neurons: " + neuronsLayout.activeNList.size();
+        message += ", Ratio = " + ((float) neuronsLayout.activeNList.size() / size) + nl;
+        ArrayList<Integer> itr = intersection(neuronsLayout.inhNList,
+                neuronsLayout.activeNList);
         if (itr.size() > 0) {
             message += redh + "Number of overlapping neurons: " + itr.size() + redt + nl;
         }
-        message += "Number of Probed neurons: " + neurons_layout_.probedNList.size() + nl;
-        message += tabs + "Inhibitory probed neurons = "
-                + intersection(neurons_layout_.inhNList, neurons_layout_.probedNList).size() + nl;
-        message += tabs + "Active probed neurons = "
-                + intersection(neurons_layout_.activeNList, neurons_layout_.probedNList).size() + nl;
+        message += "Number of Probed neurons: " + neuronsLayout.probedNList.size() + nl;
+        message += tabs + "Inhibitory probed neurons = " + intersection(neuronsLayout.inhNList,
+                neuronsLayout.probedNList).size() + nl;
+        message += tabs + "Active probed neurons = " + intersection(neuronsLayout.activeNList,
+                neuronsLayout.probedNList).size() + nl;
 
         message += nl + "Nearest Neighbor Index: " + nl;
         message += tabs + "Inhibitory neurons = " + nniInhNList + nl;
@@ -478,12 +483,13 @@ public class NL_Sim_Util {
     /**
      * The function intersection returns intersection of two array list.
      *
+     * @param <T>  Thy type parameter
      * @param list1
      * @param list2
      * @return the intersection of the two array list.
      */
     private <T> ArrayList<T> intersection(ArrayList<T> list1, ArrayList<T> list2) {
-        ArrayList<T> list = new ArrayList<T>();
+        ArrayList<T> list = new ArrayList<>();
 
         for (T t : list1) {
             if (list2.contains(t)) {

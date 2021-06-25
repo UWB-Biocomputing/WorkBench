@@ -1,6 +1,5 @@
 package edu.uwb.braingrid.workbench.data;
 
-import edu.uwb.braingrid.workbench.model.DynamicInputConfiguration;
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +13,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import edu.uwb.braingrid.workbench.model.DynamicInputConfiguration;
 
 /**
  * Builds the XML document used as input to a simulation.

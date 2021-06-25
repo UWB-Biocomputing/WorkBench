@@ -98,11 +98,11 @@ public class Edge {
     /**
      * Determine if a point(x,y) is on this edge's rectangular buffer area.
      * 1. Calculate the slope of edge and the slope of the lines perpendicular to the edge.
-     * 2. Using the coordinate of the connected nodes, the slope and the width of the buffer
-     *    area to find the coordinate of the four corners of the buffer area.
+     * 2. Using the coordinate of the connected nodes, the slope and the width of the buffer area to
+     *    find the coordinate of the four corners of the buffer area.
      * 3. Use the slope-intercept form (y = mx +b) to find the range of y-intercepts(b).
-     * 4. If the lines passing through point(x,y) with the same slopes have y-intercepts within
-     *    the above ranges, the point is inside the buffer area, i.e., return true.
+     * 4. If the lines passing through point(x,y) with the same slopes have y-intercepts within the
+     *    above ranges, the point is inside the buffer area, i.e., return true.
      *
      * @param nodes
      * @param x
@@ -110,7 +110,8 @@ public class Edge {
      * @param zoomRatio
      * @return True if the point is in the buffer area
      */
-    public boolean isPointOnEdge(HashMap<String, Node> nodes, double x, double y, double zoomRatio) {
+    public boolean isPointOnEdge(HashMap<String, Node> nodes, double x, double y,
+            double zoomRatio) {
         double bufferLength = 5;
         Node fromNode = nodes.get(fromNodeId);
         Node toNode = nodes.get(toNodeId);
@@ -122,12 +123,13 @@ public class Edge {
         double edgeRightAngleSlope = -1 / edgeSlope;
 
         //only need diagonal points
-        double[] fromNodePoint2 = GraphUtility.findPointWithAngleDistance(fromNodePoint, edgeSlopeAngle - Math.PI / 2,
-                bufferLength);
-        double[] toNodePoint1 = GraphUtility.findPointWithAngleDistance(toNodePoint, edgeSlopeAngle + Math.PI / 2,
-                bufferLength);
+        double[] fromNodePoint2 = GraphUtility.findPointWithAngleDistance(fromNodePoint,
+                edgeSlopeAngle - Math.PI / 2, bufferLength);
+        double[] toNodePoint1 = GraphUtility.findPointWithAngleDistance(toNodePoint,
+                edgeSlopeAngle + Math.PI / 2, bufferLength);
 
-        double[] yInterceptEdgeSlope = new double[]{fromNodePoint2[1] - edgeSlope * fromNodePoint2[0],
+        double[] yInterceptEdgeSlope = new double[]{
+                fromNodePoint2[1] - edgeSlope * fromNodePoint2[0],
                 toNodePoint1[1] - edgeSlope * toNodePoint1[0]};
         double[] yInterceptEdgeRightAngleSlope = new double[]{
                 fromNodePoint2[1] - edgeRightAngleSlope * fromNodePoint2[0],
@@ -147,12 +149,9 @@ public class Edge {
         double pointYInterceptEdgeSlope = y - edgeSlope * x;
         double pointYInterceptEdgeRightAngleSlope = y - edgeRightAngleSlope * x;
 
-        if (pointYInterceptEdgeSlope >= yInterceptEdgeSlope[0] && pointYInterceptEdgeSlope <= yInterceptEdgeSlope[1]
+        return pointYInterceptEdgeSlope >= yInterceptEdgeSlope[0]
+                && pointYInterceptEdgeSlope <= yInterceptEdgeSlope[1]
                 && pointYInterceptEdgeRightAngleSlope >= yInterceptEdgeRightAngleSlope[0]
-                && pointYInterceptEdgeRightAngleSlope <= yInterceptEdgeRightAngleSlope[1]) {
-            return true;
-        }
-
-        return false;
+                && pointYInterceptEdgeRightAngleSlope <= yInterceptEdgeRightAngleSlope[1];
     }
 }

@@ -1101,10 +1101,10 @@ public final class ProvOntology {
      * Provides a human-readable sentence-part for the predicate of a provenance triple.
      *
      * @param uri  The PROV-O URI for the predicate
-     * @param objectStartWithVowel  Indicates whether or not the object of the triple starts
-     *                              with a vowel
-     * @return Human readable text describing the relationship between a subject and object,
-     *         based on the PROV-O predicate
+     * @param objectStartWithVowel  Indicates whether or not the object of the triple starts with a
+     *                              vowel
+     * @return Human readable text describing the relationship between a subject and object, based
+     *         on the PROV-O predicate
      */
     public static String translatePredicate(String uri, boolean objectStartWithVowel) {
         String translation = uri;

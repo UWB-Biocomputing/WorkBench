@@ -19,9 +19,9 @@ import javax.swing.JScrollPane;
 import javafx.embed.swing.SwingNode;
 
 /**
- * The LayoutPanel class handles layout window of the Growth Simulation Layout Editor. The class
- * is a sub-class of JPanel, which shows neurons layout consisting of three kind of neurons, as
- * well as probed neurons. The panel provides editable function of each neuron.
+ * The LayoutPanel class handles layout window of the Growth Simulation Layout Editor. The class is
+ * a sub-class of JPanel, which shows neurons layout consisting of three kind of neurons, as well as
+ * probed neurons. The panel provides editable function of each neuron.
  *
  * @author Fumitaka Kawasaki
  * @version 1.2
@@ -32,15 +32,16 @@ public class LayoutPanel extends JPanel implements MouseListener {
     private static final Logger LOG = Logger.getLogger(LayoutPanel.class.getName());
 
     /** The default system size. */
-    static final int defaultN = 100;
+    public static final int DEFAULT_SIZE = 100;
     /** The default size of each cell. */
-    static final int defaultCellWidth = 28;
+    public static final int DEFAULT_CELL_WIDTH = 28;
     /** The minimum width of a cell. */
-    static final int minCellWidth = 7;
+    public static final int MIN_CELL_WIDTH = 7;
     /** The maximum width of a cell. */
-    static final int maxCellWidth = 56;
+    public static final int MAX_CELL_WIDTH = 56;
     /** White background color. */
-    static final Color bgColor = new Color(255, 255, 255);
+    public static final Color BG_COLOR = new Color(255, 255, 255);
+
     /** Each cell's width in the window. */
     private int cellWidth;
     /** The insets of the window. */
@@ -66,38 +67,38 @@ public class LayoutPanel extends JPanel implements MouseListener {
     private int ylen;
 
     /** Minimum number of cells for x-axis. */
-    public static final int minXCells = 5;
+    public static final int MIN_X_CELLS = 5;
     /** Minimum number of cells for y-axis. */
-    public static final int minYCells = 5;
+    public static final int MIN_Y_CELLS = 5;
     /** Maximum number of cells for x-axis. */
-    public static final int maxXCells = 500;
+    public static final int MAX_X_CELLS = 500;
     /** Maximum number of cells for y-axis. */
-    public static final int maxYCells = 500;
+    public static final int MAX_Y_CELLS = 500;
     /** Default number of cells for x-axis. */
-    public static final int defXCells = 10;
+    public static final int DEF_X_CELLS = 10;
     /** Default number of cells for y-axis. */
-    public static final int defYCells = 10;
+    public static final int DEF_Y_CELLS = 10;
 
-    private NeuronsLayout neurons_layout_;
+    private NeuronsLayout neuronsLayout;
 
     private JScrollPane scrollPane;
 
-    private NLedit nledit_;
+    private NLedit nledit;
 
     /**
      * A class constructor, which initializes global stuff.
      *
      * @param nledit
      * @param size
-     * @param neurons_layout
+     * @param neuronsLayout
      */
-    public LayoutPanel(NLedit nledit, Dimension size, NeuronsLayout neurons_layout) {
+    public LayoutPanel(NLedit nledit, Dimension size, NeuronsLayout neuronsLayout) {
         LOG.info("new " + getClass().getName());
-        nledit_ = nledit;
+        this.nledit = nledit;
         xlen = size.width;
         ylen = size.height;
 
-        cellWidth = defaultCellWidth;
+        cellWidth = DEFAULT_CELL_WIDTH;
 
         // initialize window and graphics:
         theInsets = getInsets();
@@ -117,7 +118,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
         // register for mouse events on the window
         addMouseListener(this);
 
-        neurons_layout_ = neurons_layout;
+        this.neuronsLayout = neuronsLayout;
     }
 
     /**
@@ -125,7 +126,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
      */
     public void startGraphics() {
         Graphics g = getGraphics();
-        g.setColor(bgColor);
+        g.setColor(BG_COLOR);
         g.fillRect(theInsets.left, theInsets.top, xlen * cellWidth, ylen * cellWidth);
     }
 
@@ -136,25 +137,24 @@ public class LayoutPanel extends JPanel implements MouseListener {
      */
     public void writeToGraphics(Graphics g) {
         // System.out.println(NLedit.HEADER + "Start Repaint");
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(
-                RenderingHints.KEY_ANTIALIASING, 
+                RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         for (int j = 0; j < ylen; j++) {
             for (int i = 0; i < xlen; i++) {
                 if (true) {
 
-                    int cIndex = neurons_layout_.getNeuronType(j * xlen + i);
+                    int cIndex = neuronsLayout.getNeuronType(j * xlen + i);
                     g2.setColor(nColor[cIndex]);
                     int x = theInsets.left + i * cellWidth;
                     int y = theInsets.top + j * cellWidth;
                     g.fillOval(x, y, cellWidth, cellWidth);
 
-                    if (neurons_layout_.isProbed(j * xlen + i)) {
+                    if (neuronsLayout.isProbed(j * xlen + i)) {
                         g2.setColor(nColor[PRB]);
                         g2.drawOval(x, y, cellWidth, cellWidth);
-                        if (cellWidth >= minCellWidth) { // MyPrintable may set
-                                                            // smaller cellWidth
+                        if (cellWidth >= MIN_CELL_WIDTH) { // MyPrintable may set smaller cellWidth
                             g2.drawOval(x + 1, y + 1, cellWidth - 2, cellWidth - 2);
                         }
                     }
@@ -170,7 +170,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
     public void paintComponent(Graphics g) {
@@ -183,7 +183,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
     /*
      * (non-Javadoc) Toggle inhibitory, active or probed neuron type depending on
      * the current edit mode (neuron type).
-     * 
+     *
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent e) {
@@ -213,14 +213,15 @@ public class LayoutPanel extends JPanel implements MouseListener {
             } else {
                 Integer index = j * xlen + i;
 
-                int neuronType = nledit_.getNeuronType();
+                int neuronType = nledit.getNeuronType();
 
-                neurons_layout_.changeIndex(neuronType, index);
+                neuronsLayout.changeIndex(neuronType, index);
 
                 Graphics g = getGraphics();
                 writeToGraphics(g);
 
-                LOG.info(NeuronsLayout.getNeuronTypeName(neuronType) + " placed at " + i + ", " + j);
+                LOG.info(NeuronsLayout.getNeuronTypeName(neuronType)
+                        + " placed at " + i + ", " + j);
                 scrollPane.repaint();
             }
         }
@@ -268,9 +269,9 @@ public class LayoutPanel extends JPanel implements MouseListener {
      * @param inc  true when increasing cell size, false decreasing cell size
      */
     public void changeCellSize(boolean inc) {
-        if (inc == true && cellWidth != maxCellWidth) {
+        if (inc && cellWidth != MAX_CELL_WIDTH) {
             cellWidth *= 2;
-        } else if (inc == false && cellWidth != minCellWidth) {
+        } else if (!inc && cellWidth != MIN_CELL_WIDTH) {
             cellWidth /= 2;
         } else {
             return;
@@ -291,10 +292,10 @@ public class LayoutPanel extends JPanel implements MouseListener {
         scrollPane = new JScrollPane(this, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        SwingNode scroll_pane_node = new SwingNode();
-        scroll_pane_node.setContent(scrollPane);
+        SwingNode scrollPaneNode = new SwingNode();
+        scrollPaneNode.setContent(scrollPane);
 
-        nledit_.getBP().setCenter(scroll_pane_node);
+        nledit.getBP().setCenter(scrollPaneNode);
         Rectangle screen = getUsableScreenBounds(null);
         Dimension size = scrollPane.getPreferredSize();
         if (size.width > screen.width) {
@@ -377,7 +378,6 @@ public class LayoutPanel extends JPanel implements MouseListener {
      * @return layout size
      */
     public Dimension getLayoutSize() {
-
         return new Dimension(xlen, ylen);
     }
 
@@ -405,6 +405,6 @@ public class LayoutPanel extends JPanel implements MouseListener {
      * @return Reference to the CtrlFrame class object
      */
     public NLedit getCtrlFrame() {
-        return nledit_;
+        return nledit;
     }
 }

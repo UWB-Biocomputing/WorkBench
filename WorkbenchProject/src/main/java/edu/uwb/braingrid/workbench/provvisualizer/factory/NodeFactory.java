@@ -1,8 +1,6 @@
 package edu.uwb.braingrid.workbench.provvisualizer.factory;
 
-import java.util.ArrayList;
 import javafx.scene.paint.Color;
-import javax.swing.text.html.parser.Entity;
 
 import edu.uwb.braingrid.workbench.provvisualizer.model.ActivityNode;
 import edu.uwb.braingrid.workbench.provvisualizer.model.AgentNode;
@@ -10,7 +8,8 @@ import edu.uwb.braingrid.workbench.provvisualizer.model.CommitNode;
 import edu.uwb.braingrid.workbench.provvisualizer.model.EntityNode;
 import edu.uwb.braingrid.workbench.provvisualizer.model.Node;
 
-public class NodeFactory {
+public final class NodeFactory {
+
     private static NodeFactory nodeFactory;
     private static final double ACTIVITY_NODE_SIZE = 30;
     private static final Color ACTIVITY_NODE_COLOR = Color.GREEN;
@@ -52,7 +51,8 @@ public class NodeFactory {
 
     public ActivityNode createActivityNode() {
         if (activityNode == null) {
-            activityNode = new ActivityNode(ACTIVITY_NODE_SIZE * 1.5, ACTIVITY_NODE_SIZE, ACTIVITY_NODE_COLOR);
+            activityNode = new ActivityNode(ACTIVITY_NODE_SIZE * 1.5, ACTIVITY_NODE_SIZE,
+                    ACTIVITY_NODE_COLOR);
         }
 
         return activityNode.clone();
@@ -68,7 +68,8 @@ public class NodeFactory {
 
     public CommitNode createCommitNode() {
         if (commitNode == null) {
-            commitNode = new CommitNode(COMMIT_NODE_SIZE * 1.5, COMMIT_NODE_SIZE, COMMIT_NODE_COLOR);
+            commitNode = new CommitNode(COMMIT_NODE_SIZE * 1.5, COMMIT_NODE_SIZE,
+                    COMMIT_NODE_COLOR);
         }
 
         return commitNode.clone();
@@ -76,7 +77,8 @@ public class NodeFactory {
 
     public EntityNode createEntityNode() {
         if (entityNode == null) {
-            entityNode = new EntityNode(ENTITY_NODE_SIZE * 1.5, ENTITY_NODE_SIZE, ENTITY_NODE_COLOR);
+            entityNode = new EntityNode(ENTITY_NODE_SIZE * 1.5, ENTITY_NODE_SIZE,
+                    ENTITY_NODE_COLOR);
         }
 
         return entityNode.clone();
@@ -84,28 +86,32 @@ public class NodeFactory {
 
     public ActivityNode convertToActivityNode(Node node) {
         ActivityNode activityNode = createActivityNode();
-        activityNode.setId(node.getId()).setX(node.getX()).setY(node.getY()).setLabel(node.getLabel());
+        activityNode.setId(node.getId()).setX(node.getX()).setY(node.getY())
+                .setLabel(node.getLabel());
 
         return activityNode;
     }
 
     public AgentNode convertToAgentNode(Node node) {
         AgentNode agentNode = createAgentNode();
-        agentNode.setId(node.getId()).setX(node.getX()).setY(node.getY()).setLabel(node.getLabel());
+        agentNode.setId(node.getId()).setX(node.getX()).setY(node.getY())
+                .setLabel(node.getLabel());
 
         return agentNode;
     }
 
     public CommitNode convertToCommitNode(Node node) {
         CommitNode commitNode = createCommitNode();
-        commitNode.setId(node.getId()).setX(node.getX()).setY(node.getY()).setLabel(node.getLabel());
+        commitNode.setId(node.getId()).setX(node.getX()).setY(node.getY())
+                .setLabel(node.getLabel());
 
         return commitNode;
     }
 
     public EntityNode convertToEntityNode(Node node) {
         EntityNode entityNode = createEntityNode();
-        entityNode.setId(node.getId()).setX(node.getX()).setY(node.getY()).setLabel(node.getLabel());
+        entityNode.setId(node.getId()).setX(node.getX()).setY(node.getY())
+                .setLabel(node.getLabel());
 
         return entityNode;
     }

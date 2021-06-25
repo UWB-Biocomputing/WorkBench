@@ -50,9 +50,10 @@ public class Node {
         this.absoluteXY = false;
     }
 
-    public Node(String id, double x, double y, double width, double height, Color color, String label) {
+    public Node(String id, double x, double y, double width, double height, Color color,
+            String label) {
         this.id = id;
-        if (id!=null) {
+        if (id != null) {
             this.displayId = id.replaceFirst(FileUtility.FILE_PATH_PREFIX_REGEX, "");
         }
         this.x = x;
@@ -124,7 +125,10 @@ public class Node {
             return true;
         }
 
-        if (!withTolerance && x >= cornerX && x <= cornerX + this.width / zoomRatio && y >= cornerY
+        if (!withTolerance
+                && x >= cornerX
+                && x <= cornerX + this.width / zoomRatio
+                && y >= cornerY
                 && y <= cornerY + this.height / zoomRatio) {
             return true;
         }
@@ -195,13 +199,9 @@ public class Node {
     public boolean isInDisplayWindow(double[] displayWindowLocation, double[] displayWindowSize) {
         double cornerX = this.x - this.width / 2;
         double cornerY = this.y - this.height / 2;
-        if (cornerX < displayWindowLocation[0]
-                || cornerX > displayWindowLocation[0] + displayWindowSize[0]
-                || cornerY < displayWindowLocation[1]
-                || cornerY > displayWindowLocation[1] + displayWindowSize[1]) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(cornerX < displayWindowLocation[0])
+                && !(cornerX > displayWindowLocation[0] + displayWindowSize[0])
+                && !(cornerY < displayWindowLocation[1])
+                && !(cornerY > displayWindowLocation[1] + displayWindowSize[1]);
     }
 }

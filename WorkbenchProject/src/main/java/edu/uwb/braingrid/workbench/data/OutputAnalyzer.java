@@ -15,8 +15,7 @@ import edu.uwb.braingrid.workbench.script.Script;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
- * Analyzes script output files. Maintains executed statements and simulation execution
- * parameters.
+ * Analyzes script output files. Maintains executed statements and simulation execution parameters.
  *
  * Created by Nathan on 8/27/2014. Modified by Del on 9/3/2014.
  */
@@ -38,8 +37,8 @@ public class OutputAnalyzer {
     }
 
     /**
-     * Analyzes an output file. The output file is the redirected standard output of printf
-     * commands that provide information about commands that are executed in a script.
+     * Analyzes an output file. The output file is the redirected standard output of printf commands
+     * that provide information about commands that are executed in a script.
      *
      * @param filepath  The path to a file to analyze
      */
@@ -78,7 +77,7 @@ public class OutputAnalyzer {
         while (fileReader.hasNext()) {
             String currentLine = fileReader.nextLine();
             // this line has the command text, start processing a new command
-            if (currentLine.startsWith(Script.commandText)) {
+            if (currentLine.startsWith(Script.COMMAND_TEXT)) {
                 // get the command from the line
                 currentLine = currentLine.substring(currentLine.indexOf(":") + 1).trim();
                 ExecutedCommand ec;
@@ -86,22 +85,20 @@ public class OutputAnalyzer {
                 ec = getExecutedCommand(currentLine);
                 // get time started date object from the date in the string
                 Date startedDate;
-                String startDate = getImportantText(fileReader,
-                        Script.startTimeText);
+                String startDate = getImportantText(fileReader, Script.START_TIME_TEXT);
                 if (startDate != null) {
                     startedDate = new Date(Long.valueOf(startDate) * MILLISECONDS_PER_SECOND);
                     ec.setTimeStarted(startedDate); // set the start time
                 }
                 // get the exit status now
-                String nextLine
-                        = getImportantText(fileReader, Script.exitStatusText);
+                String nextLine = getImportantText(fileReader, Script.EXIT_STATUS_TEXT);
                 // set the exit status
                 if (nextLine != null) {
                     ec.setExitStatus(Integer.valueOf(nextLine));
                 }
                 // get the date object from the date in the string (time ended)
                 Date endDate = null;
-                String completedDateText = getImportantText(fileReader, Script.completedTimeText);
+                String completedDateText = getImportantText(fileReader, Script.COMPLETED_TIME_TEXT);
                 if (completedDateText != null) {
                     endDate = new Date(Long.valueOf(completedDateText) * MILLISECONDS_PER_SECOND);
                 }
@@ -117,7 +114,7 @@ public class OutputAnalyzer {
         while (true) {
             if (fileReader.hasNext()) {
                 String currentLine = fileReader.nextLine();
-                if (currentLine.startsWith(Script.versionText)) {
+                if (currentLine.startsWith(Script.VERSION_TEXT)) {
                     String[] lineParts = currentLine.split(":");
                     if (lineParts.length > 1) {
                         try {
@@ -201,8 +198,8 @@ public class OutputAnalyzer {
      * Takes the next line of text from the file and gets the contents after the colon.
      *
      * @param fileReader  Scanner whose position in the stream is arbitrary
-     * @param expectedDescriptor  A prefix expected to be found at the beginning of the next
-     *                            line of text
+     * @param expectedDescriptor  A prefix expected to be found at the beginning of the next line of
+     *                            text
      * @return The contents of the next line after the colon
      */
     private String getImportantText(Scanner fileReader, String expectedDescriptor) {
@@ -215,8 +212,9 @@ public class OutputAnalyzer {
                 textToReturn = textToReturn.substring(textToReturn.indexOf(":") + 1).trim();
             } else {
                 // error for future debugging
-                System.err.println("Warning: did not find the correct line descriptor when analyzing the output file."
-                        + " See " + this.getClass().getName() + ".java. Expected: " + expectedDescriptor);
+                System.err.println("Warning: did not find the correct line descriptor when"
+                        + "analyzing the output file. See " + this.getClass().getName()
+                        + ".java. Expected: " + expectedDescriptor);
                 textToReturn = null;
             }
         }
@@ -226,8 +224,8 @@ public class OutputAnalyzer {
     /**
      * Provides the version of the script that was used to generate the file which was analyzed.
      *
-     * @return The version of the script, or null if it wasn't present or if the file has yet to
-     * be analyzed.
+     * @return The version of the script, or null if it wasn't present or if the file has yet to be
+     * analyzed.
      */
     public int getScriptVersion() {
         return scriptVersion;
@@ -237,8 +235,7 @@ public class OutputAnalyzer {
      * Provides a collection of commands invoked from the provided executable file.
      *
      * @param executableName  The executable filename that starts the commands. This may include
-     *                        system-dependent scoping (e.g. ./executableName on Unix-based
-     *                        systems)
+     *                        system-dependent scoping (e.g. ./executableName on Unix-based systems)
      * @return A collection of commands
      */
     public Collection<ExecutedCommand> getCollectionByExecName(String executableName) {
@@ -280,12 +277,12 @@ public class OutputAnalyzer {
     /**
      * Provides the simulation specification values relevant for executing the simulator.
      *
-     * Note: The specification returned should not be relied upon for attributes that do not
-     * effect the composition of the command statement. (i.e. if its not an argument, or the
-     * executable filename, its not in there)
+     * Note: The specification returned should not be relied upon for attributes that do not effect
+     * the composition of the command statement. (i.e. if its not an argument, or the executable
+     * filename, its not in there)
      *
-     * @return A specification containing the values relevant for composing the execution
-     *         command for the simulation
+     * @return A specification containing the values relevant for composing the execution command
+     *         for the simulation
      */
     public SimulationSpecification getSimSpec() {
         return simSpec;
@@ -296,8 +293,8 @@ public class OutputAnalyzer {
      * executed command with the specified type finished execution.
      *
      * @param executableName  Executable filename (such as make, ./growth, git, etc.)
-     * @return The time that the command completed or an error code indicating that the script
-     *         had not completed at the time when was copied or downloaded to the project script
+     * @return The time that the command completed or an error code indicating that the script had
+     *         not completed at the time when was copied or downloaded to the project script
      *         directory
      */
     public long completedAt(String executableName) {
@@ -346,10 +343,10 @@ public class OutputAnalyzer {
     }
 
     /**
-     * Provides the first executed command with the specified executable filename from all
-     * recorded commands. There is no guaranteed ordering of executed commands. This method
-     * should only be used when it doesn't matter which of the matching commands is returned,
-     * or when the executable filename is only invoked once.
+     * Provides the first executed command with the specified executable filename from all recorded
+     * commands. There is no guaranteed ordering of executed commands. This method should only be
+     * used when it doesn't matter which of the matching commands is returned, or when the
+     * executable filename is only invoked once.
      *
      * @param executableName  The executable name of the executed command
      * @return The first executed command with the given executable name

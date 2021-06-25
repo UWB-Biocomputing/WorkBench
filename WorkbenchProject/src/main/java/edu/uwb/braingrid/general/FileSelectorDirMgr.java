@@ -46,6 +46,6 @@ public class FileSelectorDirMgr {
      * @return The default (root) directory
      */
     public File getDefault() {
-        return new File(User.user.getRootDir());
+        return new File(User.getInstance().getRootDir());
     }
 }

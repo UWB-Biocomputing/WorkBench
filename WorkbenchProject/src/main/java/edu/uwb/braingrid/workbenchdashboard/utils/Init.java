@@ -10,7 +10,13 @@ import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.SystemConfig;
 
-public class Init {
+public final class Init {
+
+    private static final Logger LOG = Logger.getLogger(Init.class.getName());
+
+    private Init() {
+        // utility class cannot be instantiated
+    }
 
     public static void init() {
         try {
@@ -57,12 +63,14 @@ public class Init {
         // Init ConnectionsParamsClass
         LOG.info("Initializing " + connections + " resources");
         String[] connSubdirFiles = {"ConnGrowth.xml", "ConnStatic.xml"};
-        Init.initFiles(resourceRootPath + connections, outputRootPath + connections, connSubdirFiles);
+        Init.initFiles(resourceRootPath + connections, outputRootPath + connections,
+                connSubdirFiles);
 
         // Init  "LayoutParamsClass";
         LOG.info("Initializing " + layout + " resources");
 
-        String[] laySubdirFiles = {"DynamicLayout.xml", "FixedLayout.xml", "LayoutParamsClass1.xml"};
+        String[] laySubdirFiles = {"DynamicLayout.xml", "FixedLayout.xml",
+                "LayoutParamsClass1.xml"};
         Init.initFiles(resourceRootPath + layout, outputRootPath + layout, laySubdirFiles);
 
         // Init "NeuronsParamsClass";
@@ -72,19 +80,20 @@ public class Init {
 
         // Init "SynapsesParamsClass";
         LOG.info("Initializing " + synapses + " resources");
-        String[] synSubdirFiles = {"AllDSSynapses.xml", "AllDynamicSTDPSynapses.xml", "AllSpikingSynapses.xml",
-                "AllSTDPSynapses.xml"};
+        String[] synSubdirFiles = {"AllDSSynapses.xml", "AllDynamicSTDPSynapses.xml",
+                "AllSpikingSynapses.xml", "AllSTDPSynapses.xml"};
         Init.initFiles(resourceRootPath + synapses, outputRootPath + synapses, synSubdirFiles);
     }
 
     private static void initRootFiles() throws IOException {
         LOG.info("Initializing Root Files");
-        String filename = SystemConfig.BASE_TEMPLATE_INFO_XML_File_URL;
+        String filename = SystemConfig.BASE_TEMPLATE_INFO_XML_FILE_URL;
         Init.copyResourceToFile("/init/" + filename, "./" + filename);
         Init.copyResourceToFile("/init/README.TXT", "./README.TXT");
     }
 
-    private static void initFiles(String resourceFolder, String folderOutput, String[] subdirFiles) throws IOException {
+    private static void initFiles(String resourceFolder, String folderOutput,
+            String[] subdirFiles) throws IOException {
         for (String file : subdirFiles) {
             Init.copyResourceToFile(resourceFolder + "/" + file, folderOutput + "/" + file);
         }
@@ -98,11 +107,10 @@ public class Init {
         }
     }
 
-    private static void copyResourceToFile(String resourcePath, String filePath) throws IOException {
+    private static void copyResourceToFile(String resourcePath, String filePath)
+            throws IOException {
         LOG.info("Copying: " + resourcePath + " to: " + filePath);
         InputStream is = Init.class.getResourceAsStream(resourcePath);
         Files.copy(is, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
     }
-
-    private static final Logger LOG = Logger.getLogger(Init.class.getName());
 }

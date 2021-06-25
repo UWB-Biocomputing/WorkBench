@@ -11,9 +11,9 @@ import edu.uwb.braingrid.simconfig.model.ConfigDatum.DatumType;
 
 /**
  * Maintains the collection of parameters to be used in a simulation once persisted. In practical
- * terms, this class is equivalent to the template, and eventual final, XML document that stores
- * all the information. Important to note is that this class will only record four hierarchical
- * levels of the XML document, including the root. All other levels will not be recorded.
+ * terms, this class is equivalent to the template, and eventual final, XML document that stores all
+ * the information. Important to note is that this class will only record four hierarchical levels
+ * of the XML document, including the root. All other levels will not be recorded.
  *
  * @author Aaron
  */
@@ -70,7 +70,8 @@ public class SimulationConfiguration {
                             for (int k = 0, km = tabChildrenChildren.getLength(); k < km; k++) {
                                 tabChildChild = tabChildrenChildren.item(k);
                                 if (tabChildChild.getNodeType() == Node.ELEMENT_NODE) {
-                                    configData.add(new ConfigDatum(tabChildChild, DatumType.PARAM_TYPE));
+                                    configData.add(new ConfigDatum(tabChildChild,
+                                            DatumType.PARAM_TYPE));
                                 }
                             }
                         } else {

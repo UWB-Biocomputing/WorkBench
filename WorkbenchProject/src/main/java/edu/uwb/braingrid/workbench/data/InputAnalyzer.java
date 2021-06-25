@@ -16,9 +16,7 @@ import org.xml.sax.SAXParseException;
  */
 public final class InputAnalyzer {
 
-    /**
-     * Indicates the amount of input file required as arguments for a simulation.
-     */
+    /** Indicates the amount of input file required as arguments for a simulation. */
     public static final int INPUTS_REQUIRED_FOR_SIM = 3;
 
     /**
@@ -52,8 +50,8 @@ public final class InputAnalyzer {
      * @throws SAXException
      * @throws IOException
      */
-    public static InputType getInputType(File file) throws SAXParseException, ParserConfigurationException,
-            SAXException, IOException {
+    public static InputType getInputType(File file) throws SAXParseException,
+            ParserConfigurationException, SAXException, IOException {
         InputType inputType;
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
         doc.getDocumentElement().normalize();

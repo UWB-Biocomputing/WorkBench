@@ -48,8 +48,7 @@ public class SimulationConfigurationManager {
      * @param projectName  The name of the project, which is part of the path to the directory
      *                     containing the resulting XML file
      * @param filename  The last name (prefix and extension only, no directories)
-     * @return The full path to the constructed file if the operation was successful, otherwise
-     *         null
+     * @return The full path to the constructed file if the operation was successful, otherwise null
      * @throws TransformerException
      * @throws TransformerConfigurationException
      * @throws IOException
@@ -58,7 +57,8 @@ public class SimulationConfigurationManager {
             TransformerConfigurationException, IOException {
         String fullPath = null;
 
-        //TO DO - Add this function to the SimulationConfiguration when working with Dialog's build button
+        //TO DO - Add this function to the SimulationConfiguration when working with Dialog's build
+        // button
         //boolean success = inputConfig.allValuesSet();
 
         boolean success = true;

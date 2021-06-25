@@ -19,12 +19,19 @@ import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
 import edu.uwb.braingrid.workbenchdashboard.threads.RunUpdateRepo;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 
-public class RepoManager {
+public final class RepoManager {
+
+    private static final Logger LOG = Logger.getLogger(RepoManager.class.getName());
 
     public static final String MASTER_BRANCH_NAME = "master";
     private static boolean updatingBranch = false;
 
-    public static void updateMaster() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
+    private RepoManager() {
+        // utility class cannot be instantiated
+    }
+
+    public static void updateMaster() throws InvalidRemoteException, TransportException,
+            GitAPIException, IOException {
         LOG.info("Updating Master Branch");
         updatingBranch = true;
         Git git;
@@ -53,7 +60,7 @@ public class RepoManager {
     }
 
     public static String getMasterBranchDirectory() {
-        return User.user.getBrainGridRepoDirectory() + File.separator + MASTER_BRANCH_NAME;
+        return User.getInstance().getBrainGridRepoDirectory() + File.separator + MASTER_BRANCH_NAME;
     }
 
     public static List<String> fetchGitBranches() {
@@ -65,7 +72,8 @@ public class RepoManager {
                     .setRemote(ProvVisGlobal.BG_REPOSITORY_URI)
                     .call();
             for (Ref ref : refs) {
-                branches.add(ref.getName().substring(ref.getName().lastIndexOf("/") + 1, ref.getName().length()));
+                branches.add(ref.getName().substring(ref.getName().lastIndexOf("/") + 1,
+                        ref.getName().length()));
             }
             Collections.sort(branches);
         } catch (InvalidRemoteException e) {
@@ -78,6 +86,4 @@ public class RepoManager {
         }
         return branches;
     }
-
-    private static final Logger LOG = Logger.getLogger(RepoManager.class.getName());
 }

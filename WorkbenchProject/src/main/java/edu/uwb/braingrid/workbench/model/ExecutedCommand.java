@@ -5,8 +5,8 @@ import java.util.Date;
 /**
  * Created by Nathan on 9/1/2014. Modified by Del on 9/3/2014
  *
- * I have noooooooooooooo idea what the ExecutedCommand is. Is it a command to the GUI? A command
- * to the command line? - Max on 10/7/2018
+ * I have noooooooooooooo idea what the ExecutedCommand is. Is it a command to the GUI? A command to
+ * the command line? - Max on 10/7/2018
  */
 public class ExecutedCommand {
 
@@ -79,7 +79,7 @@ public class ExecutedCommand {
     /**
      * Sets the date at which the command finished execution.
      *
-     * @param newCompletedTime - The date at which the command completed execution
+     * @param newCompletedTime  The date at which the command completed execution
      */
     public void setTimeCompleted(Date newCompletedTime) {
         timeCompleted = newCompletedTime;
@@ -88,7 +88,7 @@ public class ExecutedCommand {
     /**
      * Provides the date when the command finished execution.
      *
-     * @return - The date when the command finished execution
+     * @return The date when the command finished execution
      */
     public Date getTimeCompleted() {
         return timeCompleted;
@@ -98,8 +98,8 @@ public class ExecutedCommand {
      * Sets the exit status.
      *
      * @param newExitStatus  A value provided by processes during exit that indicates the last
-     *                       state. This value is used to indicate specific error-states in
-     *                       addition to a normal state
+     *                       state. This value is used to indicate specific error-states in addition
+     *                       to a normal state
      */
     public void setExitStatus(int newExitStatus) {
         exitStatus = newExitStatus;
@@ -109,9 +109,9 @@ public class ExecutedCommand {
      * Indicates the system dependent exit status provided at process exit.
      *
      * Safety Measure: Call hasCompleted, or optionally, catch the NullPointerException that may
-     * occur. The integer value associated with this function is not initialized in order to
-     * prevent erroneous assumptions about the exit status of the process. This is necessary due
-     * to the range of values provided by exiting processes.
+     * occur. The integer value associated with this function is not initialized in order to prevent
+     * erroneous assumptions about the exit status of the process. This is necessary due to the
+     * range of values provided by exiting processes.
      *
      * @return An integer. The value of the integer varies by process and process state at exit
      * @throws NullPointerException

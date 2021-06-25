@@ -1,7 +1,6 @@
 package edu.uwb.braingrid.workbench.data;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,8 +33,8 @@ public class DynamicInputConfigurationManager {
      * @throws IOException
      * @throws ParserConfigurationException
      */
-    public DynamicInputConfigurationManager(String configFilename) throws SAXException,
-            IOException, ParserConfigurationException, Exception {
+    public DynamicInputConfigurationManager(String configFilename) throws SAXException, IOException,
+            ParserConfigurationException, Exception {
         LOG.info("New " + getClass().getName());
         inputConfigBuilder = new DynamicInputConfigurationBuilder();
         if (configFilename != null) {
@@ -46,8 +45,8 @@ public class DynamicInputConfigurationManager {
     }
 
     /**
-     * Adds a parameter and its value to the input configuration. If the parameter already
-     * existed, its value is overwritten.
+     * Adds a parameter and its value to the input configuration. If the parameter already existed,
+     * its value is overwritten.
      *
      * @param aValues  List of parameter to update
      */
@@ -79,8 +78,7 @@ public class DynamicInputConfigurationManager {
      * @param projectName  The name of the project, which is part of the path to the directory
      *                     containing the resulting XML file
      * @param filename  The last name (prefix and extension only, no directories)
-     * @return The full path to the constructed file if the operation was successful, otherwise
-     *         null
+     * @return The full path to the constructed file if the operation was successful, otherwise null
      * @throws TransformerException
      * @throws TransformerConfigurationException
      * @throws IOException
@@ -96,5 +94,6 @@ public class DynamicInputConfigurationManager {
         return fullPath;
     }
 
-    private static final Logger LOG = Logger.getLogger(DynamicInputConfigurationManager.class.getName());
+    private static final Logger LOG = Logger.getLogger(
+            DynamicInputConfigurationManager.class.getName());
 }

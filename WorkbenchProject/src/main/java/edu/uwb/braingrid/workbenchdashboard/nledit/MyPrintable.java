@@ -15,29 +15,29 @@ import java.awt.print.PrinterException;
  * @version 1.2
  */
 public class MyPrintable implements Printable, Pageable {
+
     private PageFormat pf;
     private LayoutPanel layoutPanel;
-    private NL_Sim_Util nl_sim_util_;
+    private NL_Sim_Util nlSimUtil;
 
-    public MyPrintable(LayoutPanel layoutPanel, NL_Sim_Util nl_sim_util) {
+    public MyPrintable(LayoutPanel layoutPanel, NL_Sim_Util nlSimUtil) {
         this.layoutPanel = layoutPanel;
-        nl_sim_util_ = nl_sim_util;
+        this.nlSimUtil = nlSimUtil;
     }
 
-    public MyPrintable(PageFormat pf, LayoutPanel layoutPanel, NL_Sim_Util nl_sim_util) {
+    public MyPrintable(PageFormat pf, LayoutPanel layoutPanel, NL_Sim_Util nlSimUtil) {
         this.pf = pf;
         this.layoutPanel = layoutPanel;
-        nl_sim_util_ = nl_sim_util;
+        this.nlSimUtil = nlSimUtil;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.print.Printable#print(java.awt.Graphics,
      * java.awt.print.PageFormat, int)
      */
-    public int print(Graphics g, PageFormat pf, int pageIndex)
-            throws PrinterException {
+    public int print(Graphics g, PageFormat pf, int pageIndex) throws PrinterException {
         if (pageIndex == 0) {
             // the first page, draw layout
             int imWidth = (int) pf.getImageableWidth();
@@ -77,7 +77,7 @@ public class MyPrintable implements Printable, Pageable {
         }
         if (pageIndex == 1) {
             // the second page, draw statistical data
-            String msg = nl_sim_util_ .getStatisticalMsg(false);
+            String msg = nlSimUtil.getStatisticalMsg(false);
             drawStringMultiLine((Graphics2D) g, pf, msg);
 
             return Printable.PAGE_EXISTS;
@@ -88,7 +88,7 @@ public class MyPrintable implements Printable, Pageable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.print.Pageable#getNumberOfPages()
      */
     public int getNumberOfPages() {
@@ -97,21 +97,19 @@ public class MyPrintable implements Printable, Pageable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.print.Pageable#getPageFormat(int)
      */
-    public PageFormat getPageFormat(int pageIndex)
-            throws IndexOutOfBoundsException {
+    public PageFormat getPageFormat(int pageIndex) throws IndexOutOfBoundsException {
         return pf; // return page format
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.print.Pageable#getPrintable(int)
      */
-    public Printable getPrintable(int pageIndex)
-            throws IndexOutOfBoundsException {
+    public Printable getPrintable(int pageIndex) throws IndexOutOfBoundsException {
         return this;
     }
 

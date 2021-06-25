@@ -42,23 +42,23 @@ public class Script {
     private String scriptStatusOutputFilename;
 
     /** Prefix text for the echo of a command. */
-    public static final String commandText = "command";
+    public static final String COMMAND_TEXT = "command";
     /** Prefix text for milliseconds since epoch when a command was executed. */
-    public static final String startTimeText = "time started";
+    public static final String START_TIME_TEXT = "time started";
     /** Prefix text for milliseconds since epoch when an executed command completed. */
-    public static final String completedTimeText = "time completed";
+    public static final String COMPLETED_TIME_TEXT = "time completed";
     /** Prefix text for the exit status of an executed command. */
-    public static final String exitStatusText = "exit status";
+    public static final String EXIT_STATUS_TEXT = "exit status";
     /** Prefix text for the version of the executed script. */
-    public static final String versionText = "version";
+    public static final String VERSION_TEXT = "version";
     /** Redirect file for std-err/std-out on printf statements. */
-    public static final String defaultScriptStatusFilename = "scriptStatus.txt";
+    public static final String DEFAULT_SCRIPT_STATUS_FILENAME = "scriptStatus.txt";
     /** Redirect file for std-err and std-out of executed commands. */
-    public static final String commandOutputFilename = "output.txt";
+    public static final String COMMAND_OUTPUT_FILENAME = "output.txt";
     /** Redirect file for git commit key. */
-    public static final String SHA1KeyFilename = "SHA1Key.txt";
+    public static final String SHA1_KEY_FILENAME = "SHA1Key.txt";
     /** Redirect file for simulation status. */
-    public static final String simStatusFilename = "simStatus.txt";
+    public static final String SIM_STATUS_FILENAME = "simStatus.txt";
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -72,8 +72,8 @@ public class Script {
         bashArgDeclarations = new ArrayList<>();
         usageStatements = new ArrayList<>();
         bashScriptConstructed = false;
-        cmdOutputFilename = commandOutputFilename;
-        scriptStatusOutputFilename = Script.defaultScriptStatusFilename;
+        cmdOutputFilename = COMMAND_OUTPUT_FILENAME;
+        scriptStatusOutputFilename = DEFAULT_SCRIPT_STATUS_FILENAME;
     }
     // </editor-fold>
 
@@ -85,10 +85,10 @@ public class Script {
      * @param filename  Name of the file to execute from this script
      * @param args  Arguments to provide for execution. Even for variable arguments this is
      *              necessary because the names are used in the usage for the script.
-     * @param fromWrkDir  Indicates whether or not the executable should be prefaced by the
-     *                    working directory syntax (used to differentiate between pathed
-     *                    executables and executables existing in the current working directory,
-     *                    but having the same name e.g. ./exec_name)
+     * @param fromWrkDir  Indicates whether or not the executable should be prefaced by the working
+     *                    directory syntax (used to differentiate between pathed executables and
+     *                    executables existing in the current working directory, but having the same
+     *                    name e.g. ./exec_name)
      * @return True if the program execution statement was added to the script model correctly,
      *         otherwise false
      */
@@ -126,18 +126,18 @@ public class Script {
      * @param args  Arguments to provide for execution. Even for variable arguments this is
      *              necessary because the names are used in the usage for the script.
      * @param variable  Whether or not each argument should be script variable
-     * @param addToUsage  Explanation of each argument. (The usage explanation for non-variable
-     *                    args will not be used, but must be specified or null as the length of
+     * @param addToUsage  Explanation of each argument. (The usage explanation for non-variable args
+     *                    will not be used, but must be specified or null as the length of
      *                    addToUsage must match the args and variable parameters)
      * @param fromWrkDir  Indicates whether or not the executable should be prefaced by the working
      *                    directory syntax (used to differentiate between pathed executables and
-     *                    executables existing in the current working directory, but having the
-     *                    same name e.g. ./exec_name) otherwise false
-     * @return True if the statement was successfully appended to the current script state (does
-     *         not indicate persistence), otherwise false
+     *                    executables existing in the current working directory, but having the same
+     *                    name e.g. ./exec_name) otherwise false
+     * @return True if the statement was successfully appended to the current script state (does not
+     *         indicate persistence), otherwise false
      */
-    public boolean executeProgram(String filename, String[] args, boolean[] variable, String[] addToUsage,
-            boolean fromWrkDir) {
+    public boolean executeProgram(String filename, String[] args, boolean[] variable,
+            String[] addToUsage, boolean fromWrkDir) {
         boolean success1;
         success1 = executeProgramForBash(filename, args, variable, addToUsage, fromWrkDir);
         return success1;
@@ -156,18 +156,18 @@ public class Script {
      * @param args  Arguments to provide for execution. Even for variable arguments this is
      *              necessary because the names are used in the usage for the script.
      * @param variable  Whether or not each argument should be script variable
-     * @param addToUsage  Explanation of each argument. (The usage explanation for non-variable
-     *                    args will not be used, but must be specified or null as the length of
+     * @param addToUsage  Explanation of each argument. (The usage explanation for non-variable args
+     *                    will not be used, but must be specified or null as the length of
      *                    addToUsage must match the args and variable parameters)
      * @param fromWrkDir  Indicates whether or not the executable should be prefaced by the working
      *                    directory syntax (used to differentiate between pathed executables and
-     *                    executables existing in the current working directory, but having the
-     *                    same name e.g. ./exec_name)
-     * @return True if the statement was successfully appended to the current script state (does
-     *         not indicate persistence), otherwise false
+     *                    executables existing in the current working directory, but having the same
+     *                    name e.g. ./exec_name)
+     * @return True if the statement was successfully appended to the current script state (does not
+     *         indicate persistence), otherwise false
      */
-    private boolean executeProgramForBash(String filename, String[] args, boolean[] variable, String[] addToUsage,
-            boolean fromWrkDir) {
+    private boolean executeProgramForBash(String filename, String[] args, boolean[] variable,
+            String[] addToUsage, boolean fromWrkDir) {
         String dotSlash = fromWrkDir ? "./" : "";
         boolean success = true;
         if (args.length == variable.length && args.length == addToUsage.length) {
@@ -241,9 +241,9 @@ public class Script {
      * Note: Since any file name, previously used or not, can be specified as the output file, this
      * function has no safe-guards against overwriting previous redirected output. If the file has
      * been previously used in the script, but isn't appended to in future uses, it will be
-     * overwritten. On the other hand, if the file is used as a redirect for the first time in
-     * the script and it is appended to, the file may contain output from previous execution of
-     * the script.
+     * overwritten. On the other hand, if the file is used as a redirect for the first time in the
+     * script and it is appended to, the file may contain output from previous execution of the
+     * script.
      *
      * @param stmt  Command statement to be added
      * @param outputFile  File to redirect standard error/out to
@@ -282,8 +282,8 @@ public class Script {
     }
 
     /**
-     * Adds a printf statement redirected to the script output file. This is used to record what
-     * was executed and when it started.
+     * Adds a printf statement redirected to the script output file. This is used to record what was
+     * executed and when it started.
      *
      * Note for future work: All appending of redirect output should probably be refactored to be
      * managed by this class, rather than relying on code in the script manager.
@@ -306,8 +306,8 @@ public class Script {
     }
 
     /**
-     * Adds a printf statement redirected to the script output file. This is used to record the
-     * exit status of the last command executed and the time execution ended.
+     * Adds a printf statement redirected to the script output file. This is used to record the exit
+     * status of the last command executed and the time execution ended.
      *
      * Note for future work: All appending of redirect output should probably be refactored to be
      * managed by this class, rather than relying on code in the script manager.
@@ -327,10 +327,10 @@ public class Script {
     }
 
     /**
-     * Specifies the name of the default file used to redirect the output from commands executed
-     * by the script. This file can be overridden for specific statements using the appropriate
-     * functions with null filename strings (see printf(...) and addVerbatimStatement(...)),
-     * rather than the generic functions.
+     * Specifies the name of the default file used to redirect the output from commands executed by
+     * the script. This file can be overridden for specific statements using the appropriate
+     * functions with null filename strings (see printf(...) and addVerbatimStatement(...)), rather
+     * than the generic functions.
      *
      * @param filename  The name of the default file used to redirect the output from commands
      *                  executed by the script
@@ -391,13 +391,13 @@ public class Script {
             builder.append(bashArgDeclarations.get(i)).append('\n');
         }
         // check arguments given
-        builder.append('\n').
+        builder.append('\n')
                 // begin if
-                append("if [ \"$#\" -ne ").
-                append(bashArgDeclarations.size()).
-                append(" ]; then\n").
-                append("\techo \"wrong number of arguments. expected ").
-                append(bashArgDeclarations.size()).append("\"\n");
+                .append("if [ \"$#\" -ne ")
+                .append(bashArgDeclarations.size())
+                .append(" ]; then\n")
+                .append("\techo \"wrong number of arguments. expected ")
+                .append(bashArgDeclarations.size()).append("\"\n");
         // provide usage
         builder.append("\techo \"usage: ").append(" ${0##*/}");
         for (int i = 0, im = bashArgNames.size(); i < im; i++) {
@@ -405,14 +405,14 @@ public class Script {
         }
         builder.append("\"\n");
         for (int i = 0, im = usageStatements.size(); i < im; i++) {
-            builder.append("\techo \"").append(i + 1).append('.').append('<').
-                    append(bashArgNames.get(i)).append('>').append(':').
-                    append(usageStatements.get(i)).append("\"\n");
+            builder.append("\techo \"").append(i + 1).append('.').append('<')
+                    .append(bashArgNames.get(i)).append('>').append(':')
+                    .append(usageStatements.get(i)).append("\"\n");
         }
         // exit
-        builder.append("exit 1\n").
+        builder.append("exit 1\n")
                 // end if
-                append("fi\n").append("\n");
+                .append("fi\n").append("\n");
         // run the programs with the given arguments
         for (int i = 0, im = bashStatements.size(); i < im; i++) {
             builder.append(bashStatements.get(i)).append('\n');
@@ -444,8 +444,8 @@ public class Script {
      * Writes the script to disk as a bash script. The script must be constructed by calling the
      * construct function prior to being persisted.
      *
-     * @param filePath  The relative, absolute, or canonical path to the file that will contain
-     *                  the script data
+     * @param filePath  The relative, absolute, or canonical path to the file that will contain the
+     *                  script data
      * @return True if the bash script was persisted successfully, otherwise false
      */
     public boolean persistBashScript(String filePath) {

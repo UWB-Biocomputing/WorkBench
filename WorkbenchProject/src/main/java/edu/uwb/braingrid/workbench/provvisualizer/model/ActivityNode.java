@@ -19,16 +19,17 @@ public class ActivityNode extends Node {
         super(width, height, color);
     }
 
-    public ActivityNode(String id, double x, double y, double width, double height, Color color, String label,
-            String startTime, String endTime) {
+    public ActivityNode(String id, double x, double y, double width, double height, Color color,
+            String label, String startTime, String endTime) {
         super(id, x, y, width, height, color, label);
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
     public ActivityNode clone() {
-        return new ActivityNode(super.getId(), super.getX(), super.getY(), super.getWidth(), super.getHeight(),
-                super.getColor(), super.getLabel(), this.startTime, this.endTime);
+        return new ActivityNode(super.getId(), super.getX(), super.getY(), super.getWidth(),
+                super.getHeight(), super.getColor(), super.getLabel(), this.startTime,
+                this.endTime);
     }
 
     public String getStartTime() {

@@ -8,11 +8,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -21,10 +19,9 @@ import edu.uwb.braingrid.workbench.provvisualizer.controller.ProVisCtrl;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
 
 /**
- * Code that builds and substantiates ProVis tab in WorkbenchApp.
- * Declares GUI components and sets basics of layout parameters.
- * Substantiates ProVisController object.
- * Updates in this class should be reflected in ProVisCtrl.java.
+ * Code that builds and substantiates ProVis tab in WorkbenchApp. Declares GUI components and sets
+ * basics of layout parameters. Substantiates ProVisController object. Updates in this class should
+ * be reflected in ProVisCtrl.java.
  *
  * @author Joseph Conquest and Tom Wong
  * @version 1.3
@@ -37,37 +34,38 @@ public class ProVis extends WorkbenchApp {
         super(tab);
         LOG.info("new " + getClass().getName());
 
-        adjust_force_slider_.setBlockIncrement(20);
-        adjust_force_slider_.setMajorTickUnit(20);
-        adjust_force_slider_.setShowTickLabels(true);
-        adjust_force_slider_.setShowTickMarks(true);
-        adjust_force_slider_.setSnapToTicks(true);
+        adjustForceSlider.setBlockIncrement(20);
+        adjustForceSlider.setMajorTickUnit(20);
+        adjustForceSlider.setShowTickLabels(true);
+        adjustForceSlider.setShowTickMarks(true);
+        adjustForceSlider.setSnapToTicks(true);
 
-        stop_forces_.setMnemonicParsing(false);
-        show_node_ids_.setMnemonicParsing(false);
-        show_relationships_.setMnemonicParsing(false);
-        show_legend_.setMnemonicParsing(false);
+        stopForces.setMnemonicParsing(false);
+        showNodeIds.setMnemonicParsing(false);
+        showRelationships.setMnemonicParsing(false);
+        showLegend.setMnemonicParsing(false);
         builderModeToggle.setMnemonicParsing(false);
 
-        pro_vis_ctrl_ = new ProVisCtrl(this, vis_canvas_, canvas_pane_, adjust_force_slider_, stop_forces_,
-                show_node_ids_, show_relationships_, show_legend_, builderModeToggle, import_file_btn_,
-                choose_file_btn_, inputTextField, probedTextField, activeTextField, inhibitoryTextField,
-                bGVersionTextField, clearPresetsButton, buildFromPrevButton);
+        proVisCtrl = new ProVisCtrl(this, visCanvas, canvasPane, adjustForceSlider, stopForces,
+                showNodeIds, showRelationships, showLegend, builderModeToggle, importFileBtn,
+                chooseFileBtn, inputTextField, probedTextField, activeTextField,
+                inhibitoryTextField, bGVersionTextField, clearPresetsButton, buildFromPrevButton);
 
-        canvas_pane_.getChildren().add(vis_canvas_);
+        canvasPane.getChildren().add(visCanvas);
 
         initLabelsandTextFields();
 
         VBox vb = new VBox();
         vb.setSpacing(10);
-        vb.getChildren().addAll(visualizerControlLabel, visualizerControlSeparator, import_file_btn_, choose_file_btn_,
-                vertexSpeedLabel, adjust_force_slider_, stop_forces_, show_node_ids_, show_relationships_, show_legend_,
-                controlPanelSeparator, builderControlLabel, builderControlSeparator, builderModeToggle,
-                buidlerLabelsandTextfields, clearPresetsButton, buildFromPrevButton);
+        vb.getChildren().addAll(visualizerControlLabel, visualizerControlSeparator, importFileBtn,
+                chooseFileBtn, vertexSpeedLabel, adjustForceSlider, stopForces, showNodeIds,
+                showRelationships, showLegend, controlPanelSeparator, builderControlLabel,
+                builderControlSeparator, builderModeToggle, buidlerLabelsandTextfields,
+                clearPresetsButton, buildFromPrevButton);
 
         vb.getStyleClass().add("controls");
-        bp_.setCenter(canvas_pane_);
-        bp_.setRight(vb);
+        borderPane.setCenter(canvasPane);
+        borderPane.setRight(vb);
 
         super.setTitle("ProVis");
     }
@@ -81,7 +79,7 @@ public class ProVis extends WorkbenchApp {
     @Override
     public Node getDisplay() {
         // TODO Auto-generated method stub
-        return bp_;
+        return borderPane;
     }
 
     private void initLabelsandTextFields() {
@@ -108,17 +106,17 @@ public class ProVis extends WorkbenchApp {
         buidlerLabelsandTextfields.add(bGVersionTextField, 1, 4);
     }
 
-    BorderPane bp_ = new BorderPane();
-    private VisCanvas vis_canvas_ = new VisCanvas();
-    private BorderPane canvas_pane_ = new BorderPane();
-    private Slider adjust_force_slider_ = new Slider(1.0, 100, 10);
-    private ToggleSwitch stop_forces_ = new ToggleSwitch("Stop Vertices     ");
-    private ToggleSwitch show_node_ids_ = new ToggleSwitch("All Vertex IDs     ");
-    private ToggleSwitch show_relationships_ = new ToggleSwitch("All Relationships");
-    private ToggleSwitch show_legend_ = new ToggleSwitch("Legend               ");
+    private BorderPane borderPane = new BorderPane();
+    private VisCanvas visCanvas = new VisCanvas();
+    private BorderPane canvasPane = new BorderPane();
+    private Slider adjustForceSlider = new Slider(1.0, 100, 10);
+    private ToggleSwitch stopForces = new ToggleSwitch("Stop Vertices     ");
+    private ToggleSwitch showNodeIds = new ToggleSwitch("All Vertex IDs     ");
+    private ToggleSwitch showRelationships = new ToggleSwitch("All Relationships");
+    private ToggleSwitch showLegend = new ToggleSwitch("Legend               ");
     private ToggleSwitch builderModeToggle = new ToggleSwitch("Builder Mode");
-    private Button choose_file_btn_ = new Button("Choose Provenance");
-    private Button import_file_btn_ = new Button("Import Provenance");
+    private Button chooseFileBtn = new Button("Choose Provenance");
+    private Button importFileBtn = new Button("Import Provenance");
     private Button buildFromPrevButton = new Button("Derive New Activity");
     private Button clearPresetsButton = new Button("Clear Selected");
     private Label visualizerControlLabel = new Label("VISUALIZER CONTROL");
@@ -138,5 +136,5 @@ public class ProVis extends WorkbenchApp {
     private Separator visualizerControlSeparator = new Separator();
     private Separator builderControlSeparator = new Separator();
     private GridPane buidlerLabelsandTextfields;
-    private ProVisCtrl pro_vis_ctrl_;
+    private ProVisCtrl proVisCtrl;
 }

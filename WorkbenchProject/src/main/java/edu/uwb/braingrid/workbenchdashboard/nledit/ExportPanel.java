@@ -1,9 +1,6 @@
 package edu.uwb.braingrid.workbenchdashboard.nledit;
 
 import java.io.File;
-
-import edu.uwb.braingrid.general.FileSelectorDirMgr;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +9,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+
+import edu.uwb.braingrid.general.FileSelectorDirMgr;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 
 /**
  * The ExportPanel class handles export xml neurons list files dialog window. The window contains
@@ -23,19 +23,21 @@ import javafx.stage.FileChooser.ExtensionFilter;
  */
 public class ExportPanel extends Pane implements EventHandler<javafx.event.ActionEvent> {
 
-    private Label[] labels = new Label[3];
-    public TextField[] tfields = new TextField[3];
-    private Button[] btns = new Button[3];
+    /** Number of input fields. */
+    public static final int NUM_FIELDS = 3;
+    /** Field index of inhibitory neurons list file. */
+    public static final int IDX_INH_LIST = 0;
+    /** Field index of active neurons list file. */
+    public static final int IDX_ACT_LIST = 1;
+    /** Field index of probed neurons list file. */
+    public static final int IDX_PRB_LIST = 2;
+
+    private Label[] labels = new Label[NUM_FIELDS];
+    private TextField[] tFields = new TextField[NUM_FIELDS];
+    private Button[] rButtons = new Button[NUM_FIELDS];
 //    private static String nlistDir = "."; // directory for neurons list file
 
-    /** Number of input fields. */
-    public static final int nFields = 3;
-    /** Field index of inhibitory neurons list file. */
-    public static final int idxInhList = 0;
-    /** Field index of active neurons list file. */
-    public static final int idxActList = 1;
-    /** Field index of probed neurons list file. */
-    public static final int idxPrbList = 2;
+    private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
 
     /**
      * A class constructor, which creates UI components, and registers action listener.
@@ -46,41 +48,43 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
         GridPane gp = new GridPane();
 //        nlistDir = dir;
 
-        labels[idxInhList] = new Label("Inhibitory neurons list:");
-        labels[idxActList] = new Label("Active neurons list:");
-        labels[idxPrbList] = new Label("Probed neurons list:");
+        labels[IDX_INH_LIST] = new Label("Inhibitory neurons list:");
+        labels[IDX_ACT_LIST] = new Label("Active neurons list:");
+        labels[IDX_PRB_LIST] = new Label("Probed neurons list:");
 
-        gp.getChildren().addAll(labels[idxInhList], labels[idxActList], labels[idxPrbList]);
-        GridPane.setConstraints(labels[idxInhList], 0, 0);
-        GridPane.setConstraints(labels[idxActList], 0, 1);
-        GridPane.setConstraints(labels[idxPrbList], 0, 2);
+        gp.getChildren().addAll(labels[IDX_INH_LIST], labels[IDX_ACT_LIST], labels[IDX_PRB_LIST]);
+        GridPane.setConstraints(labels[IDX_INH_LIST], 0, IDX_INH_LIST);
+        GridPane.setConstraints(labels[IDX_ACT_LIST], 0, IDX_ACT_LIST);
+        GridPane.setConstraints(labels[IDX_PRB_LIST], 0, IDX_PRB_LIST);
 
-        for (int i = 0; i < nFields; i++) {
-            tfields[i] = new TextField();
-            tfields[i].setEditable(true);
-            btns[i] = new Button("Browse...");
-            btns[i].setOnAction(this);
-            gp.getChildren().addAll(tfields[i], btns[i]);
-            GridPane.setConstraints(tfields[i], 1, i);
-            GridPane.setConstraints(btns[i], 2, i);
+        for (int i = 0; i < NUM_FIELDS; i++) {
+            tFields[i] = new TextField();
+            tFields[i].setEditable(true);
+            rButtons[i] = new Button("Browse...");
+            rButtons[i].setOnAction(this);
+            gp.getChildren().addAll(tFields[i], rButtons[i]);
+            GridPane.setConstraints(tFields[i], 1, i);
+            GridPane.setConstraints(rButtons[i], 2, i);
         }
         getChildren().add(gp);
     }
 
-    FileSelectorDirMgr filemgr = new FileSelectorDirMgr();
+    public TextField[] getTFields() {
+        return tFields;
+    }
 
     @Override
     public void handle(javafx.event.ActionEvent arg0) {
         int iSource = 0;
-        for (int i = 0; i < nFields; i++) {
-            if (arg0.getSource() == btns[i]) {
+        for (int i = 0; i < NUM_FIELDS; i++) {
+            if (arg0.getSource() == rButtons[i]) {
                 iSource = i;
                 break;
             }
         }
         // create a file chooser
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(filemgr.getLastDir());
+        chooser.setInitialDirectory(fileMgr.getLastDir());
         chooser.setTitle("Save File");
 
         ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "xml");
@@ -88,26 +92,26 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
 
 //        String dialogTitle = "";
         switch (iSource) {
-        case idxInhList:
+        case IDX_INH_LIST:
             chooser.setInitialFileName("inh.xml");
 //            dialogTitle = "Inhibitory neurons list";
             break;
-        case idxActList:
+        case IDX_ACT_LIST:
             chooser.setInitialFileName("act.xml");
 //            dialogTitle = "Active neurons list";
             break;
-        case idxPrbList:
+        case IDX_PRB_LIST:
             chooser.setInitialFileName("prb.xml");
 //            dialogTitle = "Probed neurons list";
             break;
         }
 
-        File option = chooser.showSaveDialog(WorkbenchDashboard.primaryStage_);
+        File option = chooser.showSaveDialog(WorkbenchDisplay.getPrimaryStage());
 
         if (option != null) {
-            tfields[iSource].setText(option.getAbsolutePath());
+            tFields[iSource].setText(option.getAbsolutePath());
 //            nlistDir = option.getParent();
-            filemgr.add(option.getParentFile());
+            fileMgr.add(option.getParentFile());
         }
     }
 }

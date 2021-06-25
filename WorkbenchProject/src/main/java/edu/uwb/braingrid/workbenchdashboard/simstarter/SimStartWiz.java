@@ -1,11 +1,8 @@
 package edu.uwb.braingrid.workbenchdashboard.simstarter;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.util.Date;
 import java.util.logging.Logger;
 import java.util.HashMap;
-import javax.swing.JFileChooser;
 import javafx.scene.control.TextArea;
 
 import edu.uwb.braingrid.workbench.WorkbenchManager;
@@ -21,9 +18,7 @@ import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
  */
 public class SimStartWiz {
 
-    /**
-     * Class Variables and objects
-     */
+    /* Class variables and objects */
     private static final Logger LOG = Logger.getLogger(SimStartWiz.class.getName());
     private static final long serialVersionUID = 1L;
     private WorkbenchManager workbenchManager = new WorkbenchManager();
@@ -34,8 +29,8 @@ public class SimStartWiz {
 
     /**
      * Prompts the user to select files for the simulation input. InputAnalyzer files are created
-     * with NLEdit or by hand in XML. InputAnalyzer files represent lists of neurons with regard
-     * to their position in a neuron array (e.g. position 12 is x: 1, y: 2 on a 10x10 grid)
+     * with NLEdit or by hand in XML. InputAnalyzer files represent lists of neurons with regard to
+     * their position in a neuron array (e.g. position 12 is x: 1, y: 2 on a 10x10 grid)
      */
     private boolean configureSimulation() {
         boolean wasSuccessful = false;
@@ -51,12 +46,13 @@ public class SimStartWiz {
 
     /**
      * Prompts the user to select files for the simulation input. InputAnalyzer files are created
-     * with NLEdit or by hand in XML. InputAnalyzer files represent lists of neurons with regard
-     * to their position in a neuron array (e.g. position 12 is x: 1, y: 2 on a 10x10 grid)
+     * with NLEdit or by hand in XML. InputAnalyzer files represent lists of neurons with regard to
+     * their position in a neuron array (e.g. position 12 is x: 1, y: 2 on a 10x10 grid)
      *
      * @param simInputPresets contains strings of inputs for configuring Sim
      */
-    private boolean configureSimulation(String simInputPresets, HashMap<Character,String> nListPresets) {
+    private boolean configureSimulation(String simInputPresets,
+            HashMap<Character, String> nListPresets) {
         if (simInputPresets == null && nListPresets == null) {
             return configureSimulation();
         }
@@ -94,7 +90,9 @@ public class SimStartWiz {
      * @param runtimeSpecifcations  Is git commit version to be pulled
      */
     private boolean specifyScript(String runtimeSpecifcations) {
-        if(runtimeSpecifcations == null) return specifyScript();
+        if (runtimeSpecifcations == null) {
+            return specifyScript();
+        }
         boolean wasSuccessful = false;
         if (workbenchManager.specifyScript(runtimeSpecifcations)) {
         workbenchManager.invalidateScriptGenerated();
@@ -116,8 +114,8 @@ public class SimStartWiz {
     }
 
     /**
-     * Runs the script on the remote host.
-     * Connection information is entered in a SSHConnectionDialog.
+     * Runs the script on the remote host. Connection information is entered in a
+     * SSHConnectionDialog.
      */
     private boolean runScript() {
         boolean wasSuccessful = false;
@@ -157,7 +155,8 @@ public class SimStartWiz {
         }
     }
 
-    public SimStartWiz(String simSpecifications, String runtimeSpecifcations, HashMap<Character, String> nListPresets) {
+    public SimStartWiz(String simSpecifications, String runtimeSpecifcations,
+            HashMap<Character, String> nListPresets) {
         LOG.info("new " + getClass().getName());
         boolean cancelButtonClicked = false;
         if (workbenchManager.newProject()) {

@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.provenance.ProvMgr;
-import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.project.ProjectMgr;
 import edu.uwb.braingrid.workbench.script.Script;
 import edu.uwb.braingrid.workbench.script.ScriptManager;
@@ -27,12 +26,11 @@ import edu.uwb.braingrid.workbench.ui.InputConfigClassSelectionDialog;
 import edu.uwb.braingrid.workbench.ui.NewProjectDialog;
 import edu.uwb.braingrid.workbench.ui.ProvenanceQueryDialog;
 import edu.uwb.braingrid.workbench.ui.ScriptSpecificationDialog;
-import edu.uwb.braingrid.workbench.ui.WorkbenchControlFrame;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
- * Manages all of the operations for the workbench. In turn, the operations manage instances of
- * the related data.
+ * Manages all of the operations for the workbench. In turn, the operations manage instances of the
+ * related data.
  *
  * @author Del Davis, Modified and Updated by Joseph Conquest
  * @version 1.3
@@ -103,7 +101,7 @@ public class WorkbenchManager {
      */
     public boolean newProject() {
         LOG.info("Making New Project");
-        boolean success = false;
+        boolean success;
         // Ask the user for a new project name (validation in dialogue)
         NewProjectDialog npd = new NewProjectDialog(true);
 
@@ -132,8 +130,8 @@ public class WorkbenchManager {
             InputConfigClassSelectionDialog iccsd
                     = new InputConfigClassSelectionDialog(projectName, true, configFilename);
             if (success = iccsd.getSuccess()) {
-                DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(projectName, true,
-                        configFilename, iccsd.getInputConfigMgr(), null);
+                DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
+                        projectName, true, configFilename, iccsd.getInputConfigMgr(), null);
                 String simulationConfigurationFile = null;
                 String stateOutputFilename = null;
                 if (success = icd.getSuccess()) {
@@ -143,8 +141,9 @@ public class WorkbenchManager {
                         projectMgr.addSimConfigFile(simulationConfigurationFile);
                         projectMgr.setSimStateOutputFile(stateOutputFilename);
                         if (projectMgr.isProvenanceEnabled()) {
-                            prov.addFileGeneration("simulation_input_file_generation", null, "workbench", null, false,
-                                    simulationConfigurationFile, null, null);
+                            prov.addFileGeneration("simulation_input_file_generation", null,
+                                    "workbench", null, false, simulationConfigurationFile,
+                                    null, null);
                         }
                     } else {
                         success = false;
@@ -161,17 +160,18 @@ public class WorkbenchManager {
      * @return True if the user followed through on the specification, False if the user canceled
      *         the specification.
      */
-    public boolean configureSimulation(String inputPresets, HashMap<Character,String> nListPresets) {
+    public boolean configureSimulation(String inputPresets,
+            HashMap<Character, String> nListPresets) {
         String projectName = getProjectName();
         LOG.info("Configuring Simulation for " + projectName);
         boolean success = true;
         if (!projectName.equals("None")) {
             String configFilename = inputPresets;
-            InputConfigClassSelectionDialog iccsd = new InputConfigClassSelectionDialog(projectName, true,
-                    configFilename);
+            InputConfigClassSelectionDialog iccsd = new InputConfigClassSelectionDialog(projectName,
+                    true, configFilename);
             if (success = iccsd.getSuccess()) {
-                DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(projectName, true,
-                        configFilename, iccsd.getInputConfigMgr(), nListPresets);
+                DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
+                        projectName, true, configFilename, iccsd.getInputConfigMgr(), nListPresets);
                 String simulationConfigurationFile = null;
                 String stateOutputFilename = null;
                 if (success = icd.getSuccess()) {
@@ -181,8 +181,9 @@ public class WorkbenchManager {
                         projectMgr.addSimConfigFile(simulationConfigurationFile);
                         projectMgr.setSimStateOutputFile(stateOutputFilename);
                         if (projectMgr.isProvenanceEnabled()) {
-                            prov.addFileGeneration("simulation_input_file_generation", null, "workbench", null, false,
-                                    simulationConfigurationFile, null, null);
+                            prov.addFileGeneration("simulation_input_file_generation", null,
+                                    "workbench", null, false, simulationConfigurationFile,
+                                    null, null);
                         }
                     } else {
                         success = false;
@@ -205,7 +206,7 @@ public class WorkbenchManager {
     }
 
     /**
-     * Opens a project from an XML file
+     * Opens a project from an XML file.
      *
      * @return Option from the JFileChooser or EXCEPTION_OPTION from this class indicating that an
      *         exception was thrown
@@ -227,8 +228,9 @@ public class WorkbenchManager {
                 try {
                     File selectedFile = chooser.getSelectedFile();
                     try {
-                        projectMgr = new ProjectMgr(FileManager.getLastNamePrefix(selectedFile.getName()), true);
-                        
+                        projectMgr = new ProjectMgr(FileManager.getLastNamePrefix(
+                                selectedFile.getName()), true);
+
                     } catch (IOException ex1) {
                         messageAccumulator += "\n"
                                 + "Unmanaged project selected.\n"
@@ -240,7 +242,8 @@ public class WorkbenchManager {
                                 + "\nFrom: " + selectedFile.getParent()
                                 + "\nTo:   "
                                 + destFolder + "\n";
-                        projectMgr = new ProjectMgr(FileManager.getLastNamePrefix(selectedFile.getName()), true);
+                        projectMgr = new ProjectMgr(FileManager.getLastNamePrefix(
+                                selectedFile.getName()), true);
                     }
                     updateSimSpec();
                     if (projectMgr.isProvenanceEnabled()) {
@@ -278,20 +281,22 @@ public class WorkbenchManager {
         }
         if (projectMgr != null) {
             DateTime.recordFunctionExecutionTime("WorkbenchManager", "openProject",
-                    System.currentTimeMillis() - functionStartTime, projectMgr.isProvenanceEnabled());
+                    System.currentTimeMillis() - functionStartTime,
+                    projectMgr.isProvenanceEnabled());
             if (projectMgr.isProvenanceEnabled()) {
-                DateTime.recordAccumulatedProvTiming("WorkbenchManager", "openProject", accumulatedTime);
+                DateTime.recordAccumulatedProvTiming("WorkbenchManager", "openProject",
+                        accumulatedTime);
             }
         }
         return choice;
     }
 
     /**
-     * Saves the current project to XML. If provenance is enabled, the
-     * provenance file is persisted as well.
+     * Saves the current project to XML. If provenance is enabled, the provenance file is persisted
+     * as well.
      *
-     * <i>Assumption: This action is unreachable prior to specifying a new
-     * project or loading a project from disk</i>
+     * <i>Assumption: This action is unreachable prior to specifying a new project or loading a
+     * project from disk</i>
      */
     public void saveProject() {
         Long functionStartTime = System.currentTimeMillis();
@@ -320,7 +325,8 @@ public class WorkbenchManager {
         DateTime.recordFunctionExecutionTime("WorkbenchManager", "saveProject",
                 System.currentTimeMillis() - functionStartTime, projectMgr.isProvenanceEnabled());
         if (projectMgr.isProvenanceEnabled()) {
-            DateTime.recordAccumulatedProvTiming("WorkbenchManager", "saveProject", accumulatedTime);
+            DateTime.recordAccumulatedProvTiming("WorkbenchManager", "saveProject",
+                    accumulatedTime);
         }
     }
 
@@ -350,8 +356,8 @@ public class WorkbenchManager {
             } else {
                 hostAddr = "";
             }
-            projectMgr.addSimulator(locale,
-                    hostAddr, simulatorSpecification.getSimulatorFolder(),
+            projectMgr.addSimulator(locale, hostAddr,
+                    simulatorSpecification.getSimulatorFolder(),
                     simulatorSpecification.getSimulationType(),
                     simulatorSpecification.getCodeLocation(),
                     simulatorSpecification.getVersionAnnotation(),
@@ -398,8 +404,8 @@ public class WorkbenchManager {
             } else {
                 hostAddr = "";
             }
-            projectMgr.addSimulator(locale,
-                    hostAddr, simulatorSpecification.getSimulatorFolder(),
+            projectMgr.addSimulator(locale, hostAddr,
+                    simulatorSpecification.getSimulatorFolder(),
                     simulatorSpecification.getSimulationType(),
                     simulatorSpecification.getCodeLocation(),
                     simulatorSpecification.getVersionAnnotation(),
@@ -418,8 +424,8 @@ public class WorkbenchManager {
      * Analyzes the redirected provenance output from an executed script.
      *
      * @return The time in milliseconds since January 1, 1970, 00:00:00 GMT when the simulator
-     *         finished execution. DateTime.ERROR_TIME indicates that the simulator has not
-     *         finished execution
+     *         finished execution. DateTime.ERROR_TIME indicates that the simulator has not finished
+     *         execution
      * @see edu.uwb.braingrid.workbench.utils.DateTime
      */
     public long analyzeScriptOutput() {
@@ -430,9 +436,10 @@ public class WorkbenchManager {
                 try {
                     messageAccumulator += "\n"
                             + "Gathering simulation provenance...\n";
-                    String targetFolder = ScriptManager.getScriptFolder(projectMgr.determineProjectOutputLocation());
-                    timeCompleted = scriptMgr.analyzeScriptOutput(simulatorSpecification, projectMgr, prov,
-                            targetFolder);
+                    String targetFolder = ScriptManager.getScriptFolder(
+                            projectMgr.determineProjectOutputLocation());
+                    timeCompleted = scriptMgr.analyzeScriptOutput(simulatorSpecification,
+                            projectMgr, prov, targetFolder);
                     if (timeCompleted != DateTime.ERROR_TIME) {
                         projectMgr.setScriptCompletedAt(timeCompleted);
                         projectMgr.setScriptAnalyzed(true);
@@ -469,8 +476,9 @@ public class WorkbenchManager {
         LOG.info("Generate Script for " + projectMgr.getName());
         boolean success;
         success = false;
-        Script script = ScriptManager.generateScript(projectMgr.getName(), projectMgr.getNextScriptVersion(),
-                simulatorSpecification, projectMgr.getSimConfigFilename());
+        Script script = ScriptManager.generateScript(projectMgr.getName(),
+                projectMgr.getNextScriptVersion(), simulatorSpecification,
+                projectMgr.getSimConfigFilename());
         if (script != null) {
             try {
                 String projectFolder = projectMgr.determineProjectOutputLocation();
@@ -513,9 +521,10 @@ public class WorkbenchManager {
         ScriptManager sm = new ScriptManager();
         try {
             String scriptPath = projectMgr.getScriptCanonicalFilePath();
-            String[] neuronLists = FileManager.getFileManager().getNeuronListFilenames(projectMgr.getName());
-            success = sm.runScript(prov, simulatorSpecification, scriptPath, projectMgr.getScriptVersion(),
-                    neuronLists, projectMgr.getSimConfigFilename());
+            String[] neuronLists = FileManager.getFileManager()
+                    .getNeuronListFilenames(projectMgr.getName());
+            success = sm.runScript(prov, simulatorSpecification, scriptPath,
+                    projectMgr.getScriptVersion(), neuronLists, projectMgr.getSimConfigFilename());
             projectMgr.setScriptRan(success);
             projectMgr.setScriptRanAt();
             messageAccumulator += sm.getOutstandingMessages();
@@ -535,8 +544,8 @@ public class WorkbenchManager {
      * a new project is specified. Also used when a new project specification is canceled in order
      * to notify the user from the workbench message center.
      *
-     * @param name  Name to give the current project (as well as the base name of the file to
-     *              record the project in.
+     * @param name  Name to give the current project (as well as the base name of the file to record
+     *              the project in.
      * @param provEnabled  True if provenance should be enabled for this project
      * @return
      */
@@ -568,7 +577,8 @@ public class WorkbenchManager {
             } else {
                 prov = null;
             }
-        } catch (IOException | ParserConfigurationException | SAXException | NullPointerException e) {
+        } catch (IOException | ParserConfigurationException | SAXException
+                | NullPointerException e) {
             success = false;
             messageAccumulator += "\n"
                     + "Exception occurred while constructing project XML"
@@ -579,7 +589,8 @@ public class WorkbenchManager {
         DateTime.recordFunctionExecutionTime("WorkbenchManager", "initProject",
                 System.currentTimeMillis() - functionStartTime, projectMgr.isProvenanceEnabled());
         if (projectMgr.isProvenanceEnabled()) {
-            DateTime.recordAccumulatedProvTiming("WorkbenchManager", "initProject", accumulatedTime);
+            DateTime.recordAccumulatedProvTiming("WorkbenchManager", "initProject",
+                    accumulatedTime);
         }
         return success;
     }
@@ -589,15 +600,17 @@ public class WorkbenchManager {
         if (projectMgr != null) {
             try {
                 prov.persist(projectMgr);
-                messageAccumulator += "\n" + "Provenance persisted to: "
+                messageAccumulator += "\n"
+                        + "Provenance persisted to: "
                         + prov.getProvFileURI() + "\n";
             } catch (IOException e) {
-                messageAccumulator += "\n" + "Unable to persist provenance\n"
+                messageAccumulator += "\n"
+                        + "Unable to persist provenance\n"
                         + e.toString() + "\n";
             }
         } else {
-            messageAccumulator += "\n" + "Unable to persist provenance..."
-                    + " no project is loaded\n";
+            messageAccumulator += "\n"
+                    + "Unable to persist provenance... no project is loaded\n";
         }
     }
     // </editor-fold>
@@ -659,18 +672,18 @@ public class WorkbenchManager {
 
     /**
      * Removes the script from the project. Invalidation should occur whenever the script
-     * specification or simulation specification changes. This is a safety measure meant to
-     * protect against utilizing an expired script (i.e. the version doesn't match, but the
-     * script gets used anyway).
+     * specification or simulation specification changes. This is a safety measure meant to protect
+     * against utilizing an expired script (i.e. the version doesn't match, but the script gets used
+     * anyway).
      */
     public void invalidateScriptGenerated() {
         projectMgr.removeScript();
     }
 
     /**
-     * Sets the time when the script completed execution to an error code. Invalidation should
-     * occur whenever script specification or simulation specification occurs. This is a safety
-     * measure for the provvisualizer.view in updating the overview of script output analysis.
+     * Sets the time when the script completed execution to an error code. Invalidation should occur
+     * whenever script specification or simulation specification occurs. This is a safety measure
+     * for the provvisualizer.view in updating the overview of script output analysis.
      */
     public void invalidateScriptAnalyzed() {
         projectMgr.setScriptCompletedAt(DateTime.ERROR_TIME);
@@ -679,8 +692,7 @@ public class WorkbenchManager {
 
     // <editor-fold defaultstate="collapsed" desc="Getters/Setters">
     /**
-     * Gets the name of the project that was last specified while opening or creating a new
-     * project.
+     * Gets the name of the project that was last specified while opening or creating a new project.
      *
      * @return The name of the currently open project
      */
@@ -699,9 +711,9 @@ public class WorkbenchManager {
      *
      * TODO: These wrapper functions for the project manager need to be rethought.
      *
-     * @return True if the script has been generated, otherwise false (not including the script
-     *         not being generated after changes were made to the simulation configuration or the
-     *         script execution directives.
+     * @return True if the script has been generated, otherwise false (not including the script not
+     *         being generated after changes were made to the simulation configuration or the script
+     *         execution directives.
      */
     public boolean scriptGenerated() {
         boolean generated = false;
@@ -870,16 +882,14 @@ public class WorkbenchManager {
                 if (simAttributeAddedToText) {
                     overview += "<br>";
                 }
-                overview += "version: "
-                        + simVersionAnnotation;
+                overview += "version: " + simVersionAnnotation;
                 simAttributeAddedToText = true;
             }
             if (simCodeLocation != null) {
                 if (simAttributeAddedToText) {
                     overview += "<br>";
                 }
-                overview += "compiled from: "
-                        + simCodeLocation;
+                overview += "compiled from: " + simCodeLocation;
             }
             overview += "</html>";
         }
@@ -889,9 +899,9 @@ public class WorkbenchManager {
     /**
      * Provides the status of moving and executing the script.
      *
-     * @return The status of moving and executing the script in the form of the time when the
-     *         script was executed, if it was copied and executed successfully, or if not, the
-     *         default text for this status prior to the attempt to execute
+     * @return The status of moving and executing the script in the form of the time when the script
+     *         was executed, if it was copied and executed successfully, or if not, the default text
+     *         for this status prior to the attempt to execute
      */
     public String getScriptRunOverview() {
         String scriptRunMsg = "None";
@@ -907,8 +917,8 @@ public class WorkbenchManager {
     }
 
     /**
-     * Provides an overview the analysis process for the output generated by executing a script.
-     * In particular, the provenance related output.
+     * Provides an overview the analysis process for the output generated by executing a script. In
+     * particular, the provenance related output.
      *
      * @return An overview of the analysis process if the output redirected from the script was
      *         downloaded/copied successfully and the script finished execution. If the script

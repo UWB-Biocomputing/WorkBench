@@ -9,8 +9,8 @@ import org.w3c.dom.Node;
 
 /**
  * Contains the information relevant to one equivalent XML node, not including its children. A
- * ConfigDatum must have a type, which designates what data it is likely to contain. Any datum
- * type may contain any data, but some functions are designed for use with only certain types.
+ * ConfigDatum must have a type, which designates what data it is likely to contain. Any datum type
+ * may contain any data, but some functions are designed for use with only certain types.
  *
  * @author Aaron
  */
@@ -106,8 +106,8 @@ public class ConfigDatum {
     }
 
     /**
-     * Gets the content of the attribute "LABEL_TAG" if the datum is not of NULL_TYPE. Returns
-     * null otherwise, or if the attribute doesn't exist.
+     * Gets the content of the attribute "LABEL_TAG" if the datum is not of NULL_TYPE. Returns null
+     * otherwise, or if the attribute doesn't exist.
      *
      * @return Content of attribute LABEL_TAG
      */

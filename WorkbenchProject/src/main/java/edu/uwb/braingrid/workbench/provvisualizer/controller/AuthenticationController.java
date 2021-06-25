@@ -40,8 +40,8 @@ public class AuthenticationController {
             @Override
             public void handle(ActionEvent event) {
                 if (okButtonCallback != null) {
-                    okButtonCallback.accept(new AuthenticationInfo(hostnameLbl.getText(), usernameTxtFd.getText(),
-                            passwordPwdFd.getText()));
+                    okButtonCallback.accept(new AuthenticationInfo(hostnameLbl.getText(),
+                            usernameTxtFd.getText(), passwordPwdFd.getText()));
                 }
                 ((Stage) okBtn.getScene().getWindow()).close();
             }

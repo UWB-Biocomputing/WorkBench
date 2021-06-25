@@ -25,11 +25,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -46,13 +43,13 @@ import org.jdom2.output.XMLOutputter;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 
 public class NLedit extends WorkbenchApp {
 
     private static final Logger LOG = Logger.getLogger(NLedit.class.getName());
 
-    private BorderPane bp_ = new BorderPane();
+    private BorderPane borderPane = new BorderPane();
 
     public NLedit(Tab tab) {
         super(tab);
@@ -73,27 +70,27 @@ public class NLedit extends WorkbenchApp {
 
     @Override
     public Node getDisplay() {
-        return bp_;
+        return borderPane;
     }
 
     public BorderPane getBP() {
-        return bp_;
+        return borderPane;
     }
 
     private void generateSimulator() {
-        NeuronsLayout neurons_layout = new NeuronsLayout();
-        neurons_layout_ = neurons_layout;
+        neuronsLayout = new NeuronsLayout();
 
-        layoutPanel = new LayoutPanel(this, new Dimension(LayoutPanel.defXCells, LayoutPanel.defYCells),
-                neurons_layout);
-        JScrollPane scrollpane = new JScrollPane(layoutPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+        layoutPanel = new LayoutPanel(this, new Dimension(LayoutPanel.DEF_X_CELLS,
+                LayoutPanel.DEF_Y_CELLS), neuronsLayout);
+        JScrollPane scrollpane = new JScrollPane(layoutPanel,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         layoutPanel.setScrollPane(scrollpane);
 
-        SwingNode scroll_pane_node = new SwingNode();
-        scroll_pane_node.setContent(scrollpane);
-        bp_.setCenter(scroll_pane_node);
-        nl_sim_util_ = new NL_Sim_Util(layoutPanel, neurons_layout);
+        SwingNode scrollPaneNode = new SwingNode();
+        scrollPaneNode.setContent(scrollpane);
+        borderPane.setCenter(scrollPaneNode);
+        nlSimUtil = new NL_Sim_Util(layoutPanel, neuronsLayout);
     }
 
     /**
@@ -125,61 +122,67 @@ public class NLedit extends WorkbenchApp {
 
         VBox vbox = new VBox(inhNItem, activeNItem, probedNItem);
         vbox.getStyleClass().add("neuronbox");
-        bp_.setLeft(vbox);
+        borderPane.setLeft(vbox);
     }
 
     private void initToolbar() {
-        primeButton(clear_item_btn_, "/icons/baseline-clear-black-18/1x/baseline_clear_black_18dp.png",
+        primeButton(clearItemBtn,
+                "/icons/baseline-clear-black-18/1x/baseline_clear_black_18dp.png",
                 "Clear Neurons");
-        clear_item_btn_.getStyleClass().add("clear-button");
-        clear_item_btn_.setOnAction(event -> {
+        clearItemBtn.getStyleClass().add("clear-button");
+        clearItemBtn.setOnAction(event -> {
             actionClear();
         });
 
-        primeButton(import_item_btn_, "/icons/baseline-input-black-18/1x/baseline_input_black_18dp.png",
+        primeButton(importItemBtn,
+                "/icons/baseline-input-black-18/1x/baseline_input_black_18dp.png",
                 "Import Neuron Layout");
-        import_item_btn_.setOnAction(event -> {
+        importItemBtn.setOnAction(event -> {
             actionImport();
         });
 
-        primeButton(export_item_btn_, "/icons/baseline-save_alt-black-18/1x/baseline_save_alt_black_18dp.png",
+        primeButton(exportItemBtn,
+                "/icons/baseline-save_alt-black-18/1x/baseline_save_alt_black_18dp.png",
                 "Export Neuron Layout");
-        export_item_btn_.setOnAction(event -> {
+        exportItemBtn.setOnAction(event -> {
             actionExport();
         });
 
-        primeButton(print_item_btn_,
-                "/icons/baseline-local_printshop-black-18/1x/baseline_local_printshop_black_18dp.png", "Print");
-        print_item_btn_.setOnAction(event -> {
+        primeButton(printItemBtn, "/icons/baseline-local_printshop-black-18/1x/"
+                + "baseline_local_printshop_black_18dp.png", "Print");
+        printItemBtn.setOnAction(event -> {
             actionPrint();
         });
 
-        primeButton(bcell_item_btn_, "/icons/baseline-zoom_in-black-18/1x/baseline_zoom_in_black_18dp.png", "Zoom In");
-        bcell_item_btn_.setOnAction(event -> {
+        primeButton(bcellItemBtn,
+                "/icons/baseline-zoom_in-black-18/1x/baseline_zoom_in_black_18dp.png", "Zoom In");
+        bcellItemBtn.setOnAction(event -> {
             actionBiggerCells();
         });
 
-        primeButton(scell_item_btn_, "/icons/baseline-zoom_out-black-18/1x/baseline_zoom_out_black_18dp.png",
-                "Zoom Out");
-        scell_item_btn_.setOnAction(event -> {
+        primeButton(scellItemBtn, "/icons/baseline-zoom_out-black-18/1x/"
+                + "baseline_zoom_out_black_18dp.png", "Zoom Out");
+        scellItemBtn.setOnAction(event -> {
             actionSmallerCells();
         });
 
-        primeButton(sdat_item_btn_, "/icons/baseline-data_usage-black-18/1x/baseline_data_usage_black_18dp.png",
+        primeButton(sdatItemBtn,
+                "/icons/baseline-data_usage-black-18/1x/baseline_data_usage_black_18dp.png",
                 "Stats");
-        sdat_item_btn_.setOnAction(event -> {
+        sdatItemBtn.setOnAction(event -> {
             actionStatisticalData();
         });
-        
-        HBox toolbar = new HBox(bcell_item_btn_, scell_item_btn_, print_item_btn_, sdat_item_btn_, import_item_btn_, export_item_btn_, clear_item_btn_);
+
+        HBox toolbar = new HBox(bcellItemBtn, scellItemBtn, printItemBtn, sdatItemBtn,
+                importItemBtn, exportItemBtn, clearItemBtn);
 
         toolbar.getStyleClass().add("toolbar");
 
-        bp_.setTop(toolbar);
+        borderPane.setTop(toolbar);
     }
 
-    private void primeButton(Button button, String image_path, String tooltip) {
-        setButtonImage(button, image_path);
+    private void primeButton(Button button, String imagePath, String tooltip) {
+        setButtonImage(button, imagePath);
         button.setTooltip(new Tooltip(tooltip));
     }
 
@@ -196,92 +199,96 @@ public class NLedit extends WorkbenchApp {
     }
 
     private void initSettingsPanel() {
-        Label lbl_sizeX = new Label("Size x:");
-        Label lbl_sizeY = new Label("Size y:");
+        Label lblSizeX = new Label("Size x:");
+        Label lblSizeY = new Label("Size y:");
 
-        TextField txtfld_x = new TextField("10");
-        TextField txtfld_y = new TextField("10");
+        TextField tFieldX = new TextField("10");
+        TextField tFieldY = new TextField("10");
 
-        Button btn_submit = new Button("Submit");
-        btn_submit.setOnAction(event -> {
-            int sizeX = 0, sizeY = 0;
+        Button btnSubmit = new Button("Submit");
+        btnSubmit.setOnAction(event -> {
+            int sizeX = 0;
+            int sizeY = 0;
 
             try {
-                sizeX = Integer.parseInt(txtfld_x.getText());
-                txtfld_x.setStyle("-fx-text-fill: black;");
+                sizeX = Integer.parseInt(tFieldX.getText());
+                tFieldX.setStyle("-fx-text-fill: black;");
             } catch (NumberFormatException e) {
-                txtfld_x.setStyle("-fx-text-fill: red;");
+                tFieldX.setStyle("-fx-text-fill: red;");
             }
 
             try {
-                sizeY = Integer.parseInt(txtfld_y.getText());
-                txtfld_y.setStyle("-fx-text-fill: black;");
+                sizeY = Integer.parseInt(tFieldY.getText());
+                tFieldY.setStyle("-fx-text-fill: black;");
             } catch (NumberFormatException e) {
-                txtfld_y.setStyle("-fx-text-fill: red;");
+                tFieldY.setStyle("-fx-text-fill: red;");
             }
 
-            boolean inbounds_x = sizeX >= LayoutPanel.minXCells && sizeX <= LayoutPanel.maxXCells;
-            boolean inbounds_y = sizeY >= LayoutPanel.minYCells && sizeY <= LayoutPanel.maxYCells;
+            boolean inboundsX = sizeX >= LayoutPanel.MIN_X_CELLS
+                    && sizeX <= LayoutPanel.MAX_X_CELLS;
+            boolean inboundsY = sizeY >= LayoutPanel.MIN_Y_CELLS
+                    && sizeY <= LayoutPanel.MAX_Y_CELLS;
 
-            if (inbounds_x && inbounds_y) {
+            if (inboundsX && inboundsY) {
                 actionModifySize(sizeX, sizeY);
 
-                JScrollPane scrollpane = new JScrollPane(layoutPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane scrollpane = new JScrollPane(layoutPanel,
+                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 layoutPanel.setScrollPane(scrollpane);
 
-                SwingNode scroll_pane_node = new SwingNode();
-                scroll_pane_node.setContent(scrollpane);
+                SwingNode scrollPaneNode = new SwingNode();
+                scrollPaneNode.setContent(scrollpane);
 
-                bp_.setCenter(scroll_pane_node);
+                borderPane.setCenter(scrollPaneNode);
             } else {
-                if (!inbounds_x) {
-                    txtfld_x.setStyle("-fx-text-fill: red;");
+                if (!inboundsX) {
+                    tFieldX.setStyle("-fx-text-fill: red;");
                 }
-                if (!inbounds_y) {
-                    txtfld_y.setStyle("-fx-text-fill: red;");
+                if (!inboundsY) {
+                    tFieldY.setStyle("-fx-text-fill: red;");
                 }
             }
         });
 
-        gpat_item_btn_.setOnAction(event -> {
+        gpatItemBtn.setOnAction(event -> {
             actionGeneratePattern();
         });
 
-        aprb_item_btn_.setOnAction(event -> {
+        aprbItemBtn.setOnAction(event -> {
             actionArrangeProbes();
         });
 
-        toggle_group = new ToggleGroup();
+        toggleGroup = new ToggleGroup();
 
-        newButton.setToggleGroup(toggle_group);
-        rptButton.setToggleGroup(toggle_group);
-        altButton.setToggleGroup(toggle_group);
+        newButton.setToggleGroup(toggleGroup);
+        rptButton.setToggleGroup(toggleGroup);
+        altButton.setToggleGroup(toggleGroup);
 
-        HBox hbox_patternGen = new HBox(gpat_item_btn_, aprb_item_btn_);
-        hbox_patternGen.setSpacing(10);
+        HBox hboxPatternGen = new HBox(gpatItemBtn, aprbItemBtn);
+        hboxPatternGen.setSpacing(10);
 
-        HBox hbox_sizeX = new HBox(lbl_sizeX, txtfld_x);
-        HBox hbox_sizeY = new HBox(lbl_sizeY, txtfld_y);
-        HBox hbox_resize = new HBox(hbox_sizeX, hbox_sizeY, btn_submit);
-        hbox_resize.setSpacing(10);
+        HBox hboxSizeX = new HBox(lblSizeX, tFieldX);
+        HBox hboxSizeY = new HBox(lblSizeY, tFieldY);
+        HBox hboxResize = new HBox(hboxSizeX, hboxSizeY, btnSubmit);
+        hboxResize.setSpacing(10);
 
-        HBox hbox_left = new HBox(hbox_resize, newButton, rptButton, altButton);
-        hbox_left.setSpacing(20);
+        HBox hboxLeft = new HBox(hboxResize, newButton, rptButton, altButton);
+        hboxLeft.setSpacing(20);
 
-        HBox hbox_bottom = new HBox(hbox_left, hbox_patternGen);
-        hbox_bottom.getStyleClass().add("sizebox");
-        hbox_bottom.setSpacing(200);
-        bp_.setBottom(hbox_bottom);
+        HBox hboxBottom = new HBox(hboxLeft, hboxPatternGen);
+        hboxBottom.getStyleClass().add("sizebox");
+        hboxBottom.setSpacing(200);
+        borderPane.setBottom(hboxBottom);
     }
 
     /**
      * The 'Clear' menu handler.
      */
     private void actionClear() {
-        neurons_layout_.inhNList.clear();
-        neurons_layout_.activeNList.clear();
-        neurons_layout_.probedNList.clear();
+        neuronsLayout.inhNList.clear();
+        neuronsLayout.activeNList.clear();
+        neuronsLayout.probedNList.clear();
 
         layoutPanel.repaintScrollpane();
     }
@@ -302,17 +309,17 @@ public class NLedit extends WorkbenchApp {
         Button cancel = new Button("Cancel");
 
         dialog.initModality(Modality.NONE);
-        dialog.initOwner(WorkbenchDashboard.primaryStage_);
+        dialog.initOwner(WorkbenchDisplay.getPrimaryStage());
 
         imprt.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                readNeuronListFromFile(myPanel.tfields[ImportPanel.idxInhList].getText(), neurons_layout_.inhNList,
-                        LayoutPanel.INH);
-                readNeuronListFromFile(myPanel.tfields[ImportPanel.idxActList].getText(), neurons_layout_.activeNList,
-                        LayoutPanel.ACT);
-                readNeuronListFromFile(myPanel.tfields[ImportPanel.idxPrbList].getText(), neurons_layout_.probedNList,
-                        LayoutPanel.PRB);
+                readNeuronListFromFile(myPanel.getTFields()[ImportPanel.IDX_INH_LIST].getText(),
+                        neuronsLayout.inhNList, LayoutPanel.INH);
+                readNeuronListFromFile(myPanel.getTFields()[ImportPanel.IDX_ACT_LIST].getText(),
+                        neuronsLayout.activeNList, LayoutPanel.ACT);
+                readNeuronListFromFile(myPanel.getTFields()[ImportPanel.IDX_PRB_LIST].getText(),
+                        neuronsLayout.probedNList, LayoutPanel.PRB);
 
                 Graphics g = layoutPanel.getGraphics();
                 layoutPanel.writeToGraphics(g);
@@ -353,9 +360,9 @@ public class NLedit extends WorkbenchApp {
             // read a xml file
             Document doc = new SAXBuilder().build(new File(nameNListFile));
             Element root = doc.getRootElement();
-            if ((root != null) && ((root.getName() == "A" && type == LayoutPanel.ACT)
-                    || (root.getName() == "I" && type == LayoutPanel.INH)
-                    || (root.getName() == "P" && type == LayoutPanel.PRB))) {
+            if ((root != null) && ((root.getName().equals("A") && type == LayoutPanel.ACT)
+                    || (root.getName().equals("I") && type == LayoutPanel.INH)
+                    || (root.getName().equals("P") && type == LayoutPanel.PRB))) {
                 list.clear();
                 String[] parts = root.getValue().split("[ \n\r]");
 
@@ -373,10 +380,8 @@ public class NLedit extends WorkbenchApp {
                     }
                 }
             }
-        } catch (JDOMException je) {
-            System.err.println(je);
-        } catch (IOException ie) {
-            System.err.println(ie);
+        } catch (JDOMException | IOException e) {
+            System.err.println(e);
         }
     }
 
@@ -396,7 +401,7 @@ public class NLedit extends WorkbenchApp {
         Button no = new Button("No");
 
         dialog.initModality(Modality.NONE);
-        dialog.initOwner(WorkbenchDashboard.primaryStage_);
+        dialog.initOwner(WorkbenchDisplay.getPrimaryStage());
 
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
@@ -405,14 +410,15 @@ public class NLedit extends WorkbenchApp {
             @Override
             public void handle(MouseEvent e) {
                 Long accumulatedTime = 0L;
-                writeNeuronListToFile(myPanel.tfields[ExportPanel.idxInhList].getText(), neurons_layout_.inhNList,
-                        LayoutPanel.INH);
+                writeNeuronListToFile(myPanel.getTFields()[ExportPanel.IDX_INH_LIST].getText(),
+                        neuronsLayout.inhNList, LayoutPanel.INH);
                 // add to workbench project
                 if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
                     Long startTime = System.currentTimeMillis();
                     Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                            "InhibitoryNeuronListExport" + java.util.UUID.randomUUID(), "neuronListExport", "NLEdit",
-                            null, false, myPanel.tfields[ExportPanel.idxInhList].getText(), null, null);
+                            "InhibitoryNeuronListExport" + java.util.UUID.randomUUID(),
+                            "neuronListExport", "NLEdit", null, false,
+                            myPanel.getTFields()[ExportPanel.IDX_INH_LIST].getText(), null, null);
 
                     // Tell Java to stop considering the file to be in it's control
                     try {
@@ -425,14 +431,15 @@ public class NLedit extends WorkbenchApp {
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                 }
 
-                writeNeuronListToFile(myPanel.tfields[ExportPanel.idxActList].getText(), neurons_layout_.activeNList,
-                        LayoutPanel.ACT);
+                writeNeuronListToFile(myPanel.getTFields()[ExportPanel.IDX_ACT_LIST].getText(),
+                        neuronsLayout.activeNList, LayoutPanel.ACT);
                 // add to workbench project
                 if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
                     Long startTime = System.currentTimeMillis();
                     Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                            "ActiveNeuronListExport" + java.util.UUID.randomUUID(), "neuronListExport", "NLEdit", null,
-                            false, myPanel.tfields[ExportPanel.idxActList].getText(), null, null);
+                            "ActiveNeuronListExport" + java.util.UUID.randomUUID(),
+                            "neuronListExport", "NLEdit", null, false,
+                            myPanel.getTFields()[ExportPanel.IDX_ACT_LIST].getText(), null, null);
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
 
                     // Tell Java to stop considering the file to be in it's control
@@ -444,14 +451,15 @@ public class NLedit extends WorkbenchApp {
                     }
                 }
 
-                writeNeuronListToFile(myPanel.tfields[ExportPanel.idxPrbList].getText(), neurons_layout_.probedNList,
-                        LayoutPanel.PRB);
+                writeNeuronListToFile(myPanel.getTFields()[ExportPanel.IDX_PRB_LIST].getText(),
+                        neuronsLayout.probedNList, LayoutPanel.PRB);
                 // add to workbench project
                 if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
                     Long startTime = System.currentTimeMillis();
                     Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                            "ProbedNeuronListExport" + java.util.UUID.randomUUID(), "neuronListExport", "NLEdit", null,
-                            false, myPanel.tfields[ExportPanel.idxPrbList].getText(), null, null);
+                            "ProbedNeuronListExport" + java.util.UUID.randomUUID(),
+                            "neuronListExport", "NLEdit", null, false,
+                            myPanel.getTFields()[ExportPanel.IDX_PRB_LIST].getText(), null, null);
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
 
                     // Tell Java to stop considering the file to be in it's control
@@ -466,9 +474,11 @@ public class NLedit extends WorkbenchApp {
                 // In the original function this executed at the end of the popup regarless of
                 // what occured.
                 DateTime.recordFunctionExecutionTime("ControlFrame", "actionExport",
-                        System.currentTimeMillis() - functionStartTime, workbenchMgr.isProvEnabled());
+                        System.currentTimeMillis() - functionStartTime,
+                        workbenchMgr.isProvEnabled());
                 if (workbenchMgr.isProvEnabled()) {
-                    DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport", accumulatedTime);
+                    DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport",
+                            accumulatedTime);
                 }
                 dialog.close();
             }
@@ -479,9 +489,11 @@ public class NLedit extends WorkbenchApp {
                 // In the original function this executed at the end of the popup regarless of
                 // what occured.
                 DateTime.recordFunctionExecutionTime("ControlFrame", "actionExport",
-                        System.currentTimeMillis() - functionStartTime, workbenchMgr.isProvEnabled());
+                        System.currentTimeMillis() - functionStartTime,
+                        workbenchMgr.isProvEnabled());
                 if (workbenchMgr.isProvEnabled()) {
-                    DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport", accumulatedTime);
+                    DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport",
+                            accumulatedTime);
                 }
                 dialog.close();
             }
@@ -556,7 +568,7 @@ public class NLedit extends WorkbenchApp {
     private void actionPrint() {
         // get PrinterJob
         PrinterJob job = PrinterJob.getPrinterJob();
-        MyPrintable printable = new MyPrintable(job.defaultPage(), layoutPanel, nl_sim_util_);
+        MyPrintable printable = new MyPrintable(job.defaultPage(), layoutPanel, nlSimUtil);
 
         // setup Printable, Pageable
         job.setPrintable(printable);
@@ -599,9 +611,12 @@ public class NLedit extends WorkbenchApp {
      * @param rtype  Repeat type, CLEAR, REPEAT, or ALT
      */
     private void changeLayoutSize(Dimension newSize, RepType rtype) {
-        neurons_layout_.inhNList = nl_sim_util_.repPattern(newSize, neurons_layout_.inhNList, rtype);
-        neurons_layout_.activeNList = nl_sim_util_.repPattern(newSize, neurons_layout_.activeNList, rtype);
-        neurons_layout_.probedNList = nl_sim_util_.repPattern(newSize, neurons_layout_.activeNList, rtype);
+        neuronsLayout.inhNList = nlSimUtil.repPattern(newSize,
+                neuronsLayout.inhNList, rtype);
+        neuronsLayout.activeNList = nlSimUtil.repPattern(newSize,
+                neuronsLayout.activeNList, rtype);
+        neuronsLayout.probedNList = nlSimUtil.repPattern(newSize,
+                neuronsLayout.activeNList, rtype);
 
         layoutPanel.changeLayoutSize(newSize);
     }
@@ -622,14 +637,16 @@ public class NLedit extends WorkbenchApp {
         Button no = new Button("No");
 
         dialog.initModality(Modality.NONE);
-        dialog.initOwner(WorkbenchDashboard.primaryStage_);
+        dialog.initOwner(WorkbenchDisplay.getPrimaryStage());
 
         yes.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 try {
-                    float ratioInh = Float.parseFloat(myPanel.tfields[GPatternPanel.idxINH].getText());
-                    float ratioAct = Float.parseFloat(myPanel.tfields[GPatternPanel.idxACT].getText());
+                    float ratioInh = Float.parseFloat(myPanel.getTFields()[GPatternPanel.IDX_INH]
+                            .getText());
+                    float ratioAct = Float.parseFloat(myPanel.getTFields()[GPatternPanel.IDX_ACT]
+                            .getText());
 
                     // validate ratios
                     if ((ratioInh < 0 || ratioInh > 1.0) || (ratioAct < 0 || ratioAct > 1.0)
@@ -637,10 +654,10 @@ public class NLedit extends WorkbenchApp {
                         throw new NumberFormatException();
                     }
 
-                    if (myPanel.btns[GPatternPanel.idxREG].isSelected()) {
-                        nl_sim_util_.genRegularPattern(ratioInh, ratioAct);
-                    } else if (myPanel.btns[GPatternPanel.idxRND].isSelected()) {
-                        nl_sim_util_.genRandomPattern(ratioInh, ratioAct);
+                    if (myPanel.getRButtons()[GPatternPanel.IDX_REG].isSelected()) {
+                        nlSimUtil.genRegularPattern(ratioInh, ratioAct);
+                    } else if (myPanel.getRButtons()[GPatternPanel.IDX_RND].isSelected()) {
+                        nlSimUtil.genRandomPattern(ratioInh, ratioAct);
                     }
 
                     Graphics g = layoutPanel.getGraphics();
@@ -684,7 +701,7 @@ public class NLedit extends WorkbenchApp {
         Button no = new Button("No");
 
         dialog.initModality(Modality.NONE);
-        dialog.initOwner(WorkbenchDashboard.primaryStage_);
+        dialog.initOwner(WorkbenchDisplay.getPrimaryStage());
 
         yes.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -698,7 +715,7 @@ public class NLedit extends WorkbenchApp {
                         throw new NumberFormatException();
                     }
 
-                    nl_sim_util_.genProbes(numProbes);
+                    nlSimUtil.genProbes(numProbes);
 
                     Graphics g = layoutPanel.getGraphics();
                     layoutPanel.writeToGraphics(g);
@@ -730,24 +747,24 @@ public class NLedit extends WorkbenchApp {
      * The 'Statistical data...' menu handler.
      */
     private void actionStatisticalData() {
-        String message = nl_sim_util_.getStatisticalMsg(true);
+        String message = nlSimUtil.getStatisticalMsg(true);
 
         JOptionPane.showMessageDialog(null, message, "Statistical data", JOptionPane.PLAIN_MESSAGE);
     }
 
     private LayoutPanel layoutPanel; // reference to the layout panel
-    NL_Sim_Util nl_sim_util_;
+    private NL_Sim_Util nlSimUtil;
 
     // Toolbar
-    private Button import_item_btn_ = new Button("Import");
-    private Button export_item_btn_ = new Button("Export");
-    private Button clear_item_btn_ = new Button("Clear");
-    private Button print_item_btn_ = new Button("Print");
-    private Button bcell_item_btn_ = new Button("Zoom In");
-    private Button scell_item_btn_ = new Button("Zoom Out");
-    private Button gpat_item_btn_ = new Button("_Generate pattern");
-    private Button aprb_item_btn_ = new Button("_Arrange probes");
-    private Button sdat_item_btn_ = new Button("Stats");
+    private Button importItemBtn = new Button("Import");
+    private Button exportItemBtn = new Button("Export");
+    private Button clearItemBtn = new Button("Clear");
+    private Button printItemBtn = new Button("Print");
+    private Button bcellItemBtn = new Button("Zoom In");
+    private Button scellItemBtn = new Button("Zoom Out");
+    private Button gpatItemBtn = new Button("_Generate pattern");
+    private Button aprbItemBtn = new Button("_Arrange probes");
+    private Button sdatItemBtn = new Button("Stats");
 
     private ToggleGroup editGroup = new ToggleGroup();
     private RadioButton inhNItem = new RadioButton("Inhibitory neurons");
@@ -761,9 +778,9 @@ public class NLedit extends WorkbenchApp {
     private RadioButton rptButton = new RadioButton("Repeat");
     private RadioButton altButton = new RadioButton("Alternate");
 
-    ToggleGroup toggle_group;
+    private ToggleGroup toggleGroup;
 
-    private NeuronsLayout neurons_layout_;
+    private NeuronsLayout neuronsLayout;
 
     // repeat type for modify size
     public enum RepType {

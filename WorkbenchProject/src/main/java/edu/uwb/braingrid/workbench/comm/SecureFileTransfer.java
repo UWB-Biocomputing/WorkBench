@@ -42,8 +42,8 @@ public class SecureFileTransfer {
      * Tests for the availability of an SFTP connection with a remote host.
      *
      * @param timeOut  The amount of time, in milliseconds, to wait for the connection to be
-     *                 established. Setting this value less than zero will result in connect
-     *                 being called without a timeout
+     *                 established. Setting this value less than zero will result in connect being
+     *                 called without a timeout
      * @param hostname  The name of the host machine to connect to
      * @param username  The user's login username
      * @param password  The user's login password
@@ -90,9 +90,9 @@ public class SecureFileTransfer {
      * @param progressMonitor  An optional handler for progress reporting on the upload operation
      * @return True if the upload succeeded, otherwise false
      */
-    public boolean uploadFile(String fileToUpload, String remoteDirectory, String hostname, String username,
-            char[] password, SftpProgressMonitor progressMonitor) throws JSchException, FileNotFoundException,
-            SftpException {
+    public boolean uploadFile(String fileToUpload, String remoteDirectory, String hostname,
+            String username, char[] password, SftpProgressMonitor progressMonitor)
+            throws JSchException, FileNotFoundException, SftpException {
         boolean success = true;
         try {
             JSch jsch = new JSch();
@@ -111,7 +111,8 @@ public class SecureFileTransfer {
                 File f = new File(fileToUpload);
                 if (f.exists()) {
                     if (progressMonitor != null) {
-                        channelSftp.put(new FileInputStream(f), f.getName(), progressMonitor, ChannelSftp.OVERWRITE);
+                        channelSftp.put(new FileInputStream(f), f.getName(), progressMonitor,
+                                ChannelSftp.OVERWRITE);
                     } else {
                         channelSftp.put(new FileInputStream(f), f.getName(), ChannelSftp.OVERWRITE);
                     }
@@ -145,8 +146,8 @@ public class SecureFileTransfer {
      * @param password  The user's login password
      * @return True if the file was downloaded successfully, otherwise false
      */
-    public boolean downloadFile(String remoteFilePath, String localFilePath, String hostname, String username,
-            char[] password) throws JSchException, SftpException {
+    public boolean downloadFile(String remoteFilePath, String localFilePath, String hostname,
+            String username, char[] password) throws JSchException, SftpException {
         boolean success = true;
         try {
             JSch jsch = new JSch();
@@ -181,12 +182,11 @@ public class SecureFileTransfer {
      * @param hostname  The name of the host machine to connect to
      * @param username  The user's login username
      * @param password  The user's login password
-     * @param readInputStream  Determines whether the result of the execution should be read. If
-     *                         the command is executed through nohup, it is possible to disconnect
-     *                         and leave the command running in the background. If this is set to
-     *                         true, the command will be executed synchronously from the viewpoint
-     *                         of the local machine, regardless of whether it was executed through
-     *                         nohup.
+     * @param readInputStream  Determines whether the result of the execution should be read. If the
+     *                         command is executed through nohup, it is possible to disconnect and
+     *                         leave the command running in the background. If this is set to true,
+     *                         the command will be executed synchronously from the viewpoint of the
+     *                         local machine, regardless of whether it was executed through nohup.
      * @return True if the command was executed successfully, otherwise false
      */
     public boolean executeCommand(String command, String hostname, String username, char[] password,

@@ -27,7 +27,7 @@ import edu.uwb.braingrid.workbench.data.OutputAnalyzer;
 import edu.uwb.braingrid.workbench.model.ExecutedCommand;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 import edu.uwb.braingrid.workbench.project.ProjectMgr;
-import edu.uwb.braingrid.workbench.project.ProjectManager;
+//import edu.uwb.braingrid.workbench.project.ProjectManager;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
@@ -58,8 +58,8 @@ public class ScriptManager {
      * @param simSpec  The specification for the simulator to execute in the script
      * @param simConfigFilename  Name of configuration file used as simulation input (XML file that
      *                           specifies simulation parameters, environment constants, and
-     *                           simulated spatial information (or names of files which contain
-     *                           such spatial data). This is the file that is constructed using the
+     *                           simulated spatial information (or names of files which contain such
+     *                           spatial data). This is the file that is constructed using the
      *                           simulation specification dialog).
      * @return A constructed script or null in the case that the script could not be constructed
      *         properly
@@ -81,14 +81,14 @@ public class ScriptManager {
                 + "_v"
                 + version
                 + "_"
-                + Script.commandOutputFilename);
+                + Script.COMMAND_OUTPUT_FILENAME);
         script.setScriptStatusOutputFilename(projectName
                 + "_v"
                 + version
                 + "_"
-                + Script.defaultScriptStatusFilename);
+                + Script.DEFAULT_SCRIPT_STATUS_FILENAME);
         /* Print Header Data */
-        script.printf(Script.versionText, version, null, false);
+        script.printf(Script.VERSION_TEXT, version, null, false);
         // determine which simulator file to execute
         String type = simSpec.getSimulationType();
         String simExecutableToInvoke;
@@ -104,7 +104,8 @@ public class ScriptManager {
         String simulatorSourceCodeUpdatingType = simSpec.getSourceCodeUpdating();
         boolean updateRepo = false;
         if (simulatorSourceCodeUpdatingType != null) {
-            updateRepo = simulatorSourceCodeUpdatingType.equals(SimulationSpecification.GIT_PULL_AND_CLONE);
+            updateRepo = simulatorSourceCodeUpdatingType.equals(
+                    SimulationSpecification.GIT_PULL_AND_CLONE);
         }
         /* Create Script */
         // add a mkdir that will create intermediate directories
@@ -152,13 +153,13 @@ public class ScriptManager {
                 script.executeProgram("cd", cdArg);
             }
         }
-        // Record the latest commit key information 
+        // Record the latest commit key information
         script.addVerbatimStatement("git log --pretty=format:'%H' -n 1",
                 userDir + projectName
                 + "_v"
                 + version
                 + "_"
-                + Script.SHA1KeyFilename, false);
+                + Script.SHA1_KEY_FILENAME, false);
         /* Make the Simulator */
         // clean previous build
         if (simSpec.buildFirst()) {
@@ -172,17 +173,19 @@ public class ScriptManager {
         if (simSpec.isRemote()) {
             String[] mkResultsDirArgs = {"results"};
             script.executeProgram("mkdir", mkResultsDirArgs);
-            script.addVerbatimStatement("mkdir -p " + "workbenchconfigfiles" + folderDelimiter + "NList", null, true);
+            script.addVerbatimStatement("mkdir -p " + "workbenchconfigfiles" + folderDelimiter
+                    + "NList", null, true);
         } else {
             String[] mkResultsDirArgs = {userDir + simFolder + folderDelimiter + "results"};
             script.executeProgram("mkdir", mkResultsDirArgs);
-            script.addVerbatimStatement("mkdir -p " + userDir + simFolder + folderDelimiter + "workbenchconfigfiles"
-                    + folderDelimiter + "NList", null, true);
+            script.addVerbatimStatement("mkdir -p " + userDir + simFolder + folderDelimiter
+                    + "workbenchconfigfiles" + folderDelimiter + "NList", null, true);
         }
         /* Move Sim Config File */
-        script.addVerbatimStatement("mv -f " + fileMgr.toBashValidNotation(userDir + simConfigFilename) + " "
-                + fileMgr.toBashValidNotation(userDir + simFolder + folderDelimiter + "workbenchconfigfiles"
-                        + folderDelimiter + simConfigFilename), null, true);
+        script.addVerbatimStatement("mv -f " + fileMgr.toBashValidNotation(userDir
+                + simConfigFilename) + " " + fileMgr.toBashValidNotation(userDir + simFolder
+                + folderDelimiter + "workbenchconfigfiles" + folderDelimiter + simConfigFilename),
+                null, true);
         /* Move Neuron Lists */
         try {
             String[] nListFilenames = fileMgr.getNeuronListFilenames(projectName);
@@ -216,7 +219,7 @@ public class ScriptManager {
                 + "_v"
                 + version
                 + "_"
-                + Script.simStatusFilename, true);
+                + Script.SIM_STATUS_FILENAME, true);
         /* Put Script Together and Save */
         if (!success || !script.construct()) {
             script = null; // or indicate unsuccessful operation
@@ -233,8 +236,8 @@ public class ScriptManager {
      *                       ./projects/the_project_name/scripts/. However, this is system
      *                       dependent)
      * @return A string representation of the path to the folder where script related files are
-     *         stored. Depending on the form of the project folder provided, this may represent
-     *         a relative path.
+     *         stored. Depending on the form of the project folder provided, this may represent a
+     *         relative path.
      */
     public static String getScriptFolder(String projectFolder) {
         return projectFolder + "scripts" + FileManager.getFileManager().getFolderDelimiter();
@@ -257,26 +260,28 @@ public class ScriptManager {
      * @throws java.io.FileNotFoundException
      * @throws com.jcraft.jsch.SftpException
      */
-    public boolean runScript(ProvMgr provMgr, SimulationSpecification simSpec, String scriptPath, String scriptVersion,
-            String[] nListFilenames, String simConfigFilename) throws JSchException, FileNotFoundException,
-            SftpException {
+    public boolean runScript(ProvMgr provMgr, SimulationSpecification simSpec, String scriptPath,
+            String scriptVersion, String[] nListFilenames, String simConfigFilename)
+            throws JSchException, FileNotFoundException, SftpException {
         boolean success;
         String executionMachine = simSpec.getSimulationLocale();
         String remoteExecution = SimulationSpecification.REMOTE_EXECUTION;
         // run script remotely?
         if (executionMachine.equals(remoteExecution)) {
             LOG.info("Running Remote Script: " + scriptPath);
-            success = runRemoteScript(provMgr, simSpec, scriptPath, scriptVersion, nListFilenames, simConfigFilename);
+            success = runRemoteScript(provMgr, simSpec, scriptPath, scriptVersion, nListFilenames,
+                    simConfigFilename);
         } else { // or run it locally
             LOG.info("Running Local Script " + scriptPath);
-            success = runLocalScript(provMgr, simSpec, scriptPath, scriptVersion, nListFilenames, simConfigFilename);
+            success = runLocalScript(provMgr, simSpec, scriptPath, scriptVersion, nListFilenames,
+                    simConfigFilename);
         }
         return success;
     }
- 
-    private boolean runRemoteScript(ProvMgr provMgr, SimulationSpecification simSpec, String scriptPath,
-            String scriptVersion, String[] nListFilenames, String simConfigFilename) throws JSchException,
-            FileNotFoundException, SftpException {
+
+    private boolean runRemoteScript(ProvMgr provMgr, SimulationSpecification simSpec,
+            String scriptPath, String scriptVersion, String[] nListFilenames,
+            String simConfigFilename) throws JSchException, FileNotFoundException, SftpException {
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
         char[] password = null;
@@ -294,9 +299,10 @@ public class ScriptManager {
                 // record provenance of upload
                 if (provMgr != null) {
                     Long startTime = System.currentTimeMillis();
-                    WorkbenchOperationRecorder.uploadFile(provMgr, scriptPath, "~/"
-                            + FileManager.getSimpleFilename(scriptPath), "script", simSpec.getHostAddr(),
-                            "uploadScript_v" + scriptVersion, uploadStartTime, new Date());
+                    WorkbenchOperationRecorder.uploadFile(provMgr, scriptPath,
+                            "~/" + FileManager.getSimpleFilename(scriptPath), "script",
+                            simSpec.getHostAddr(), "uploadScript_v" + scriptVersion,
+                            uploadStartTime, new Date());
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                 }
                 outstandingMessages += "\n" + scriptPath + "\nuploaded to " + hostname + "\n";
@@ -307,30 +313,36 @@ public class ScriptManager {
                 if (nListFilenames != null) {
                     for (int i = 0, im = nListFilenames.length; i < im; i++) {
                         filename = FileManager.getSimpleFilename(nListFilenames[i]);
-                        outstandingMessages += "\n" + "Uploaded " + nListFilenames[i] + "\nto " + hostname + "\n";
+                        outstandingMessages += "\n" + "Uploaded " + nListFilenames[i] + "\nto "
+                                + hostname + "\n";
                         uploadStartTime = new Date();
-                        loopSuccess = sft.uploadFile(nListFilenames[i], "", hostname, lcd.getUsername(), password,
-                                null);
+                        loopSuccess = sft.uploadFile(nListFilenames[i], "", hostname,
+                                lcd.getUsername(), password, null);
                         if (!loopSuccess) {
                             success = false;
-                            outstandingMessages += "\n" + "Problem uploading " + nListFilenames[i] + "\nto " + hostname
-                                    + "\n";
+                            outstandingMessages += "\n" + "Problem uploading " + nListFilenames[i]
+                                    + "\nto " + hostname + "\n";
                             break;
                         } else {
-                            outstandingMessages += "\n" + filename + "\nuploaded to " + hostname + "\n";
+                            outstandingMessages += "\n" + filename + "\nuploaded to " + hostname
+                                    + "\n";
                             // record upload provenance
                             if (provMgr != null) {
                                 Long startTime = System.currentTimeMillis();
-                                String NLType = "";
+                                String nlType = "";
                                 try {
-                                    NLType = InputAnalyzer.getInputType(new File(nListFilenames[i])).toString();
-                                } catch (ParserConfigurationException | SAXException | IOException ex) {
+                                    nlType = InputAnalyzer.getInputType(
+                                            new File(nListFilenames[i])).toString();
+                                } catch (ParserConfigurationException | SAXException
+                                        | IOException ex) {
                                 }
                                 WorkbenchOperationRecorder.uploadFile(provMgr, nListFilenames[i],
-                                        "~/" + FileManager.getSimpleFilename(nListFilenames[i]), "nlist",
-                                        simSpec.getHostAddr(), "upload_" + NLType + "_NList_" + "for_Script_v"
-                                        + scriptVersion, uploadStartTime, new Date());
-                                accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
+                                        "~/" + FileManager.getSimpleFilename(nListFilenames[i]),
+                                        "nlist", simSpec.getHostAddr(), "upload_" + nlType
+                                        + "_NList_" + "for_Script_v" + scriptVersion,
+                                        uploadStartTime, new Date());
+                                accumulatedTime = DateTime.sumProvTiming(startTime,
+                                        accumulatedTime);
                             }
                         }
                     }
@@ -338,26 +350,25 @@ public class ScriptManager {
                 /* Upload Simulation Configuration File */
                 if (success) {
                     uploadStartTime = new Date();
-                    success = sft.uploadFile(simConfigFilename, "", hostname, lcd.getUsername(), password, null);
+                    success = sft.uploadFile(simConfigFilename, "", hostname, lcd.getUsername(),
+                            password, null);
                     if (success) {
                         if (provMgr != null) {
                             Long startTime = System.currentTimeMillis();
-                            WorkbenchOperationRecorder.uploadFile(provMgr,
-                                    simConfigFilename, "~/"
-                                    + FileManager.getSimpleFilename(
-                                            simConfigFilename),
-                                    "simulationConfigurationFile",
-                                    simSpec.getHostAddr(),
-                                    "upload_SimConfig_for_Script_v"
-                                    + scriptVersion, uploadStartTime,
-                                    new Date());
+                            WorkbenchOperationRecorder.uploadFile(provMgr, simConfigFilename,
+                                    "~/" + FileManager.getSimpleFilename(simConfigFilename),
+                                    "simulationConfigurationFile", simSpec.getHostAddr(),
+                                    "upload_SimConfig_for_Script_v" + scriptVersion,
+                                    uploadStartTime, new Date());
                             accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                         }
-                        outstandingMessages += "\n" + FileManager.getSimpleFilename(simConfigFilename)
+                        outstandingMessages += "\n"
+                                + FileManager.getSimpleFilename(simConfigFilename)
                                 + "\nuploaded to " + hostname + "\n";
                     } else {
                         outstandingMessages += "\n" + "Problem uploading "
-                                + FileManager.getSimpleFilename(simConfigFilename) + "\nto " + hostname + "\n";
+                                + FileManager.getSimpleFilename(simConfigFilename)
+                                + "\nto " + hostname + "\n";
                     }
                 }
                 /* Execute Script */
@@ -368,8 +379,7 @@ public class ScriptManager {
                     outstandingMessages += "\n" + "Executing " + cmd
                             + "\nat "
                             + hostname + "\n";
-                    sft.executeCommand(cmd, hostname, lcd.getUsername(),
-                            password, false);
+                    sft.executeCommand(cmd, hostname, lcd.getUsername(), password, false);
                     success = true;
                 }
             } else {
@@ -386,13 +396,15 @@ public class ScriptManager {
         DateTime.recordFunctionExecutionTime("ScriptManager", "runRemoteScript",
                 System.currentTimeMillis() - functionStartTime, provMgr != null);
         if (provMgr != null) {
-            DateTime.recordAccumulatedProvTiming("ScriptManager", "runRemoteScript", accumulatedTime);
+            DateTime.recordAccumulatedProvTiming("ScriptManager", "runRemoteScript",
+                    accumulatedTime);
         }
         return success;
     }
 
-    private boolean runLocalScript(ProvMgr provMgr, SimulationSpecification simSpec, String scriptLocation,
-            String scriptVersion, String[] inputFilenames, String simConfigFilename) {
+    private boolean runLocalScript(ProvMgr provMgr, SimulationSpecification simSpec,
+            String scriptLocation, String scriptVersion, String[] inputFilenames,
+            String simConfigFilename) {
         LOG.info("Running Local Script");
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
@@ -401,9 +413,11 @@ public class ScriptManager {
         FileManager fm = FileManager.getFileManager();
         Path scriptSourcePath = Paths.get(scriptLocation);
         // get the location where the script will execute
-        Path scriptTargetPath = Paths.get(fm.getUserDir() + FileManager.getSimpleFilename(scriptLocation));
+        Path scriptTargetPath = Paths.get(fm.getUserDir()
+                + FileManager.getSimpleFilename(scriptLocation));
         Path simConfigSourcePath = Paths.get(simConfigFilename);
-        Path simConfigTargetPath = Paths.get(fm.getUserDir() + FileManager.getSimpleFilename(simConfigFilename));
+        Path simConfigTargetPath = Paths.get(fm.getUserDir()
+                + FileManager.getSimpleFilename(simConfigFilename));
         Path[] nListSourcePaths = null;
         Path[] nListTargetPaths = null;
         // calculate source and target paths
@@ -414,7 +428,8 @@ public class ScriptManager {
                 nListSourcePaths[i] = Paths.get(inputFilenames[i]);
             }
             for (int i = 0, im = inputFilenames.length; i < im; i++) {
-                nListTargetPaths[i] = Paths.get(fm.getUserDir() + FileManager.getSimpleFilename(inputFilenames[i]));
+                nListTargetPaths[i] = Paths.get(fm.getUserDir()
+                        + FileManager.getSimpleFilename(inputFilenames[i]));
             }
         }
         try {
@@ -424,8 +439,9 @@ public class ScriptManager {
             // record provenance for copy operation
             if (provMgr != null) {
                 Long startTime = System.currentTimeMillis();
-                WorkbenchOperationRecorder.copyFile(provMgr, scriptSourcePath.toString(), scriptTargetPath.toString(),
-                        "script", "copy_Script_v" + scriptVersion, copyStartTime, new Date());
+                WorkbenchOperationRecorder.copyFile(provMgr, scriptSourcePath.toString(),
+                        scriptTargetPath.toString(), "script", "copy_Script_v" + scriptVersion,
+                        copyStartTime, new Date());
                 accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
             }
             outstandingMessages += "\nFile copied..."
@@ -446,12 +462,9 @@ public class ScriptManager {
                 // record file copy provenance for sim config file
                 if (provMgr != null) {
                     Long startTime = System.currentTimeMillis();
-                    WorkbenchOperationRecorder.copyFile(provMgr,
-                            simConfigSourcePath.toString(),
-                            simConfigTargetPath.toString(),
-                            "simulationConfigurationFile",
-                            "copy_SimConfig_forScript_v", copyStartTime,
-                            new Date());
+                    WorkbenchOperationRecorder.copyFile(provMgr, simConfigSourcePath.toString(),
+                            simConfigTargetPath.toString(), "simulationConfigurationFile",
+                            "copy_SimConfig_forScript_v", copyStartTime, new Date());
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                 }
                 outstandingMessages += "\nFile copied..."
@@ -469,7 +482,8 @@ public class ScriptManager {
         try {
             // copy the neuron list files specified in the config file
             if (nListSourcePaths != null && nListTargetPaths != null) {
-                for (int i = 0, im = nListSourcePaths.length, in = nListSourcePaths.length; i < im && i < in; i++) {
+                for (int i = 0, im = nListSourcePaths.length, in = nListSourcePaths.length;
+                        i < im && i < in; i++) {
                     copyStartTime = new Date();
                     FileManager.copyFile(nListSourcePaths[i], nListTargetPaths[i]);
                     if (provMgr != null) {
@@ -501,7 +515,8 @@ public class ScriptManager {
         String oldWrkDir = System.getProperty("user.dir");
         //String homeDir = System.getProperty("user.home");
         System.setProperty("user.dir", System.getProperty("user.home"));
-        String cmd = "sh " + fm.getUserDir() + FileManager.getSimpleFilename(scriptTargetPath.toString());
+        String cmd = "sh " + fm.getUserDir()
+                + FileManager.getSimpleFilename(scriptTargetPath.toString());
         // run the script
         try {
             if (Desktop.isDesktopSupported() && fm.isWindowsSystem()) {
@@ -533,7 +548,8 @@ public class ScriptManager {
         DateTime.recordFunctionExecutionTime("ScriptManager", "runLocalScript",
                 System.currentTimeMillis() - functionStartTime, provMgr != null);
         if (provMgr != null) {
-            DateTime.recordAccumulatedProvTiming("ScriptManager", "runLocalScript", accumulatedTime);
+            DateTime.recordAccumulatedProvTiming("ScriptManager", "runLocalScript",
+                    accumulatedTime);
         }
         if (success) {
             LOG.info("Script " + scriptTargetPath + " Ran Succsesfully");
@@ -547,15 +563,15 @@ public class ScriptManager {
     /**
      * Analyzes script output for provenance data. Relays that data to the provenance manager.
      *
-     * Note: This class defines the context between provenance data. The provenance manager is
-     * used to connect such data as determined by this function. This means that if script
-     * generation changes this function may need to change, in turn, and vice-versa.
+     * Note: This class defines the context between provenance data. The provenance manager is used
+     * to connect such data as determined by this function. This means that if script generation
+     * changes this function may need to change, in turn, and vice-versa.
      *
      * @param simSpec  Specification used to indicate the context in which the simulation was
      *                 specified when the script was generated
      * @param projectMgr
-     * @param provMgr  Provenance manager used to create provenance based on analysis of the
-     *                 printf output
+     * @param provMgr  Provenance manager used to create provenance based on analysis of the printf
+     *                 output
      * @param outputTargetFolder  Location to store the redirected printf output
      * @return Time completed in seconds since the epoch, or an error code indicating that the
      *         script has not completed
@@ -563,13 +579,15 @@ public class ScriptManager {
      * @throws com.jcraft.jsch.SftpException
      * @throws java.io.IOException
      */
-    public long analyzeScriptOutput(SimulationSpecification simSpec, ProjectMgr projectMgr, ProvMgr provMgr,
-            String outputTargetFolder) throws JSchException, SftpException, IOException {
+    public long analyzeScriptOutput(SimulationSpecification simSpec, ProjectMgr projectMgr,
+            ProvMgr provMgr, String outputTargetFolder) throws JSchException, SftpException,
+            IOException {
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
         long timeCompleted = DateTime.ERROR_TIME;
         // get all the files produced by the script
-        String localOutputFilename = fetchScriptOutputFiles(projectMgr, simSpec, outputTargetFolder);
+        String localOutputFilename = fetchScriptOutputFiles(projectMgr, simSpec,
+                outputTargetFolder);
         if (localOutputFilename != null) {
             OutputAnalyzer analyzer = new OutputAnalyzer();
             analyzer.analyzeOutput(localOutputFilename);
@@ -602,40 +620,44 @@ public class ScriptManager {
                     }
                     // get agent resource
                     String uri = userDir + simSpec.getSimulatorFolder() + "/" + simExec;
-                    Resource simAgent = provMgr.addSoftwareAgent(uri, "simulator", simSpec.isRemote(), false);
-                    // get activity resource
-                    Resource simActivity = provMgr.addActivity("simulation_" + UUID.randomUUID(), "simulation",
+                    Resource simAgent = provMgr.addSoftwareAgent(uri, "simulator",
                             simSpec.isRemote(), false);
+                    // get activity resource
+                    Resource simActivity = provMgr.addActivity("simulation_" + UUID.randomUUID(),
+                            "simulation", simSpec.isRemote(), false);
                     // connect the two
                     provMgr.wasAssociatedWith(simActivity, simAgent);
-                    provMgr.startedAtTime(simActivity, new Date(analyzer.startedAt("./" + simExec)));
+                    provMgr.startedAtTime(simActivity,
+                            new Date(analyzer.startedAt("./" + simExec)));
                     provMgr.endedAtTime(simActivity, new Date(atTime));
                     String remoteOutputFilename = userDir + simSpec.getSimulatorFolder() + "/"
                             + projectMgr.getSimStateOutputFile();
                     // add entity for remote output file, don't replace if exists
                     Resource simOutputFile = provMgr.addEntity(remoteOutputFilename, "simOutput",
-                            simSpec.getHostAddr(), simSpec.getUsername(),"sftp", false);
+                            simSpec.getHostAddr(), simSpec.getUsername(), "sftp", false);
                     provMgr.atLocation(simOutputFile, location);
                     // show that the output was generated by the simulation
                     provMgr.addFileGeneration(simActivity, simAgent, simOutputFile);
                     // show that the inputs were used in the simulation
-                    String remoteSimConfigFilename = userDir + simSpec.getSimulatorFolder() + "/workbenchconfigfiles/"
+                    String remoteSimConfigFilename = userDir + simSpec.getSimulatorFolder()
+                            + "/workbenchconfigfiles/"
                             + FileManager.getSimpleFilename(projectMgr.getSimConfigFilename());
                     Resource remoteSimConfigFileEnitity = provMgr.addEntity(remoteSimConfigFilename,
-                            "simulationConfigurationFile", simSpec.getHostAddr(), simSpec.getUsername(),
-                            "sftp", false);
+                            "simulationConfigurationFile", simSpec.getHostAddr(),
+                            simSpec.getUsername(), "sftp", false);
                     provMgr.atLocation(remoteSimConfigFileEnitity, location);
 
-                    provMgr.used(simActivity,remoteSimConfigFileEnitity);
-                    String[] neuronLists = FileManager.getFileManager().getNeuronListFilenames(projectMgr.getName());
+                    provMgr.used(simActivity, remoteSimConfigFileEnitity);
+                    String[] neuronLists = FileManager.getFileManager()
+                            .getNeuronListFilenames(projectMgr.getName());
                     for (int i = 0, im = neuronLists.length; i < im; i++) {
                         String movedNLFilename = userDir
                                 + simSpec.getSimulatorFolder()
                                 + "/workbenchconfigfiles"
                                 + "/NList/"
                                 + FileManager.getSimpleFilename(neuronLists[i]);
-                        Resource movedNLFileEntity = provMgr.addEntity(movedNLFilename, "nlist", simSpec.getHostAddr(),
-                                simSpec.getUsername(), "sftp", false);
+                        Resource movedNLFileEntity = provMgr.addEntity(movedNLFilename, "nlist",
+                                simSpec.getHostAddr(), simSpec.getUsername(), "sftp", false);
                         provMgr.atLocation(movedNLFileEntity, location);
                         provMgr.used(simActivity, movedNLFileEntity);
                     }
@@ -644,7 +666,7 @@ public class ScriptManager {
                             + "_v"
                             + projectMgr.getScriptVersion()
                             + "_"
-                            + Script.SHA1KeyFilename;
+                            + Script.SHA1_KEY_FILENAME;
                     String SHA1Pathname = outputTargetFolder + SHA1KeyFilename;
                     File SHA1File = new File(SHA1Pathname);
                     if (SHA1File.exists()) {
@@ -658,9 +680,10 @@ public class ScriptManager {
                                 // read the line to create a revision entity
                                 sha1key = fileReader.nextLine();
                                 if (!sha1key.contains("fatal")) {
-                                    provMgr.wasDerivedFrom(simAgent, provMgr.addEntity(simSpec.getCodeLocation()
-                                            .substring(8, simSpec.getCodeLocation().lastIndexOf("."))
-                                            + "/commit/" + sha1key, "commit", null, null, "https", false));
+                                    provMgr.wasDerivedFrom(simAgent, provMgr.addEntity(
+                                            simSpec.getCodeLocation().substring(8,
+                                            simSpec.getCodeLocation().lastIndexOf(".")) + "/commit/"
+                                            + sha1key, "commit", null, null, "https", false));
                                 }
                             }
                         } catch (FileNotFoundException e) {
@@ -690,7 +713,8 @@ public class ScriptManager {
             DateTime.recordFunctionExecutionTime("ScriptManager", "analyzeScriptOutput",
                     System.currentTimeMillis() - functionStartTime, provMgr != null);
             if (provMgr != null) {
-                DateTime.recordAccumulatedProvTiming("ScriptManager", "analyzeScriptOutput", accumulatedTime);
+                DateTime.recordAccumulatedProvTiming("ScriptManager", "analyzeScriptOutput",
+                        accumulatedTime);
             }
         }
         return timeCompleted;
@@ -707,22 +731,22 @@ public class ScriptManager {
                 + "_v"
                 + version
                 + "_"
-                + Script.defaultScriptStatusFilename;
+                + Script.DEFAULT_SCRIPT_STATUS_FILENAME;
         String simStatusFilename = projectName
                 + "_v"
                 + projectMgr.getScriptVersion()
                 + "_"
-                + Script.simStatusFilename;
+                + Script.SIM_STATUS_FILENAME;
         String SHA1KeyFilename = projectName
                 + "_v"
                 + version
                 + "_"
-                + Script.SHA1KeyFilename;
+                + Script.SHA1_KEY_FILENAME;
         String cmdFilename = projectName
                 + "_v"
                 + version
                 + "_"
-                + Script.commandOutputFilename;
+                + Script.COMMAND_OUTPUT_FILENAME;
         String scriptStatusFileTargetLocation = outputStorageFolder
                 + scriptStatusFilename;
         // prep folder for sim output
@@ -747,15 +771,15 @@ public class ScriptManager {
             lcd.clearPassword();
             outstandingMessages += "\nDownloading script status file:\n" + scriptStatusFilename
                     + "\nFrom: " + hostname + "\n";
-            if (sft.downloadFile(scriptStatusFilename, scriptStatusFileTargetLocation, hostname, lcd.getUsername(),
-                    password)) {
+            if (sft.downloadFile(scriptStatusFilename, scriptStatusFileTargetLocation, hostname,
+                    lcd.getUsername(), password)) {
                 outstandingMessages += "\nDownloading simulation status file:\n"
                         + simStatusFilename
                         + "\nFrom: " + hostname + "\n";
                 try {
                     // download simulation stdout redirect file
-                    sft.downloadFile(simStatusFilename, localSimResultsFolder + simStatusFilename, hostname,
-                            lcd.getUsername(), password);
+                    sft.downloadFile(simStatusFilename, localSimResultsFolder + simStatusFilename,
+                            hostname, lcd.getUsername(), password);
                     outstandingMessages += "\nLatest output from simulation:\n"
                             + getLastLine(localSimResultsFolder + simStatusFilename)
                             + "\n";
@@ -787,8 +811,8 @@ public class ScriptManager {
                             + SHA1KeyFilename
                             + "\nFrom: " + hostname + "\n";
                     try {
-                        sft.downloadFile(SHA1KeyFilename, outputStorageFolder + SHA1KeyFilename, hostname,
-                                lcd.getUsername(), password);
+                        sft.downloadFile(SHA1KeyFilename, outputStorageFolder + SHA1KeyFilename,
+                                hostname, lcd.getUsername(), password);
                     } catch (SftpException e) {
                         outstandingMessages += "\nDownload failed for: "
                                 + SHA1KeyFilename
@@ -859,7 +883,8 @@ public class ScriptManager {
                     try {
                         FileManager.copyFile(SHA1FileSource, SHA1FileTarget);
                     } catch (IOException e) {
-                        outstandingMessages += "\nSimulator source code version report copy operation failed: \n"
+                        outstandingMessages +=
+                                "\nSimulator source code version report copy operation failed: \n"
                                 + e.getLocalizedMessage() + "\n";
                     }
                 }
@@ -871,7 +896,8 @@ public class ScriptManager {
         return filename;
     }
 
-    private boolean scriptComplete(String localScriptOutputFilename, SimulationSpecification simSpec) {
+    private boolean scriptComplete(String localScriptOutputFilename,
+            SimulationSpecification simSpec) {
         long timeCompleted;
         OutputAnalyzer analyzer = new OutputAnalyzer();
         analyzer.analyzeOutput(localScriptOutputFilename);
@@ -884,8 +910,8 @@ public class ScriptManager {
      * Gets the messages that have accumulated within a public function call. The accumulated
      * messages are discarded during this call.
      *
-     * @return The messages that have accumulated since the last call to this function in the
-     *         form of a single String.
+     * @return The messages that have accumulated since the last call to this function in the form
+     *         of a single String.
      */
     public String getOutstandingMessages() {
         String msg = outstandingMessages;
@@ -893,7 +919,8 @@ public class ScriptManager {
         return msg;
     }
 
-    private static void printfSimSpecToScript(Script script, String simFile, String simInputFilename, boolean append) {
+    private static void printfSimSpecToScript(Script script, String simFile,
+            String simInputFilename, boolean append) {
         script.printf(SimulationSpecification.SIM_EXEC_TEXT, simFile, null, append);
         String joinedInputs = simInputFilename;
         script.printf(SimulationSpecification.SIM_INPUTS_TEXT, joinedInputs, null, true);
@@ -925,6 +952,6 @@ public class ScriptManager {
         }
         return lastLine;
     }
-    
-    private Logger LOG = Logger.getLogger(ScriptManager.class.getName());
+
+    private static final Logger LOG = Logger.getLogger(ScriptManager.class.getName());
 }

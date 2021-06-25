@@ -11,7 +11,6 @@ import edu.uwb.braingrid.provenance.model.ProvenanceStatement;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
- * ToDo
  *
  * @author Nathan Duncan
  */
@@ -168,8 +167,7 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
             }
         }
 
-        //String result
-        //      = provMgr.queryProvenance(sbjct, prdct, objct, lineDelimiter);
+        //String result = provMgr.queryProvenance(sbjct, prdct, objct, lineDelimiter);
         outputTextArea.setText(result);
         DateTime.recordFunctionExecutionTime("ProvenanceQueryDialog", "searchButtonActionPerformed",
                 System.currentTimeMillis() - functionStartTime,
@@ -205,15 +203,15 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
     private final ProvMgr provMgr;
 //    private final String lineDelimiter = "\n";
-    List<String> predicateFullURIs = new ArrayList<>();
+    private List<String> predicateFullURIs = new ArrayList<>();
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
      * Constructs and initializes this provenance query dialog.
      *
-     * @param modal  True if the parent should be disabled while this dialog is open,
-     *               otherwise false
+     * @param modal  True if the parent should be disabled while this dialog is open, otherwise
+     *               false
      * @param provManager The provenance manager for the workbench
      */
     public ProvenanceQueryDialog(boolean modal, ProvMgr provManager) {
@@ -235,7 +233,7 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Centers this dialog
+     * Centers this dialog.
      */
     private void center() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -257,27 +255,15 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
     }
 
     private boolean isSubjectValid() {
-        if (subjectTextField.getText() != null && !subjectTextField.getText().equals("")) {
-            return true;
-        } else {
-            return false;
-        }
+        return subjectTextField.getText() != null && !subjectTextField.getText().equals("");
     }
 
     private boolean isPredicateValid() {
-        if (!((String) predicateComboBox.getSelectedItem()).equals("None")) {
-            return true;
-        } else {
-            return false;
-        }
+        return !((String) predicateComboBox.getSelectedItem()).equals("None");
     }
 
     private boolean isObjectValid() {
-        if (!objectTextField.getText().equals("")) {
-            return true;
-        } else {
-            return false;
-        }
+        return !objectTextField.getText().equals("");
     }
     // </editor-fold>
 }

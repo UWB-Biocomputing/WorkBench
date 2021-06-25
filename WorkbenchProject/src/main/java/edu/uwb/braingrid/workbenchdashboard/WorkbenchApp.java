@@ -10,7 +10,7 @@ import javafx.scene.control.Tab;
  */
 public abstract class WorkbenchApp {
 
-    private Tab tab;
+    private final Tab tab;
 
     /**
      * @param tab  a Tab object whose display is the FX Node object from the superclass

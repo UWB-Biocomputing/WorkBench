@@ -3,10 +3,16 @@ package edu.uwb.braingrid.workbenchdashboard.utils;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class ThreadManager {
+public final class ThreadManager {
 
-    private static ArrayList<String> activeThreads = new ArrayList<>();
+    private static final Logger LOG = Logger.getLogger(ThreadManager.class.getName());
+
     private static final String NO_PROCESSES = "No Processes";
+    private static ArrayList<String> activeThreads = new ArrayList<>();
+
+    private ThreadManager() {
+        // utility class cannot be instantiated
+    }
 
     public static void addThread(String thread) {
         LOG.info("Watching Thread: " + thread.toString());
@@ -29,6 +35,4 @@ public class ThreadManager {
     public static int getProcessesRunning() {
         return activeThreads.size();
     }
-
-    private static final Logger LOG = Logger.getLogger(ThreadManager.class.getName());
 }

@@ -11,6 +11,8 @@ import edu.uwb.braingrid.workbenchdashboard.utils.ThreadManager;
 
 public class WorkbenchStatusBar extends HBox {
 
+    private static Label statusLabel = new Label(ThreadManager.getStatus());
+
     public WorkbenchStatusBar() {
         WorkbenchStatusBar.updateUpdateMessage();
         this.setAlignment(Pos.BOTTOM_RIGHT);
@@ -38,6 +40,4 @@ public class WorkbenchStatusBar extends HBox {
         }
         return out;
     }
-
-    private static Label statusLabel = new Label(ThreadManager.getStatus());
 }

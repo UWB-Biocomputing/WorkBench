@@ -21,8 +21,10 @@ import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
 public class TextComparisonController {
-    private static final Pattern XML_TAG = Pattern.compile("(?<ELEMENT>(</?\\h*)(\\w+)([^<>]*)(\\h*/?>))"
-            +"|(?<COMMENT><!--[^<>]+-->)");
+
+    private static final Pattern XML_TAG
+            = Pattern.compile("(?<ELEMENT>(</?\\h*)(\\w+)([^<>]*)(\\h*/?>))"
+            + "|(?<COMMENT><!--[^<>]+-->)");
 
     private static final Pattern ATTRIBUTES = Pattern.compile("(\\w+\\h*)(=)(\\h*\"[^\"]+\")");
 
@@ -66,7 +68,7 @@ public class TextComparisonController {
     }
 
     private void configCodeArea(boolean left) {
-        CodeArea codeArea = left?codeAreaLeft:codeAreaRight;
+        CodeArea codeArea = left ? codeAreaLeft : codeAreaRight;
 
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.textProperty().addListener((obs, oldText, newText) -> {
@@ -81,7 +83,7 @@ public class TextComparisonController {
         //highlight differences
         List<String> left = Arrays.asList(codeAreaLeft.getText().split("\\R"));
         List<String> right  = Arrays.asList(codeAreaRight.getText().split("\\R"));
-        Patch<String> patches = DiffUtils.diff(left,right);
+        Patch<String> patches = DiffUtils.diff(left, right);
 
         for (Delta<String> delta : patches.getDeltas()) {
             if (delta.getType() == Delta.TYPE.INSERT) {
@@ -141,10 +143,10 @@ public class TextComparisonController {
                 if (matcher.group("ELEMENT") != null) {
                     String attributesText = matcher.group(GROUP_ATTRIBUTES_SECTION);
 
-                    spansBuilder.add(Collections.singleton("tagmark"), matcher.end(GROUP_OPEN_BRACKET)
-                            - matcher.start(GROUP_OPEN_BRACKET));
-                    spansBuilder.add(Collections.singleton("anytag"), matcher.end(GROUP_ELEMENT_NAME)
-                            - matcher.end(GROUP_OPEN_BRACKET));
+                    spansBuilder.add(Collections.singleton("tagmark"),
+                            matcher.end(GROUP_OPEN_BRACKET) - matcher.start(GROUP_OPEN_BRACKET));
+                    spansBuilder.add(Collections.singleton("anytag"),
+                            matcher.end(GROUP_ELEMENT_NAME) - matcher.end(GROUP_OPEN_BRACKET));
 
                     if (!attributesText.isEmpty()) {
                         lastKwEnd = 0;
@@ -152,19 +154,27 @@ public class TextComparisonController {
                         Matcher amatcher = ATTRIBUTES.matcher(attributesText);
                         while (amatcher.find()) {
                             spansBuilder.add(Collections.emptyList(), amatcher.start() - lastKwEnd);
-                            spansBuilder.add(Collections.singleton("attribute"), amatcher.end(GROUP_ATTRIBUTE_NAME) - amatcher.start(GROUP_ATTRIBUTE_NAME));
-                            spansBuilder.add(Collections.singleton("tagmark"), amatcher.end(GROUP_EQUAL_SYMBOL) - amatcher.end(GROUP_ATTRIBUTE_NAME));
-                            spansBuilder.add(Collections.singleton("avalue"), amatcher.end(GROUP_ATTRIBUTE_VALUE) - amatcher.end(GROUP_EQUAL_SYMBOL));
+                            spansBuilder.add(Collections.singleton("attribute"),
+                                    amatcher.end(GROUP_ATTRIBUTE_NAME)
+                                            - amatcher.start(GROUP_ATTRIBUTE_NAME));
+                            spansBuilder.add(Collections.singleton("tagmark"),
+                                    amatcher.end(GROUP_EQUAL_SYMBOL)
+                                            - amatcher.end(GROUP_ATTRIBUTE_NAME));
+                            spansBuilder.add(Collections.singleton("avalue"),
+                                    amatcher.end(GROUP_ATTRIBUTE_VALUE)
+                                            - amatcher.end(GROUP_EQUAL_SYMBOL));
                             lastKwEnd = amatcher.end();
                         }
                         if (attributesText.length() > lastKwEnd) {
-                            spansBuilder.add(Collections.emptyList(), attributesText.length() - lastKwEnd);
+                            spansBuilder.add(Collections.emptyList(),
+                                    attributesText.length() - lastKwEnd);
                         }
                     }
 
                     lastKwEnd = matcher.end(GROUP_ATTRIBUTES_SECTION);
 
-                    spansBuilder.add(Collections.singleton("tagmark"), matcher.end(GROUP_CLOSE_BRACKET) - lastKwEnd);
+                    spansBuilder.add(Collections.singleton("tagmark"),
+                            matcher.end(GROUP_CLOSE_BRACKET) - lastKwEnd);
                 }
             }
             lastKwEnd = matcher.end();

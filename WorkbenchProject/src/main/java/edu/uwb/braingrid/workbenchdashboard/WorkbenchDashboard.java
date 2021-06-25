@@ -1,6 +1,5 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.FileHandler;
@@ -8,7 +7,6 @@ import java.util.logging.Logger;
 import java.io.File;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.application.Application;
@@ -18,8 +16,6 @@ import javafx.stage.Stage;
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.workbenchdashboard.threads.RunInit;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
-import edu.uwb.braingrid.workbenchdashboard.utils.Init;
-import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
 import org.apache.jena.ext.com.google.common.io.Resources;
 
@@ -30,19 +26,14 @@ import org.apache.jena.ext.com.google.common.io.Resources;
  */
 public class WorkbenchDashboard extends Application {
 
-    /** GSLE Growth Simulation Layout Editor. */
-    private WorkbenchDisplay workbench_display_;
-
     private static final Logger LOG = Logger.getLogger(WorkbenchDashboard.class.getName());
 
-    /**
-     * Probably shouldn't exist
-     * TODO: Refactor to to send the stage everywhere private
-     */
-    public static Stage primaryStage_;
+    /** GSLE Growth Simulation Layout Editor. */
+    private WorkbenchDisplay workbenchDisplay;
 
     /**
      * WorkbenchDashboard main executable.
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -70,22 +61,29 @@ public class WorkbenchDashboard extends Application {
         initFileOutput();
 
         // Get system
-        SystemProperties.getSysProperties();
+        SystemProperties.getInstance();
 
         //Load User
         User.load();
 
         // Start Application
         LOG.info("Starting Application");
-        workbench_display_ = new WorkbenchDisplay(primaryStage);  // Create main display
-        Scene scene = new Scene(workbench_display_, 900, 600); // Create a scene out of the display.
+        workbenchDisplay = new WorkbenchDisplay(primaryStage); // Create main display
+        Scene scene = new Scene(workbenchDisplay, 900, 600); // Create a scene out of the display.
 
         // Add CSS files
-        scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/temp.css")).toURI().toURL().toExternalForm());
-        scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/tempII.css")).toURI().toURL().toExternalForm());
-        scene.getStylesheets().add((new File("../src/main/resources/nledit/css/design.css")).toURI().toURL().toExternalForm());
-        scene.getStylesheets().add((new File("../src/main/resources/workbenchdisplay/css/design.css")).toURI().toURL().toExternalForm());
-        scene.getStylesheets().add((new File("../src/main/resources/provvisualizer/css/design.css")).toURI().toURL().toExternalForm());
+        scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/temp.css"))
+                .toURI().toURL().toExternalForm());
+        scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/tempII.css"))
+                .toURI().toURL().toExternalForm());
+        scene.getStylesheets().add((new File("../src/main/resources/nledit/css/design.css"))
+                .toURI().toURL().toExternalForm());
+        scene.getStylesheets()
+                .add((new File("../src/main/resources/workbenchdisplay/css/design.css"))
+                        .toURI().toURL().toExternalForm());
+        scene.getStylesheets()
+                .add((new File("../src/main/resources/provvisualizer/css/design.css"))
+                        .toURI().toURL().toExternalForm());
 
         // Create Events
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -95,16 +93,16 @@ public class WorkbenchDashboard extends Application {
                     ctrl = true;
                 }
                 if (arg0.getCode() == KeyCode.G && ctrl) {
-                    workbench_display_.pushGSLEPane();
+                    workbenchDisplay.pushGSLEPane();
                 }
                 if (arg0.getCode() == KeyCode.S && ctrl) {
-                    workbench_display_.pushSimWizPop();
+                    workbenchDisplay.pushSimWizPop();
                 }
                 if (arg0.getCode() == KeyCode.P && ctrl) {
-                    workbench_display_.pushProVisStarterPage();
+                    workbenchDisplay.pushProVisStarterPage();
                 }
                 if (arg0.getCode() == KeyCode.U && ctrl) {
-                    workbench_display_.pushUserViewPage();
+                    workbenchDisplay.pushUserViewPage();
                 }
             }
         });

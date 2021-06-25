@@ -25,7 +25,8 @@ public final class DirMgr {
      * @return The directory where the repos are stored as a string path
      */
     public static String getBrainGridRepoDirectory() {
-        String bgReposPath = DirMgr.getRootPath() + File.separator + ProvVisGlobal.BG_REPOSITORY_LOCAL;
+        String bgReposPath = DirMgr.getRootPath() + File.separator
+                + ProvVisGlobal.BG_REPOSITORY_LOCAL;
 
         LOG.info("BrainGrid Repo Path: " + bgReposPath);
         return bgReposPath;

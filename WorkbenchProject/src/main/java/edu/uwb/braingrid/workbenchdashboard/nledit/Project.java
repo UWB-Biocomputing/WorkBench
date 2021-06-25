@@ -7,7 +7,6 @@ public class Project {
     private String prbFile = "";
 
     public Project() {
-        
     }
 
     public String getIhbFile() {

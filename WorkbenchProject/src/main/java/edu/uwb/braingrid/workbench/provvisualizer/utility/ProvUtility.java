@@ -20,7 +20,8 @@ public final class ProvUtility {
     public static final String PROV_ENDED_AT_TIME = PROV_PREFIX + "endedAtTime";
 
     public static final String LABEL_COMMIT = "commit";
-    public static final String COMMIT_URI_PREFIX = "https://github.com/UWB-Biocomputing/BrainGrid/commit/";
+    public static final String COMMIT_URI_PREFIX
+            = "https://github.com/UWB-Biocomputing/BrainGrid/commit/";
 
     private ProvUtility() {
         // utility class cannot be instantiated

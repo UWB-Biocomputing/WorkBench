@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.animation.AnimationTimer;
@@ -23,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -40,11 +38,16 @@ import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ConnectionUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.FileUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ProvUtility;
-import edu.uwb.braingrid.workbench.provvisualizer.controller.AuthenticationController;
-import edu.uwb.braingrid.workbench.provvisualizer.controller.TextComparisonController;
 import edu.uwb.braingrid.workbench.provvisualizer.factory.EdgeFactory;
 import edu.uwb.braingrid.workbench.provvisualizer.factory.NodeFactory;
-import edu.uwb.braingrid.workbench.provvisualizer.model.*;
+import edu.uwb.braingrid.workbench.provvisualizer.model.ActivityNode;
+import edu.uwb.braingrid.workbench.provvisualizer.model.AgentNode;
+import edu.uwb.braingrid.workbench.provvisualizer.model.AuthenticationInfo;
+import edu.uwb.braingrid.workbench.provvisualizer.model.CommitNode;
+import edu.uwb.braingrid.workbench.provvisualizer.model.Edge;
+import edu.uwb.braingrid.workbench.provvisualizer.model.EntityNode;
+import edu.uwb.braingrid.workbench.provvisualizer.model.Graph;
+import edu.uwb.braingrid.workbench.provvisualizer.model.Node;
 import edu.uwb.braingrid.workbench.provvisualizer.view.VisCanvas;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
 
@@ -58,8 +61,9 @@ import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
 public class ProVisCtrl {
 
     private Graph dataProvGraph;
-    private LinkedHashMap<String, AuthenticationInfo> authInfoCache = new LinkedHashMap<>(5, (float) 0.75, true);
-    private ProVis proVis_;
+    private LinkedHashMap<String, AuthenticationInfo> authInfoCache
+            = new LinkedHashMap<>(5, (float) 0.75, true);
+    private ProVis proVis;
     private Model provModel;
     private AnimationTimer timer;
     private double zoomRatio = 1;
@@ -68,8 +72,8 @@ public class ProVisCtrl {
     private double zoomSpeed = .2;
 
     private double[] pressedXY;
-    private double[] displayWindowLocation = new double[] { 0, 0 };
-    private double[] displayWindowSize = new double[] { 10000, 10000 };
+    private double[] displayWindowLocation = new double[] {0, 0};
+    private double[] displayWindowSize = new double[] {10000, 10000};
     private double[] displayWindowLocationTmp;
 
     private AuthenticationInfo authenticationInfo = null;
@@ -95,17 +99,18 @@ public class ProVisCtrl {
     private SimStartWiz simStartWiz;
     private boolean buildModeON = false;
     private String bGVersionSelected;
-    String simSpecifications = null;
-    HashMap<Character, String> nListPresets = new HashMap<>();
+    private String simSpecifications = null;
+    private HashMap<Character, String> nListPresets = new HashMap<>();
 
     private static final Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
 
-    public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane, Slider adjustForceSlider,
-            ToggleSwitch stopForces, ToggleSwitch showNodeIds, ToggleSwitch showRelationships, ToggleSwitch showLegend,
-            ToggleSwitch builderModetggl, Button importFileBtn, Button chooseFileBtn, TextField inputTextField,
+    public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane,
+            Slider adjustForceSlider, ToggleSwitch stopForces, ToggleSwitch showNodeIds,
+            ToggleSwitch showRelationships, ToggleSwitch showLegend, ToggleSwitch builderModeToggle,
+            Button importFileBtn, Button chooseFileBtn, TextField inputTextField,
             TextField probedTextField, TextField activeTextField, TextField inhibitoryTextField,
             TextField bGVersionTextField, Button clearPresetsButton, Button buildFromPrevButton) {
-        this.proVis_ = proVis;
+        this.proVis = proVis;
         this.visCanvas = visCanvas;
         this.canvasPane = canvasPane;
         this.adjustForceSlider = adjustForceSlider;
@@ -113,7 +118,7 @@ public class ProVisCtrl {
         this.showNodeIds = showNodeIds;
         this.showRelationships = showRelationships;
         this.showLegend = showLegend;
-        this.builderModeToggle = builderModetggl;
+        this.builderModeToggle = builderModeToggle;
         this.importFileBtn = importFileBtn;
         this.chooseFileBtn = chooseFileBtn;
         this.clearPresetsButton = clearPresetsButton;
@@ -148,23 +153,26 @@ public class ProVisCtrl {
                 if (!stopForces.isSelected()) {
                     dataProvGraph.moveNodes(draggedNode);
                 }
-                dataProvGraph.drawOnCanvas(visCanvas, displayWindowLocation, displayWindowSize, zoomRatio);
+                dataProvGraph.drawOnCanvas(visCanvas, displayWindowLocation, displayWindowSize,
+                        zoomRatio);
             }
         };
-        
+
         timer.start();
     }
 
     private void initGUIEvents() {
         adjustForceSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-                dataProvGraph.setC3(new_val.doubleValue() * 1500);
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+                    Number newValue) {
+                dataProvGraph.setC3(newValue.doubleValue() * 1500);
             }
         });
 
         showNodeIds.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-                if (new_val) {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+                    Boolean newValue) {
+                if (newValue) {
                     dataProvGraph.setShowAllNodeIds(true);
                 } else {
                     dataProvGraph.setShowAllNodeIds(false);
@@ -173,8 +181,9 @@ public class ProVisCtrl {
         });
 
         showRelationships.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-                if (new_val) {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+                    Boolean newValue) {
+                if (newValue) {
                     dataProvGraph.setShowAllRelationships(true);
                 } else {
                     dataProvGraph.setShowAllRelationships(false);
@@ -183,20 +192,22 @@ public class ProVisCtrl {
         });
 
         showLegend.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-                if (new_val) {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+                    Boolean newValue) {
+                if (newValue) {
                     dataProvGraph.setShowLegend(true);
                 } else {
                     dataProvGraph.setShowLegend(false);
                 }
             }
         });
-        
+
         builderModeToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-                if (new_val) {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+                    Boolean newValue) {
+                if (newValue) {
                     buildModeON = true;
-                } else if (old_val) {
+                } else if (oldValue) {
                     buildModeON = false;
                     enableBuildButton(false);
                     clearBuildControlDisplay();
@@ -209,7 +220,8 @@ public class ProVisCtrl {
             public void handle(ActionEvent event) {
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Select provenance file");
-                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
+                fileChooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
                 fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 
                 File selectedFile = null;
@@ -221,7 +233,7 @@ public class ProVisCtrl {
                     showNodeIds.setSelected(false);
                     showRelationships.setSelected(false);
                     initNodeEdge(selectedFile.getAbsolutePath());
-                    proVis_.setTitle(selectedFile.getName());
+                    proVis.setTitle(selectedFile.getName());
                 }
             }
         });
@@ -266,7 +278,8 @@ public class ProVisCtrl {
 
                         Node comparingNode = dataProvGraph.getComparingNode(
                                 event.getX() / zoomRatio + displayWindowLocation[0],
-                                event.getY() / zoomRatio + displayWindowLocation[1], draggedNode, zoomRatio, true);
+                                event.getY() / zoomRatio + displayWindowLocation[1],
+                                draggedNode, zoomRatio, true);
                         if (draggedNode instanceof EntityNode && comparingNode != null
                                 && comparingNode instanceof EntityNode) {
                             dataProvGraph.setComparingNode(comparingNode);
@@ -287,7 +300,8 @@ public class ProVisCtrl {
             @Override
             public void handle(MouseEvent event) {
                 if (event.isPrimaryButtonDown()) {
-                    draggedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
+                    draggedNode = dataProvGraph.getSelectedNode(
+                            event.getX() / zoomRatio + displayWindowLocation[0],
                             event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
                     pressedXY = new double[] {event.getX() / zoomRatio, event.getY() / zoomRatio};
 
@@ -303,7 +317,8 @@ public class ProVisCtrl {
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     if (event.getClickCount() == 1) {
-                        Edge edge = dataProvGraph.getSelectedEdge(event.getX() / zoomRatio + displayWindowLocation[0],
+                        Edge edge = dataProvGraph.getSelectedEdge(
+                                event.getX() / zoomRatio + displayWindowLocation[0],
                                 event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio);
 
                         if (edge != null) {
@@ -311,8 +326,10 @@ public class ProVisCtrl {
                         }
 
                         if (buildModeON) {
-                            selectedNode = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
-                            event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
+                            selectedNode = dataProvGraph.getSelectedNode(
+                                    event.getX() / zoomRatio + displayWindowLocation[0],
+                                    event.getY() / zoomRatio + displayWindowLocation[1],
+                                    zoomRatio, false);
                             if (selectedNode != null) {
                                 prepBuildInputParams(selectedNode);
                             }
@@ -327,12 +344,14 @@ public class ProVisCtrl {
         visCanvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Node node = dataProvGraph.getSelectedNode(event.getX() / zoomRatio + displayWindowLocation[0],
+                Node node = dataProvGraph.getSelectedNode(
+                        event.getX() / zoomRatio + displayWindowLocation[0],
                         event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
 
                 dataProvGraph.setMouseOnNode(node);
 
-                Edge edge = dataProvGraph.getSelectedEdge(event.getX() / zoomRatio + displayWindowLocation[0],
+                Edge edge = dataProvGraph.getSelectedEdge(
+                        event.getX() / zoomRatio + displayWindowLocation[0],
                         event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio);
 
                 dataProvGraph.setMouseOnEdge(edge);
@@ -395,10 +414,10 @@ public class ProVisCtrl {
                 if (deltaY != 0) {
                     displayWindowSize[0] = visCanvas.getWidth() / zoomRatio;
                     displayWindowSize[1] = visCanvas.getHeight() / zoomRatio;
-                    displayWindowLocation[0] = ((zoomRatio - oldZoomRatio) / (zoomRatio * oldZoomRatio)) * event.getX()
-                            + displayWindowLocation[0];
-                    displayWindowLocation[1] = ((zoomRatio - oldZoomRatio) / (zoomRatio * oldZoomRatio)) * event.getY()
-                            + displayWindowLocation[1];
+                    displayWindowLocation[0] = ((zoomRatio - oldZoomRatio)
+                            / (zoomRatio * oldZoomRatio)) * event.getX() + displayWindowLocation[0];
+                    displayWindowLocation[1] = ((zoomRatio - oldZoomRatio)
+                            / (zoomRatio * oldZoomRatio)) * event.getY() + displayWindowLocation[1];
                 }
             }
         });
@@ -406,7 +425,8 @@ public class ProVisCtrl {
 
     private void compareNodes(Node node1, Node node2) {
         Parent parent = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/provvisualizer/view/TextComparisonView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/provvisualizer/view/TextComparisonView.fxml"));
         try {
             parent = loader.load();
         } catch (IOException e) {
@@ -418,14 +438,14 @@ public class ProVisCtrl {
         controller.loadFiles(FileUtility.getNodeFileLocalAbsolutePath(node1),
                 FileUtility.getNodeFileLocalAbsolutePath(node2));
 
-        Stage modal_dialog = new Stage(StageStyle.DECORATED);
-        modal_dialog.initModality(Modality.WINDOW_MODAL);
-        modal_dialog.initOwner(canvasPane.getScene().getWindow());
+        Stage modalDialog = new Stage(StageStyle.DECORATED);
+        modalDialog.initModality(Modality.WINDOW_MODAL);
+        modalDialog.initOwner(canvasPane.getScene().getWindow());
         Scene scene = new Scene(parent);
-        modal_dialog.setScene(scene);
-        modal_dialog.setTitle("Comparing " + node1.getDisplayId() + " and " + node2.getDisplayId());
-        modal_dialog.setMaximized(true);
-        modal_dialog.showAndWait();
+        modalDialog.setScene(scene);
+        modalDialog.setTitle("Comparing " + node1.getDisplayId() + " and " + node2.getDisplayId());
+        modalDialog.setMaximized(true);
+        modalDialog.showAndWait();
     }
 
     private boolean checkIfNodeFileExists(Node node) {
@@ -450,8 +470,9 @@ public class ProVisCtrl {
         }
 
         // currently only support download via sftp
-        if (protocol == null || protocol != null && !protocol.equals("sftp"))
+        if (protocol == null || protocol != null && !protocol.equals("sftp")) {
             return false;
+        }
 
         if (splitStrs[1].contains("@")) {
             splitStrs = splitStrs[1].split("@");
@@ -468,20 +489,20 @@ public class ProVisCtrl {
 
         if (authenticationInfo != null) {
             do {
-                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath, nodeFileLclPath,
-                        authenticationInfo);
+                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath,
+                        nodeFileLclPath, authenticationInfo);
             } while (!downloadSuccess && requestAuthenticationInfo(hostname, username));
         } else {
             while (!downloadSuccess && requestAuthenticationInfo(hostname, username)) {
-                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath, nodeFileLclPath,
-                        authenticationInfo);
+                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath,
+                        nodeFileLclPath, authenticationInfo);
             }
         }
 
         if (downloadSuccess) {
             // save authentication info
-            authInfoCache.put(authenticationInfo.getUsername() + "@" + authenticationInfo.getHostname(),
-                    authenticationInfo);
+            authInfoCache.put(authenticationInfo.getUsername() + "@"
+                    + authenticationInfo.getHostname(), authenticationInfo);
         }
 
         return downloadSuccess;
@@ -491,26 +512,23 @@ public class ProVisCtrl {
         Parent parent = null;
         authenticationInfo = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/provvisualizer/view/AuthenticationView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/provvisualizer/view/AuthenticationView.fxml"));
             parent = loader.load();
             AuthenticationController controller = loader.getController();
             controller.setHostname(hostname);
             controller.setUsername(username);
             controller.setOkBtnCallback(authInfo -> authenticationInfo = authInfo);
 
-            Stage modal_dialog = new Stage(StageStyle.DECORATED);
-            modal_dialog.initModality(Modality.WINDOW_MODAL);
-            modal_dialog.initOwner(canvasPane.getScene().getWindow());
+            Stage modalDialog = new Stage(StageStyle.DECORATED);
+            modalDialog.initModality(Modality.WINDOW_MODAL);
+            modalDialog.initOwner(canvasPane.getScene().getWindow());
             Scene scene = new Scene(parent);
-            modal_dialog.setScene(scene);
-            modal_dialog.setTitle("Login");
-            modal_dialog.showAndWait();
+            modalDialog.setScene(scene);
+            modalDialog.setTitle("Login");
+            modalDialog.showAndWait();
 
-            if (authenticationInfo != null) {
-                return true;
-            } else {
-                return false;
-            }
+            return authenticationInfo != null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -550,7 +568,8 @@ public class ProVisCtrl {
                     }
                 } else if (objectStr.equals(ProvUtility.PROV_SW_AGENT)) {
                     if (dataProvGraph.isNodeAdded(subjectStr)) {
-                        dataProvGraph.addNode(nodeFactory.convertToAgentNode(dataProvGraph.getNode(subjectStr)));
+                        dataProvGraph.addNode(nodeFactory.convertToAgentNode(
+                                dataProvGraph.getNode(subjectStr)));
                     } else { // create Agent Node
                         Node agentNode = nodeFactory.createAgentNode();
                         agentNode.setId(subjectStr).setX(Math.random() * visCanvas.getWidth())
@@ -559,10 +578,13 @@ public class ProVisCtrl {
                     }
                 } else if (objectStr.equals(ProvUtility.PROV_ENTITY)) {
                     if (dataProvGraph.isNodeAdded(subjectStr)) {
-                        if (dataProvGraph.getNode(subjectStr).getLabel().equals("commit")) { // convert to commit node
-                            dataProvGraph.addNode(nodeFactory.convertToCommitNode(dataProvGraph.getNode(subjectStr)));
+                        if (dataProvGraph.getNode(subjectStr).getLabel().equals("commit")) {
+                            // convert to commit node
+                            dataProvGraph.addNode(nodeFactory.convertToCommitNode(
+                                    dataProvGraph.getNode(subjectStr)));
                         } else {
-                            dataProvGraph.addNode(nodeFactory.convertToEntityNode(dataProvGraph.getNode(subjectStr)));
+                            dataProvGraph.addNode(nodeFactory.convertToEntityNode(
+                                    dataProvGraph.getNode(subjectStr)));
                         }
                     } else { // create Entity Node
                         Node entityNode = nodeFactory.createEntityNode();
@@ -579,7 +601,8 @@ public class ProVisCtrl {
                     dataProvGraph.getNode(subjectStr).setLabel(objectStr);
 
                     if (objectStr.equals("commit")) { // convert to commit node
-                        dataProvGraph.addNode(nodeFactory.convertToCommitNode(dataProvGraph.getNode(subjectStr)));
+                        dataProvGraph.addNode(nodeFactory.convertToCommitNode(
+                                dataProvGraph.getNode(subjectStr)));
                     }
                 } else { // create a Default Node to store the label value.
                     Node node = null;
@@ -609,8 +632,8 @@ public class ProVisCtrl {
                 } else {
                     // create Activity Node
                     ActivityNode activityNode = nodeFactory.createActivityNode();
-                    activityNode.setStartTime(dateTime).setId(subjectStr).setX(Math.random() * visCanvas.getWidth())
-                            .setY(Math.random() * visCanvas.getHeight());
+                    activityNode.setStartTime(dateTime).setId(subjectStr).setX(Math.random()
+                            * visCanvas.getWidth()).setY(Math.random() * visCanvas.getHeight());
                     dataProvGraph.addNode(activityNode);
                 }
             } else if (predicateStr.equals(ProvUtility.PROV_ENDED_AT_TIME)) {
@@ -629,22 +652,26 @@ public class ProVisCtrl {
                 } else {
                     // create Activity Node
                     ActivityNode activityNode = nodeFactory.createActivityNode();
-                    activityNode.setEndTime(dateTime).setId(subjectStr).setX(Math.random() * visCanvas.getWidth())
-                            .setY(Math.random() * visCanvas.getHeight());
+                    activityNode.setEndTime(dateTime).setId(subjectStr).setX(Math.random()
+                            * visCanvas.getWidth()).setY(Math.random() * visCanvas.getHeight());
                     dataProvGraph.addNode(activityNode);
                 }
-            } else if (!predicateStr.equals(ProvUtility.PROV_AT_LOCATION) && stmt.getObject().isURIResource()) {
-                // Skip "wasGeneratedBY" edge to avoid duplicate relationship display temporary, will find out a better way to display two or more relationship later
+            } else if (!predicateStr.equals(ProvUtility.PROV_AT_LOCATION)
+                    && stmt.getObject().isURIResource()) {
+                // Skip "wasGeneratedBY" edge to avoid duplicate relationship display temporary,
+                // will find out a better way to display two or more relationship later
                 if (stmt.getPredicate().toString().equals(ProvUtility.PROV_WAS_GENERATED_BY)) {
                     continue;
                 }
                 // create a Default Node to store the label value.
                 Edge defaultEdge = edgeFactory.createDefaultEdge();
-                defaultEdge.setFromNodeId(stmt.getSubject().toString()).setToNodeId(stmt.getObject().toString())
+                defaultEdge.setFromNodeId(stmt.getSubject().toString())
+                        .setToNodeId(stmt.getObject().toString())
                         .setRelationship(stmt.getPredicate().toString());
                 dataProvGraph.addEdge(defaultEdge);
             }
-            // System.out.println(stmt.getSubject().toString() + " " + stmt.getPredicate().toString() + " " + stmt.getObject().toString());
+//             System.out.println(stmt.getSubject().toString() + " "
+//                     + stmt.getPredicate().toString() + " " + stmt.getObject().toString());
         }
 
         dataProvGraph.generateCommitRelationships(visCanvas.getWidth(), visCanvas.getHeight());
@@ -669,13 +696,13 @@ public class ProVisCtrl {
     private void prepBuildInputParams(Node selectedNode) {
         if (selectedNode instanceof ActivityNode) {
             ArrayList<Node> neighbors = selectedNode.getNeighborNodes();
-            for(Node neighbor : neighbors) {
+            for (Node neighbor : neighbors) {
                 prepBuildInputParams(neighbor);
             }
         } else if (selectedNode instanceof AgentNode) {
             ArrayList<Node> neighbors = selectedNode.getNeighborNodes();
-            for(Node neighbor : neighbors) {
-                if(neighbor instanceof CommitNode) {
+            for (Node neighbor : neighbors) {
+                if (neighbor instanceof CommitNode) {
                     prepBuildInputParams(neighbor);
                     return;
                 }
@@ -714,8 +741,10 @@ public class ProVisCtrl {
     private boolean parseEntityNodeFile(Node selectedNode) {
         boolean selectedNodeFileReady = false;
         char typeOfNode = 'N';
-        if (selectedNode == null) return false;
-        
+        if (selectedNode == null) {
+            return false;
+        }
+
         selectedNodeFileReady = checkIfNodeFileExists(selectedNode);
         if (!selectedNodeFileReady) {
             selectedNodeFileReady = downloadNodeFile(selectedNode);
@@ -730,15 +759,15 @@ public class ProVisCtrl {
             inputTextField.clear();
             inputTextField.appendText(selectedNode.getDisplayId());
             simSpecifications = FileUtility.getNodeFileLocalAbsolutePath(selectedNode);
-        } else if(typeOfNode == 'I') {
+        } else if (typeOfNode == 'I') {
             inhibitoryTextField.clear();
             inhibitoryTextField.appendText(selectedNode.getDisplayId());
             setNLEditforBuild(typeOfNode, selectedNode);
-        } else if(typeOfNode == 'A') {
+        } else if (typeOfNode == 'A') {
             activeTextField.clear();
             activeTextField.appendText(selectedNode.getDisplayId());
             setNLEditforBuild(typeOfNode, selectedNode);
-        } else if(typeOfNode == 'P') {
+        } else if (typeOfNode == 'P') {
             probedTextField.clear();
             probedTextField.appendText(selectedNode.getDisplayId());
             setNLEditforBuild(typeOfNode, selectedNode);
@@ -753,7 +782,7 @@ public class ProVisCtrl {
     private char loadFile(String filePath) {
         Scanner in = null;
         try {
-            in= new Scanner(new File(filePath));
+            in = new Scanner(new File(filePath));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return 'N';
@@ -765,11 +794,11 @@ public class ProVisCtrl {
         String determineType = inputFromSelected.substring(0, 3);
         if (determineType.equals("<A>")) {
             return 'A';
-        } else if(determineType.equals("<I>")) {
+        } else if (determineType.equals("<I>")) {
             return 'I';
-        } else if(determineType.equals("<P>")) {
+        } else if (determineType.equals("<P>")) {
             return 'P';
-        } else if(determineType.equals("<!-")) {
+        } else if (determineType.equals("<!-")) {
             //Do nothing, this is a ouput file
         } else { // simulation input file
             return 'S';
@@ -790,12 +819,12 @@ public class ProVisCtrl {
      */
     public void openUniversalProvenance() {
         File universalProvenance = null;
-        universalProvenance = new File(System.getProperty("user.dir") + File.separator + "projects" + File.separator
-                + "UniversalProvenance.ttl");
+        universalProvenance = new File(System.getProperty("user.dir") + File.separator + "projects"
+                + File.separator + "UniversalProvenance.ttl");
         if (universalProvenance != null) {
             dataProvGraph.clearNodesNEdges();
             initNodeEdge(universalProvenance.getAbsolutePath());
-            proVis_.setTitle(universalProvenance.getName());
+            proVis.setTitle(universalProvenance.getName());
         }
     }
 }
