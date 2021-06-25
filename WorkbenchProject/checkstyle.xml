@@ -56,16 +56,6 @@
     <property name="optional" value="true"/>
   </module>
 
-  <!-- https://checkstyle.org/config_filters.html#SuppressionSingleFilter -->
-  <module name="SuppressionSingleFilter">
-    <property name="checks" value="MissingJavadocMethod"/>
-    <property name="files" value="ProvOntology.java"/>
-  </module>
-  <module name="SuppressionSingleFilter">
-    <property name="checks" value="MagicNumber"/>
-    <property name="files" value="Graph.java"/>
-  </module>
-
   <!-- Checks that a package-info.java file exists for each package.     -->
   <!-- See https://checkstyle.org/config_javadoc.html#JavadocPackage -->
   <!-- <module name="JavadocPackage"/> -->
@@ -83,7 +73,7 @@
   <module name="FileLength"/>
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
-    <property name="max" value="120"/>
+    <property name="max" value="100"/>
   </module>
 
   <!-- Checks for whitespace                               -->
@@ -193,7 +183,7 @@
 
     <!-- Checks for class design                         -->
     <!-- See https://checkstyle.org/config_design.html -->
-    <module name="DesignForExtension"/>
+    <!-- <module name="DesignForExtension"/> -->
     <module name="FinalClass"/>
     <module name="HideUtilityClassConstructor"/>
     <module name="InterfaceIsType"/>

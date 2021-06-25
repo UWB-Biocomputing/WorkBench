@@ -14,7 +14,6 @@
     </repositories>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
     </properties>
     <build>
         <plugins>
@@ -94,7 +93,8 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configLocation>${checkstyle.config.location}</configLocation>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
                     <failOnViolation>false</failOnViolation>
                 </configuration>
                 <executions>

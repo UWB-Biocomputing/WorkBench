@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.0//EN"
+        "https://checkstyle.org/dtds/suppressions_1_0.dtd">
+
+<suppressions>
+  <!-- Permanent suppressions -->
+  <suppress checks="MissingJavadocMethodCheck" files="ProvOntology.java"/>
+  <suppress checks="MagicNumberCheck" files="Graph.java"/>
+  <suppress checks="MagicNumberCheck" files="ProVis.java"/>
+  <suppress checks="MagicNumberCheck" files="NLedit.java"/>
+  <!-- Begin swing UI with auto-generated code -->
+  <suppress checks="MagicNumberCheck" files="DynamicInputConfigurationDialog.java"/>
+  <suppress checks=".*" files="DynamicInputConfigurationDialog.java" lines="52-198"/>
+  <suppress checks="MagicNumberCheck" files="InputConfigClassSelectionDialog.java"/>
+  <suppress checks=".*" files="InputConfigClassSelectionDialog.java" lines="34-183"/>
+  <suppress checks="MagicNumberCheck" files="LoginCredentialsDialog.java"/>
+  <suppress checks=".*" files="LoginCredentialsDialog.java" lines="15-152"/>
+  <suppress checks="MagicNumberCheck" files="NewProjectDialog.java"/>
+  <suppress checks=".*" files="NewProjectDialog.java" lines="23-172"/>
+  <suppress checks="MagicNumberCheck" files="ProvenanceQueryDialog.java"/>
+  <suppress checks=".*" files="ProvenanceQueryDialog.java" lines="19-201"/>
+  <suppress checks="MagicNumberCheck" files="ScriptSpecificationDialog.java"/>
+  <suppress checks=".*" files="ScriptSpecificationDialog.java" lines="27-458"/>
+  <suppress checks="MagicNumberCheck" files="WorkbenchControlFrame.java"/>
+  <suppress checks=".*" files="WorkbenchControlFrame.java" lines="19-58"/>
+  <!-- End swing UI with auto-generated code -->
+
+  <!-- Temporary suppressions -->
+  <!-- Javadoc needed for the following files -->
+  <suppress checks="MissingJavadocMethod" files="ScriptHistory.java"/>
+  <suppress checks="MissingJavadocMethod" files="Datum.java"/>
+  <suppress checks="MissingJavadocMethod" files="KeyValuePair.java"/>
+  <suppress checks="MissingJavadocMethod" files="ProjectData.java"/>
+  <suppress checks="MissingJavadocMethod" files="Project.java"/>
+  <suppress checks="JavadocMethod" files="ProjectManager.java"/>
+  <suppress checks="JavadocMethod|JavadocVariable" files="ProjectMgr.java"/>
+  <suppress checks="MissingJavadocMethod" files="AuthenticationController.java"/>
+  <suppress checks="JavadocMethod" files="ProVisCtrl.java"/>
+  <suppress checks="MissingJavadocMethod" files="TextComparisonController.java"/>
+  <suppress checks="MissingJavadocMethod" files="EdgeFactory.java"/>
+  <suppress checks="MissingJavadocMethod" files="NodeFactory.java"/>
+  <suppress checks="MissingJavadocMethod" files="ActivityNode.java"/>
+  <suppress checks="MissingJavadocMethod" files="AgentNode.java"/>
+  <suppress checks="MissingJavadocMethod" files="AuthenticationInfo.java"/>
+  <suppress checks="MissingJavadocMethod" files="CommitNode.java"/>
+  <suppress checks="MissingJavadocMethod" files="Edge.java"/>
+  <suppress checks="MissingJavadocMethod" files="EntityNode.java"/>
+  <suppress checks="MissingJavadocMethod" files="Graph.java"/>
+  <suppress checks="MissingJavadocMethod" files="Node.java"/>
+  <suppress checks="MissingJavadocMethod" files="ConnectionUtility.java"/>
+  <suppress checks="MissingJavadocMethod|JavadocVariable" files="FileUtility.java"/>
+  <suppress checks="MissingJavadocMethod" files="GraphUtility.java"/>
+  <suppress checks="MissingJavadocMethod|JavadocVariable" files="ProvUtility.java"/>
+  <suppress checks="MissingJavadocMethod" files="VisCanvas.java"/>
+  <suppress checks="MissingJavadocMethod" files="ProVis.java"/>
+  <suppress checks="JavadocVariable" files="ProVisGlobal.java"/>
+  <suppress checks="MissingJavadocMethod" files="DateTime.java"/>
+  <suppress checks="JavadocMethod" files="FileManager.java"/>
+  <suppress checks="MissingJavadocMethod" files="FileManagerShared.java"/>
+  <suppress checks="MissingJavadocMethod|JavadocVariable" files="SystemConfig.java"/>
+  <suppress checks="MissingJavadocMethod" files="AProbesPanel.java"/>
+  <suppress checks="MissingJavadocMethod" files="GPatternPanel.java"/>
+  <suppress checks="MissingJavadocMethod" files="ImportPanel.java"/>
+  <suppress checks="MissingJavadocMethod" files="LayoutPanel.java"/>
+  <suppress checks="MissingJavadocMethod" files="MyPrintable.java"/>
+  <suppress checks="MissingJavadocMethod" files="NeuronsLayout.java"/>
+  <suppress checks="JavadocMethod|JavadocVariable" files="NLedit.java"/>
+  <suppress checks="MissingJavadocMethod" files="Project.java"/>
+  <suppress checks="MissingJavadocMethod" files="SimManager.java"/>
+  <suppress checks="JavadocMethod" files="SimStarterWiz.java"/>
+  <suppress checks="MissingJavadocMethod" files="RunInit.java"/>
+  <suppress checks="MissingJavadocMethod" files="RunUpdateRepo.java"/>
+  <suppress checks="MissingJavadocMethod" files="User.java"/>
+  <suppress checks="MissingJavadocMethod" files="UserView.java"/>
+  <suppress checks="MissingJavadocMethod" files="Init.java"/>
+  <suppress checks="MissingJavadocMethod" files="RepoManager.java"/>
+  <suppress checks="MissingJavadocMethod|JavadocVariable" files="SystemProperties.java"/>
+  <suppress checks="MissingJavadocMethod" files="ThreadManager.java"/>
+  <suppress checks="MissingJavadocMethod" files="WorkbenchDisplay.java"/>
+  <suppress checks="MissingJavadocMethod" files="WorkbenchStatusBar.java"/>
+</suppressions>
