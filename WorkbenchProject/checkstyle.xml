@@ -108,6 +108,9 @@
     </module>
     <module name="JavadocStyle"/>
     <module name="MissingJavadocMethod"/>
+    <module name="MissingJavadocType">
+      <property name="tokens" value="CLASS_DEF"/>
+    </module>
     <module name="RequireEmptyLineBeforeBlockTagGroup"/>
 
     <!-- Checks for Naming Conventions.                  -->
@@ -170,8 +173,9 @@
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
     <module name="HiddenField">
-      <property name="ignoreSetter" value="true"/>
       <property name="ignoreConstructorParameter" value="true"/>
+      <property name="ignoreSetter" value="true"/>
+      <property name="setterCanReturnItsClass" value="true"/>
     </module>
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
@@ -193,7 +197,9 @@
     <!-- See https://checkstyle.org/config_misc.html -->
     <module name="ArrayTypeStyle"/>
     <module name="ParameterAssignment"/>
-    <module name="TodoComment"/>
+    <module name="TodoComment">
+      <property name="severity" value="warning"/>
+    </module>
     <module name="UpperEll"/>
 
     <!-- https://checkstyle.org/config_filters.html#SuppressionXpathFilter -->
