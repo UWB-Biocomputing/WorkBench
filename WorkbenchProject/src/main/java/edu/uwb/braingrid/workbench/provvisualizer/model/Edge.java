@@ -87,10 +87,18 @@ public class Edge {
         return new Edge(fromNodeId, toNodeId, relationship, dashline);
     }
 
-    public boolean equals(Edge edge) {
-        return this.getEdgeId().equals(edge.getEdgeId());
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object instanceof Edge) {
+            return this.getEdgeId().equals(((Edge) object).getEdgeId());
+        }
+        return false;
     }
 
+    @Override
     public int hashCode() {
         return this.getEdgeId().hashCode();
     }
@@ -112,7 +120,7 @@ public class Edge {
      */
     public boolean isPointOnEdge(HashMap<String, Node> nodes, double x, double y,
             double zoomRatio) {
-        double bufferLength = 5;
+        final double bufferLength = 5;
         Node fromNode = nodes.get(fromNodeId);
         Node toNode = nodes.get(toNodeId);
         double[] fromNodePoint = new double[]{fromNode.getX(), fromNode.getY()};

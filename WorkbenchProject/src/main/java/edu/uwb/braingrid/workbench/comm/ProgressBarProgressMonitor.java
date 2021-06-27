@@ -35,15 +35,15 @@ public class ProgressBarProgressMonitor implements SftpProgressMonitor {
      * @param op  A code indicating the direction of transfer, one of PUT and GET
      * @param src  The source file name
      * @param dest  The destination file name
-     * @param max  The final count (i.e. length of file to transfer)
+     * @param length  The final count (i.e. length of file to transfer)
      */
     @Override
-    public void init(int op, String src, String dest, long max) {
+    public void init(int op, String src, String dest, long length) {
         bar.setValue(bar.getMinimum());
         if (max == -1 && file != null) {
-            this.max = file.length();
+            max = file.length();
         } else {
-            this.max = max;
+            max = length;
         }
     }
 
@@ -58,7 +58,7 @@ public class ProgressBarProgressMonitor implements SftpProgressMonitor {
     public boolean count(long bytes) {
         long percentageComplete = 0;
         if (max > 0) {
-            percentageComplete = (long) ((float) bytes / max * 100);
+            percentageComplete = (long) ((float) bytes / max * 100); //@cs-: MagicNumber influence 0
         }
         bar.setValue((int) percentageComplete);
         return true;

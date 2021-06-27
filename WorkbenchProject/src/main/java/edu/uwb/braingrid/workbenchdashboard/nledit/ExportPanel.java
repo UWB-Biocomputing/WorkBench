@@ -35,7 +35,7 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
     private Label[] labels = new Label[NUM_FIELDS];
     private TextField[] tFields = new TextField[NUM_FIELDS];
     private Button[] rButtons = new Button[NUM_FIELDS];
-//    private static String nlistDir = "."; // directory for neurons list file
+//    private static String nListDir = "."; // directory for neurons list file
 
     private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
 
@@ -46,7 +46,7 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
      */
     public ExportPanel(String dir) {
         GridPane gp = new GridPane();
-//        nlistDir = dir;
+//        nListDir = dir;
 
         labels[IDX_INH_LIST] = new Label("Inhibitory neurons list:");
         labels[IDX_ACT_LIST] = new Label("Active neurons list:");
@@ -69,6 +69,11 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
         getChildren().add(gp);
     }
 
+    /**
+     * Provides the text fields for this Pane.
+     *
+     * @return The text fields for this Pane
+     */
     public TextField[] getTFields() {
         return tFields;
     }
@@ -104,13 +109,15 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
             chooser.setInitialFileName("prb.xml");
 //            dialogTitle = "Probed neurons list";
             break;
+        default:
+            // do nothing
         }
 
         File option = chooser.showSaveDialog(WorkbenchDisplay.getPrimaryStage());
 
         if (option != null) {
             tFields[iSource].setText(option.getAbsolutePath());
-//            nlistDir = option.getParent();
+//            nListDir = option.getParent();
             fileMgr.add(option.getParentFile());
         }
     }

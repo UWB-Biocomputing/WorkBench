@@ -489,6 +489,15 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         return DEFAULT_REPO_URI;
     }
 
+    /**
+     * Responsible for allocating a new dialog, instantiating and initializing all members, and
+     * making the dialog visible. The dialog values are obtained from an existing simulation
+     * specification.
+     *
+     * @param modal  True if this dialog should prevent focus from shifting to it's parent,
+     *               False if the focus can shift to the parent while this dialog is visible
+     * @param simSpec  A simulation specification containing parameters to be used in the dialog
+     */
     public ScriptSpecificationDialog(boolean modal, SimulationSpecification simSpec) {
         LOG.info("New ScriptSpecificationDialog with SimulationSpecification");
         setModal(modal);
@@ -502,7 +511,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         String userName = simSpec.getUsername();
         String folder = simSpec.getSimulatorFolder();
         String codeLocation = simSpec.getCodeLocation();
-        String SHA1Key = simSpec.hasCommitCheckout() ? simSpec.getSHA1CheckoutKey() : "";
+        String sha1Key = simSpec.hasCommitCheckout() ? simSpec.getSHA1CheckoutKey() : "";
         String buildOption = simSpec.getBuildOption();
         codeLocation = codeLocation == null || codeLocation.isEmpty()
                 ? getDefaultCodeLocation() : codeLocation;
@@ -551,7 +560,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         simulatorLocationTextField.setText(folder);
         codeRepositoryLocationTextField.setText(codeLocation);
         versionAnnotationTextField.setText(version);
-        SHA1CheckoutKeyTextField.setText(SHA1Key);
+        SHA1CheckoutKeyTextField.setText(sha1Key);
 
         updateStateOnBuildOptionChange();
         enableOkButton();

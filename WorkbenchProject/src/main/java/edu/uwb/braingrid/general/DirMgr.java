@@ -3,7 +3,7 @@ package edu.uwb.braingrid.general;
 import java.io.File;
 import java.util.logging.Logger;
 
-import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
+import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
 
 public final class DirMgr {
 
@@ -26,7 +26,7 @@ public final class DirMgr {
      */
     public static String getBrainGridRepoDirectory() {
         String bgReposPath = DirMgr.getRootPath() + File.separator
-                + ProvVisGlobal.BG_REPOSITORY_LOCAL;
+                + ProVisGlobal.BG_REPOSITORY_LOCAL;
 
         LOG.info("BrainGrid Repo Path: " + bgReposPath);
         return bgReposPath;

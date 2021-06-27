@@ -37,7 +37,7 @@ public class SimulationConfigurationManager {
             simConfig = simConfigBuilder.load(configFilename);
         } else {
             load = false;
-            //TO DO - Note that there MUST be a template file, so an empty simConfig is unreasonable
+            //TODO: Note that there MUST be a template file, so an empty simConfig is unreasonable
             //simConfig = new SimulationConfiguration();
         }
     }
@@ -57,7 +57,7 @@ public class SimulationConfigurationManager {
             TransformerConfigurationException, IOException {
         String fullPath = null;
 
-        //TO DO - Add this function to the SimulationConfiguration when working with Dialog's build
+        //TODO: Add this function to the SimulationConfiguration when working with Dialog's build
         // button
         //boolean success = inputConfig.allValuesSet();
 

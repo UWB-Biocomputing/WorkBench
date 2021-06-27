@@ -818,7 +818,7 @@ public class ProjectMgr {
      */
     public boolean addSimulator(String simulatorExecutionLocation, String hostname,
             String simFolder, String simulationType, String codeLocation, String versionAnnotation,
-            String sourceCodeUpdating, String SHA1Key, String buildOption) {
+            String sourceCodeUpdating, String sha1Key, String buildOption) {
         boolean success = true;
         // remove previously defined simulator
         removeSimulator();
@@ -834,7 +834,7 @@ public class ProjectMgr {
             Element simulationTypeElem = doc.createElement(SIMULATION_TYPE_TAG_NAME);
             Element sourceCodeUpdatingElem = doc.createElement(
                     SIMULATOR_SOURCE_CODE_UPDATING_TAG_NAME);
-            Element SHA1KeyElem = doc.createElement(SHA1_KEY_TAG_NAME);
+            Element sha1KeyElem = doc.createElement(SHA1_KEY_TAG_NAME);
             Element buildOptionElem = doc.createElement(BUILD_OPTION_TAG_NAME);
 
             /* Add Values */
@@ -846,7 +846,7 @@ public class ProjectMgr {
             Text simFolderText = doc.createTextNode(simFolder);
             Text simulationTypeText = doc.createTextNode(simulationType);
             Text sourceCodeUpdatingText = doc.createTextNode(sourceCodeUpdating);
-            Text sha1keyText = doc.createTextNode(SHA1Key);
+            Text sha1KeyText = doc.createTextNode(sha1Key);
             Text buildOptionText = doc.createTextNode(buildOption);
 
             // attach the text to respective elements
@@ -857,7 +857,7 @@ public class ProjectMgr {
             simFolderElem.appendChild(simFolderText);
             simulationTypeElem.appendChild(simulationTypeText);
             sourceCodeUpdatingElem.appendChild(sourceCodeUpdatingText);
-            SHA1KeyElem.appendChild(sha1keyText);
+            sha1KeyElem.appendChild(sha1KeyText);
             buildOptionElem.appendChild(buildOptionText);
 
             /* Attach Elements */
@@ -869,7 +869,7 @@ public class ProjectMgr {
             simulator.appendChild(simFolderElem);
             simulator.appendChild(simulationTypeElem);
             simulator.appendChild(sourceCodeUpdatingElem);
-            simulator.appendChild(SHA1KeyElem);
+            simulator.appendChild(sha1KeyElem);
             simulator.appendChild(buildOptionElem);
             // attach the input element to the project element
             root.appendChild(simulator);

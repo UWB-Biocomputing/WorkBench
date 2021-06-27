@@ -65,10 +65,20 @@ public class GPatternPanel extends Pane {
         getChildren().add(allItems);
     }
 
+    /**
+     * Provides the radio buttons for this Pane.
+     *
+     * @return The radio buttons for this Pane
+     */
     public RadioButton[] getRButtons() {
         return rButtons;
     }
 
+    /**
+     * Provides the text fields for this Pane.
+     *
+     * @return The text fields for this Pane
+     */
     public TextField[] getTFields() {
         return tFields;
     }

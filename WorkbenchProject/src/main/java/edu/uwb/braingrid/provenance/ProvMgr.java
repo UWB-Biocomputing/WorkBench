@@ -241,8 +241,7 @@ public class ProvMgr {
      * @see #addEntity(String, String, String, String, String, boolean)
      */
     public Resource addEntity(String uri, String label, String remoteHostAddress, String username,
-            boolean replace) {
-        // @cs-: JavadocMethod influence -2 (overloaded method)
+            boolean replace) { // @cs-: JavadocMethod influence -1 (overloaded method)
         return addEntity(uri, label, remoteHostAddress, username, null, replace);
     }
 

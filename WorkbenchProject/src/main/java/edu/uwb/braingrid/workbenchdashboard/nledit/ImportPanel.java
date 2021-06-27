@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -39,7 +40,7 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
     /** Directory for configuration file. */
     private static String configDir = ".";
     /** Directory for neurons list file. */
-    public static String nlistDir = ".";
+    private static String nListDir = ".";
 
     private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
 
@@ -69,6 +70,11 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
         getChildren().add(gp);
     }
 
+    /**
+     * Provides the text fields for this Pane.
+     *
+     * @return The text fields for this Pane
+     */
     public TextField[] getTFields() {
         return tFields;
     }
@@ -86,7 +92,7 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
         // if (iSource == IDX_CONFIG_FILE) {
         // curDir = configDir;
         // } else {
-        // curDir = nlistDir;
+        // curDir = nListDir;
         // }
 
         FileChooser chooser = new FileChooser();
@@ -114,6 +120,8 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
             chooser.setInitialFileName("prb");
             dialogTitle = "Probed neurons list";
             break;
+        default:
+            // do nothing
         }
         chooser.setTitle(dialogTitle);
 
@@ -126,19 +134,21 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
                 // show them in the corresponding fields
                 String configFile = option.getAbsolutePath();
                 configDir = option.getParent();
-                nlistDir = configDir;
+                nListDir = configDir;
                 try {
                     Document doc = new SAXBuilder().build(new File(configFile));
                     Element root = doc.getRootElement();
                     Element layout = root.getChild("FixedLayout").getChild("LayoutFiles");
-                    org.jdom2.Attribute attr;
-                    if ((attr = layout.getAttribute("activeNListFileName")) != null) {
+                    Attribute attr = layout.getAttribute("activeNListFileName");
+                    if (attr != null) {
                         tFields[IDX_ACT_LIST].setText(configDir + "/" + attr.getValue());
                     }
-                    if ((attr = layout.getAttribute("inhNListFileName")) != null) {
+                    attr = layout.getAttribute("inhNListFileName");
+                    if (attr != null) {
                         tFields[IDX_INH_LIST].setText(configDir + "/" + attr.getValue());
                     }
-                    if ((attr = layout.getAttribute("probedNListFileName")) != null) {
+                    attr = layout.getAttribute("probedNListFileName");
+                    if (attr != null) {
                         tFields[IDX_PRB_LIST].setText(configDir + "/" + attr.getValue());
                     }
                 } catch (JDOMException je) {
@@ -147,7 +157,7 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
                     // System.err.println(ie);
                 }
             } else {
-                nlistDir = option.getParent();
+                nListDir = option.getParent();
             }
         }
     }
@@ -156,5 +166,9 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
     public void handle(ActionEvent arg0) {
         // TODO Auto-generated method stub
         importFiles(arg0);
+    }
+
+    public static String getNListDir() {
+        return nListDir;
     }
 }

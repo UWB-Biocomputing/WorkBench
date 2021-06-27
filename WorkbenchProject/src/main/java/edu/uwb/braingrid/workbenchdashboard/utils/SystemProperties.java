@@ -30,17 +30,16 @@ public final class SystemProperties {
 
     private static final Logger LOG = Logger.getLogger(SystemProperties.class.getName());
 
-    private static OSType osType = OSType.UNKNOWN;
     private static OS os = OS.UNKNOWN;
+    private static OSType osType = OSType.UNKNOWN;
     private static OS osUserDef =  OS.UNKNOWN;
     private static OSType osTypeUserDef = OSType.UNKNOWN;
     private static SystemProperties sysProperties = null;
 
     private SystemProperties() {
         LOG.info("new SystemProperties");
-        String os = System.getProperty("os.name");
 //        System.getProperties().list(System.out);
-        initOSTypeByString(os);
+        initOSTypeByString(System.getProperty("os.name"));
     }
 
     public static SystemProperties getInstance() {
@@ -50,8 +49,8 @@ public final class SystemProperties {
         return sysProperties;
     }
 
-    private static void initOSTypeByString(String os) {
-        switch (os) {
+    private static void initOSTypeByString(String sysOS) {
+        switch (sysOS) {
             case "Windows 10":
                 informOSType("Windows 10", OS.Windows_10, OSType.Windows);
                 break;
@@ -78,14 +77,16 @@ public final class SystemProperties {
                 break;
             case "FreeBSD":
                 informOSType("FreeBSD", OS.FreeBSD, OSType.FreeBSD);
+                break;
             default:
+                informOSType("UNKNOWN", OS.UNKNOWN, OSType.UNKNOWN);
         }
     }
 
-    private static void informOSType(String name, OS os, OSType osType) {
+    private static void informOSType(String name, OS sysOS, OSType sysOSType) {
         LOG.info("OS found - " + name);
-        SystemProperties.os = os;
-        SystemProperties.osType = osType;
+        SystemProperties.os = sysOS;
+        SystemProperties.osType = sysOSType;
     }
 
     public static OS getOS() {
@@ -102,11 +103,11 @@ public final class SystemProperties {
         return osType;
     }
 
-    public static void setOSType(OSType osType) {
-        osTypeUserDef = osType;
+    public static void setOS(OS sysOS) {
+        osUserDef = sysOS;
     }
 
-    public static void setOS(OS os) {
-        osUserDef = os;
+    public static void setOSType(OSType sysOSType) {
+        osTypeUserDef = sysOSType;
     }
 }

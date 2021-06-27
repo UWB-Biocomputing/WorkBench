@@ -20,7 +20,7 @@ public class WorkbenchStatusBar extends HBox {
         this.getChildren().add(statusLabel);
 
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(5), e -> {
+                new KeyFrame(Duration.seconds(5), e -> { //@cs-: MagicNumber influence 0
                     WorkbenchStatusBar.updateUpdateMessage();
                 })
         );

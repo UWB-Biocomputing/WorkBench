@@ -16,17 +16,17 @@ import java.awt.print.PrinterException;
  */
 public class MyPrintable implements Printable, Pageable {
 
-    private PageFormat pf;
+    private PageFormat pageFormat;
     private LayoutPanel layoutPanel;
-    private NL_Sim_Util nlSimUtil;
+    private NLSimUtil nlSimUtil;
 
-    public MyPrintable(LayoutPanel layoutPanel, NL_Sim_Util nlSimUtil) {
+    public MyPrintable(LayoutPanel layoutPanel, NLSimUtil nlSimUtil) {
         this.layoutPanel = layoutPanel;
         this.nlSimUtil = nlSimUtil;
     }
 
-    public MyPrintable(PageFormat pf, LayoutPanel layoutPanel, NL_Sim_Util nlSimUtil) {
-        this.pf = pf;
+    public MyPrintable(PageFormat pageFormat, LayoutPanel layoutPanel, NLSimUtil nlSimUtil) {
+        this.pageFormat = pageFormat;
         this.layoutPanel = layoutPanel;
         this.nlSimUtil = nlSimUtil;
     }
@@ -101,7 +101,7 @@ public class MyPrintable implements Printable, Pageable {
      * @see java.awt.print.Pageable#getPageFormat(int)
      */
     public PageFormat getPageFormat(int pageIndex) throws IndexOutOfBoundsException {
-        return pf; // return page format
+        return pageFormat; // return page format
     }
 
     /*
@@ -125,7 +125,8 @@ public class MyPrintable implements Printable, Pageable {
         int y = (int) pf.getImageableY();
 
         for (String line : str.split("\n")) {
-            g.drawString(line, x, y += g.getFontMetrics().getHeight());
+            y += g.getFontMetrics().getHeight();
+            g.drawString(line, x, y);
         }
     }
 }

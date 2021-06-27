@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
-import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit;
+import edu.uwb.braingrid.workbenchdashboard.nledit.NLEdit;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 import edu.uwb.braingrid.workbenchdashboard.userView.UserView;
 import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
@@ -143,7 +143,7 @@ public class WorkbenchDisplay extends BorderPane {
      */
     public void pushGSLEPane() {
         Tab tab = new Tab();
-        NLedit pv = new NLedit(tab);
+        NLEdit pv = new NLEdit(tab);
         tab.setContent(pv.getDisplay());
         tabPane.getTabs().add(tab);
         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.FileManagerShared;
-import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
+import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
 
 /**
  *
@@ -30,7 +30,7 @@ public final class User implements FileManagerShared {
         setRootDir(System.getProperty("user.dir"));
         setHomeDir(System.getProperty("user.home"));
         setBrainGridRepoDirectory(getRootDir() + File.separator
-                + ProvVisGlobal.BG_REPOSITORY_LOCAL);
+                + ProVisGlobal.BG_REPOSITORY_LOCAL);
     }
 
     public static User getInstance() {

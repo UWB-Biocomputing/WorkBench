@@ -267,7 +267,7 @@ public class ProVisCtrl {
         });
     }
 
-    private void initMouseEvents() {
+    private void initMouseEvents() { //@cs-: MethodLength influence 0
         visCanvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -693,25 +693,25 @@ public class ProVisCtrl {
      * Populates textfields in builder control given node input selected by user. Sets up necessary
      * information for builder action to occur.
      */
-    private void prepBuildInputParams(Node selectedNode) {
-        if (selectedNode instanceof ActivityNode) {
-            ArrayList<Node> neighbors = selectedNode.getNeighborNodes();
+    private void prepBuildInputParams(Node aSelectedNode) {
+        if (aSelectedNode instanceof ActivityNode) {
+            ArrayList<Node> neighbors = aSelectedNode.getNeighborNodes();
             for (Node neighbor : neighbors) {
                 prepBuildInputParams(neighbor);
             }
-        } else if (selectedNode instanceof AgentNode) {
-            ArrayList<Node> neighbors = selectedNode.getNeighborNodes();
+        } else if (aSelectedNode instanceof AgentNode) {
+            ArrayList<Node> neighbors = aSelectedNode.getNeighborNodes();
             for (Node neighbor : neighbors) {
                 if (neighbor instanceof CommitNode) {
                     prepBuildInputParams(neighbor);
                     return;
                 }
             }
-        } else if (selectedNode instanceof EntityNode) {
-            parseEntityNodeFile(selectedNode);
-        } else if (selectedNode instanceof CommitNode) {
-            bGVersionTextField.appendText(selectedNode.getDisplayId());
-            bGVersionSelected = selectedNode.getDisplayId();
+        } else if (aSelectedNode instanceof EntityNode) {
+            parseEntityNodeFile(aSelectedNode);
+        } else if (aSelectedNode instanceof CommitNode) {
+            bGVersionTextField.appendText(aSelectedNode.getDisplayId());
+            bGVersionSelected = aSelectedNode.getDisplayId();
             buildFromPrevButton.setDisable(false);
         } else {
             //System.out.println("No Node type detected");
@@ -738,39 +738,38 @@ public class ProVisCtrl {
      *
      * @return True if successful loadFile completion, otherwise false
      */
-    private boolean parseEntityNodeFile(Node selectedNode) {
-        boolean selectedNodeFileReady = false;
+    private boolean parseEntityNodeFile(Node aSelectedNode) {
         char typeOfNode = 'N';
-        if (selectedNode == null) {
+        if (aSelectedNode == null) {
             return false;
         }
 
-        selectedNodeFileReady = checkIfNodeFileExists(selectedNode);
-        if (!selectedNodeFileReady) {
-            selectedNodeFileReady = downloadNodeFile(selectedNode);
+        boolean nodeFileReady = checkIfNodeFileExists(aSelectedNode);
+        if (!nodeFileReady) {
+            nodeFileReady = downloadNodeFile(aSelectedNode);
         }
-        if (selectedNodeFileReady) {
-            typeOfNode = loadFile(FileUtility.getNodeFileLocalAbsolutePath(selectedNode));
+        if (nodeFileReady) {
+            typeOfNode = loadFile(FileUtility.getNodeFileLocalAbsolutePath(aSelectedNode));
         }
 
         if (typeOfNode == 'N') {
             return false;
         } else if (typeOfNode == 'S') {
             inputTextField.clear();
-            inputTextField.appendText(selectedNode.getDisplayId());
-            simSpecifications = FileUtility.getNodeFileLocalAbsolutePath(selectedNode);
+            inputTextField.appendText(aSelectedNode.getDisplayId());
+            simSpecifications = FileUtility.getNodeFileLocalAbsolutePath(aSelectedNode);
         } else if (typeOfNode == 'I') {
             inhibitoryTextField.clear();
-            inhibitoryTextField.appendText(selectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, selectedNode);
+            inhibitoryTextField.appendText(aSelectedNode.getDisplayId());
+            setNLEditforBuild(typeOfNode, aSelectedNode);
         } else if (typeOfNode == 'A') {
             activeTextField.clear();
-            activeTextField.appendText(selectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, selectedNode);
+            activeTextField.appendText(aSelectedNode.getDisplayId());
+            setNLEditforBuild(typeOfNode, aSelectedNode);
         } else if (typeOfNode == 'P') {
             probedTextField.clear();
-            probedTextField.appendText(selectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, selectedNode);
+            probedTextField.appendText(aSelectedNode.getDisplayId());
+            setNLEditforBuild(typeOfNode, aSelectedNode);
         }
         buildFromPrevButton.setDisable(false);
         return true;
@@ -792,16 +791,18 @@ public class ProVisCtrl {
         in.nextLine();
         String inputFromSelected = in.nextLine();
         String determineType = inputFromSelected.substring(0, 3);
-        if (determineType.equals("<A>")) {
-            return 'A';
-        } else if (determineType.equals("<I>")) {
-            return 'I';
-        } else if (determineType.equals("<P>")) {
-            return 'P';
-        } else if (determineType.equals("<!-")) {
-            //Do nothing, this is a ouput file
-        } else { // simulation input file
-            return 'S';
+        switch (determineType) {
+            case "<A>":
+                return 'A';
+            case "<I>":
+                return 'I';
+            case "<P>":
+                return 'P';
+            case "<!-":
+                // do nothing, this is an output file
+                break;
+            default:  // simulation input file
+                return 'S';
         }
         return 'N';
     }
@@ -818,10 +819,9 @@ public class ProVisCtrl {
      * Display universalProvenance on ProVis.
      */
     public void openUniversalProvenance() {
-        File universalProvenance = null;
-        universalProvenance = new File(System.getProperty("user.dir") + File.separator + "projects"
-                + File.separator + "UniversalProvenance.ttl");
-        if (universalProvenance != null) {
+        File universalProvenance = new File(System.getProperty("user.dir") + File.separator
+                + "projects" + File.separator + "UniversalProvenance.ttl");
+        if (universalProvenance.exists()) {
             dataProvGraph.clearNodesNEdges();
             initNodeEdge(universalProvenance.getAbsolutePath());
             proVis.setTitle(universalProvenance.getName());

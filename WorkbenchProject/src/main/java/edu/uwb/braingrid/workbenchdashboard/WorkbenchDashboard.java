@@ -28,6 +28,11 @@ public class WorkbenchDashboard extends Application {
 
     private static final Logger LOG = Logger.getLogger(WorkbenchDashboard.class.getName());
 
+    /** Default width for the main display. */
+    public static final int DEFAULT_SCENE_WIDTH = 900;
+    /** Default height for the main display. */
+    public static final int DEFAULT_SCENE_HEIGHT = 600;
+
     /** GSLE Growth Simulation Layout Editor. */
     private WorkbenchDisplay workbenchDisplay;
 
@@ -68,8 +73,10 @@ public class WorkbenchDashboard extends Application {
 
         // Start Application
         LOG.info("Starting Application");
-        workbenchDisplay = new WorkbenchDisplay(primaryStage); // Create main display
-        Scene scene = new Scene(workbenchDisplay, 900, 600); // Create a scene out of the display.
+        // Create main display
+        workbenchDisplay = new WorkbenchDisplay(primaryStage);
+        // Create a scene out of the display
+        Scene scene = new Scene(workbenchDisplay, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT);
 
         // Add CSS files
         scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/temp.css"))

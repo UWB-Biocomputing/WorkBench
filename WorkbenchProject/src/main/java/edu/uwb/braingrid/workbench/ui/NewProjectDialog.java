@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class NewProjectDialog extends javax.swing.JDialog {
 
     private static final long serialVersionUID = 1L;
-    private boolean isRunning = false;
+    private boolean isRunning;
     private static final Logger LOG = Logger.getLogger(NewProjectDialog.class.getName());
 
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
@@ -216,8 +216,6 @@ public class NewProjectDialog extends javax.swing.JDialog {
      * Note: This method relies on a static call to the ProvMgr class within the ../../provenance/
      * package.
      *
-     * @param name  A project name, and implicitly the basename for the resulting provenance turtle
-     *              file
      * @return true if this project name is a valid file basename, otherwise false
      */
     private boolean validateNewProjectName() {
@@ -306,6 +304,11 @@ public class NewProjectDialog extends javax.swing.JDialog {
     }
     // </editor-fold>
 
+    /**
+     * Indicates whether or not the new project dialog window is open.
+     *
+     * @return True if the new project dialog window is open, false otherwise
+     */
     public boolean isRunning() {
         return isRunning;
     }

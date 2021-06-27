@@ -277,8 +277,8 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     public void buildTabsGUI(Document aDoc) throws XPathExpressionException {
         ArrayList<Node> inputElements = new ArrayList<>();
 
-        for (int i = 0; i < tabPaths.size(); i++) {
-            XPathExpression xpath = XPathFactory.newInstance().newXPath().compile(tabPaths.get(i));
+        for (String tabPath : tabPaths) {
+            XPathExpression xpath = XPathFactory.newInstance().newXPath().compile(tabPath);
             NodeList nodeList = (NodeList) xpath.evaluate(aDoc, XPathConstants.NODESET);
             Node tab = nodeList.item(0);
 
@@ -313,7 +313,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                             .addComponent(label));
                     subLayout.setVerticalGroup(subLayout.createSequentialGroup()
                             .addGroup(subLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(label)));
+                                    .addComponent(label)));
 
                     contentPanel.add(subPanel);
 
@@ -394,8 +394,8 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     private FileSelectorDirMgr dirMgr = new FileSelectorDirMgr();
     // File Button Listener used to handle the copy of the file and set the path
     private class ImportFileButtonListener implements ActionListener {
-        InputType type = null;
-        JTextField field = null;
+        private InputType type;
+        private JTextField field;
 
         ImportFileButtonListener(InputType aType, JTextField aField) {
             LOG.info("New " + getClass().getName() + " Type: " + aType.toString());
@@ -408,7 +408,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             importNeuronList(type, field);
         }
 
-        private void importNeuronList(InputType type, JTextField field) {
+        private void importNeuronList(InputType aType, JTextField aField) {
             FileManager fm = FileManager.getFileManager();
             // get starting folder
             String simConfFilesDir;
@@ -435,13 +435,13 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                 try {
                     File file = dlg.getSelectedFile();
                     // if type is correct
-                    if (InputAnalyzer.getInputType(file) == type) {
+                    if (InputAnalyzer.getInputType(file) == aType) {
                         Path sourceFilePath = file.toPath();
                         String destPathText = fm.getNeuronListFilePath(projectName,
                                 file.getName(), true);
                         Path destFilePath = new File(destPathText).toPath();
                         if (FileManager.copyFile(sourceFilePath, destFilePath)) {
-                            field.setText("workbenchconfigfiles/NList/"
+                            aField.setText("workbenchconfigfiles/NList/"
                                     + fm.getSimpleFilename(destFilePath.toString()));
                             dirMgr.add(file.getParentFile());
                         }
@@ -450,7 +450,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                     } else {
                         messageLabelText.setText("<html><span style=\"color:orange\">"
                                 + "The selected file did not match the type: "
-                                + type.toString() + "</span></html>");
+                                + aType.toString() + "</span></html>");
                     }
                 } catch (ParserConfigurationException | SAXException | IOException ex) {
                     messageLabelText.setText("<html><span style=\"color:red\">" + ex.getClass()
@@ -509,24 +509,25 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     /**
      * Helper function ensures stateOutputFileName has "results/" as prefix and ".xml" as postfix.
      *
-     * @param outputName
-     * @return
+     * @param outputName  The output name to be validated
+     * @return An output name that is guaranteed to have the proper prefix and postfix
      */
     private String ensureValidOutputName(String outputName) {
-        if (outputName.length() < 8 || !outputName.substring(0, 8).equals("results/")) {
-            outputName = "results/" + outputName;
+        String validOutputName = outputName;
+        if (!outputName.startsWith("results/")) {
+            validOutputName = "results/" + outputName;
         }
-        if (!outputName.substring(outputName.length() - 4, outputName.length()).equals(".xml")) {
-            outputName = outputName + ".xml";
+        if (!outputName.endsWith(".xml")) {
+            validOutputName += ".xml";
         }
-        return outputName;
+        return validOutputName;
     }
 
     private String setInitialOutputFilename() {
         return "results/historyDump_" + projectName + ".xml";
     }
 
-    private void importNeuronList(InputType type, JTextField field, String path) {
+    private void importNeuronList(InputType aType, JTextField aField, String path) {
         FileManager fm = FileManager.getFileManager();
         // get starting folder
         String simConfFilesDir;
@@ -545,12 +546,12 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         try {
             File file = new File(path);
             // if type is correct
-            if (InputAnalyzer.getInputType(file) == type) {
+            if (InputAnalyzer.getInputType(file) == aType) {
                 Path sourceFilePath = file.toPath();
                 String destPathText = fm.getNeuronListFilePath(projectName, file.getName(), true);
                 Path destFilePath = new File(destPathText).toPath();
                 if (FileManager.copyFile(sourceFilePath, destFilePath)) {
-                    field.setText("workbenchconfigfiles/NList/"
+                    aField.setText("workbenchconfigfiles/NList/"
                             + fm.getSimpleFilename(destFilePath.toString()));
                     dirMgr.add(file.getParentFile());
                 }
@@ -558,7 +559,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                         + "Good!</span></html>");
             } else {
                 messageLabelText.setText("<html><span style=\"color:orange\">"
-                        + "The selected file did not match the type: " + type.toString()
+                        + "The selected file did not match the type: " + aType.toString()
                         + "</span></html>");
             }
         } catch (ParserConfigurationException | SAXException | IOException ex) {

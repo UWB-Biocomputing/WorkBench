@@ -28,7 +28,7 @@ public class SimulationConfigurationBuilder {
 
     private Document doc;
     private Element root;
-    //TO DO - Decide if this is the proper tag name
+    //TODO: Decide if this is the proper tag name
     private static final String ROOT_TAG_NAME = "SimParams";
 
     /**

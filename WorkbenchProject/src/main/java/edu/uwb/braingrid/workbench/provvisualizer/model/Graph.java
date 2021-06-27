@@ -42,6 +42,7 @@ import edu.uwb.braingrid.workbench.provvisualizer.factory.NodeFactory;
  */
 public class Graph {
 
+    /** Font size for ProVis graph labels. */
     public static final double LABEL_FONT_SIZE = 20;
 
     private Git git = null;
@@ -81,15 +82,15 @@ public class Graph {
     }
 
     public void addNode(Node node) {
-        this.nodes.put(node.getId(), node);
+        nodes.put(node.getId(), node);
         if (node instanceof CommitNode) {
             commitNodesList.add(node);
         }
     }
 
-    public void addNodes(Node... nodes) {
-        for (Node node : nodes) {
-            this.nodes.put(node.getId(), node);
+    public void addNodes(Node... moreNodes) {
+        for (Node node : moreNodes) {
+            nodes.put(node.getId(), node);
         }
     }
 
@@ -111,20 +112,16 @@ public class Graph {
     }
 
     public Node getNode(String nodeId) {
-        if (this.nodes.containsKey(nodeId)) {
-            return this.nodes.get(nodeId);
-        } else {
-            return null;
-        }
+        return nodes.getOrDefault(nodeId, null);
     }
 
     public void addEdge(Edge edge) {
-        this.edges.put(edge.getEdgeId(), edge);
+        edges.put(edge.getEdgeId(), edge);
     }
 
-    public void addEdges(Edge... edges) {
-        for (Edge edge : edges) {
-            this.edges.put(edge.getEdgeId(), edge);
+    public void addEdges(Edge... moreEdges) {
+        for (Edge edge : moreEdges) {
+            edges.put(edge.getEdgeId(), edge);
         }
     }
 
@@ -549,10 +546,13 @@ public class Graph {
         drawNode(gc, node, displayWindowLocation, zoomRatio, highlight, 1.1);
     }
 
-    private void drawNode(GraphicsContext gc, Node node, double[] displayWindowLocation,
+    private void drawNode(GraphicsContext gc, Node aNode, double[] displayWindowLocation,
             double zoomRatio, boolean highlight, double nodeSizeRatio) {
-        double[] nodeXY = null;
-        if (comparingNode != null && node.equals(comparingNode)) {
+        double[] nodeXY;
+        Node node = aNode;
+        // if this is the current comparing node, draw a copy of the node
+        //  with its color changed to yellow
+        if (node.equals(comparingNode)) {
             node = NodeFactory.getInstance().convertToComparingNode(node);
         }
         if (node.isAbsoluteXY()) {
@@ -913,7 +913,7 @@ public class Graph {
         return commitNodesList;
     }
 
-    public void setCommitList(HashSet<Node> commitNodesList) {
+    public void setCommitNodesList(HashSet<Node> commitNodesList) {
         this.commitNodesList = commitNodesList;
     }
 }

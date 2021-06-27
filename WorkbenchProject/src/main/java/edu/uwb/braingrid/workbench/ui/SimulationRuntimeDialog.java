@@ -5,7 +5,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Node;
@@ -33,6 +32,12 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
     private Label outputTextFieldLabel;
     private GridPane pane;
 
+    /**
+     * Constructs and initializes this simulation runtime dialog.
+     *
+     * @param wbmng
+     * @param simStatusOutput
+     */
     public SimulationRuntimeDialog(WorkbenchManager wbmng, TextArea simStatusOutput) {
         LOG.info("new " + getClass().getName());
         workbenchManager = wbmng;

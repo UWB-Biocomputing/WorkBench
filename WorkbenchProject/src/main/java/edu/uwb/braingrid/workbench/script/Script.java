@@ -217,22 +217,17 @@ public class Script {
      *
      * @param prefix  The prefix used to identify the statement during analysis
      * @param statement  The statement indicating the value associated with the prefix
-     * @param provFile
      * @param append  True if the redirected standard out descriptor and standard error descriptor
      *                should be appended to, False if they should be overwritten by the output of
      *                this printf statement
      */
-    public void printf(String prefix, String statement, String provFile, boolean append) {
-        statement = printfEscape(statement);
-        if (provFile == null) {
-            provFile = scriptStatusOutputFilename;
-        }
-        StringBuilder s = new StringBuilder();
+    public void printf(String prefix, String statement, boolean append) {
+        String escapedStatement = printfEscape(statement);
+        String outputFile = scriptStatusOutputFilename;
         String outToken = append ? ">>" : ">";
-        s.append("printf \"").append(prefix).append(": ").append(statement).append("\\n\" ")
-                .append(outToken).append(" ~/").append(provFile).append(" 2")
-                .append(outToken).append(" ~/").append(provFile);
-        bashStatements.add(s.toString());
+        String s = "printf \"" + prefix + ": " + escapedStatement + "\\n\" " + outToken + " ~/"
+                + outputFile + " 2" + outToken + " ~/" + outputFile;
+        bashStatements.add(s);
     }
 
     /**
@@ -250,13 +245,22 @@ public class Script {
      * @param append  Whether or not the output file should be appended to
      */
     public void addVerbatimStatement(String stmt, String outputFile, boolean append) {
-        if (outputFile == null) {
-            outputFile = "~/" + cmdOutputFilename;
-        }
         preCommandOutput(stmt, !bashStatements.isEmpty());
         String redirectString = (append ? " >>" : " >") + " " + outputFile + " 2>> " + outputFile;
         bashStatements.add(stmt + redirectString);
         postCommandOutput(!bashStatements.isEmpty());
+    }
+
+    /**
+     * Adds a command statement to the command output file for this Script.
+     *
+     * @param stmt  Command statement to be added
+     * @param append  Whether or not the output file should be appended to
+     * @see #addVerbatimStatement(String, String, boolean)
+     */
+    public void addVerbatimStatement(String stmt, boolean append) {
+        String outputFile = "~/" + cmdOutputFilename;
+        addVerbatimStatement(stmt, outputFile, append);
     }
 
     /**
@@ -292,11 +296,11 @@ public class Script {
      * @param append  Indicates whether or not to append the output file
      */
     private void preCommandOutput(String whatStarted, boolean append) {
-        whatStarted = printfEscape(whatStarted);
+        String escapedWhatStarted = printfEscape(whatStarted);
         StringBuilder s = new StringBuilder();
         String outToken;
         outToken = append ? ">>" : ">";
-        s.append("printf \"command: ").append(whatStarted.replaceAll("\"", ""))
+        s.append("printf \"command: ").append(escapedWhatStarted.replaceAll("\"", ""))
                 .append("\\ntime started: `date +%s`\\n\" ")
                 .append(outToken)
                 .append(" ~/").append(scriptStatusOutputFilename).append(" 2")
@@ -380,6 +384,8 @@ public class Script {
     /**
      * Constructs the bash script from the previously constructed parts (see model data
      * declarations).
+     *
+     * @return True if the script was constructed successfully, otherwise false
      */
     private boolean constructBashScript() {
         StringBuilder builder = new StringBuilder();
@@ -419,7 +425,8 @@ public class Script {
         }
         bashScript = builder.toString();
         // set flag for persistence
-        return bashScriptConstructed = true;
+        bashScriptConstructed = true; //TODO: Is there ever a case when this should be false?
+        return true;
     }
     // </editor-fold>
 
@@ -469,10 +476,20 @@ public class Script {
         return "run_v" + version + ".sh";
     }
 
+    /**
+     * Returns the bash script as a string.
+     *
+     * @return The bash script
+     */
     public String getBashScript() {
         return this.bashScript;
     }
 
+    /**
+     * Returns the list of bash statements for this Script.
+     *
+     * @return The list of bash statements for this Script
+     */
     public List<String> getBashStatements() {
         return this.bashStatements;
     }

@@ -15,7 +15,7 @@ import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Ref;
 
-import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
+import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
 import edu.uwb.braingrid.workbenchdashboard.threads.RunUpdateRepo;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 
@@ -23,6 +23,7 @@ public final class RepoManager {
 
     private static final Logger LOG = Logger.getLogger(RepoManager.class.getName());
 
+    /** Name of the master branch. */
     public static final String MASTER_BRANCH_NAME = "master";
     private static boolean updatingBranch = false;
 
@@ -43,7 +44,7 @@ public final class RepoManager {
         } else {
             LOG.info("Updating Repo");
             git = Git.cloneRepository()
-                    .setURI(ProvVisGlobal.BG_REPOSITORY_URI)
+                    .setURI(ProVisGlobal.BG_REPOSITORY_URI)
                     .setDirectory(new File(masterBranchPath))
                     .call();
         }
@@ -69,7 +70,7 @@ public final class RepoManager {
         try {
             refs = Git.lsRemoteRepository()
                     .setHeads(true)
-                    .setRemote(ProvVisGlobal.BG_REPOSITORY_URI)
+                    .setRemote(ProVisGlobal.BG_REPOSITORY_URI)
                     .call();
             for (Ref ref : refs) {
                 branches.add(ref.getName().substring(ref.getName().lastIndexOf("/") + 1,

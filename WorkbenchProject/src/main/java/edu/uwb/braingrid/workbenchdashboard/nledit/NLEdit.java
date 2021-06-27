@@ -45,13 +45,13 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 
-public class NLedit extends WorkbenchApp {
+public class NLEdit extends WorkbenchApp {
 
-    private static final Logger LOG = Logger.getLogger(NLedit.class.getName());
+    private static final Logger LOG = Logger.getLogger(NLEdit.class.getName());
 
     private BorderPane borderPane = new BorderPane();
 
-    public NLedit(Tab tab) {
+    public NLEdit(Tab tab) {
         super(tab);
         LOG.info("new " + getClass().getName());
         workbenchMgr = new WorkbenchManager();
@@ -90,7 +90,7 @@ public class NLedit extends WorkbenchApp {
         SwingNode scrollPaneNode = new SwingNode();
         scrollPaneNode.setContent(scrollpane);
         borderPane.setCenter(scrollPaneNode);
-        nlSimUtil = new NL_Sim_Util(layoutPanel, neuronsLayout);
+        nlSimUtil = new NLSimUtil(layoutPanel, neuronsLayout);
     }
 
     /**
@@ -393,7 +393,7 @@ public class NLedit extends WorkbenchApp {
     }
 
     public void exportPopup() {
-        ExportPanel myPanel = new ExportPanel(ImportPanel.nlistDir);
+        ExportPanel myPanel = new ExportPanel(ImportPanel.getNListDir());
 
         final Stage dialog = new Stage();
         dialog.setTitle("Export");
@@ -753,7 +753,7 @@ public class NLedit extends WorkbenchApp {
     }
 
     private LayoutPanel layoutPanel; // reference to the layout panel
-    private NL_Sim_Util nlSimUtil;
+    private NLSimUtil nlSimUtil;
 
     // Toolbar
     private Button importItemBtn = new Button("Import");

@@ -10,24 +10,25 @@ import edu.uwb.braingrid.workbench.provvisualizer.model.Node;
 
 public final class NodeFactory {
 
-    private static NodeFactory nodeFactory;
-    private static final double ACTIVITY_NODE_SIZE = 30;
+    /* Node properties */
+    private static final double NODE_WIDTH = 45;
+    private static final double NODE_HEIGHT = 30;
     private static final Color ACTIVITY_NODE_COLOR = Color.GREEN;
-    private static final double AGENT_NODE_SIZE = 30;
     private static final Color AGENT_NODE_COLOR = Color.RED;
-    private static final double ENTITY_NODE_SIZE = 30;
     private static final Color ENTITY_NODE_COLOR = Color.BLUE;
     private static final Color INPUT_ENTITY_NODE_COLOR = Color.LIGHTSKYBLUE;
     private static final Color OUTPUT_ENTITY_NODE_COLOR = Color.PINK;
     private static final Color COMPARING_ENTITY_NODE_COLOR = Color.YELLOW;
-    private static final double COMMIT_NODE_SIZE = 30;
     private static final Color COMMIT_NODE_COLOR = Color.BLUEVIOLET;
 
-    private Node defaultNode = null;
-    private EntityNode entityNode = null;
-    private AgentNode agentNode = null;
-    private ActivityNode activityNode = null;
-    private CommitNode commitNode = null;
+    private static NodeFactory nodeFactory = null;
+
+    /* Prototype nodes */
+    private static Node defaultNode = null;
+    private static EntityNode entityNode = null;
+    private static AgentNode agentNode = null;
+    private static ActivityNode activityNode = null;
+    private static CommitNode commitNode = null;
 
     private NodeFactory() {
         // singleton constructor
@@ -51,8 +52,7 @@ public final class NodeFactory {
 
     public ActivityNode createActivityNode() {
         if (activityNode == null) {
-            activityNode = new ActivityNode(ACTIVITY_NODE_SIZE * 1.5, ACTIVITY_NODE_SIZE,
-                    ACTIVITY_NODE_COLOR);
+            activityNode = new ActivityNode(NODE_WIDTH, NODE_HEIGHT, ACTIVITY_NODE_COLOR);
         }
 
         return activityNode.clone();
@@ -60,7 +60,7 @@ public final class NodeFactory {
 
     public AgentNode createAgentNode() {
         if (agentNode == null) {
-            agentNode = new AgentNode(AGENT_NODE_SIZE * 1.5, AGENT_NODE_SIZE, AGENT_NODE_COLOR);
+            agentNode = new AgentNode(NODE_WIDTH, NODE_HEIGHT, AGENT_NODE_COLOR);
         }
 
         return agentNode.clone();
@@ -68,8 +68,7 @@ public final class NodeFactory {
 
     public CommitNode createCommitNode() {
         if (commitNode == null) {
-            commitNode = new CommitNode(COMMIT_NODE_SIZE * 1.5, COMMIT_NODE_SIZE,
-                    COMMIT_NODE_COLOR);
+            commitNode = new CommitNode(NODE_WIDTH, NODE_HEIGHT, COMMIT_NODE_COLOR);
         }
 
         return commitNode.clone();
@@ -77,8 +76,7 @@ public final class NodeFactory {
 
     public EntityNode createEntityNode() {
         if (entityNode == null) {
-            entityNode = new EntityNode(ENTITY_NODE_SIZE * 1.5, ENTITY_NODE_SIZE,
-                    ENTITY_NODE_COLOR);
+            entityNode = new EntityNode(NODE_WIDTH, NODE_HEIGHT, ENTITY_NODE_COLOR);
         }
 
         return entityNode.clone();

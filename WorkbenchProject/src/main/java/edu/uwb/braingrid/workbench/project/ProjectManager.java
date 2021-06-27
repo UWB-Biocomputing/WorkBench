@@ -356,7 +356,7 @@ public class ProjectManager {
     }
 
     /**
-     * Note: This should not be used to determine if the script has completed execution
+     * Note: This should not be used to determine if the script has completed execution.
      *
      * @return
      */

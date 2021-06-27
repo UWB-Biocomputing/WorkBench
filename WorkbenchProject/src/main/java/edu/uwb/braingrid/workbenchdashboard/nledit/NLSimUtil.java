@@ -9,14 +9,20 @@ import java.util.Collections;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
-import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit.RepType;
+import edu.uwb.braingrid.workbenchdashboard.nledit.NLEdit.RepType;
 
-public class NL_Sim_Util {
+public class NLSimUtil {
 
     private LayoutPanel layoutPanel;
     private NeuronsLayout neuronsLayout;
 
-    public NL_Sim_Util(LayoutPanel layoutPanel, NeuronsLayout neuronsLayout) {
+    /**
+     * Creates a utility that interacts with a given neuron layout ui component and data model.
+     *
+     * @param layoutPanel  Neuron layout ui component
+     * @param neuronsLayout  Neuron layout data model
+     */
+    public NLSimUtil(LayoutPanel layoutPanel, NeuronsLayout neuronsLayout) {
         this.layoutPanel = layoutPanel;
         this.neuronsLayout = neuronsLayout;
     }
@@ -171,24 +177,15 @@ public class NL_Sim_Util {
     public void genRegularPattern(float ratioInh, float ratioAct) {
         neuronsLayout.inhNList.clear();
         neuronsLayout.activeNList.clear();
-        float ratio = ratioInh + ratioAct;
-        if (ratio == 0) {
-            return;
-        }
-
-        if (ratioInh == 0) {
+        if (ratioInh != 0 && ratioAct != 0) {
             neuronsLayout.activeNList = getRegularPointsIndex(ratioAct);
-            return;
-        } else if (ratioAct == 0) {
             neuronsLayout.inhNList = getRegularPointsIndex(ratioInh);
-            return;
+            findLargestNNIPointsIndexPair(ratioInh, ratioAct);
+        } else if (ratioInh != 0) {
+            neuronsLayout.activeNList = getRegularPointsIndex(ratioInh);
+        } else if (ratioAct != 0) {
+            neuronsLayout.inhNList = getRegularPointsIndex(ratioAct);
         }
-
-        // ratioInh != 0 && ratioAct != 0
-        neuronsLayout.activeNList = getRegularPointsIndex(ratioAct);
-        neuronsLayout.inhNList = getRegularPointsIndex(ratioInh);
-
-        findLargestNNIPointsIndexPair(ratioInh, ratioAct);
     }
 
     /**
@@ -198,11 +195,10 @@ public class NL_Sim_Util {
      *
      * @param ratioInh  Ratio of inhibitory neurons
      * @param ratioAct  Ratio of active neurons
-     * @return Indexes of neurons lists generated
      */
     public void findLargestNNIPointsIndexPair(float ratioInh, float ratioAct) {
-        ArrayList<Point> pts0 = new ArrayList<>();
-        ArrayList<Point> pts1 = new ArrayList<>();
+        ArrayList<Point> pts0;
+        ArrayList<Point> pts1;
         Dimension dim = layoutPanel.getLayoutSize();
         int height = dim.height;
         int width = dim.width;

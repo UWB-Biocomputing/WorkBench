@@ -295,6 +295,8 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                                     layoutParamsClassCBox.addItem(className);
                                     layoutParamsTemplatePaths.add(templatePath);
                                     break;
+                                default:
+                                    // unknown param class type
                                 }
                             }
                         }
@@ -326,6 +328,8 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                 case SystemConfig.LAYOUT_PARAMS_CLASSES_TAG_NAME:
                     layoutParamsNodePath = paramsClassesNodePath;
                     break;
+                default:
+                    // unknown param class type
                 }
             }
         }

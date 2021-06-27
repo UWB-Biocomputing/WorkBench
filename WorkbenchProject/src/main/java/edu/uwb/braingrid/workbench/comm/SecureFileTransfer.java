@@ -258,7 +258,7 @@ public class SecureFileTransfer {
                     }
                 }
                 try { // separate attempts by one second
-                    Thread.sleep(1000);
+                    Thread.sleep(1000); //@cs-: MagicNumber influence 0
                 } catch (InterruptedException ex) {
                 }
             }

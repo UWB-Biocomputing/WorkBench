@@ -252,8 +252,8 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Action Helpers">
-    private void specifyCredentials(boolean okClicked) {
-        this.okClicked = okClicked;
+    private void specifyCredentials(boolean proceed) {
+        this.okClicked = proceed;
         setVisible(false);
     }
     // </editor-fold>

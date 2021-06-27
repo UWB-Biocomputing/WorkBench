@@ -123,18 +123,18 @@ public class WorkbenchManager {
     public boolean configureSimulation() {
         String projectName = getProjectName();
         LOG.info("Configuring Simulation for " + projectName);
-        boolean success = true;
+        boolean success = false;
 
         if (!projectName.equals("None")) {
             String configFilename = projectMgr.getSimConfigFilename();
             InputConfigClassSelectionDialog iccsd
                     = new InputConfigClassSelectionDialog(projectName, true, configFilename);
-            if (success = iccsd.getSuccess()) {
+            if (iccsd.getSuccess()) {
                 DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
                         projectName, true, configFilename, iccsd.getInputConfigMgr(), null);
-                String simulationConfigurationFile = null;
-                String stateOutputFilename = null;
-                if (success = icd.getSuccess()) {
+                String simulationConfigurationFile;
+                String stateOutputFilename;
+                if (icd.getSuccess()) {
                     simulationConfigurationFile = icd.getBuiltFile();
                     stateOutputFilename = icd.getStateOutputFilename();
                     if (simulationConfigurationFile != null && stateOutputFilename != null) {
@@ -145,8 +145,7 @@ public class WorkbenchManager {
                                     "workbench", null, false, simulationConfigurationFile,
                                     null, null);
                         }
-                    } else {
-                        success = false;
+                        success = true;
                     }
                 }
             }
@@ -164,17 +163,18 @@ public class WorkbenchManager {
             HashMap<Character, String> nListPresets) {
         String projectName = getProjectName();
         LOG.info("Configuring Simulation for " + projectName);
-        boolean success = true;
+        boolean success = false;
+
         if (!projectName.equals("None")) {
             String configFilename = inputPresets;
             InputConfigClassSelectionDialog iccsd = new InputConfigClassSelectionDialog(projectName,
                     true, configFilename);
-            if (success = iccsd.getSuccess()) {
+            if (iccsd.getSuccess()) {
                 DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
                         projectName, true, configFilename, iccsd.getInputConfigMgr(), nListPresets);
-                String simulationConfigurationFile = null;
-                String stateOutputFilename = null;
-                if (success = icd.getSuccess()) {
+                String simulationConfigurationFile;
+                String stateOutputFilename;
+                if (icd.getSuccess()) {
                     simulationConfigurationFile = icd.getBuiltFile();
                     stateOutputFilename = icd.getStateOutputFilename();
                     if (simulationConfigurationFile != null && stateOutputFilename != null) {
@@ -185,8 +185,7 @@ public class WorkbenchManager {
                                     "workbench", null, false, simulationConfigurationFile,
                                     null, null);
                         }
-                    } else {
-                        success = false;
+                        success = true;
                     }
                 }
             }
@@ -278,6 +277,8 @@ public class WorkbenchManager {
                         + "Open project operation encountered an error\n"
                         + "Error occurred within the open file dialog\n";
                 break;
+            default:
+                // unknown option
         }
         if (projectMgr != null) {
             DateTime.recordFunctionExecutionTime("WorkbenchManager", "openProject",

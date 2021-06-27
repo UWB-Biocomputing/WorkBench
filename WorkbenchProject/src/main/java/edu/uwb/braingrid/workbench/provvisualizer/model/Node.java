@@ -114,22 +114,23 @@ public class Node {
         return this;
     }
 
-    public boolean isPointOnNode(double x, double y, double zoomRatio, boolean withTolerance) {
+    public boolean isPointOnNode(double xVal, double yVal, double zoomRatio,
+            boolean withTolerance) {
         double cornerX = this.x - this.width / zoomRatio / 2;
         double cornerY = this.y - this.height / zoomRatio / 2;
         if (withTolerance
-                && x >= cornerX - SELECTION_TOLERANCE / zoomRatio
-                && x <= cornerX + (this.width + SELECTION_TOLERANCE) / zoomRatio
-                && y >= cornerY - SELECTION_TOLERANCE / zoomRatio
-                && y <= cornerY + (this.height + SELECTION_TOLERANCE) / zoomRatio) {
+                && xVal >= cornerX - SELECTION_TOLERANCE / zoomRatio
+                && xVal <= cornerX + (this.width + SELECTION_TOLERANCE) / zoomRatio
+                && yVal >= cornerY - SELECTION_TOLERANCE / zoomRatio
+                && yVal <= cornerY + (this.height + SELECTION_TOLERANCE) / zoomRatio) {
             return true;
         }
 
         if (!withTolerance
-                && x >= cornerX
-                && x <= cornerX + this.width / zoomRatio
-                && y >= cornerY
-                && y <= cornerY + this.height / zoomRatio) {
+                && xVal >= cornerX
+                && xVal <= cornerX + this.width / zoomRatio
+                && yVal >= cornerY
+                && yVal <= cornerY + this.height / zoomRatio) {
             return true;
         }
 

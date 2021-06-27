@@ -74,7 +74,8 @@ public class ScriptManager {
             userDir = "~/";
             folderDelimiter = "/";
         }
-        simConfigFilename = FileManager.getSimpleFilename(simConfigFilename);
+        // convert file path to simple file name
+        String configFilename = FileManager.getSimpleFilename(simConfigFilename);
         // create a new script
         Script script = new Script();
         script.setCmdOutputFilename(projectName
@@ -88,13 +89,13 @@ public class ScriptManager {
                 + "_"
                 + Script.DEFAULT_SCRIPT_STATUS_FILENAME);
         /* Print Header Data */
-        script.printf(Script.VERSION_TEXT, version, null, false);
+        script.printf(Script.VERSION_TEXT, version, false);
         // determine which simulator file to execute
         String type = simSpec.getSimulationType();
         String simExecutableToInvoke;
         simExecutableToInvoke = SimulationSpecification.getSimFilename(type);
         success = simExecutableToInvoke != null;
-        printfSimSpecToScript(script, simExecutableToInvoke, simConfigFilename, true);
+        printfSimSpecToScript(script, simExecutableToInvoke, configFilename, true);
         /* Prep From ProjectMgr Data */
         // change directory for compilation and simulation execution
         String simFolder = simSpec.getSimulatorFolder();
@@ -174,18 +175,18 @@ public class ScriptManager {
             String[] mkResultsDirArgs = {"results"};
             script.executeProgram("mkdir", mkResultsDirArgs);
             script.addVerbatimStatement("mkdir -p " + "workbenchconfigfiles" + folderDelimiter
-                    + "NList", null, true);
+                    + "NList", true);
         } else {
             String[] mkResultsDirArgs = {userDir + simFolder + folderDelimiter + "results"};
             script.executeProgram("mkdir", mkResultsDirArgs);
             script.addVerbatimStatement("mkdir -p " + userDir + simFolder + folderDelimiter
-                    + "workbenchconfigfiles" + folderDelimiter + "NList", null, true);
+                    + "workbenchconfigfiles" + folderDelimiter + "NList", true);
         }
         /* Move Sim Config File */
         script.addVerbatimStatement("mv -f " + fileMgr.toBashValidNotation(userDir
-                + simConfigFilename) + " " + fileMgr.toBashValidNotation(userDir + simFolder
-                + folderDelimiter + "workbenchconfigfiles" + folderDelimiter + simConfigFilename),
-                null, true);
+                + configFilename) + " " + fileMgr.toBashValidNotation(userDir + simFolder
+                + folderDelimiter + "workbenchconfigfiles" + folderDelimiter + configFilename),
+                true);
         /* Move Neuron Lists */
         try {
             String[] nListFilenames = fileMgr.getNeuronListFilenames(projectName);
@@ -201,7 +202,7 @@ public class ScriptManager {
                                     + "NList"
                                     + folderDelimiter
                                     + FileManager.getSimpleFilename(nListFilenames[i])),
-                            null, true);
+                            true);
                 }
             }
         } catch (IOException e) {
@@ -213,7 +214,7 @@ public class ScriptManager {
                 + " -t "
                 + fileMgr.toBashValidNotation("workbenchconfigfiles"
                         + folderDelimiter
-                        + simConfigFilename),
+                        + configFilename),
                 userDir
                 + projectName
                 + "_v"
@@ -662,32 +663,33 @@ public class ScriptManager {
                         provMgr.used(simActivity, movedNLFileEntity);
                     }
                     // get the sha1key from the file if possible
-                    String SHA1KeyFilename = projectMgr.getName()
+                    String sha1KeyFilename = projectMgr.getName()
                             + "_v"
                             + projectMgr.getScriptVersion()
                             + "_"
                             + Script.SHA1_KEY_FILENAME;
-                    String SHA1Pathname = outputTargetFolder + SHA1KeyFilename;
-                    File SHA1File = new File(SHA1Pathname);
-                    if (SHA1File.exists()) {
+                    String sha1Pathname = outputTargetFolder + sha1KeyFilename;
+                    File sha1File = new File(sha1Pathname);
+                    if (sha1File.exists()) {
                         // open the file
                         Scanner fileReader = null;
                         String sha1key = null;
                         /* Stage Error Handling */
                         try { // try to start reading from the given file path
-                            fileReader = new Scanner(new FileReader(SHA1File));
+                            fileReader = new Scanner(new FileReader(sha1File));
                             if (fileReader.hasNext()) {
                                 // read the line to create a revision entity
                                 sha1key = fileReader.nextLine();
                                 if (!sha1key.contains("fatal")) {
+                                    String codeLocation = simSpec.getCodeLocation();
                                     provMgr.wasDerivedFrom(simAgent, provMgr.addEntity(
-                                            simSpec.getCodeLocation().substring(8,
-                                            simSpec.getCodeLocation().lastIndexOf(".")) + "/commit/"
-                                            + sha1key, "commit", null, null, "https", false));
+                                            codeLocation.substring(codeLocation.indexOf(":") + 1,
+                                            codeLocation.lastIndexOf(".")) + "/commit/" + sha1key,
+                                            "commit", null, null, "https", false));
                                 }
                             }
                         } catch (FileNotFoundException e) {
-                            System.err.println("File not found: " + SHA1Pathname);
+                            System.err.println("File not found: " + sha1Pathname);
                         }
                     }
                 }
@@ -737,7 +739,7 @@ public class ScriptManager {
                 + projectMgr.getScriptVersion()
                 + "_"
                 + Script.SIM_STATUS_FILENAME;
-        String SHA1KeyFilename = projectName
+        String sha1KeyFilename = projectName
                 + "_v"
                 + version
                 + "_"
@@ -808,14 +810,14 @@ public class ScriptManager {
                     }
                     // download sha1 key file
                     outstandingMessages += "\nDownloading simulator source code version report:\n"
-                            + SHA1KeyFilename
+                            + sha1KeyFilename
                             + "\nFrom: " + hostname + "\n";
                     try {
-                        sft.downloadFile(SHA1KeyFilename, outputStorageFolder + SHA1KeyFilename,
+                        sft.downloadFile(sha1KeyFilename, outputStorageFolder + sha1KeyFilename,
                                 hostname, lcd.getUsername(), password);
                     } catch (SftpException e) {
                         outstandingMessages += "\nDownload failed for: "
-                                + SHA1KeyFilename
+                                + sha1KeyFilename
                                 + "\n";
                     }
                 }
@@ -873,15 +875,15 @@ public class ScriptManager {
                         outstandingMessages += "\nSimulation history dump copy operation failed: \n"
                                 + e.getLocalizedMessage() + "\n";
                     }
-                    Path SHA1FileSource = Paths.get(fm.getUserDir() + SHA1KeyFilename);
-                    Path SHA1FileTarget = Paths.get(outputStorageFolder + SHA1KeyFilename);
+                    Path sha1FileSource = Paths.get(fm.getUserDir() + sha1KeyFilename);
+                    Path sha1FileTarget = Paths.get(outputStorageFolder + sha1KeyFilename);
                     outstandingMessages += "\nCopying simulator source code version report:\n"
-                            + SHA1KeyFilename
-                            + "\nFrom: " + SHA1FileSource.toString()
-                            + "\nTo: " + SHA1FileTarget.toString()
+                            + sha1KeyFilename
+                            + "\nFrom: " + sha1FileSource.toString()
+                            + "\nTo: " + sha1FileTarget.toString()
                             + "\n";
                     try {
-                        FileManager.copyFile(SHA1FileSource, SHA1FileTarget);
+                        FileManager.copyFile(sha1FileSource, sha1FileTarget);
                     } catch (IOException e) {
                         outstandingMessages +=
                                 "\nSimulator source code version report copy operation failed: \n"
@@ -921,13 +923,13 @@ public class ScriptManager {
 
     private static void printfSimSpecToScript(Script script, String simFile,
             String simInputFilename, boolean append) {
-        script.printf(SimulationSpecification.SIM_EXEC_TEXT, simFile, null, append);
+        script.printf(SimulationSpecification.SIM_EXEC_TEXT, simFile, append);
         String joinedInputs = simInputFilename;
-        script.printf(SimulationSpecification.SIM_INPUTS_TEXT, joinedInputs, null, true);
+        script.printf(SimulationSpecification.SIM_INPUTS_TEXT, joinedInputs, true);
         // printf the outputs
-        script.printf(SimulationSpecification.SIM_OUTPUTS_TEXT, "output.xml", null, true);
+        script.printf(SimulationSpecification.SIM_OUTPUTS_TEXT, "output.xml", true);
         // printf the end tag for the sim spec data
-        script.printf(SimulationSpecification.END_SIM_SPEC_TEXT, "", null, true);
+        script.printf(SimulationSpecification.END_SIM_SPEC_TEXT, "", true);
     }
 
     public static String getScriptName(String projectName, String version) {
@@ -939,7 +941,7 @@ public class ScriptManager {
         File file = new File(filename);
         if (file.exists()) {
             // open the file
-            Scanner fileReader = null;
+            Scanner fileReader;
             /* Stage Error Handling */
             try { // try to start reading from the given file path
                 fileReader = new Scanner(new FileReader(file));

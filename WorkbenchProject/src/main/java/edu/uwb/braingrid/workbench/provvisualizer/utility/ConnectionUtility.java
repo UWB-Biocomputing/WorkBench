@@ -14,6 +14,7 @@ import edu.uwb.braingrid.workbench.provvisualizer.model.AuthenticationInfo;
 
 public final class ConnectionUtility {
 
+    /** Port used for SSH file transfer. */
     public static final int SFTP_PORT = 22;
 
     private ConnectionUtility() {

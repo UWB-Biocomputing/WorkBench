@@ -53,7 +53,7 @@ public class SimulationSpecification {
 
     private String username;
     private String hostAddress;
-    private String SHA1Key;
+    private String sha1Key;
     private String buildOption;
     private String sourceCodeUpdating;
     private String simulationType;
@@ -86,7 +86,7 @@ public class SimulationSpecification {
         simOutputs = new ArrayList<>();
         username = null;
         hostAddress = null;
-        SHA1Key = null;
+        sha1Key = null;
         buildOption = null;
         sourceCodeUpdating = null;
         simulationType = null;
@@ -212,7 +212,7 @@ public class SimulationSpecification {
      * @return The SHA1 key for git checkout
      */
     public String getSHA1CheckoutKey() {
-        return SHA1Key == null ? "" : SHA1Key;
+        return sha1Key == null ? "" : sha1Key;
     }
 
     /**
@@ -326,7 +326,7 @@ public class SimulationSpecification {
      * @param sha1  An SHA1 hex key associated with a particular commit in the repository history
      */
     public void setSHA1CheckoutKey(String sha1) {
-        SHA1Key = sha1;
+        sha1Key = sha1;
     }
 
     /**
@@ -426,7 +426,7 @@ public class SimulationSpecification {
      *         out based a particular commit, otherwise false
      */
     public boolean hasCommitCheckout() {
-        return SHA1Key != null && !SHA1Key.isEmpty();
+        return sha1Key != null && !sha1Key.isEmpty();
     }
 
     @Override
@@ -440,7 +440,7 @@ public class SimulationSpecification {
         SimulationSpecification that = (SimulationSpecification) o;
         return Objects.equals(getUsername(), that.getUsername())
                 && Objects.equals(hostAddress, that.hostAddress)
-                && Objects.equals(SHA1Key, that.SHA1Key)
+                && Objects.equals(sha1Key, that.sha1Key)
                 && Objects.equals(getBuildOption(), that.getBuildOption())
                 && Objects.equals(getSourceCodeUpdating(), that.getSourceCodeUpdating())
                 && Objects.equals(getSimulationType(), that.getSimulationType())
@@ -455,7 +455,7 @@ public class SimulationSpecification {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), hostAddress, SHA1Key, getBuildOption(),
+        return Objects.hash(getUsername(), hostAddress, sha1Key, getBuildOption(),
                 getSourceCodeUpdating(), getSimulationType(), getSimulationLocale(),
                 simulationFolder, getVersionAnnotation(), codeRepositoryLocation,
                 getSimExecutable(), getSimInputs(), getSimOutputs());

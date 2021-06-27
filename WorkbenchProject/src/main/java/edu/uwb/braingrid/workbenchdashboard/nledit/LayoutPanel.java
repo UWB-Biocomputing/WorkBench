@@ -39,6 +39,18 @@ public class LayoutPanel extends JPanel implements MouseListener {
     public static final int MIN_CELL_WIDTH = 7;
     /** The maximum width of a cell. */
     public static final int MAX_CELL_WIDTH = 56;
+    /** Number of neuron colors. */
+    public static final int NUM_NEURON_TYPES = 5;
+    /** Other neurons color - green. */
+    public static final int OTR_NEURON_COLOR = 0x00FF00;
+    /** Inhibitory neurons color - red. */
+    public static final int INH_NEURON_COLOR = 0xFF0000;
+    /** Active neurons color - blue. */
+    public static final int ACT_NEURON_COLOR = 0x0000FF;
+    /** Probed neurons color - black. */
+    public static final int PRB_NEURON_COLOR = 0x000000;
+    /** Overlapping neurons color - yellow. */
+    public static final int OVP_NEURON_COLOR = 0xFFFF00;
     /** White background color. */
     public static final Color BG_COLOR = new Color(255, 255, 255);
 
@@ -61,11 +73,6 @@ public class LayoutPanel extends JPanel implements MouseListener {
     /** Neuron type index for overlapping INH and ACT neurons. */
     public static final int OVP = NeuronsLayout.OVP;
 
-    /** Number of cells x-axis. */
-    private int xlen;
-    /** Number of cells y-axis. */
-    private int ylen;
-
     /** Minimum number of cells for x-axis. */
     public static final int MIN_X_CELLS = 5;
     /** Minimum number of cells for y-axis. */
@@ -79,11 +86,15 @@ public class LayoutPanel extends JPanel implements MouseListener {
     /** Default number of cells for y-axis. */
     public static final int DEF_Y_CELLS = 10;
 
+    /** Number of cells x-axis. */
+    private int xlen;
+    /** Number of cells y-axis. */
+    private int ylen;
+
     private NeuronsLayout neuronsLayout;
-
     private JScrollPane scrollPane;
-
-    private NLedit nledit;
+    private NLEdit nledit;
+    private boolean mousePressed = false;
 
     /**
      * A class constructor, which initializes global stuff.
@@ -92,7 +103,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
      * @param size
      * @param neuronsLayout
      */
-    public LayoutPanel(NLedit nledit, Dimension size, NeuronsLayout neuronsLayout) {
+    public LayoutPanel(NLEdit nledit, Dimension size, NeuronsLayout neuronsLayout) {
         LOG.info("new " + getClass().getName());
         this.nledit = nledit;
         xlen = size.width;
@@ -108,12 +119,12 @@ public class LayoutPanel extends JPanel implements MouseListener {
                 ylen * cellWidth + theInsets.top + theInsets.bottom));
 
         // define colors of each type of neurons
-        nColor = new Color[5];
-        nColor[OTR] = new Color(0x00FF00); // other neurons - green
-        nColor[INH] = new Color(0xFF0000); // inhibitory neurons - red
-        nColor[ACT] = new Color(0x0000FF); // starter neurons - blue
-        nColor[PRB] = new Color(0x000000); // probed neurons - black
-        nColor[OVP] = new Color(0xFFFF00); // overlapping neurons - yellow
+        nColor = new Color[NUM_NEURON_TYPES];
+        nColor[OTR] = new Color(OTR_NEURON_COLOR);
+        nColor[INH] = new Color(INH_NEURON_COLOR);
+        nColor[ACT] = new Color(ACT_NEURON_COLOR);
+        nColor[PRB] = new Color(PRB_NEURON_COLOR);
+        nColor[OVP] = new Color(OVP_NEURON_COLOR);
 
         // register for mouse events on the window
         addMouseListener(this);
@@ -136,7 +147,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
      * @param g  A graphic object to draw
      */
     public void writeToGraphics(Graphics g) {
-        // System.out.println(NLedit.HEADER + "Start Repaint");
+        // System.out.println(NLEdit.HEADER + "Start Repaint");
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING,
@@ -161,7 +172,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
                 }
             }
         }
-        // System.out.println(NLedit.HEADER + "End Repaint");
+        // System.out.println(NLEdit.HEADER + "End Repaint");
     }
 
     public void repaintScrollpane() {
@@ -199,8 +210,6 @@ public class LayoutPanel extends JPanel implements MouseListener {
         // TODO Auto-generated method stub
 
     }
-
-    boolean mousePressed = false;
 
     public void mousePressed(MouseEvent e) {
         // TODO Auto-generated method stub
@@ -296,12 +305,12 @@ public class LayoutPanel extends JPanel implements MouseListener {
         scrollPaneNode.setContent(scrollPane);
 
         nledit.getBP().setCenter(scrollPaneNode);
-        Rectangle screen = getUsableScreenBounds(null);
+        Rectangle screen = getUsableScreenBounds();
         Dimension size = scrollPane.getPreferredSize();
         if (size.width > screen.width) {
             size.width = screen.width;
         }
-        if (size.height > screen.height - 20) {
+        if (size.height > screen.height - 20) { //@cs-: MagicNumber influence 1
             size.height = screen.height - 20;
         }
         scrollPane.setPreferredSize(size);
@@ -316,10 +325,6 @@ public class LayoutPanel extends JPanel implements MouseListener {
      * @return The rectangle of the screen where one can place windows
      */
     public static Rectangle getUsableScreenBounds(GraphicsConfiguration gconf) {
-        if (gconf == null) {
-            gconf = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
-                    .getDefaultConfiguration();
-        }
         Rectangle bounds = new Rectangle(gconf.getBounds());
         try {
             Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -334,43 +339,51 @@ public class LayoutPanel extends JPanel implements MouseListener {
         return bounds;
     }
 
-    public int solution(int[] A, int[] E) {
-        // write your code in Java SE 8
-        // A[J] = first node
-
-        int maxLen = 0;
-
-        boolean[] touched = new boolean[A.length];
-        for (int i = 0; i < A.length; ++i) {
-            touched[i] = false;
-        }
-
-        // What has not been touched?
-        int index = 0;
-        for (int i = 0; i < touched.length; ++i) {
-            if (!touched[i]) {
-                index = i;
-                i = touched.length;
-            }
-        }
-
-        // what is the length of that connecting indeex.
-        // int tempLen = 0;
-        // Iterate through nodes and assess connections
-        for (int i = 0; i < E.length; i += 2) {
-            // Is the starting connection that same as the node found?
-            if (i / 2 == index) {
-
-            } else {
-                // Is the ending conenction the same as the node found?
-                if (i / 2 + 1 == index) {
-
-                }
-            }
-        }
-
-        return maxLen;
+    public static Rectangle getUsableScreenBounds() {
+        GraphicsConfiguration gconf = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getDefaultScreenDevice()
+                .getDefaultConfiguration();
+        return getUsableScreenBounds(gconf);
     }
+
+    //TODO: Consider removing this method. Does it have any use?
+//    public int solution(int[] A, int[] E) {
+//        // write your code in Java SE 8
+//        // A[J] = first node
+//
+//        int maxLen = 0;
+//
+//        boolean[] touched = new boolean[A.length];
+//        for (int i = 0; i < A.length; ++i) {
+//            touched[i] = false;
+//        }
+//
+//        // What has not been touched?
+//        int index = 0;
+//        for (int i = 0; i < touched.length; ++i) {
+//            if (!touched[i]) {
+//                index = i;
+//                i = touched.length;
+//            }
+//        }
+//
+//        // what is the length of that connecting index.
+//        // int tempLen = 0;
+//        // Iterate through nodes and assess connections
+//        for (int i = 0; i < E.length; i += 2) {
+//            // Is the starting connection that same as the node found?
+//            if (i / 2 == index) {
+//
+//            } else {
+//                // Is the ending connection the same as the node found?
+//                if (i / 2 + 1 == index) {
+//
+//                }
+//            }
+//        }
+//
+//        return maxLen;
+//    }
 
     /**
      * Gets the layout size.
@@ -404,7 +417,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
      *
      * @return Reference to the CtrlFrame class object
      */
-    public NLedit getCtrlFrame() {
+    public NLEdit getCtrlFrame() {
         return nledit;
     }
 }

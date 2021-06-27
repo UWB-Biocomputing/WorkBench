@@ -105,6 +105,9 @@ public class NeuronsLayout {
                 probedNList.remove((Integer) index);
             }
             break;
+
+        default:
+            // unknown neuron type
         }
     }
 }
