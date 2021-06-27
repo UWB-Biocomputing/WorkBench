@@ -1,9 +1,9 @@
-package edu.uwb.braingrid.workbenchdashboard.nledit;
+package edu.uwb.braingrid.workbench.project.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class NL_Sim_UtilTest {
+public class ProjectDataTest {
     @Test
     public void test() {
         Assertions.fail("Need to test still");

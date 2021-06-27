@@ -1,9 +1,9 @@
-package edu.uwb.braingrid.tools.nledit;
+package edu.uwb.braingrid.provenance.workbenchprov;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class MyPrintableTest {
+public class WorkbenchOperationRecorderTest {
     @Test
     public void test() {
         Assertions.fail("Need to test still");
