@@ -5,7 +5,7 @@ The idea behind the BrainGrid Workbench is to develop an application to ease cre
 
 ## Table of Contents
 
-1. [Getting Started](workbench_getting_started)
+1. [Getting Started](workbench_getting_started.md)
 
    1.1. Clone the repository from GitHub
    
@@ -15,13 +15,13 @@ The idea behind the BrainGrid Workbench is to develop an application to ease cre
 
        1.2.2. NetBeans
 
-2. [Running Simulations](workbench_running_simulations)
+2. [Running Simulations](workbench_running_simulations.md)
 
    2.1. The workflow
    
    2.2. About the generated script file
 
-3. [Workbench Dashboard](workbench_dashboard)
+3. [Workbench Dashboard](workbench_dashboard.md)
 
    3.1. Running Workbench Dashboard
        
@@ -44,3 +44,19 @@ The idea behind the BrainGrid Workbench is to develop an application to ease cre
        3.2.6. Comparing two artifacts
 
    3.3. Technologies and third party libraries
+
+4. [Internal Development](workbench_internal_development.md)
+
+   4.1 Workbench Style Guide
+
+       4.1.1 Introduction
+
+       4.1.2 Java
+
+       4.1.3 XML
+
+   4.2 Tools and Plugins
+
+       4.2.1 Apache Maven
+
+       4.2.2 Checkstyle
