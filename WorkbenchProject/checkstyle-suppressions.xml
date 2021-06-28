@@ -38,11 +38,11 @@
   <suppress checks="Javadoc(Type)" files="DirMgr.java"/>
   <suppress checks="Javadoc(Type)" files="LoggerHelper.java"/>
   <suppress checks="Javadoc(Method)" files="ScriptHistory.java"/>
-  <suppress checks="Javadoc(Method)" files="Datum.java"/>
-  <suppress checks="Javadoc(Method)" files="KeyValuePair.java"/>
-  <suppress checks="Javadoc(Method)" files="ProjectData.java"/>
-  <suppress checks="Javadoc(Method)" files="Project.java"/>
-  <suppress checks="Javadoc(Method)" files="ProjectManager.java"/>
+  <suppress checks="Javadoc(Method|Style)" files="Datum.java"/>
+  <suppress checks="Javadoc(Method|Style)" files="KeyValuePair.java"/>
+  <suppress checks="Javadoc(Method|Style)" files="ProjectData.java"/>
+  <suppress checks="Javadoc(Method|Style)" files="Project.java"/>
+  <suppress checks="Javadoc(Method|Style)" files="ProjectManager.java"/>
   <suppress checks="Javadoc(Method|Variable)" files="ProjectMgr.java"/>
   <suppress checks="Javadoc(Method|Type)" files="AuthenticationController.java"/>
   <suppress checks="Javadoc(Method)" files="ProVisCtrl.java"/>
@@ -65,8 +65,9 @@
   <suppress checks="Javadoc(Method)" files="ProVis.java"/>
   <suppress checks="Javadoc(Type)" files="ProVisGlobal.java"/>
   <suppress checks="Javadoc(Method)" files="ScriptManager.java"/>
-  <suppress checks="Javadoc(Method)" files="DynamicInputConfigurationDialog.java"/>
-  <suppress checks="Javadoc(Method)" files="InputConfigClassSelectionDialog.java"/>
+  <suppress checks="Javadoc(Method|Style)" files="DynamicInputConfigurationDialog.java"/>
+  <suppress checks="Javadoc(Method|Style)" files="InputConfigClassSelectionDialog.java"/>
+  <suppress checks="Javadoc(Style)" files="ProvenanceQueryDialog.java"/>
   <suppress checks="Javadoc(Method)" files="DateTime.java"/>
   <suppress checks="Javadoc(Method)" files="FileManager.java"/>
   <suppress checks="Javadoc(Method)" files="FileManagerShared.java"/>
@@ -85,7 +86,7 @@
   <suppress checks="Javadoc(Method)" files="SimStarterWiz.java"/>
   <suppress checks="Javadoc(Method|Type)" files="RunInit.java"/>
   <suppress checks="Javadoc(Method|Type)" files="RunUpdateRepo.java"/>
-  <suppress checks="Javadoc(Method)" files="User.java"/>
+  <suppress checks="Javadoc(Method|Style)" files="User.java"/>
   <suppress checks="Javadoc(Method|Type)" files="UserView.java"/>
   <suppress checks="Javadoc(Method|Type)" files="Init.java"/>
   <suppress checks="Javadoc(Method|Type)" files="RepoManager.java"/>
@@ -97,5 +98,5 @@
 
   <!-- File contains commented code that exceeds the 100 character limit. -->
   <!-- The commented code should be removed or uncommented. -->
-  <suppress checks="LineLength*" files="ScriptSpecificationDialog.java" lines="845-860"/>
+  <suppress checks="LineLength*" files="ScriptSpecificationDialog.java" lines="840-860"/>
 </suppressions>

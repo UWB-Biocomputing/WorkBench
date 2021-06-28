@@ -106,7 +106,9 @@
     <module name="JavadocVariable">
       <property name="scope" value="package"/>
     </module>
-    <module name="JavadocStyle"/>
+    <module name="JavadocStyle">
+      <property name="checkEmptyJavadoc" value="true"/>
+    </module>
     <module name="MissingJavadocMethod"/>
     <module name="MissingJavadocType">
       <property name="tokens" value="CLASS_DEF"/>
@@ -131,6 +133,7 @@
     <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
     <module name="RedundantImport"/>
     <module name="UnusedImports">
+      <property name="severity" value="warning"/>
       <property name="processJavadoc" value="false"/>
     </module>
 
@@ -191,7 +194,9 @@
     <module name="FinalClass"/>
     <module name="HideUtilityClassConstructor"/>
     <module name="InterfaceIsType"/>
-    <module name="VisibilityModifier"/>
+    <module name="VisibilityModifier">
+      <property name="packageAllowed" value="true"/>
+    </module>
 
     <!-- Miscellaneous other checks.                   -->
     <!-- See https://checkstyle.org/config_misc.html -->
