@@ -39,16 +39,8 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
 public class ProjectMgr {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
-    private Document doc;
-    private String name;
-    private Element root;
-    private Element provElement;
-    private Element scriptVersion;
-    private List<Element> inputs;
-    private Element simulator;
-    private Element simulationConfigurationFile;
-    private Element script;
-    private boolean provEnabled;
+    private static final Logger LOG = Logger.getLogger(ProjectMgr.class.getName());
+
     private static final String PROJECT_TAG_NAME = "project";
     private static final String PROJECT_NAME_ATTRIBUTE = "name";
     private static final String PROV_TAG_NAME = "provenance";
@@ -83,7 +75,16 @@ public class ProjectMgr {
     public static final String REMOTE_EXECUTION = "Remote";
     public static final String LOCAL_EXECUTION = "Local";
 
-    private static final Logger LOG = Logger.getLogger(ProjectMgr.class.getName());
+    private Document doc;
+    private String name;
+    private Element root;
+    private Element provElement;
+    private Element scriptVersion;
+    private List<Element> inputs;
+    private Element simulator;
+    private Element simulationConfigurationFile;
+    private Element script;
+    private boolean provEnabled;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -215,7 +216,7 @@ public class ProjectMgr {
         }
         return elem;
     }
-    //</editor-fold>
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Persistence">
     /**
@@ -232,7 +233,7 @@ public class ProjectMgr {
         String projectFilename = getProjectFilename();
 
         // create any necessary non-existent directories
-        (new File(determineProjectOutputLocation())).mkdirs();
+        new File(determineProjectOutputLocation()).mkdirs();
 
         // create the file we want to save
         File projectFile = new File(projectFilename);
@@ -281,7 +282,7 @@ public class ProjectMgr {
      * @return The path to the project folder for the specified project
      * @throws IOException
      */
-    public final String determineProjectOutputLocation() throws IOException {
+    public String determineProjectOutputLocation() throws IOException {
         return ProjectMgr.determineProjectOutputLocation(this.getName());
     }
 
@@ -291,7 +292,7 @@ public class ProjectMgr {
      * @return The path to the project folder for the specified project
      * @throws IOException
      */
-    public static final String determineProjectOutputLocation(String name) throws IOException {
+    public static String determineProjectOutputLocation(String name) throws IOException {
         String workingDirectory = FileManager.getCanonicalWorkingDirectory();
         String ps = FileManager.getFileManager().getFolderDelimiter();
         String projectDirectory = workingDirectory + ps + "projects" + ps + name + ps;
@@ -363,8 +364,7 @@ public class ProjectMgr {
      * @return True if the prerequisite data is available for generating a script, false if not
      */
     public boolean scriptGenerationAvailable() {
-        return script == null && simulationConfigurationFile != null
-                && simulator != null;
+        return script == null && simulationConfigurationFile != null && simulator != null;
     }
     // </editor-fold>
 
@@ -519,7 +519,7 @@ public class ProjectMgr {
     public String getNextScriptVersion() {
         int scriptVerNum;
         try {
-            scriptVerNum = Integer.valueOf(getScriptVersion());
+            scriptVerNum = Integer.parseInt(getScriptVersion());
             scriptVerNum++;
         } catch (NumberFormatException e) {
             scriptVerNum = 0;
@@ -560,7 +560,7 @@ public class ProjectMgr {
         boolean ran = false;
         if (script != null) {
             ranAttributeValue = script.getAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME);
-            ran = Boolean.valueOf(ranAttributeValue);
+            ran = Boolean.parseBoolean(ranAttributeValue);
         }
         return ran;
     }
@@ -934,7 +934,7 @@ public class ProjectMgr {
 
             int version = 0;
             try {
-                version = Integer.valueOf(getScriptVersion());
+                version = Integer.parseInt(getScriptVersion());
             } catch (NumberFormatException e) { // version not present
                 initScriptVersion();
             }
@@ -977,7 +977,7 @@ public class ProjectMgr {
         boolean analyzed = false;
         if (script != null) {
             analyzedAttributeValue = script.getAttribute(SCRIPT_ANALYZED_ATTRIBUTE_NAME);
-            analyzed = Boolean.valueOf(analyzedAttributeValue);
+            analyzed = Boolean.parseBoolean(analyzedAttributeValue);
         }
         return analyzed;
     }

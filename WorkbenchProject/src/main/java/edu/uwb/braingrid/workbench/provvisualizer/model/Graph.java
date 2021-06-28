@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -70,7 +69,7 @@ public class Graph {
     private double edgeArrowSize = 8;
 
     public Graph() {
-
+        // default constructor
     }
 
     public double getC3() {
@@ -183,8 +182,7 @@ public class Graph {
                 }
             }
 
-            Collections.sort(commits, (commit1, commit2) -> commit2.getCommitTime()
-                    - commit1.getCommitTime());
+            commits.sort((commit1, commit2) -> commit2.getCommitTime() - commit1.getCommitTime());
             LinkedList<RevCommit> branches = new LinkedList<>();
             for (RevCommit commit : commits) {
                 List<RevCommit> removalList = new ArrayList<>();
@@ -331,7 +329,7 @@ public class Graph {
             if (fromNode != null && toNode != null) {
                 if (fromNode.isInDisplayWindow(displayWindowLocation, displayWindowSize)
                         || toNode.isInDisplayWindow(displayWindowLocation, displayWindowSize)) {
-                    drawEdge(gc, fromNode, toNode, edge.isDashline(), displayWindowLocation,
+                    drawEdge(gc, fromNode, toNode, edge.isDashLine(), displayWindowLocation,
                             zoomRatio, edge == mouseOnEdge);
                 }
                 //Initialize edge to node relationship
@@ -466,7 +464,7 @@ public class Graph {
         }
 
         for (Edge tmpEdge: tmpEdges) {
-            drawEdge(gc, tmpEdge, tmpEdge.isDashline(), displayWindowLocation, zoomRatio, true, 5,
+            drawEdge(gc, tmpEdge, tmpEdge.isDashLine(), displayWindowLocation, zoomRatio, true, 5,
                     Color.GREENYELLOW);
         }
 
@@ -537,7 +535,7 @@ public class Graph {
         }
 
         if (dashedLine) {
-            gc.setLineDashes(null);
+            gc.setLineDashes();
         }
     }
 
@@ -657,10 +655,10 @@ public class Graph {
 
         displayTextBuilder.append(node.getDisplayId());
         if (node instanceof ActivityNode) {
-            displayTextBuilder.append(System.lineSeparator() + "Start Time: "
-                    + ((ActivityNode) node).getStartTime());
-            displayTextBuilder.append(System.lineSeparator() + "End Time: "
-                    + ((ActivityNode) node).getEndTime());
+            displayTextBuilder.append(System.lineSeparator()).append("Start Time: ")
+                    .append(((ActivityNode) node).getStartTime());
+            displayTextBuilder.append(System.lineSeparator()).append("End Time: ")
+                    .append(((ActivityNode) node).getEndTime());
         }
 
         Text tmpText = new Text(displayTextBuilder.toString());

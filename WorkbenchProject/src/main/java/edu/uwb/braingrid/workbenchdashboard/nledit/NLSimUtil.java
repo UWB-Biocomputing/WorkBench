@@ -29,18 +29,18 @@ public class NLSimUtil {
 
     /**
      * The function repPattern generates a new neurons list from the old list, the new size and
-     * repeat type of which are specified by parameters, newSize and rtype respectively.
+     * repeat type of which are specified by parameters, newSize and repType respectively.
      *
      * @param newSize  size for the new pattern
      * @param list  the old neurons list
-     * @param rtype  repeat type, CLEAR, REPEAT, or ALT
+     * @param repType  repeat type, CLEAR, REPEAT, or ALT
      * @return New neurons list of new size
      */
     public ArrayList<Integer> repPattern(Dimension newSize, ArrayList<Integer> list,
-            RepType rtype) {
+            RepType repType) {
         ArrayList<Integer> newNList = new ArrayList<>();
 
-        if (rtype != RepType.CLEAR) { // if rtype is clear, we just clear the
+        if (repType != RepType.CLEAR) { // if repType is clear, we just clear the
             // list
             int newX = newSize.width;
             int newY = newSize.height;
@@ -53,11 +53,11 @@ public class NLSimUtil {
                 int y = index / sizeX;
                 for (int i = 0; i <= (newY / sizeY); i++) {
                     for (int j = 0; j <= (newX / sizeX); j++) {
-                        if (rtype == RepType.REPEAT) {
+                        if (repType == RepType.REPEAT) {
                             if ((y + sizeY * i) < newY && (x + sizeX * j) < newX) {
                                 newNList.add((y + sizeY * i) * newX + (x + sizeX * j));
                             }
-                        } else if (rtype == RepType.ALT) {
+                        } else if (repType == RepType.ALT) {
                             int tx;
                             int ty;
                             if (j % 2 == 0) {
@@ -93,9 +93,9 @@ public class NLSimUtil {
                 JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) { // Afirmative
             try {
-                float ratioInh = Float.parseFloat(gpatPanel.getTFields()[GPatternPanel.IDX_INH]
+                float ratioInh = Float.parseFloat(gpatPanel.tFields[GPatternPanel.IDX_INH]
                         .getText());
-                float ratioAct = Float.parseFloat(gpatPanel.getTFields()[GPatternPanel.IDX_ACT]
+                float ratioAct = Float.parseFloat(gpatPanel.tFields[GPatternPanel.IDX_ACT]
                         .getText());
 
                 // validate ratios
@@ -104,9 +104,9 @@ public class NLSimUtil {
                     throw new NumberFormatException();
                 }
 
-                if (gpatPanel.getRButtons()[GPatternPanel.IDX_REG].isSelected()) {
+                if (gpatPanel.rButtons[GPatternPanel.IDX_REG].isSelected()) {
                     genRegularPattern(ratioInh, ratioAct);
-                } else if (gpatPanel.getRButtons()[GPatternPanel.IDX_RND].isSelected()) {
+                } else if (gpatPanel.rButtons[GPatternPanel.IDX_RND].isSelected()) {
                     genRandomPattern(ratioInh, ratioAct);
                 }
 

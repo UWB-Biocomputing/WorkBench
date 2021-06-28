@@ -15,6 +15,19 @@ import edu.uwb.braingrid.workbench.project.ProjectMgr;
  */
 public class SimulationSpecification {
 
+    /**
+     * Description of the execution model for a simulation (in particular, these values indicate the
+     * thread or core model used in simulation processing).
+     */
+    public enum SimulatorType {
+        /** The simulator will be executed with a single core. */
+        SEQUENTIAL,
+        /** The simulator will be executed through CUDA on multiple GPU cores. */
+        CUDA,
+        /** The simulator type could not be detected. */
+        UNKNOWN_SIMULATOR_TYPE
+    }
+
     //@cs-: JavadocVariable influence 18
     public static final String GIT_PULL_AND_CLONE = "Pull";
     public static final int GIT_PULL_AND_CLONE_INDEX = 1;
@@ -35,22 +48,6 @@ public class SimulationSpecification {
     public static final int REMOTE_EXECUTION_INDEX = 1;
     public static final int LOCAL_EXECUTION_INDEX = 0;
 
-    /**
-     * Provides the executable file name for a simulation based on the execution model provided.
-     *
-     * @param simulationType  Text to match against known simulation models and their respective
-     *                        executable file names
-     * @return The executable file name related to the specified simulation type
-     */
-    public static String getSimFilename(String simulationType) {
-        String simExecutableToInvoke = null;
-        if (simulationType != null) {
-            simExecutableToInvoke = simulationType.equals(
-                    SimulationSpecification.SEQUENTIAL_SIMULATION) ? "growth" : "growth_cuda";
-        }
-        return simExecutableToInvoke;
-    }
-
     private String username;
     private String hostAddress;
     private String sha1Key;
@@ -64,19 +61,6 @@ public class SimulationSpecification {
     private String simExecutable;
     private List<String> simInputs;
     private List<String> simOutputs;
-
-    /**
-     * Description of the execution model for a simulation (in particular, these values indicate the
-     * thread or core model used in simulation processing).
-     */
-    public enum SimulatorType {
-        /** The simulator will be executed with a single core. */
-        SEQUENTIAL,
-        /** The simulator will be executed through CUDA on multiple GPU cores. */
-        CUDA,
-        /** The simulator type could not be detected. */
-        UNKNOWN_SIMULATOR_TYPE
-    }
 
     /**
      * Responsible for allocating the specification and instantiating members.
@@ -95,6 +79,22 @@ public class SimulationSpecification {
         versionAnnotation = null;
         codeRepositoryLocation = null;
         simExecutable = null;
+    }
+
+    /**
+     * Provides the executable file name for a simulation based on the execution model provided.
+     *
+     * @param simulationType  Text to match against known simulation models and their respective
+     *                        executable file names
+     * @return The executable file name related to the specified simulation type
+     */
+    public static String getSimFilename(String simulationType) {
+        String simExecutableToInvoke = null;
+        if (simulationType != null) {
+            simExecutableToInvoke = simulationType.equals(
+                    SimulationSpecification.SEQUENTIAL_SIMULATION) ? "growth" : "growth_cuda";
+        }
+        return simExecutableToInvoke;
     }
 
     /**

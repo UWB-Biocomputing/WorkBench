@@ -14,7 +14,9 @@ public final class DirMgr {
     }
 
     /**
-     * @return The root path for the system as a string path
+     * Provides the root path for the system, as a string path.
+     *
+     * @return The root path for the system
      */
     public static String getRootPath() {
         LOG.info("Root Path: " + System.getProperty("user.dir"));
@@ -22,7 +24,9 @@ public final class DirMgr {
     }
 
     /**
-     * @return The directory where the repos are stored as a string path
+     * Provides the directory where the repos are stored, as a string path.
+     *
+     * @return The directory where the repos are stored
      */
     public static String getBrainGridRepoDirectory() {
         String bgReposPath = DirMgr.getRootPath() + File.separator

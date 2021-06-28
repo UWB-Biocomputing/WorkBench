@@ -20,6 +20,9 @@ import edu.uwb.braingrid.workbench.model.DynamicInputConfiguration;
  */
 public class DynamicInputConfigurationManager {
 
+    private static final Logger LOG
+            = Logger.getLogger(DynamicInputConfigurationManager.class.getName());
+
     private DynamicInputConfiguration inputConfig;
     private DynamicInputConfigurationBuilder inputConfigBuilder;
 
@@ -93,7 +96,4 @@ public class DynamicInputConfigurationManager {
 
         return fullPath;
     }
-
-    private static final Logger LOG = Logger.getLogger(
-            DynamicInputConfigurationManager.class.getName());
 }

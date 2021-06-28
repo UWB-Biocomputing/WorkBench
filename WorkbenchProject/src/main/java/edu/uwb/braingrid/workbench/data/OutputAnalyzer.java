@@ -21,11 +21,12 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
  */
 public class OutputAnalyzer {
 
+    private static final int ERROR_VERSION = -1;
+    private static final int MILLISECONDS_PER_SECOND = 1000;
+
     private final HashMap<String, HashMap<String, ExecutedCommand>> commandsRun;
     private final SimulationSpecification simSpec;
     private int scriptVersion;
-    private static final int ERROR_VERSION = -1;
-    private static final int MILLISECONDS_PER_SECOND = 1000;
 
     /**
      * Responsible for allocating this analyzer and initializing all members.
@@ -87,20 +88,20 @@ public class OutputAnalyzer {
                 Date startedDate;
                 String startDate = getImportantText(fileReader, Script.START_TIME_TEXT);
                 if (startDate != null) {
-                    startedDate = new Date(Long.valueOf(startDate) * MILLISECONDS_PER_SECOND);
+                    startedDate = new Date(Long.parseLong(startDate) * MILLISECONDS_PER_SECOND);
                     ec.setTimeStarted(startedDate); // set the start time
                 }
                 // get the exit status now
                 String nextLine = getImportantText(fileReader, Script.EXIT_STATUS_TEXT);
                 // set the exit status
                 if (nextLine != null) {
-                    ec.setExitStatus(Integer.valueOf(nextLine));
+                    ec.setExitStatus(Integer.parseInt(nextLine));
                 }
                 // get the date object from the date in the string (time ended)
                 Date endDate = null;
                 String completedDateText = getImportantText(fileReader, Script.COMPLETED_TIME_TEXT);
                 if (completedDateText != null) {
-                    endDate = new Date(Long.valueOf(completedDateText) * MILLISECONDS_PER_SECOND);
+                    endDate = new Date(Long.parseLong(completedDateText) * MILLISECONDS_PER_SECOND);
                 }
                 ec.setTimeCompleted(endDate); // set the end time
                 addCommand(ec);
@@ -150,16 +151,16 @@ public class OutputAnalyzer {
                     String[] lineParts = currentLine.trim().split(":");
                     if (lineParts.length > 1) {
                         String[] inputs = lineParts[1].trim().split("\\s+");
-                        for (int i = 0, im = inputs.length; i < im; i++) {
-                            simSpec.addInput(inputs[i]);
+                        for (String input : inputs) {
+                            simSpec.addInput(input);
                         }
                     }
                 } else if (currentLine.startsWith(SimulationSpecification.SIM_OUTPUTS_TEXT)) {
                     String[] lineParts = currentLine.split(":");
                     if (lineParts.length > 1) {
                         String[] outputs = lineParts[1].trim().split("\\s+");
-                        for (int i = 0, im = outputs.length; i < im; i++) {
-                            simSpec.addOutput(outputs[i]);
+                        for (String output : outputs) {
+                            simSpec.addOutput(output);
                         }
                     }
                 }
@@ -240,11 +241,9 @@ public class OutputAnalyzer {
      */
     public Collection<ExecutedCommand> getCollectionByExecName(String executableName) {
         Collection<ExecutedCommand> commands = null;
-        if (commandsRun != null) {
-            HashMap<String, ExecutedCommand> map = commandsRun.get(executableName);
-            if (map != null) {
-                commands = map.values();
-            }
+        HashMap<String, ExecutedCommand> map = commandsRun.get(executableName);
+        if (map != null) {
+            commands = map.values();
         }
         return commands;
     }

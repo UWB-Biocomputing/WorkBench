@@ -61,7 +61,7 @@ public class ExecutedCommand {
     /**
      * Sets the date at which the command was executed.
      *
-     * @param newStartedTime
+     * @param newStartedTime  The date at which the command started execution
      */
     public void setTimeStarted(Date newStartedTime) {
         timeStarted = newStartedTime;

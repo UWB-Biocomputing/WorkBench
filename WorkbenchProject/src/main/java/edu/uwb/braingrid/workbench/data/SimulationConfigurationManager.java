@@ -18,8 +18,7 @@ public class SimulationConfigurationManager {
 
     private SimulationConfiguration simConfig;
     private SimulationConfigurationBuilder simConfigBuilder;
-
-    private final boolean load;
+    private boolean load;
 
     /**
      * Creates a SimulationConfigurationManager object.

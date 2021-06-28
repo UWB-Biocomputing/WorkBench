@@ -9,8 +9,10 @@ import edu.uwb.braingrid.workbenchdashboard.utils.ThreadManager;
 
 public class RunUpdateRepo extends Thread implements Runnable {
 
-    public RunUpdateRepo() {
+    private static final Logger LOG = Logger.getLogger(RunUpdateRepo.class.getName());
 
+    public RunUpdateRepo() {
+        // default constructor
     }
 
     public void run() {
@@ -22,6 +24,4 @@ public class RunUpdateRepo extends Thread implements Runnable {
         }
         ThreadManager.removeThread("Updating Master Repo");
     }
-
-    private static final Logger LOG = Logger.getLogger(RunUpdateRepo.class.getName());
 }

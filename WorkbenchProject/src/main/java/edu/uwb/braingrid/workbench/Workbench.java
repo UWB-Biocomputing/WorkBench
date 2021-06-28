@@ -30,6 +30,8 @@ public final class Workbench {
     }
 
     /**
+     * Entry point for the application.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -52,7 +54,7 @@ public final class Workbench {
             java.util.logging.Logger.getLogger(WorkbenchControlFrame.class.getName())
                     .log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        // </editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

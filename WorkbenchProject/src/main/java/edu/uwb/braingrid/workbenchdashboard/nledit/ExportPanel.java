@@ -31,11 +31,14 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
     public static final int IDX_ACT_LIST = 1;
     /** Field index of probed neurons list file. */
     public static final int IDX_PRB_LIST = 2;
-
-    private Label[] labels = new Label[NUM_FIELDS];
-    private TextField[] tFields = new TextField[NUM_FIELDS];
-    private Button[] rButtons = new Button[NUM_FIELDS];
 //    private static String nListDir = "."; // directory for neurons list file
+
+    /** The labels for this Pane. */
+    private Label[] labels = new Label[NUM_FIELDS];
+    /** The buttons for this Pane. */
+    private Button[] buttons = new Button[NUM_FIELDS];
+    /** The text fields for this Pane. */
+    TextField[] tFields = new TextField[NUM_FIELDS];
 
     private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
 
@@ -60,29 +63,20 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
         for (int i = 0; i < NUM_FIELDS; i++) {
             tFields[i] = new TextField();
             tFields[i].setEditable(true);
-            rButtons[i] = new Button("Browse...");
-            rButtons[i].setOnAction(this);
-            gp.getChildren().addAll(tFields[i], rButtons[i]);
+            buttons[i] = new Button("Browse...");
+            buttons[i].setOnAction(this);
+            gp.getChildren().addAll(tFields[i], buttons[i]);
             GridPane.setConstraints(tFields[i], 1, i);
-            GridPane.setConstraints(rButtons[i], 2, i);
+            GridPane.setConstraints(buttons[i], 2, i);
         }
         getChildren().add(gp);
-    }
-
-    /**
-     * Provides the text fields for this Pane.
-     *
-     * @return The text fields for this Pane
-     */
-    public TextField[] getTFields() {
-        return tFields;
     }
 
     @Override
     public void handle(javafx.event.ActionEvent arg0) {
         int iSource = 0;
         for (int i = 0; i < NUM_FIELDS; i++) {
-            if (arg0.getSource() == rButtons[i]) {
+            if (arg0.getSource() == buttons[i]) {
                 iSource = i;
                 break;
             }

@@ -29,13 +29,14 @@ import edu.uwb.braingrid.workbenchdashboard.userModel.User;
  */
 public final class FileManager {
 
+    private static final Logger LOG = Logger.getLogger(FileManager.class.getName());
     private static FileManager instance = null;
+
     private final boolean isWindowsSystem;
     private final String folderDelimiter;
     private final String projectsFolderName = "projects";
     private final String configFilesFolderName = "configfiles";
     private final String neuronListFolderName = "NList";
-    private static final Logger LOG = Logger.getLogger(FileManager.class.getName());
 
     /**
      * This is here to make sure that classes from other packages cannot instantiate the file

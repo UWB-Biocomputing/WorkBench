@@ -88,7 +88,7 @@ public class SimulationConfiguration {
     }
 
     /**
-     * Builds the configuration...
+     * Builds the configuration.
      *
      * @param doc  Document containing all the information
      * @param root  Root element

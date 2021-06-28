@@ -47,8 +47,6 @@ import edu.uwb.braingrid.workbench.data.InputAnalyzer.InputType;
  */
 public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
 
-    private static final long serialVersionUID = 1L;
-
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     /**
      * This method is called from within the constructor to initialize the form.
@@ -198,6 +196,9 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
+    private static final Logger LOG
+            = Logger.getLogger(DynamicInputConfigurationDialog.class.getName());
+    private static final long SERIAL_VERSION_UID = 1L;
     private DynamicInputConfigurationManager icm;
     private Document xmlDoc = null;
     private ArrayList<JTextField> paramsTextFields = new ArrayList<>();
@@ -207,11 +208,8 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     private String lastStateOutputFileName = null;
     private String projectName = null;
     private ArrayList<String> tabPaths = new ArrayList<>();
-    private static final Logger LOG
-            = Logger.getLogger(DynamicInputConfigurationDialog.class.getName());
-    // </editor-fold>
-
     private HashMap<Character, String> nListPresets = null;
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**

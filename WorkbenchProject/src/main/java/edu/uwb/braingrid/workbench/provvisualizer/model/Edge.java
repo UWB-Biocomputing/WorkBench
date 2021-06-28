@@ -6,30 +6,31 @@ import edu.uwb.braingrid.workbench.provvisualizer.utility.GraphUtility;
 
 public class Edge {
 
-    private boolean dashline = false;
+    private boolean dashLine = false;
     private String fromNodeId;
     private String toNodeId;
     private String relationship;
 
     public Edge() {
+        // default constructor
     }
 
-    public Edge(boolean dashline) {
-        this.dashline = dashline;
+    public Edge(boolean dashLine) {
+        this.dashLine = dashLine;
     }
 
     public Edge(String fromNodeId, String toNodeId, String relationship) {
         this.fromNodeId = fromNodeId;
         this.toNodeId = toNodeId;
         this.relationship = relationship;
-        this.dashline = false;
+        this.dashLine = false;
     }
 
-    public Edge(String fromNodeId, String toNodeId, String relationship, boolean dashline) {
+    public Edge(String fromNodeId, String toNodeId, String relationship, boolean dashLine) {
         this.fromNodeId = fromNodeId;
         this.toNodeId = toNodeId;
         this.relationship = relationship;
-        this.dashline = dashline;
+        this.dashLine = dashLine;
     }
 
     public String getEdgeId() {
@@ -73,18 +74,18 @@ public class Edge {
         return this;
     }
 
-    public boolean isDashline() {
-        return dashline;
+    public boolean isDashLine() {
+        return dashLine;
     }
 
-    public Edge setDashline(boolean dashline) {
-        this.dashline = dashline;
+    public Edge setDashLine(boolean dashLine) {
+        this.dashLine = dashLine;
         return this;
     }
 
     @Override
     public Edge clone() {
-        return new Edge(fromNodeId, toNodeId, relationship, dashline);
+        return new Edge(fromNodeId, toNodeId, relationship, dashLine);
     }
 
     @Override

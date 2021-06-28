@@ -16,10 +16,6 @@ import java.util.regex.Pattern;
  */
 public class NewProjectDialog extends javax.swing.JDialog {
 
-    private static final long serialVersionUID = 1L;
-    private boolean isRunning;
-    private static final Logger LOG = Logger.getLogger(NewProjectDialog.class.getName());
-
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     /**
      * This method is called from within the constructor to initialize the form.
@@ -172,6 +168,9 @@ public class NewProjectDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
+    private static final Logger LOG = Logger.getLogger(NewProjectDialog.class.getName());
+    private static final long SERIAL_VERSION_UID = 1L;
+    private boolean isRunning;
     private boolean success = false;
     // </editor-fold>
 
@@ -271,6 +270,15 @@ public class NewProjectDialog extends javax.swing.JDialog {
     public boolean getSuccess() {
         return success;
     }
+
+    /**
+     * Indicates whether or not the new project dialog window is open.
+     *
+     * @return True if the new project dialog window is open, false otherwise
+     */
+    public boolean isRunning() {
+        return isRunning;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Utility Functions">
@@ -303,13 +311,4 @@ public class NewProjectDialog extends javax.swing.JDialog {
         return isMatch;
     }
     // </editor-fold>
-
-    /**
-     * Indicates whether or not the new project dialog window is open.
-     *
-     * @return True if the new project dialog window is open, false otherwise
-     */
-    public boolean isRunning() {
-        return isRunning;
-    }
 }

@@ -35,6 +35,8 @@ public class WorkbenchDashboard extends Application {
 
     /** GSLE Growth Simulation Layout Editor. */
     private WorkbenchDisplay workbenchDisplay;
+    /** True only if ctrl has been pressed. */
+    private boolean ctrl = false;
 
     /**
      * WorkbenchDashboard main executable.
@@ -137,7 +139,4 @@ public class WorkbenchDashboard extends Application {
         RunInit runInit = new RunInit();
         runInit.start();
     }
-
-    /** True only if ctrl has been pressed. */
-    private boolean ctrl = false;
 }

@@ -29,8 +29,6 @@ import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
  */
 public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
 
-    private static final long serialVersionUID = 1L;
-
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     /**
      * This method is called from within the constructor to initialize the form.
@@ -183,6 +181,9 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
+    private static final Logger LOG
+            = Logger.getLogger(InputConfigClassSelectionDialog.class.getName());
+    private static final long SERIAL_VERSION_UID = 1L;
     private DynamicInputConfigurationManager icm;
     private Document baseTemplateInfoDoc = null;
     private Document xmlDoc = null;
@@ -199,8 +200,6 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
     private String synapsesParamsClass = null;
     private String connectionsParamsClass = null;
     private String layoutParamsClass = null;
-    private static final Logger LOG
-            = Logger.getLogger(InputConfigClassSelectionDialog.class.getName());
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">

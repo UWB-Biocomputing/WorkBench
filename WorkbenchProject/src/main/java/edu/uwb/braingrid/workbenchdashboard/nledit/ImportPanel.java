@@ -33,14 +33,17 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
     /** Field index of probed neurons list file. */
     public static final int IDX_PRB_LIST = 3;
 
-    private Label[] labels = new Label[NUM_FIELDS];
-    private TextField[] tFields = new TextField[NUM_FIELDS];
-    private Button[] rButtons = new Button[NUM_FIELDS];
-
     /** Directory for configuration file. */
     private static String configDir = ".";
     /** Directory for neurons list file. */
     private static String nListDir = ".";
+
+    /** The labels for this Pane. */
+    private Label[] labels = new Label[NUM_FIELDS];
+    /** The buttons for this Pane. */
+    private Button[] buttons = new Button[NUM_FIELDS];
+    /** The text fields for this Pane. */
+    TextField[] tFields = new TextField[NUM_FIELDS];
 
     private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
 
@@ -62,27 +65,18 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
             tFields[i].setEditable(true);
             gp.getChildren().add(tFields[i]);
             GridPane.setConstraints(tFields[i], 1, i);
-            rButtons[i] = new Button("Browse...");
-            rButtons[i].setOnAction(this);
-            gp.getChildren().add(rButtons[i]);
-            GridPane.setConstraints(rButtons[i], 2, i);
+            buttons[i] = new Button("Browse...");
+            buttons[i].setOnAction(this);
+            gp.getChildren().add(buttons[i]);
+            GridPane.setConstraints(buttons[i], 2, i);
         }
         getChildren().add(gp);
-    }
-
-    /**
-     * Provides the text fields for this Pane.
-     *
-     * @return The text fields for this Pane
-     */
-    public TextField[] getTFields() {
-        return tFields;
     }
 
     private void importFiles(ActionEvent e) {
         int iSource = 0;
         for (int i = 0; i < NUM_FIELDS; i++) {
-            if (e.getSource() == rButtons[i]) {
+            if (e.getSource() == buttons[i]) {
                 iSource = i;
                 break;
             }

@@ -16,7 +16,7 @@ import edu.uwb.braingrid.workbench.data.InputAnalyzer;
  */
 public final class SystemConfig {
 
-    // the base template Config file path
+    // The base template Config file path
     public static final String BASE_TEMPLATE_INFO_XML_FILE_URL = "BaseTemplateConfig.xml";
 
     // Attribute names

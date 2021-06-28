@@ -37,7 +37,12 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
  */
 public class WorkbenchManager {
 
-    // <editor-fold defaultstate="collapsed" desc="Instance Variables">
+    // <editor-fold defaultstate="collapsed" desc="Member Variables">
+    private static final Logger LOG = Logger.getLogger(WorkbenchManager.class.getName());
+
+    /** Value indicating that an exception occurred during an operation. */
+    public static final int EXCEPTION_OPTION = -2;
+
     /* Inter-thread Communication */
     // used when running stand-alone NLEdit from the system runtime
     private String msgFromOtherThread;
@@ -55,9 +60,6 @@ public class WorkbenchManager {
     private final String rootDir;
     private final String projectsDir;
     private SimulationSpecification simulatorSpecification;
-    private static final Logger LOG = Logger.getLogger(WorkbenchManager.class.getName());
-    /** Value indicating that an exception occurred during an operation. */
-    public static final int EXCEPTION_OPTION = -2;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -537,7 +539,7 @@ public class WorkbenchManager {
 
         return success;
     }
-    //</editor-fold>
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Inter-Frame Communication">
     /**

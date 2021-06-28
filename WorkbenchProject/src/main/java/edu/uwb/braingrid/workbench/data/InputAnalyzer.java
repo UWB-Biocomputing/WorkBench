@@ -16,9 +16,6 @@ import org.xml.sax.SAXParseException;
  */
 public final class InputAnalyzer {
 
-    /** Indicates the amount of input file required as arguments for a simulation. */
-    public static final int INPUTS_REQUIRED_FOR_SIM = 3;
-
     /**
      * Provides an input type corresponding to a specific type of neuron list.
      */
@@ -32,6 +29,9 @@ public final class InputAnalyzer {
         /** Error code indicating an invalid type of neuron list (or no input list). */
         INVALID
     }
+
+    /** The amount of input files required as arguments for a simulation. */
+    public static final int INPUTS_REQUIRED_FOR_SIM = 3;
 
     private InputAnalyzer() {
         // utility class cannot be instantiated

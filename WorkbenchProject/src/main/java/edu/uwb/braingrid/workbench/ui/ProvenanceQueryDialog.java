@@ -17,7 +17,7 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
 public class ProvenanceQueryDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
-    private static final long serialVersionUID = 1L;
+    private static final long SERIAL_VERSION_UID = 1L;
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

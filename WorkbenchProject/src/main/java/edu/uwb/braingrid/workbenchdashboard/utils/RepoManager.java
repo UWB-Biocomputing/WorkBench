@@ -31,8 +31,7 @@ public final class RepoManager {
         // utility class cannot be instantiated
     }
 
-    public static void updateMaster() throws InvalidRemoteException, TransportException,
-            GitAPIException, IOException {
+    public static void updateMaster() throws GitAPIException, IOException {
         LOG.info("Updating Master Branch");
         updatingBranch = true;
         Git git;
@@ -73,17 +72,16 @@ public final class RepoManager {
                     .setRemote(ProVisGlobal.BG_REPOSITORY_URI)
                     .call();
             for (Ref ref : refs) {
-                branches.add(ref.getName().substring(ref.getName().lastIndexOf("/") + 1,
-                        ref.getName().length()));
+                branches.add(ref.getName().substring(ref.getName().lastIndexOf("/") + 1));
             }
             Collections.sort(branches);
         } catch (InvalidRemoteException e) {
-            LOG.severe(" InvalidRemoteException occured in fetchGitBranches\n" + e.getMessage());
+            LOG.severe(" InvalidRemoteException occurred in fetchGitBranches\n" + e.getMessage());
             e.printStackTrace();
         } catch (TransportException e) {
             LOG.severe(" TransportException occurred in fetchGitBranches\n" + e.getMessage());
         } catch (GitAPIException e) {
-            LOG.severe(" GitAPIException occurr in fetchGitBranches\n" + e.getMessage());
+            LOG.severe(" GitAPIException occur in fetchGitBranches\n" + e.getMessage());
         }
         return branches;
     }

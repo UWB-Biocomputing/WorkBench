@@ -8,8 +8,6 @@ public final class LoggerHelper {
         // utility class cannot be instantiated
     }
 
-    /**
-     * Sets a global standard for what is logged by the logger object.
-     */
+    /** Sets a global standard for what is logged by the logger object. */
     public static final Level MIN_LOG_LEVEL = Level.ALL;
 }

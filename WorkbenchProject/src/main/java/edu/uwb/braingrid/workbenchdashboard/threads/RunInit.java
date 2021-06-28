@@ -7,8 +7,10 @@ import edu.uwb.braingrid.workbenchdashboard.utils.ThreadManager;
 
 public class RunInit extends Thread implements Runnable {
 
-    public RunInit() {
+    private static final Logger LOG = Logger.getLogger(RunUpdateRepo.class.getName());
 
+    public RunInit() {
+        // default constructor
     }
 
     public void run() {
@@ -16,6 +18,4 @@ public class RunInit extends Thread implements Runnable {
         Init.init();
         ThreadManager.removeThread("Init");
     }
-
-    private static final Logger LOG = Logger.getLogger(RunUpdateRepo.class.getName());
 }

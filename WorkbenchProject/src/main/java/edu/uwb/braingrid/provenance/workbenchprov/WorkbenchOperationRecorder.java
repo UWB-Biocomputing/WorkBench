@@ -1,7 +1,7 @@
 package edu.uwb.braingrid.provenance.workbenchprov;
 
-import org.apache.jena.rdf.model.Resource;
 import java.util.Date;
+import org.apache.jena.rdf.model.Resource;
 
 import edu.uwb.braingrid.provenance.ProvMgr;
 

@@ -28,14 +28,13 @@ public class WorkbenchDisplay extends BorderPane {
 
     /** The Stage of the FX program. */
     private static Stage primaryStage;
-
     /** The top menu bar of the screen. */
     private MenuBar menuBar;
-
     /** The main content of the screen. */
     private TabPane tabPane = new TabPane();
 
     /**
+     * Creates a WorkbenchDisplay which represents the main display.
      *
      * @param primaryStage  The Stage of the FX program
      */

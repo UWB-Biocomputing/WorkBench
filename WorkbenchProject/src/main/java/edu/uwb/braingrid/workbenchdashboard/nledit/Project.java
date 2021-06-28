@@ -7,6 +7,7 @@ public class Project {
     private String prbFile = "";
 
     public Project() {
+        // default constructor
     }
 
     public String getIhbFile() {

@@ -18,13 +18,13 @@ import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
  */
 public class SimStartWiz {
 
-    /* Class variables and objects */
     private static final Logger LOG = Logger.getLogger(SimStartWiz.class.getName());
-    private static final long serialVersionUID = 1L;
-    private WorkbenchManager workbenchManager = new WorkbenchManager();
-    private SimulationRuntimeDialog srd;
+    private static final long SERIAL_VERSION_UID = 1L;
+
     private TextArea msgText = new TextArea("");
+    private WorkbenchManager workbenchManager = new WorkbenchManager();
     private SimManager simManager;
+    private SimulationRuntimeDialog srd;
     private String commitVersionSelected = null;
 
     /**

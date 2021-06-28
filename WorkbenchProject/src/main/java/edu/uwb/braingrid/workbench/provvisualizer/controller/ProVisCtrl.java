@@ -60,6 +60,8 @@ import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
  */
 public class ProVisCtrl {
 
+    private static final Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
+
     private Graph dataProvGraph;
     private LinkedHashMap<String, AuthenticationInfo> authInfoCache
             = new LinkedHashMap<>(5, (float) 0.75, true);
@@ -101,8 +103,6 @@ public class ProVisCtrl {
     private String bGVersionSelected;
     private String simSpecifications = null;
     private HashMap<Character, String> nListPresets = new HashMap<>();
-
-    private static final Logger LOG = Logger.getLogger(ProVisCtrl.class.getName());
 
     public ProVisCtrl(ProVis proVis, VisCanvas visCanvas, BorderPane canvasPane,
             Slider adjustForceSlider, ToggleSwitch stopForces, ToggleSwitch showNodeIds,
@@ -280,7 +280,7 @@ public class ProVisCtrl {
                                 event.getX() / zoomRatio + displayWindowLocation[0],
                                 event.getY() / zoomRatio + displayWindowLocation[1],
                                 draggedNode, zoomRatio, true);
-                        if (draggedNode instanceof EntityNode && comparingNode != null
+                        if (draggedNode instanceof EntityNode
                                 && comparingNode instanceof EntityNode) {
                             dataProvGraph.setComparingNode(comparingNode);
                         } else {
@@ -372,17 +372,14 @@ public class ProVisCtrl {
 
                 Node comparingNode = dataProvGraph.getComparingNode();
                 if (comparingNode != null) {
-                    boolean comparingNodeFileReady = false;
-                    boolean draggedNodeFileReady = false;
-
                     // check if the files exist in local file system
                     // download the files if they are not in the file system.
-                    comparingNodeFileReady = checkIfNodeFileExists(comparingNode);
+                    boolean comparingNodeFileReady = checkIfNodeFileExists(comparingNode);
                     if (!comparingNodeFileReady) {
                         comparingNodeFileReady = downloadNodeFile(comparingNode);
                     }
 
-                    draggedNodeFileReady = checkIfNodeFileExists(draggedNode);
+                    boolean draggedNodeFileReady = checkIfNodeFileExists(draggedNode);
                     if (!draggedNodeFileReady) {
                         draggedNodeFileReady = downloadNodeFile(draggedNode);
                     }
@@ -470,7 +467,7 @@ public class ProVisCtrl {
         }
 
         // currently only support download via sftp
-        if (protocol == null || protocol != null && !protocol.equals("sftp")) {
+        if (protocol == null || !protocol.equals("sftp")) {
             return false;
         }
 
@@ -509,7 +506,7 @@ public class ProVisCtrl {
     }
 
     private boolean requestAuthenticationInfo(String hostname, String username) {
-        Parent parent = null;
+        Parent parent;
         authenticationInfo = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass()

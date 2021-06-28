@@ -54,13 +54,6 @@ public class LayoutPanel extends JPanel implements MouseListener {
     /** White background color. */
     public static final Color BG_COLOR = new Color(255, 255, 255);
 
-    /** Each cell's width in the window. */
-    private int cellWidth;
-    /** The insets of the window. */
-    private Insets theInsets;
-    /** Neuron color. */
-    private Color[] nColor;
-
     // neuron type index
     /** Neuron type index for other neurons. */
     public static final int OTR = NeuronsLayout.OTR;
@@ -85,6 +78,13 @@ public class LayoutPanel extends JPanel implements MouseListener {
     public static final int DEF_X_CELLS = 10;
     /** Default number of cells for y-axis. */
     public static final int DEF_Y_CELLS = 10;
+
+    /** Each cell's width in the window. */
+    private int cellWidth;
+    /** The insets of the window. */
+    private Insets theInsets;
+    /** Colors for each type of neuron. */
+    private Color[] nColor;
 
     /** Number of cells x-axis. */
     private int xlen;
@@ -154,20 +154,17 @@ public class LayoutPanel extends JPanel implements MouseListener {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         for (int j = 0; j < ylen; j++) {
             for (int i = 0; i < xlen; i++) {
-                if (true) {
+                int cIndex = neuronsLayout.getNeuronType(j * xlen + i);
+                g2.setColor(nColor[cIndex]);
+                int x = theInsets.left + i * cellWidth;
+                int y = theInsets.top + j * cellWidth;
+                g.fillOval(x, y, cellWidth, cellWidth);
 
-                    int cIndex = neuronsLayout.getNeuronType(j * xlen + i);
-                    g2.setColor(nColor[cIndex]);
-                    int x = theInsets.left + i * cellWidth;
-                    int y = theInsets.top + j * cellWidth;
-                    g.fillOval(x, y, cellWidth, cellWidth);
-
-                    if (neuronsLayout.isProbed(j * xlen + i)) {
-                        g2.setColor(nColor[PRB]);
-                        g2.drawOval(x, y, cellWidth, cellWidth);
-                        if (cellWidth >= MIN_CELL_WIDTH) { // MyPrintable may set smaller cellWidth
-                            g2.drawOval(x + 1, y + 1, cellWidth - 2, cellWidth - 2);
-                        }
+                if (neuronsLayout.isProbed(j * xlen + i)) {
+                    g2.setColor(nColor[PRB]);
+                    g2.drawOval(x, y, cellWidth, cellWidth);
+                    if (cellWidth >= MIN_CELL_WIDTH) { // MyPrintable may set smaller cellWidth
+                        g2.drawOval(x + 1, y + 1, cellWidth - 2, cellWidth - 2);
                     }
                 }
             }
@@ -220,8 +217,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
             if (i >= xlen || j >= ylen) {
                 LOG.info("Out of bounds");
             } else {
-                Integer index = j * xlen + i;
-
+                int index = j * xlen + i;
                 int neuronType = nledit.getNeuronType();
 
                 neuronsLayout.changeIndex(neuronType, index);

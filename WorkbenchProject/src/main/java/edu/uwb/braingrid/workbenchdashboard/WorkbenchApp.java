@@ -13,6 +13,8 @@ public abstract class WorkbenchApp {
     private final Tab tab;
 
     /**
+     * Creates a WorkbenchApp which is added to the main display as a new tab.
+     *
      * @param tab  a Tab object whose display is the FX Node object from the superclass
      */
     public WorkbenchApp(Tab tab) {
@@ -27,14 +29,16 @@ public abstract class WorkbenchApp {
     public abstract boolean close();
 
     /**
-     * @return The FX Node that shows the complete GUI content.
+     * Provides the FX Node that shows the complete GUI content.
+     *
+     * @return The FX Node that shows the complete GUI content
      */
     public abstract Node getDisplay();
 
     /**
      * Sets the title of the tab associated with this object given in the constructor.
      *
-     * @param title  the new title of the tab as a string.
+     * @param title  The new title of the tab as a string
      */
     public void setTitle(String title) {
         tab.setText(title);

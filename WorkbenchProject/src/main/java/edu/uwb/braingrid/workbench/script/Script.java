@@ -26,21 +26,6 @@ import java.util.regex.Matcher;
 public class Script {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
-    /* model data */
-    private String bashScript;
-    private final List<String> bashStatements;
-    private final List<String> bashArgNames;
-    private final List<String> bashArgDeclarations;
-    private final List<String> usageStatements;
-    /* persist validation flag */
-    private boolean bashScriptConstructed;
-    /* temporary variables */
-    private StringBuilder sb;
-    /* redirect stdout/stderr of commands to this file */
-    private String cmdOutputFilename;
-    /* redirect stdout/stderr of printf statements to this file */
-    private String scriptStatusOutputFilename;
-
     /** Prefix text for the echo of a command. */
     public static final String COMMAND_TEXT = "command";
     /** Prefix text for milliseconds since epoch when a command was executed. */
@@ -59,6 +44,21 @@ public class Script {
     public static final String SHA1_KEY_FILENAME = "SHA1Key.txt";
     /** Redirect file for simulation status. */
     public static final String SIM_STATUS_FILENAME = "simStatus.txt";
+
+    /* model data */
+    private String bashScript;
+    private final List<String> bashStatements;
+    private final List<String> bashArgNames;
+    private final List<String> bashArgDeclarations;
+    private final List<String> usageStatements;
+    /* persist validation flag */
+    private boolean bashScriptConstructed;
+    /* temporary variables */
+    private StringBuilder sb;
+    /* redirect stdout/stderr of commands to this file */
+    private String cmdOutputFilename;
+    /* redirect stdout/stderr of printf statements to this file */
+    private String scriptStatusOutputFilename;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -393,8 +393,8 @@ public class Script {
         builder.append("# script created on: ").append((new Date()).toString()).
                 append("\n\n");
         // specify command line arguments as variables
-        for (int i = 0, im = bashArgDeclarations.size(); i < im; i++) {
-            builder.append(bashArgDeclarations.get(i)).append('\n');
+        for (String bashArgDeclaration : bashArgDeclarations) {
+            builder.append(bashArgDeclaration).append('\n');
         }
         // check arguments given
         builder.append('\n')
@@ -406,8 +406,8 @@ public class Script {
                 .append(bashArgDeclarations.size()).append("\"\n");
         // provide usage
         builder.append("\techo \"usage: ").append(" ${0##*/}");
-        for (int i = 0, im = bashArgNames.size(); i < im; i++) {
-            builder.append(" <").append(bashArgNames.get(i)).append('>');
+        for (String bashArgName : bashArgNames) {
+            builder.append(" <").append(bashArgName).append('>');
         }
         builder.append("\"\n");
         for (int i = 0, im = usageStatements.size(); i < im; i++) {
@@ -420,8 +420,8 @@ public class Script {
                 // end if
                 .append("fi\n").append("\n");
         // run the programs with the given arguments
-        for (int i = 0, im = bashStatements.size(); i < im; i++) {
-            builder.append(bashStatements.get(i)).append('\n');
+        for (String bashStatement : bashStatements) {
+            builder.append(bashStatement).append('\n');
         }
         bashScript = builder.toString();
         // set flag for persistence

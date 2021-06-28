@@ -10,7 +10,7 @@ import edu.uwb.braingrid.workbench.provvisualizer.model.Node;
 
 public final class NodeFactory {
 
-    /* Node properties */
+    /* Node Properties */
     private static final double NODE_WIDTH = 45;
     private static final double NODE_HEIGHT = 30;
     private static final Color ACTIVITY_NODE_COLOR = Color.GREEN;
@@ -22,13 +22,6 @@ public final class NodeFactory {
     private static final Color COMMIT_NODE_COLOR = Color.BLUEVIOLET;
 
     private static NodeFactory nodeFactory = null;
-
-    /* Prototype nodes */
-    private static Node defaultNode = null;
-    private static EntityNode entityNode = null;
-    private static AgentNode agentNode = null;
-    private static ActivityNode activityNode = null;
-    private static CommitNode commitNode = null;
 
     private NodeFactory() {
         // singleton constructor
@@ -43,43 +36,23 @@ public final class NodeFactory {
     }
 
     public Node createDefaultNode() {
-        if (defaultNode == null) {
-            defaultNode = new Node();
-        }
-
-        return defaultNode.clone();
+        return new Node();
     }
 
     public ActivityNode createActivityNode() {
-        if (activityNode == null) {
-            activityNode = new ActivityNode(NODE_WIDTH, NODE_HEIGHT, ACTIVITY_NODE_COLOR);
-        }
-
-        return activityNode.clone();
+        return new ActivityNode(NODE_WIDTH, NODE_HEIGHT, ACTIVITY_NODE_COLOR);
     }
 
     public AgentNode createAgentNode() {
-        if (agentNode == null) {
-            agentNode = new AgentNode(NODE_WIDTH, NODE_HEIGHT, AGENT_NODE_COLOR);
-        }
-
-        return agentNode.clone();
+        return new AgentNode(NODE_WIDTH, NODE_HEIGHT, AGENT_NODE_COLOR);
     }
 
     public CommitNode createCommitNode() {
-        if (commitNode == null) {
-            commitNode = new CommitNode(NODE_WIDTH, NODE_HEIGHT, COMMIT_NODE_COLOR);
-        }
-
-        return commitNode.clone();
+        return new CommitNode(NODE_WIDTH, NODE_HEIGHT, COMMIT_NODE_COLOR);
     }
 
     public EntityNode createEntityNode() {
-        if (entityNode == null) {
-            entityNode = new EntityNode(NODE_WIDTH, NODE_HEIGHT, ENTITY_NODE_COLOR);
-        }
-
-        return entityNode.clone();
+        return new EntityNode(NODE_WIDTH, NODE_HEIGHT, ENTITY_NODE_COLOR);
     }
 
     public ActivityNode convertToActivityNode(Node node) {

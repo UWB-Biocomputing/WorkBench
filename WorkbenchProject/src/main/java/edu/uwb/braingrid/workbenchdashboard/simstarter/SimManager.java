@@ -13,6 +13,14 @@ public class SimManager {
 
     private static final Logger LOG = Logger.getLogger(SimManager.class.getName());
 
+    private BorderPane borderPane = new BorderPane();
+    private Label projectTitleLabel = new Label();
+    private Label currentProjectLabel = new Label();
+    private ProgressBar progressBar = new ProgressBar(0);
+    private TextArea msgText = new TextArea("");
+
+    private WorkbenchManager workbenchManager;
+
     public SimManager() {
         LOG.info("new " + getClass().getName());
         workbenchManager = new WorkbenchManager();
@@ -21,6 +29,15 @@ public class SimManager {
     public SimManager(WorkbenchManager wbmng) {
         LOG.info("new " + getClass().getName());
         workbenchManager = wbmng;
+    }
+
+    /**
+     * Sets the workbench message content. The content of this message is based on the accumulated
+     * messages produced by the functions of the workbench manager.
+     *
+     */
+    public void setMsg() {
+        msgText.setText(workbenchManager.getMessages());
     }
 
     public void openProject() {
@@ -57,22 +74,4 @@ public class SimManager {
         currentProjectLabel.setText(workbenchManager.getProjectName());
         // transferProgressBar.setVisible(workbenchManager.isSimExecutionRemote());
     }
-
-    /**
-     * Sets the workbench message content. The content of this message is based on the accumulated
-     * messages produced by the functions of the workbench manager.
-     *
-     */
-    public void setMsg() {
-        msgText.setText(workbenchManager.getMessages());
-    }
-
-    private BorderPane borderPane = new BorderPane();
-
-    private Label projectTitleLabel = new Label();
-    private Label currentProjectLabel = new Label();
-    private ProgressBar progressBar = new ProgressBar(0);
-    private TextArea msgText = new TextArea("");
-
-    private WorkbenchManager workbenchManager;
 }

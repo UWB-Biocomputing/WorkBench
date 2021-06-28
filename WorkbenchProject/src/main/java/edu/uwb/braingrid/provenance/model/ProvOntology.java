@@ -251,6 +251,8 @@ public final class ProvOntology {
     }
 
     /**
+     * Provides the prefix for abbreviating RDF namespace in model output.
+     *
      * @return Prefix for abbreviating RDF namespace in model output
      */
     public static String getRDFPrefix() {
@@ -258,6 +260,8 @@ public final class ProvOntology {
     }
 
     /**
+     * Provides the prefix for abbreviating XSD namespace in model output.
+     *
      * @return Prefix for abbreviating XSD namespace in model output
      */
     public static String getXSDPrefix() {
@@ -265,6 +269,8 @@ public final class ProvOntology {
     }
 
     /**
+     * Provides the prefix for abbreviating OWL namespace in model output.
+     *
      * @return Prefix for abbreviating OWL namespace in model output
      */
     public static String getOWLPrefix() {
@@ -272,6 +278,8 @@ public final class ProvOntology {
     }
 
     /**
+     * Provides the prefix for abbreviating PROV namespace in model output.
+     *
      * @return Prefix for abbreviating PROV namespace in model output
      */
     public static String getProvPrefix() {

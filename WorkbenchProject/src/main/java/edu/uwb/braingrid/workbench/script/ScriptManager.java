@@ -191,17 +191,17 @@ public class ScriptManager {
         try {
             String[] nListFilenames = fileMgr.getNeuronListFilenames(projectName);
             if (nListFilenames != null) {
-                for (int i = 0, im = nListFilenames.length; i < im; i++) {
+                for (String nListFilename : nListFilenames) {
                     script.addVerbatimStatement("mv -f " + fileMgr.toBashValidNotation(userDir
-                            + FileManager.getSimpleFilename(nListFilenames[i])) + " "
-                            + fileMgr.toBashValidNotation(userDir
+                                    + FileManager.getSimpleFilename(nListFilename)) + " "
+                                    + fileMgr.toBashValidNotation(userDir
                                     + simFolder
                                     + folderDelimiter
                                     + "workbenchconfigfiles"
                                     + folderDelimiter
                                     + "NList"
                                     + folderDelimiter
-                                    + FileManager.getSimpleFilename(nListFilenames[i])),
+                                    + FileManager.getSimpleFilename(nListFilename)),
                             true);
                 }
             }
@@ -312,16 +312,16 @@ public class ScriptManager {
                 boolean loopSuccess;
                 /* Upload Neuron List Files */
                 if (nListFilenames != null) {
-                    for (int i = 0, im = nListFilenames.length; i < im; i++) {
-                        filename = FileManager.getSimpleFilename(nListFilenames[i]);
-                        outstandingMessages += "\n" + "Uploaded " + nListFilenames[i] + "\nto "
+                    for (String nListFilename : nListFilenames) {
+                        filename = FileManager.getSimpleFilename(nListFilename);
+                        outstandingMessages += "\n" + "Uploaded " + nListFilename + "\nto "
                                 + hostname + "\n";
                         uploadStartTime = new Date();
-                        loopSuccess = sft.uploadFile(nListFilenames[i], "", hostname,
+                        loopSuccess = sft.uploadFile(nListFilename, "", hostname,
                                 lcd.getUsername(), password, null);
                         if (!loopSuccess) {
                             success = false;
-                            outstandingMessages += "\n" + "Problem uploading " + nListFilenames[i]
+                            outstandingMessages += "\n" + "Problem uploading " + nListFilename
                                     + "\nto " + hostname + "\n";
                             break;
                         } else {
@@ -333,14 +333,14 @@ public class ScriptManager {
                                 String nlType = "";
                                 try {
                                     nlType = InputAnalyzer.getInputType(
-                                            new File(nListFilenames[i])).toString();
+                                            new File(nListFilename)).toString();
                                 } catch (ParserConfigurationException | SAXException
                                         | IOException ex) {
                                 }
-                                WorkbenchOperationRecorder.uploadFile(provMgr, nListFilenames[i],
-                                        "~/" + FileManager.getSimpleFilename(nListFilenames[i]),
+                                WorkbenchOperationRecorder.uploadFile(provMgr, nListFilename,
+                                        "~/" + FileManager.getSimpleFilename(nListFilename),
                                         "nlist", simSpec.getHostAddr(), "upload_" + nlType
-                                        + "_NList_" + "for_Script_v" + scriptVersion,
+                                                + "_NList_" + "for_Script_v" + scriptVersion,
                                         uploadStartTime, new Date());
                                 accumulatedTime = DateTime.sumProvTiming(startTime,
                                         accumulatedTime);
@@ -483,8 +483,7 @@ public class ScriptManager {
         try {
             // copy the neuron list files specified in the config file
             if (nListSourcePaths != null && nListTargetPaths != null) {
-                for (int i = 0, im = nListSourcePaths.length, in = nListSourcePaths.length;
-                        i < im && i < in; i++) {
+                for (int i = 0, im = nListSourcePaths.length; i < im; i++) {
                     copyStartTime = new Date();
                     FileManager.copyFile(nListSourcePaths[i], nListTargetPaths[i]);
                     if (provMgr != null) {
@@ -651,12 +650,12 @@ public class ScriptManager {
                     provMgr.used(simActivity, remoteSimConfigFileEnitity);
                     String[] neuronLists = FileManager.getFileManager()
                             .getNeuronListFilenames(projectMgr.getName());
-                    for (int i = 0, im = neuronLists.length; i < im; i++) {
+                    for (String neuronList : neuronLists) {
                         String movedNLFilename = userDir
                                 + simSpec.getSimulatorFolder()
                                 + "/workbenchconfigfiles"
                                 + "/NList/"
-                                + FileManager.getSimpleFilename(neuronLists[i]);
+                                + FileManager.getSimpleFilename(neuronList);
                         Resource movedNLFileEntity = provMgr.addEntity(movedNLFilename, "nlist",
                                 simSpec.getHostAddr(), simSpec.getUsername(), "sftp", false);
                         provMgr.atLocation(movedNLFileEntity, location);

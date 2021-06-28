@@ -1,15 +1,5 @@
 package edu.uwb.braingrid.provenance;
 
-import org.apache.jena.rdf.model.Literal;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
-import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RiotNotFoundException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +21,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RiotNotFoundException;
 
 import edu.uwb.braingrid.provenance.model.ProvOntology;
 import edu.uwb.braingrid.workbench.FileManager;
@@ -51,13 +51,7 @@ import edu.uwb.braingrid.workbench.project.ProjectMgr;
 public class ProvMgr {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
-    /* URI's and labels used to describe the provenance */
-    private String provOutputFileURI;
-    private static String localNameSpaceURI;
-    private static String remoteNameSpaceURI;
-    /* flags called prior to an operation through respective query functions */
-    /* RDF in-memory representation of the provenance */
-    private Model model;
+    private static final Logger LOG = Logger.getLogger(ProvMgr.class.getName());
 
     /** URL for web service used to find external IP. */
     public static final String IP_SERVICE_URL = "http://checkip.amazonaws.com/";
@@ -66,7 +60,13 @@ public class ProvMgr {
     /** Local namespace prefix. */
     public static final String LOCAL_NS_PREFIX = "local";
 
-    private static final Logger LOG = Logger.getLogger(ProvMgr.class.getName());
+    /* URIs used to describe the provenance */
+    private String provOutputFileURI;
+    private static String localNameSpaceURI;
+    private static String remoteNameSpaceURI;
+
+    /* RDF in-memory representation of the provenance */
+    private Model model;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -840,11 +840,11 @@ public class ProvMgr {
      */
     public void persist(ProjectMgr project) throws IOException {
         String directory = project.determineProvOutputLocation();
-        (new File(directory)).mkdirs();
+        new File(directory).mkdirs();
         model.write(new FileOutputStream(directory + project.getName() + ".ttl", false), "TURTLE");
         //add provenance to UniversalProvenance.ttl
         directory = project.determineUniversalProvOutputLocation();
-        (new File(directory)).mkdirs();
+        new File(directory).mkdirs();
         model.write(new FileOutputStream(directory + "UniversalProvenance" + ".ttl", true),
                 "TURTLE");
     }

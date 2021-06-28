@@ -17,9 +17,10 @@ import edu.uwb.braingrid.workbench.SystemConfig;
  */
 public class DynamicInputConfiguration {
 
+    private static final Logger LOG = Logger.getLogger(DynamicInputConfiguration.class.getName());
+
     private Document inputConfig;
     private ArrayList<Node> paramValues;
-    private static final Logger LOG = Logger.getLogger(DynamicInputConfiguration.class.getName());
 
     /**
      * Responsible for initializing containers for parameters/values and their default values, as

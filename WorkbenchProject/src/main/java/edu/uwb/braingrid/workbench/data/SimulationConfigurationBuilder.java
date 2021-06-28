@@ -26,10 +26,11 @@ import edu.uwb.braingrid.simconfig.model.SimulationConfiguration;
  */
 public class SimulationConfigurationBuilder {
 
-    private Document doc;
-    private Element root;
     //TODO: Decide if this is the proper tag name
     private static final String ROOT_TAG_NAME = "SimParams";
+
+    private Document doc;
+    private Element root;
 
     /**
      * Responsible for initializing members and constructing this builder.
@@ -37,7 +38,7 @@ public class SimulationConfigurationBuilder {
      * @throws ParserConfigurationException
      */
     public SimulationConfigurationBuilder() throws ParserConfigurationException {
-        /* Build New XML Document */
+        // build new xml document
         doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         root = doc.createElement(ROOT_TAG_NAME);
         doc.appendChild(root);

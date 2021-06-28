@@ -63,8 +63,8 @@ public final class DateTime {
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
                     new FileWriter("provOverhead.txt", true)));
-            out.println(className + "." + functionName + ";provEnabled="
-                    + String.valueOf(provEnabled) + ";total milliseconds:" + totalTime);
+            out.println(className + "." + functionName + ";provEnabled=" + provEnabled
+                    + ";total milliseconds:" + totalTime);
             out.close();
         } catch (IOException e) {
             System.err.println("Problem in writing to the prov performance file.");

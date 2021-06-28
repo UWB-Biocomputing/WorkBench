@@ -1,5 +1,8 @@
 package edu.uwb.braingrid.provenance.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -7,9 +10,6 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * Encapsulate a statement from an RDF model (or parts of). Provides methods of separation between
@@ -110,8 +110,7 @@ public class ProvenanceStatement {
      *         null if no statement was used to construct this provenance statement
      */
     public Model getModel() {
-        Model model = hasNonDefaultModel() ? statement.getModel() : null;
-        return model;
+        return hasNonDefaultModel() ? statement.getModel() : null;
     }
 
     /**
@@ -200,25 +199,7 @@ public class ProvenanceStatement {
      *         empty string if the subject was not set
      */
     public String getSubjectURI() {
-        String subj = "";
-        if (subject != null) {
-            subj = subject.getURI();
-        }
-        return subj;
-    }
-
-    /**
-     * Provides the unique resource identifier of the subject for this provenance statement.
-     *
-     * @return The unique resource identifier for the subject of this provenance statement or the
-     *         empty string if the subject was not set
-     */
-    public String getSimpleSubjectURI() {
-        String subj = "";
-        if (subject != null) {
-            subj = subject.getURI();
-        }
-        return subj;
+        return (subject != null) ? subject.getURI() : "";
     }
 
     /**
@@ -244,11 +225,7 @@ public class ProvenanceStatement {
      *         empty string if the predicate was not set
      */
     public String getPredicate() {
-        String pred = "";
-        if (predicate != null) {
-            pred = predicate.getURI();
-        }
-        return pred;
+        return (predicate != null) ? predicate.getURI() : "";
     }
 
     /**

@@ -18,13 +18,14 @@ public class NeuronsLayout {
     public static final int OVP = 4;
 
     /** An array to store index of active neurons. */
-    public ArrayList<Integer> activeNList = new ArrayList<>();
+    ArrayList<Integer> activeNList = new ArrayList<>();
     /** An array to store index of inhibitory neurons. */
-    public ArrayList<Integer> inhNList = new ArrayList<>();
+    ArrayList<Integer> inhNList = new ArrayList<>();
     /** An array to store index of probed neurons. */
-    public ArrayList<Integer> probedNList = new ArrayList<>();
+    ArrayList<Integer> probedNList = new ArrayList<>();
 
     public NeuronsLayout() {
+        // default constructor
     }
 
     /**

@@ -22,21 +22,9 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
 public class ProjectManager {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
-    private Project project;
-//    private Document doc;
-//    private String name;
-//    private Element root;
-//    private Element provElement;
-//    private Element scriptVersion;
-//    private List<Element> inputs;
-//    private Element simulator;
-//    private Element simulationConfigurationFile;
-//    private Element script;
-//    private boolean provEnabled;
+    private static final int DEFAULT_SCRIPT_VERSION = 0;
 //    private static final String PROJECT_TAG_NAME = "project";
 //    private static final String PROJECT_NAME_ATTRIBUTE = "name";
-    private static final int DEFAULT_SCRIPT_VERSION = 0;
-
     private static final String PROV_TAG_NAME = "provenance";
 
     // FIX THIS : Find where this is used
@@ -65,6 +53,18 @@ public class ProjectManager {
     private static final String SIM_CONFIG_FILE_TAG_NAME = "simConfigFile";
     private static final String SIMULATION_CONFIGURATION_FILE_TAG_NAME
             = "simulationConfigurationFile";
+
+    private Project project;
+//    private Document doc;
+//    private String name;
+//    private Element root;
+//    private Element provElement;
+//    private Element scriptVersion;
+//    private List<Element> inputs;
+//    private Element simulator;
+//    private Element simulationConfigurationFile;
+//    private Element script;
+//    private boolean provEnabled;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -91,7 +91,7 @@ public class ProjectManager {
     private void initState() {
         project = new Project("None");
     }
-    //</editor-fold>
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Persistence">
     /**
@@ -388,11 +388,11 @@ public class ProjectManager {
     }
 
     private boolean wasScriptAnalyzed(ProjectData scriptData) {
-        return Boolean.valueOf(scriptData.getAttribute(SCRIPT_ANALYZED_ATTRIBUTE_NAME));
+        return Boolean.parseBoolean(scriptData.getAttribute(SCRIPT_ANALYZED_ATTRIBUTE_NAME));
     }
 
     private boolean hasScriptRun(ProjectData scriptData) {
-        return Boolean.valueOf(scriptData.getAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME));
+        return Boolean.parseBoolean(scriptData.getAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME));
     }
 
     private String getScriptFilename(ProjectData scriptData) {
@@ -402,7 +402,7 @@ public class ProjectManager {
     private int getScriptVersion(ProjectData scriptData) {
         int version;
         try {
-            version = Integer.valueOf(getChildDataContent(scriptData,
+            version = Integer.parseInt(getChildDataContent(scriptData,
                     SCRIPT_VERSION_VERSION_TAG_NAME));
         } catch (NumberFormatException e) {
             version = DEFAULT_SCRIPT_VERSION;
@@ -430,10 +430,9 @@ public class ProjectManager {
      */
     public boolean setScriptVersion(String version) {
         boolean success = true;
-        String versionCopy = version;
         try {
-            int versionNumber = Integer.getInteger(versionCopy);
-            if (versionNumber >= 0 && versionNumber <= Integer.MAX_VALUE) {
+            int versionNumber = Integer.getInteger(version);
+            if (versionNumber >= 0) {
                 setChildDataContent(project.getProjectData(SCRIPT_TAG_NAME),
                         SCRIPT_VERSION_VERSION_TAG_NAME, version);
             } else {
@@ -469,7 +468,7 @@ public class ProjectManager {
      */
     public boolean getScriptRan() {
         ProjectData script = project.getProjectData(SCRIPT_TAG_NAME);
-        return Boolean.valueOf(script.getAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME));
+        return Boolean.parseBoolean(script.getAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME));
     }
 
     /**
@@ -568,7 +567,6 @@ public class ProjectManager {
 
     public void removeScript() {
         project.remove(SCRIPT_TAG_NAME);
-        // return simSpec;
     }
 
     /**

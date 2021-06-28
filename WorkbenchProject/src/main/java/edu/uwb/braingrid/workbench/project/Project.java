@@ -61,7 +61,7 @@ public class Project {
         String projectFilename = getProjectFilename();
 
         // create any necessary non-existent directories
-        (new File(determineProjectOutputLocation())).mkdirs();
+        new File(determineProjectOutputLocation()).mkdirs();
 
         // create the file we want to save
         File projectFile = new File(projectFilename);
@@ -88,12 +88,12 @@ public class Project {
         Element root = doc.getDocumentElement();
 
         NodeList childList = root.getChildNodes();
-        NodeList eChildren = null;
+        NodeList eChildren;
         ProjectData projData;
-        Element e = null;
-        Element eChild = null;
-        Datum datum = null;
-        NamedNodeMap attributes = null;
+        Element e;
+        Element eChild;
+        Datum datum;
+        NamedNodeMap attributes;
         String tagName;
         for (int i = 0, im = childList.getLength(); i < im; i++) {
             try {

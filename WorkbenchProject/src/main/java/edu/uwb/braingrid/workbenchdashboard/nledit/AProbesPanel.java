@@ -14,16 +14,14 @@ import javafx.scene.layout.Pane;
  */
 public class AProbesPanel extends Pane {
 
+    /** The label for this Pane. */
     private Label label = new Label("Number of probes:");
-    private TextField tField = new TextField();;
+    /** The text field for this Pane. */
+    TextField tField = new TextField();;
 
     public AProbesPanel() {
         HBox hbox = new HBox(label, tField);
         hbox.setStyle("-fx-padding: 20 0 20 20");
         getChildren().add(hbox);
-    }
-
-    public TextField getTField() {
-        return tField;
     }
 }

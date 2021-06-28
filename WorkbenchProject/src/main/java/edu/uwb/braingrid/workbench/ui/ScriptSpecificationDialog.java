@@ -22,8 +22,6 @@ import edu.uwb.braingrid.workbench.model.SimulationSpecification;
  */
 public class ScriptSpecificationDialog extends javax.swing.JDialog {
 
-    private static final long serialVersionUID = 1L;
-
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     /**
      * This method is called from within the constructor to initialize the form.
@@ -458,8 +456,8 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
-    /* Custom Members */
     private static final Logger LOG = Logger.getLogger(ScriptSpecificationDialog.class.getName());
+    private static final long SERIAL_VERSION_UID = 1L;
     private static final String LINUX_USERNAME_PATTERN = "^[a-z][a-z0-9\\-]*$";
     private static final String DEFAULT_REPO_URI
             = "https://github.com/UWB-Biocomputing/BrainGrid.git";

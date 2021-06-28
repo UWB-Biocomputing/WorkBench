@@ -12,8 +12,8 @@ import javafx.scene.paint.Color;
 public class ActivityNode extends Node {
     private String startTime;
     private String endTime;
-    private CommitNode commitNode = null;
-    private ArrayList<EntityNode> inputNodes = null;
+    private CommitNode commitNode;
+    private ArrayList<EntityNode> inputNodes;
 
     public ActivityNode(double width, double height, Color color) {
         super(width, height, color);

@@ -11,7 +11,7 @@ import javax.swing.JProgressBar;
  */
 public class ProgressBarProgressMonitor implements SftpProgressMonitor {
 
-    private final JProgressBar bar;
+    private JProgressBar bar;
     private File file = null;
     private long max;
 

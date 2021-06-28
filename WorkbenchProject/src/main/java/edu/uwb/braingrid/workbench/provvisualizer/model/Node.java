@@ -144,7 +144,7 @@ public class Node {
 
     @Override
     public boolean equals(Object node) {
-        return node != null && node instanceof Node && this.id.equals(((Node) node).id);
+        return node instanceof Node && this.id.equals(((Node) node).id);
     }
 
     @Override

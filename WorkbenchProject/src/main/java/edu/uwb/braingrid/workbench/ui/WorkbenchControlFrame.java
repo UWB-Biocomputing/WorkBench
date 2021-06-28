@@ -14,8 +14,6 @@ import edu.uwb.braingrid.workbench.WorkbenchManager;
  */
 public class WorkbenchControlFrame extends javax.swing.JFrame {
 
-    private static final long serialVersionUID = 1L;
-
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated">
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,6 +56,7 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
+    private static final long SERIAL_VERSION_UID = 1L;
     private WorkbenchManager workbenchMgr;
     // </editor-fold>
 
@@ -107,4 +106,5 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
         super.pack();
         setMinimumSize(getSize());
     }
+    // </editor-fold>
 }

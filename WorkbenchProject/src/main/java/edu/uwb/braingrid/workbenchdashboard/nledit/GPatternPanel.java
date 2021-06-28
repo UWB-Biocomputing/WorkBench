@@ -20,10 +20,8 @@ import javafx.scene.text.Text;
 @SuppressWarnings({ "unused" })
 public class GPatternPanel extends Pane {
 
-    private RadioButton[] rButtons = new RadioButton[2];
-    private Label[] labels = new Label[2];
-    private TextField[] tFields = new TextField[2];
-
+    /** Number of input fields. */
+    public static final int NUM_FIELDS = 2;
     /** Index of regular pattern button. */
     public static final int IDX_REG = 0;
     /** Index of random pattern button. */
@@ -32,6 +30,13 @@ public class GPatternPanel extends Pane {
     public static final int IDX_INH = 0;
     /** Index of active neurons field. */
     public static final int IDX_ACT = 1;
+
+    /** The labels for this Pane. */
+    private Label[] labels = new Label[NUM_FIELDS];
+    /** The radio buttons for this Pane. */
+    RadioButton[] rButtons = new RadioButton[NUM_FIELDS];
+    /** The text fields for this Pane. */
+    TextField[] tFields = new TextField[NUM_FIELDS];
 
     public GPatternPanel() {
         String radioStyle = "-fx-display:inline-block;" + "-fx-padding: 0 0 20 0;";
@@ -63,23 +68,5 @@ public class GPatternPanel extends Pane {
         allItems.setStyle("-fx-padding: 20 0 20 20");
 
         getChildren().add(allItems);
-    }
-
-    /**
-     * Provides the radio buttons for this Pane.
-     *
-     * @return The radio buttons for this Pane
-     */
-    public RadioButton[] getRButtons() {
-        return rButtons;
-    }
-
-    /**
-     * Provides the text fields for this Pane.
-     *
-     * @return The text fields for this Pane
-     */
-    public TextField[] getTFields() {
-        return tFields;
     }
 }

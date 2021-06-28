@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingNode;
 import javafx.event.EventHandler;
@@ -47,9 +46,41 @@ import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 
 public class NLEdit extends WorkbenchApp {
 
+    // repeat type for modify size
+    public enum RepType {
+        REPEAT, ALT, CLEAR
+    }
+
     private static final Logger LOG = Logger.getLogger(NLEdit.class.getName());
 
     private BorderPane borderPane = new BorderPane();
+
+    // Toolbar
+    private Button importItemBtn = new Button("Import");
+    private Button exportItemBtn = new Button("Export");
+    private Button clearItemBtn = new Button("Clear");
+    private Button printItemBtn = new Button("Print");
+    private Button bcellItemBtn = new Button("Zoom In");
+    private Button scellItemBtn = new Button("Zoom Out");
+    private Button gpatItemBtn = new Button("_Generate pattern");
+    private Button aprbItemBtn = new Button("_Arrange probes");
+    private Button sdatItemBtn = new Button("Stats");
+
+    private ToggleGroup editGroup = new ToggleGroup();
+    private RadioButton inhNItem = new RadioButton("Inhibitory neurons");
+    private RadioButton activeNItem = new RadioButton("Active neurons");
+    private RadioButton probedNItem = new RadioButton("Probed neurons");
+
+    private ToggleGroup toggleGroup;
+    private RadioButton newButton = new RadioButton("New");
+    private RadioButton rptButton = new RadioButton("Repeat");
+    private RadioButton altButton = new RadioButton("Alternate");
+
+    // Reference to workbench (or other frame code launching NLEdit)
+    private WorkbenchManager workbenchMgr;
+    private LayoutPanel layoutPanel; // reference to the layout panel
+    private NeuronsLayout neuronsLayout;
+    private NLSimUtil nlSimUtil;
 
     public NLEdit(Tab tab) {
         super(tab);
@@ -314,11 +345,11 @@ public class NLEdit extends WorkbenchApp {
         imprt.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                readNeuronListFromFile(myPanel.getTFields()[ImportPanel.IDX_INH_LIST].getText(),
+                readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_INH_LIST].getText(),
                         neuronsLayout.inhNList, LayoutPanel.INH);
-                readNeuronListFromFile(myPanel.getTFields()[ImportPanel.IDX_ACT_LIST].getText(),
+                readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_ACT_LIST].getText(),
                         neuronsLayout.activeNList, LayoutPanel.ACT);
-                readNeuronListFromFile(myPanel.getTFields()[ImportPanel.IDX_PRB_LIST].getText(),
+                readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_PRB_LIST].getText(),
                         neuronsLayout.probedNList, LayoutPanel.PRB);
 
                 Graphics g = layoutPanel.getGraphics();
@@ -410,7 +441,7 @@ public class NLEdit extends WorkbenchApp {
             @Override
             public void handle(MouseEvent e) {
                 Long accumulatedTime = 0L;
-                writeNeuronListToFile(myPanel.getTFields()[ExportPanel.IDX_INH_LIST].getText(),
+                writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(),
                         neuronsLayout.inhNList, LayoutPanel.INH);
                 // add to workbench project
                 if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
@@ -418,7 +449,7 @@ public class NLEdit extends WorkbenchApp {
                     Resource file = workbenchMgr.getProvMgr().addFileGeneration(
                             "InhibitoryNeuronListExport" + java.util.UUID.randomUUID(),
                             "neuronListExport", "NLEdit", null, false,
-                            myPanel.getTFields()[ExportPanel.IDX_INH_LIST].getText(), null, null);
+                            myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(), null, null);
 
                     // Tell Java to stop considering the file to be in it's control
                     try {
@@ -431,7 +462,7 @@ public class NLEdit extends WorkbenchApp {
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                 }
 
-                writeNeuronListToFile(myPanel.getTFields()[ExportPanel.IDX_ACT_LIST].getText(),
+                writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(),
                         neuronsLayout.activeNList, LayoutPanel.ACT);
                 // add to workbench project
                 if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
@@ -439,7 +470,7 @@ public class NLEdit extends WorkbenchApp {
                     Resource file = workbenchMgr.getProvMgr().addFileGeneration(
                             "ActiveNeuronListExport" + java.util.UUID.randomUUID(),
                             "neuronListExport", "NLEdit", null, false,
-                            myPanel.getTFields()[ExportPanel.IDX_ACT_LIST].getText(), null, null);
+                            myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(), null, null);
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
 
                     // Tell Java to stop considering the file to be in it's control
@@ -451,7 +482,7 @@ public class NLEdit extends WorkbenchApp {
                     }
                 }
 
-                writeNeuronListToFile(myPanel.getTFields()[ExportPanel.IDX_PRB_LIST].getText(),
+                writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(),
                         neuronsLayout.probedNList, LayoutPanel.PRB);
                 // add to workbench project
                 if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
@@ -459,7 +490,7 @@ public class NLEdit extends WorkbenchApp {
                     Resource file = workbenchMgr.getProvMgr().addFileGeneration(
                             "ProbedNeuronListExport" + java.util.UUID.randomUUID(),
                             "neuronListExport", "NLEdit", null, false,
-                            myPanel.getTFields()[ExportPanel.IDX_PRB_LIST].getText(), null, null);
+                            myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(), null, null);
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
 
                     // Tell Java to stop considering the file to be in it's control
@@ -532,9 +563,8 @@ public class NLEdit extends WorkbenchApp {
 
             // create a xml file
             String sList = "";
-            Iterator<Integer> iter = list.iterator();
-            while (iter.hasNext()) {
-                sList += " " + iter.next();
+            for (Integer integer : list) {
+                sList += " " + integer;
             }
             root.setText(sList);
 
@@ -588,19 +618,19 @@ public class NLEdit extends WorkbenchApp {
      * The 'Modify size...' menu handler.
      */
     private void actionModifySize(int sizeX, int sizeY) {
-        RepType rtype = RepType.CLEAR;
+        RepType repType = RepType.CLEAR;
         if (newButton.isSelected()) {
-            rtype = RepType.CLEAR;
+            repType = RepType.CLEAR;
             // System.out.println("Clear");
         } else if (rptButton.isSelected()) {
-            rtype = RepType.REPEAT;
+            repType = RepType.REPEAT;
             // System.out.println("Repeat");
         } else if (altButton.isSelected()) {
-            rtype = RepType.ALT;
+            repType = RepType.ALT;
             // System.out.println("Alternate");
         }
         // System.out.println("Default");
-        changeLayoutSize(new Dimension(sizeX, sizeY), rtype);
+        changeLayoutSize(new Dimension(sizeX, sizeY), repType);
     }
 
     /**
@@ -608,15 +638,15 @@ public class NLEdit extends WorkbenchApp {
      * activeNList, and changes the size of the layout panel.
      *
      * @param newSize  Size for the new layout panel
-     * @param rtype  Repeat type, CLEAR, REPEAT, or ALT
+     * @param repType  Repeat type, CLEAR, REPEAT, or ALT
      */
-    private void changeLayoutSize(Dimension newSize, RepType rtype) {
+    private void changeLayoutSize(Dimension newSize, RepType repType) {
         neuronsLayout.inhNList = nlSimUtil.repPattern(newSize,
-                neuronsLayout.inhNList, rtype);
+                neuronsLayout.inhNList, repType);
         neuronsLayout.activeNList = nlSimUtil.repPattern(newSize,
-                neuronsLayout.activeNList, rtype);
+                neuronsLayout.activeNList, repType);
         neuronsLayout.probedNList = nlSimUtil.repPattern(newSize,
-                neuronsLayout.activeNList, rtype);
+                neuronsLayout.activeNList, repType);
 
         layoutPanel.changeLayoutSize(newSize);
     }
@@ -643,9 +673,9 @@ public class NLEdit extends WorkbenchApp {
             @Override
             public void handle(MouseEvent e) {
                 try {
-                    float ratioInh = Float.parseFloat(myPanel.getTFields()[GPatternPanel.IDX_INH]
+                    float ratioInh = Float.parseFloat(myPanel.tFields[GPatternPanel.IDX_INH]
                             .getText());
-                    float ratioAct = Float.parseFloat(myPanel.getTFields()[GPatternPanel.IDX_ACT]
+                    float ratioAct = Float.parseFloat(myPanel.tFields[GPatternPanel.IDX_ACT]
                             .getText());
 
                     // validate ratios
@@ -654,9 +684,9 @@ public class NLEdit extends WorkbenchApp {
                         throw new NumberFormatException();
                     }
 
-                    if (myPanel.getRButtons()[GPatternPanel.IDX_REG].isSelected()) {
+                    if (myPanel.rButtons[GPatternPanel.IDX_REG].isSelected()) {
                         nlSimUtil.genRegularPattern(ratioInh, ratioAct);
-                    } else if (myPanel.getRButtons()[GPatternPanel.IDX_RND].isSelected()) {
+                    } else if (myPanel.rButtons[GPatternPanel.IDX_RND].isSelected()) {
                         nlSimUtil.genRandomPattern(ratioInh, ratioAct);
                     }
 
@@ -707,7 +737,7 @@ public class NLEdit extends WorkbenchApp {
             @Override
             public void handle(MouseEvent e) {
                 try {
-                    int numProbes = Integer.parseInt(myPanel.getTField().getText());
+                    int numProbes = Integer.parseInt(myPanel.tField.getText());
 
                     // validate number
                     Dimension dim = layoutPanel.getLayoutSize();
@@ -751,40 +781,4 @@ public class NLEdit extends WorkbenchApp {
 
         JOptionPane.showMessageDialog(null, message, "Statistical data", JOptionPane.PLAIN_MESSAGE);
     }
-
-    private LayoutPanel layoutPanel; // reference to the layout panel
-    private NLSimUtil nlSimUtil;
-
-    // Toolbar
-    private Button importItemBtn = new Button("Import");
-    private Button exportItemBtn = new Button("Export");
-    private Button clearItemBtn = new Button("Clear");
-    private Button printItemBtn = new Button("Print");
-    private Button bcellItemBtn = new Button("Zoom In");
-    private Button scellItemBtn = new Button("Zoom Out");
-    private Button gpatItemBtn = new Button("_Generate pattern");
-    private Button aprbItemBtn = new Button("_Arrange probes");
-    private Button sdatItemBtn = new Button("Stats");
-
-    private ToggleGroup editGroup = new ToggleGroup();
-    private RadioButton inhNItem = new RadioButton("Inhibitory neurons");
-    private RadioButton activeNItem = new RadioButton("Active neurons");
-    private RadioButton probedNItem = new RadioButton("Probed neurons");
-
-    // Reference to workbench (or other frame code launching NLEdit)
-    private WorkbenchManager workbenchMgr;
-
-    private RadioButton newButton = new RadioButton("New");
-    private RadioButton rptButton = new RadioButton("Repeat");
-    private RadioButton altButton = new RadioButton("Alternate");
-
-    private ToggleGroup toggleGroup;
-
-    private NeuronsLayout neuronsLayout;
-
-    // repeat type for modify size
-    public enum RepType {
-        REPEAT, ALT, CLEAR
-    }
-
 }
