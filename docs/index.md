@@ -1,6 +1,5 @@
 ## About BrainGrid Workbench
 
-
 The idea behind the BrainGrid Workbench is to develop an application to ease creating simulations, managing simulation artifacts, and analyzing simulation results. This is done by using graphical user interfaces, recording provenance and visualizations.
 
 ## Table of Contents
@@ -47,16 +46,14 @@ The idea behind the BrainGrid Workbench is to develop an application to ease cre
 
 4. [Internal Development](workbench_internal_development.md)
 
-   4.1 Workbench Style Guide
+   4.1. Workbench Style Guide
 
-       4.1.1 Introduction
+       4.1.1. Java
 
-       4.1.2 Java
+       4.1.2. XML
 
-       4.1.3 XML
+   4.2. Tools and Plugins
 
-   4.2 Tools and Plugins
+       4.2.1. Apache Maven
 
-       4.2.1 Apache Maven
-
-       4.2.2 Checkstyle
+       4.2.2. Checkstyle
