@@ -1,6 +1,6 @@
 theme: jekyll-theme-slate
 
-title: BrainGrid
-description: A project to facilitate construction of high-performance neural simulations
+title: Graphitti Workbench
+description: Software and data provenance management platform for simulations of dissociated cortical cultures
 
 show_downloads: false
