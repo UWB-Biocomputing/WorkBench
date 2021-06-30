@@ -1,7 +1,6 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.io.File;
@@ -17,7 +16,6 @@ import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.workbenchdashboard.threads.RunInit;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
-import org.apache.jena.ext.com.google.common.io.Resources;
 
 /**
  * Workbench Dashboard Application, contains main.
