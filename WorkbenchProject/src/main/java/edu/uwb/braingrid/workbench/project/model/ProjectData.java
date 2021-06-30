@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
+ *
  * @author Aaron
  */
 public class ProjectData {
@@ -26,25 +27,25 @@ public class ProjectData {
         return name;
     }
 
-    public Datum addDatum(String name, String content, List<KeyValuePair> attributes) {
-        Datum datum = data.get(name);
+    public Datum addDatum(String dName, String content, List<KeyValuePair> dAttributes) {
+        Datum datum = data.get(dName);
         if (datum == null) {
-            datum = new Datum(name);
-            data.put(name, datum);
+            datum = new Datum(dName);
+            data.put(dName, datum);
         }
         if (content != null) {
             datum.setContent(content);
-            if (attributes != null) {
-                datum.setAttributes(attributes);
+            if (dAttributes != null) {
+                datum.setAttributes(dAttributes);
             }
         }
         return datum;
     }
 
-    public Datum getDatum(String name) {
-        Datum datum;
-        if ((datum = data.get(name)) == null) {
-            datum = addDatum(name, null, null);
+    public Datum getDatum(String dName) {
+        Datum datum = data.get(dName);
+        if (datum == null) {
+            datum = addDatum(dName, null, null);
         }
         return datum;
     }
@@ -57,10 +58,9 @@ public class ProjectData {
         attributes.put(key, value);
     }
 
-    public void addAtrributes(List<KeyValuePair> attributes) {
-        for (int i = 0, im = attributes.size(); i < im; i++) {
-            this.attributes.put(attributes.get(i).getKey(),
-                    attributes.get(i).getValue());
+    public void addAttributes(List<KeyValuePair> moreAttributes) {
+        for (KeyValuePair attribute : moreAttributes) {
+            attributes.put(attribute.getKey(), attribute.getValue());
         }
     }
 

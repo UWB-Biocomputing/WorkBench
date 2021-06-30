@@ -1,38 +1,36 @@
 package edu.uwb.braingrid.workbenchdashboard.nledit;
 
 public class Project {
-	private String ihbFile = "";
-	private String actFile = "";
-	private String prbFile = "";
 
-	public Project() {
-		
-	}
+    private String ihbFile = "";
+    private String actFile = "";
+    private String prbFile = "";
 
-	public String getIhbFile() {
-		return ihbFile;
-	}
+    public Project() {
+        // default constructor
+    }
 
-	public void setIhbFile(String ihbFile) {
-		this.ihbFile = ihbFile;
-	}
+    public String getIhbFile() {
+        return ihbFile;
+    }
 
-	public String getActFile() {
-		return actFile;
-	}
+    public void setIhbFile(String ihbFile) {
+        this.ihbFile = ihbFile;
+    }
 
-	public void setActFile(String actFile) {
-		this.actFile = actFile;
-	}
+    public String getActFile() {
+        return actFile;
+    }
 
-	public String getPrbFile() {
-		return prbFile;
-	}
+    public void setActFile(String actFile) {
+        this.actFile = actFile;
+    }
 
-	public void setPrbFile(String prbFile) {
-		this.prbFile = prbFile;
-	}
-	
-	
-	
+    public String getPrbFile() {
+        return prbFile;
+    }
+
+    public void setPrbFile(String prbFile) {
+        this.prbFile = prbFile;
+    }
 }

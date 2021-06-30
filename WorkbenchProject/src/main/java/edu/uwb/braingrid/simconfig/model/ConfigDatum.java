@@ -8,50 +8,52 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * Contains the information relevant to one equivalent XML node, not including
- * its children. A ConfigDatum must have a type, which designates what data it
- * is likely to contain. Any datum type may contain any data, but some functions
- * are designed for use with only certain types.
+ * Contains the information relevant to one equivalent XML node, not including its children. A
+ * ConfigDatum must have a type, which designates what data it is likely to contain. Any datum type
+ * may contain any data, but some functions are designed for use with only certain types.
  *
  * @author Aaron
  */
 public class ConfigDatum {
 
-    //Datum types
-    public static final int NULL_TYPE = 0;
-    public static final int TAB_TYPE = 1;
-    public static final int SUBHEAD_TYPE = 2;
-    public static final int PARAM_TYPE = 3;
-    public static final int TAB_END = 4;
-    public static final int SUBHEAD_END = 5;
+    public enum DatumType {
+        /** Null datum type. */
+        NULL_TYPE,
+        /** Tab datum type. */
+        TAB_TYPE,
+        /** Subhead datum type. */
+        SUBHEAD_TYPE,
+        /** Param datum type. */
+        PARAM_TYPE,
+        /** Tab end. */
+        TAB_END,
+        /** Subhead end. */
+        SUBHEAD_END
+    }
 
     //Specific attribute tags
     private static final String LABEL_TAG = "name";
     private static final String FILE_CHOOSER_TAG = "fileChooser";
 
-    private int datumType;
-    private String tagName;
+    private final DatumType datumType;
+    private final String tagName;
     private String content;
-    private HashMap<String, String> attributes;
+    private final HashMap<String, String> attributes;
 
-    public ConfigDatum(Node element, int datumType) {
+    /**
+     * Creates a ConfigDatum object.
+     *
+     * @param element  An XML node (not including its children)
+     * @param datumType  The type of data the node contains
+     */
+    public ConfigDatum(Node element, DatumType datumType) {
         //Check whether datum type is valid
-        if (datumType < NULL_TYPE || datumType > SUBHEAD_END) {
-            this.datumType = NULL_TYPE;
-        } else {
-            this.datumType = datumType;
-        }
+        this.datumType = (datumType == null) ? DatumType.NULL_TYPE : datumType;
         attributes = new HashMap<>();
-        
+
         if (element != null) {
             tagName = element.getNodeName();
-            
-            if (this.datumType == PARAM_TYPE) {
-                content = element.getTextContent();
-            }
-            else {
-                content = null;
-            }
+            content = (this.datumType == DatumType.PARAM_TYPE) ? element.getTextContent() : null;
 
             NamedNodeMap nodes = element.getAttributes();
             if (nodes != null) {
@@ -61,24 +63,23 @@ public class ConfigDatum {
                     attributes.put(node.getNodeName(), node.getNodeValue());
                 }
             }
-        }
-        else {
+        } else {
             tagName = "EmptyNode";
             content = null;
         }
     }
 
     /**
-     * Gets this datum's type
+     * Gets this datum's type.
      *
      * @return datumType
      */
-    public int getDatumType() {
+    public DatumType getDatumType() {
         return datumType;
     }
 
     /**
-     * Gets this datum's tag name
+     * Gets this datum's tag name.
      *
      * @return tagName
      */
@@ -87,7 +88,7 @@ public class ConfigDatum {
     }
 
     /**
-     * Gets this datum's text content
+     * Gets this datum's text content.
      *
      * @return content
      */
@@ -96,38 +97,38 @@ public class ConfigDatum {
     }
 
     /**
-     * Sets the text content to the new value
+     * Sets the text content to the new value.
      *
-     * @param newContent
+     * @param newContent  The new content value
      */
     public void setContent(String newContent) {
         content = newContent;
     }
 
     /**
-     * Gets the content of the attribute "LABEL_TAG" if the datum is not of
-     * NULL_TYPE. Returns null otherwise, or if the attribute doesn't exist.
+     * Gets the content of the attribute "LABEL_TAG" if the datum is not of NULL_TYPE. Returns null
+     * otherwise, or if the attribute doesn't exist.
      *
-     * @return content of attribute LABEL_TAG
+     * @return Content of attribute LABEL_TAG
      */
     public String getLabel() {
         String label = null;
-        if (datumType != NULL_TYPE) {
+        if (datumType != DatumType.NULL_TYPE) {
             label = attributes.get(LABEL_TAG);
         }
         return label;
     }
 
     /**
-     * Gets the content of the attribute "FILE_CHOOSER_TAG" if the datum is of
-     * PARAM_TYPE, and converts it to a boolean which is returned. False is
-     * return otherwise, or if the attribute doesn't exist.
+     * Gets the content of the attribute "FILE_CHOOSER_TAG" if the datum is of PARAM_TYPE, and
+     * converts it to a boolean which is returned. False is return otherwise, or if the attribute
+     * doesn't exist.
      *
-     * @return boolean content of attribute FILE_CHOOSER_TAG
+     * @return Boolean content of attribute FILE_CHOOSER_TAG
      */
     public boolean isFileChooser() {
         boolean isChooser = false;
-        if (datumType == PARAM_TYPE) {
+        if (datumType == DatumType.PARAM_TYPE) {
             String chooser = attributes.get(FILE_CHOOSER_TAG);
             if (chooser != null) {
                 isChooser = Boolean.parseBoolean(chooser);
@@ -137,21 +138,19 @@ public class ConfigDatum {
     }
 
     /**
-     * Returns this datum structured as an Element. The Element will look the
-     * same as it was when the datum was created, but possibly with the content
-     * changed.
+     * Returns this datum structured as an Element. The Element will look the same as it was when
+     * the datum was created, but possibly with the content changed.
      *
-     * @param doc Document
-     * @return this datum as an element
+     * @param doc  Document
+     * @return This datum as an element
      */
     public Element getElement(Document doc) {
-        Element e = doc.createElement(tagName);
+        Element element = doc.createElement(tagName);
         Set<String> keys = attributes.keySet();
-        
         for (String key : keys) {
-            e.setAttribute(key, attributes.get(key));
+            element.setAttribute(key, attributes.get(key));
         }
-        e.setTextContent(content);
-        return e;
+        element.setTextContent(content);
+        return element;
     }
 }

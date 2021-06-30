@@ -1,9 +1,6 @@
 package edu.uwb.braingrid.workbenchdashboard.nledit;
 
 import java.io.File;
-
-import edu.uwb.braingrid.general.FileSelectorDirMgr;
-import edu.uwb.braingrid.workbenchdashboard.WorkbenchDashboard;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,104 +10,109 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
+import edu.uwb.braingrid.general.FileSelectorDirMgr;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
+
 /**
- * The ExportPanel class handles export xml neurons list files dialog window.
- * The window contains three input fields and Browse buttons, each of which
- * corresponds width four different kinds of files, inhibitory neuron list,
- * active neuron list, and probed neuron list files.
- * 
+ * The ExportPanel class handles export xml neurons list files dialog window. The window contains
+ * three input fields and Browse buttons, each of which corresponds width four different kinds of
+ * files, inhibitory neuron list, active neuron list, and probed neuron list files.
+ *
  * @author Fumitaka Kawasaki
  * @version 1.2
  */
 public class ExportPanel extends Pane implements EventHandler<javafx.event.ActionEvent> {
-	private Label[] labels = new Label[3];
-	public TextField[] tfields = new TextField[3];
-	private Button[] btns = new Button[3];
-//	private static String nlistDir = "."; // directory for neurons list file
 
-	static final int nFields = 3; // number of input fields
-	/** field index of inhibitory neurons list file */
-	public static final int idxInhList = 0;
-	/** field index of active neurons list file */
-	public static final int idxActList = 1;
-	/** field index of probed neurons list file */
-	public static final int idxPrbList = 2;
+    /** Number of input fields. */
+    public static final int NUM_FIELDS = 3;
+    /** Field index of inhibitory neurons list file. */
+    public static final int IDX_INH_LIST = 0;
+    /** Field index of active neurons list file. */
+    public static final int IDX_ACT_LIST = 1;
+    /** Field index of probed neurons list file. */
+    public static final int IDX_PRB_LIST = 2;
+//    private static String nListDir = "."; // directory for neurons list file
 
-	/**
-	 * A class constructor, which creates UI components, and registers action
-	 * listener.
-	 * 
-	 * @param dir
-	 *            directory for neurons list file
-	 */
-	public ExportPanel(String dir) {
-		GridPane gp = new GridPane();
-//		nlistDir = dir;
+    /** The labels for this Pane. */
+    private Label[] labels = new Label[NUM_FIELDS];
+    /** The buttons for this Pane. */
+    private Button[] buttons = new Button[NUM_FIELDS];
+    /** The text fields for this Pane. */
+    TextField[] tFields = new TextField[NUM_FIELDS];
 
-		labels[idxInhList] = new Label("Inhibitory neurons list:");
-		labels[idxActList] = new Label("Active neurons list:");
-		labels[idxPrbList] = new Label("Probed neurons list:");
+    private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
 
-		gp.getChildren().addAll(labels[idxInhList], labels[idxActList], labels[idxPrbList]);
-		GridPane.setConstraints(labels[idxInhList], 0, 0);
-		GridPane.setConstraints(labels[idxActList], 0, 1);
-		GridPane.setConstraints(labels[idxPrbList], 0, 2);
+    /**
+     * A class constructor, which creates UI components, and registers action listener.
+     *
+     * @param dir  directory for neurons list file
+     */
+    public ExportPanel(String dir) {
+        GridPane gp = new GridPane();
+//        nListDir = dir;
 
-		for (int i = 0; i < nFields; i++) {
-			tfields[i] = new TextField();
-			tfields[i].setEditable(true);
-			btns[i] = new Button("Browse...");
-			btns[i].setOnAction(this);
-			gp.getChildren().addAll(tfields[i], btns[i]);
-			GridPane.setConstraints(tfields[i], 1, i);
-			GridPane.setConstraints(btns[i], 2, i);
-		}
-		getChildren().add(gp);
-	}
+        labels[IDX_INH_LIST] = new Label("Inhibitory neurons list:");
+        labels[IDX_ACT_LIST] = new Label("Active neurons list:");
+        labels[IDX_PRB_LIST] = new Label("Probed neurons list:");
 
-	FileSelectorDirMgr filemgr = new FileSelectorDirMgr();
-	
-	@Override
-	public void handle(javafx.event.ActionEvent arg0) {
-		int iSource = 0;
-		for (int i = 0; i < nFields; i++) {
-			if (arg0.getSource() == btns[i]) {
-				iSource = i;
-				break;
-			}
-		}
-		// create a file chooser
-		
-		FileChooser chooser = new FileChooser();
-		chooser.setInitialDirectory(filemgr.getLastDir());
-		chooser.setTitle("Save File");
+        gp.getChildren().addAll(labels[IDX_INH_LIST], labels[IDX_ACT_LIST], labels[IDX_PRB_LIST]);
+        GridPane.setConstraints(labels[IDX_INH_LIST], 0, IDX_INH_LIST);
+        GridPane.setConstraints(labels[IDX_ACT_LIST], 0, IDX_ACT_LIST);
+        GridPane.setConstraints(labels[IDX_PRB_LIST], 0, IDX_PRB_LIST);
 
-		ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "xml");
-		chooser.setSelectedExtensionFilter(filter);
-		
-//		String dialogTitle = "";
-		switch (iSource) {
-		case idxInhList:
-			chooser.setInitialFileName("inh.xml");
-//			dialogTitle = "Inhibitory neurons list";
-			break;
-		case idxActList:
-			chooser.setInitialFileName("act.xml");
-//			dialogTitle = "Active neurons list";
-			break;
-		case idxPrbList:
-			chooser.setInitialFileName("prb.xml");
-//			dialogTitle = "Probed neurons list";
-			break;
-		}
+        for (int i = 0; i < NUM_FIELDS; i++) {
+            tFields[i] = new TextField();
+            tFields[i].setEditable(true);
+            buttons[i] = new Button("Browse...");
+            buttons[i].setOnAction(this);
+            gp.getChildren().addAll(tFields[i], buttons[i]);
+            GridPane.setConstraints(tFields[i], 1, i);
+            GridPane.setConstraints(buttons[i], 2, i);
+        }
+        getChildren().add(gp);
+    }
 
-		File option = chooser.showSaveDialog(WorkbenchDashboard.primaryStage_);
-		
-		if (option != null) {
+    @Override
+    public void handle(javafx.event.ActionEvent arg0) {
+        int iSource = 0;
+        for (int i = 0; i < NUM_FIELDS; i++) {
+            if (arg0.getSource() == buttons[i]) {
+                iSource = i;
+                break;
+            }
+        }
+        // create a file chooser
+        FileChooser chooser = new FileChooser();
+        chooser.setInitialDirectory(fileMgr.getLastDir());
+        chooser.setTitle("Save File");
 
-			tfields[iSource].setText(option.getAbsolutePath());
-//			nlistDir = option.getParent();
-			filemgr.add(option.getParentFile());
-		}
-	}
+        ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "xml");
+        chooser.setSelectedExtensionFilter(filter);
+
+//        String dialogTitle = "";
+        switch (iSource) {
+        case IDX_INH_LIST:
+            chooser.setInitialFileName("inh.xml");
+//            dialogTitle = "Inhibitory neurons list";
+            break;
+        case IDX_ACT_LIST:
+            chooser.setInitialFileName("act.xml");
+//            dialogTitle = "Active neurons list";
+            break;
+        case IDX_PRB_LIST:
+            chooser.setInitialFileName("prb.xml");
+//            dialogTitle = "Probed neurons list";
+            break;
+        default:
+            // do nothing
+        }
+
+        File option = chooser.showSaveDialog(WorkbenchDisplay.getPrimaryStage());
+
+        if (option != null) {
+            tFields[iSource].setText(option.getAbsolutePath());
+//            nListDir = option.getParent();
+            fileMgr.add(option.getParentFile());
+        }
+    }
 }

@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
+ *
  * @author Aaron
  */
 public class Datum {
@@ -44,9 +45,8 @@ public class Datum {
     }
 
     public void setAttributes(List<KeyValuePair> attributes) {
-        for (int i = 0, im = attributes.size(); i < im; i++) {
-            this.attributes.put(attributes.get(i).getKey(),
-                    attributes.get(i).getValue());
+        for (KeyValuePair attribute : attributes) {
+            this.attributes.put(attribute.getKey(), attribute.getValue());
         }
     }
 

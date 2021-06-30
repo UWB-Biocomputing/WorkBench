@@ -1,11 +1,12 @@
 package edu.uwb.braingrid.workbench.provvisualizer.model;
 
 public class AuthenticationInfo {
+
     private String hostname;
     private String username;
     private String password;
 
-    public AuthenticationInfo(String hostname, String username, String password){
+    public AuthenticationInfo(String hostname, String username, String password) {
         this.hostname = hostname;
         this.username = username;
         this.password = password;

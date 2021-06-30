@@ -1,5 +1,6 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
+import java.util.logging.Logger;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -7,187 +8,180 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
-
-import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
 import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
-import edu.uwb.braingrid.workbenchdashboard.nledit.NLedit;
+import edu.uwb.braingrid.workbenchdashboard.nledit.NLEdit;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 import edu.uwb.braingrid.workbenchdashboard.userView.UserView;
 import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
-import javafx.stage.Stage;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.TransportException;
 
 /**
  * Defines the main display of the screen along with global functionality.
+ *
  * @author Max Wright, extended and updated by Joseph Conquest
  */
-public class WorkbenchDisplay extends BorderPane {	
-	private static final Logger LOG = Logger.getLogger(WorkbenchDisplay.class.getName());
-	
-	/**
-	 * The top menu bar of the screen.
-	 */
-	private MenuBar menu_bar_;
-	private Stage primaryStage_;
-	
-	/**
-	 * The main content of the screen
-	 */
-	private TabPane tp_ = new TabPane();
+public class WorkbenchDisplay extends BorderPane {
 
-	/**
-	 * 
-	 * @param primary_stage The Stage object of the fx instance.
-	 */
-	public WorkbenchDisplay(Stage primary_stage) {
-		LOG.info("new " + getClass().getName());
-		primaryStage_ = primary_stage;
-		setTop(generateMenuBar(primaryStage_));
-		setBottom(new WorkbenchStatusBar());
-		pushProVisStarterPage();
-		setCenter(tp_);
-	}
+    private static final Logger LOG = Logger.getLogger(WorkbenchDisplay.class.getName());
 
-	public MenuBar getMenuBar() {
-		return menu_bar_;
-	}
+    /** The Stage of the FX program. */
+    private static Stage primaryStage;
+    /** The top menu bar of the screen. */
+    private MenuBar menuBar;
+    /** The main content of the screen. */
+    private TabPane tabPane = new TabPane();
 
-	private MenuBar generateMenuBar(Stage primary_stage) {
-		menu_bar_ = new MenuBar();
-		menu_bar_.getMenus().add(generateMenuFile(primary_stage));
-		menu_bar_.getMenus().add(generateMenuRepo());
-		return menu_bar_;
-	}
-	
-	/**
-	 * Generates all functionality associated with the "File" tab of the menu bar.
-	 * @param primary_stage The Stage of the FX program
-	 * @return A complete menu.
-	 */
-	private Menu generateMenuFile(Stage primary_stage) {
-		Menu file_menu = new Menu("_File");
-		file_menu.getItems().add(generateMenuNew(primary_stage));
-		file_menu.getItems().add(generateMenuItemOpen());
-		file_menu.getItems().add(generateMenuRecentProjects());
-		return file_menu;
-	}
+    /**
+     * Creates a WorkbenchDisplay which represents the main display.
+     *
+     * @param primaryStage  The Stage of the FX program
+     */
+    public WorkbenchDisplay(Stage primaryStage) {
+        LOG.info("new " + getClass().getName());
+        WorkbenchDisplay.primaryStage = primaryStage;
+        setTop(generateMenuBar());
+        setBottom(new WorkbenchStatusBar());
+        pushProVisStarterPage();
+        setCenter(tabPane);
+    }
 
-	private Menu generateMenuRecentProjects() {
-		Menu recent_proj_menu = new Menu("Recent Projects");
-		return recent_proj_menu;
-	}
-	
-	private MenuItem generateMenuItemOpen() {
-		// Generate menu item
-		MenuItem open_menu = new MenuItem("Open");
-		// Define functionality
-		open_menu.setOnAction(event -> {
-			pushSimOpen();
-		});
-		return open_menu;
-	}
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
-	private Menu generateMenuNew(Stage primary_stage) {
-		Menu new_menu = new Menu("_New");
+    public MenuBar getMenuBar() {
+        return menuBar;
+    }
 
-		// Generate Items
-		MenuItem gsle = new MenuItem("_Growth Simulation Layout Editor");
+    private MenuBar generateMenuBar() {
+        menuBar = new MenuBar();
+        menuBar.getMenus().add(generateMenuFile());
+        menuBar.getMenus().add(generateMenuRepo());
+        return menuBar;
+    }
 
-		// Define Functionality
-		gsle.setOnAction(event -> {
-			pushGSLEPane();
-		});
+    /**
+     * Generates all functionality associated with the "File" tab of the menu bar.
+     *
+     * @return A complete menu.
+     */
+    private Menu generateMenuFile() {
+        Menu fileMenu = new Menu("_File");
+        fileMenu.getItems().add(generateMenuNew());
+        fileMenu.getItems().add(generateMenuItemOpen());
+        fileMenu.getItems().add(generateMenuRecentProjects());
+        return fileMenu;
+    }
 
-		// Generate Items
-		MenuItem simstarter = new MenuItem("_Simulation Starter");
+    private Menu generateMenuRecentProjects() {
+        Menu recentProjectMenu = new Menu("Recent Projects");
+        return recentProjectMenu;
+    }
 
-		// Define Functionality
-		simstarter.setOnAction(event -> {
-			pushSimWizPop();
-		});
+    private MenuItem generateMenuItemOpen() {
+        // Generate menu item
+        MenuItem openMenu = new MenuItem("Open");
+        // Define functionality
+        openMenu.setOnAction(event -> {
+            pushSimOpen();
+        });
+        return openMenu;
+    }
 
-		// Generate Items
-		MenuItem provis = new MenuItem("_ProVis");
+    private Menu generateMenuNew() {
+        Menu newMenu = new Menu("_New");
 
-		// Define Functionality
-		provis.setOnAction(event -> {
-			pushProVisStarterPage();
-		});
+        // Generate Items
+        MenuItem gsle = new MenuItem("_Growth Simulation Layout Editor");
 
-		// Add
-		new_menu.getItems().add(gsle);
-		new_menu.getItems().add(simstarter);
-		new_menu.getItems().add(provis);
-		return new_menu;
-	}
-	
-	private Menu generateMenuRepo() {
-		Menu repo_menu = new Menu("_Repo");
-		MenuItem updateMain = new MenuItem("Update Main");
-		
-		updateMain.setOnAction(event -> {
-			RepoManager.getMasterBranch();
-		});
-		
-		repo_menu.getItems().add(updateMain);
-		
-		return repo_menu;
-	}
-	
-	/**
-	 * Adds a new Growth Simulator Layout Editor tab
-	 */
-	void pushGSLEPane() {
-		Tab tab = new Tab();
-		NLedit pv = new NLedit(tab);
-		tab.setContent(pv.getDisplay());
-		tp_.getTabs().add(tab);
-		SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
-		selectionModel.select(tab);
-	}
-	
-	/**
-	 * initializes SimManager and allows the opening of project specification
-	 */
-	void pushSimOpen() {
-		SimManager pv = new SimManager();
-		pv.openProject();
-	}
-	
-	/**
-	 Creates a new Simulation Starter Pop-up
-	 */
-	void pushSimWizPop() {
-		SimStartWiz ssw = new SimStartWiz();
-	}
+        // Define Functionality
+        gsle.setOnAction(event -> {
+            pushGSLEPane();
+        });
 
-	/**
-	 * Add a new Providence Visualizer tab
-	 */
-	void pushProVisStarterPage() {
-		Tab tab = new Tab();
-		ProVis pv = new ProVis(tab);
-		tab.setContent(pv.getDisplay());
-		tp_.getTabs().add(tab);
-		SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
-		selectionModel.select(tab);
-	}
-	
-	void pushUserViewPage() {
-		Tab tab = new Tab();
-		UserView uv = new UserView(tab);
-		tab.setContent(uv.getDisplay());
-		tp_.getTabs().add(tab);
-		SingleSelectionModel<Tab> selectionModel = tp_.getSelectionModel();
-		selectionModel.select(tab);
-	}
+        // Generate Items
+        MenuItem simstarter = new MenuItem("_Simulation Starter");
+
+        // Define Functionality
+        simstarter.setOnAction(event -> {
+            pushSimWizPop();
+        });
+
+        // Generate Items
+        MenuItem provis = new MenuItem("_ProVis");
+
+        // Define Functionality
+        provis.setOnAction(event -> {
+            pushProVisStarterPage();
+        });
+
+        // Add
+        newMenu.getItems().add(gsle);
+        newMenu.getItems().add(simstarter);
+        newMenu.getItems().add(provis);
+        return newMenu;
+    }
+
+    private Menu generateMenuRepo() {
+        Menu repoMenu = new Menu("_Repo");
+        MenuItem updateMain = new MenuItem("Update Main");
+
+        updateMain.setOnAction(event -> {
+            RepoManager.getMasterBranch();
+        });
+
+        repoMenu.getItems().add(updateMain);
+
+        return repoMenu;
+    }
+
+    /**
+     * Adds a new Growth Simulator Layout Editor tab.
+     */
+    public void pushGSLEPane() {
+        Tab tab = new Tab();
+        NLEdit pv = new NLEdit(tab);
+        tab.setContent(pv.getDisplay());
+        tabPane.getTabs().add(tab);
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        selectionModel.select(tab);
+    }
+
+    /**
+     * initializes SimManager and allows the opening of project specification.
+     */
+    public void pushSimOpen() {
+        SimManager pv = new SimManager();
+        pv.openProject();
+    }
+
+    /**
+     Creates a new Simulation Starter Pop-up.
+     */
+    public void pushSimWizPop() {
+        SimStartWiz ssw = new SimStartWiz();
+    }
+
+    /**
+     * Add a new Providence Visualizer tab.
+     */
+    public void pushProVisStarterPage() {
+        Tab tab = new Tab();
+        ProVis pv = new ProVis(tab);
+        tab.setContent(pv.getDisplay());
+        tabPane.getTabs().add(tab);
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        selectionModel.select(tab);
+    }
+
+    public void pushUserViewPage() {
+        Tab tab = new Tab();
+        UserView uv = new UserView(tab);
+        tab.setContent(uv.getDisplay());
+        tabPane.getTabs().add(tab);
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        selectionModel.select(tab);
+    }
 }

@@ -1,9 +1,9 @@
-package edu.uwb.braingrid.tools.nledit;
+package edu.uwb.braingrid.simconfig.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ControlFrameTest {
+public class SimulationConfigurationTest {
     @Test
     public void test() {
         Assertions.fail("Need to test still");

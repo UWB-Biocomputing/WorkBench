@@ -10,127 +10,123 @@ import java.awt.print.PrinterException;
 
 /**
  * The MyPrintable handles printing function.
- * 
+ *
  * @author Fumitaka Kawasaki
  * @version 1.2
  */
 public class MyPrintable implements Printable, Pageable {
-	private PageFormat pf;
-	private LayoutPanel layoutPanel;
-	private NL_Sim_Util nl_sim_util_;
 
-	public MyPrintable(LayoutPanel layoutPanel, NL_Sim_Util nl_sim_util) {
-		this.layoutPanel = layoutPanel;
-		nl_sim_util_ = nl_sim_util;
-	}
+    private PageFormat pageFormat;
+    private LayoutPanel layoutPanel;
+    private NLSimUtil nlSimUtil;
 
-	public MyPrintable(PageFormat pf, LayoutPanel layoutPanel, NL_Sim_Util nl_sim_util) {
-		this.pf = pf;
-		this.layoutPanel = layoutPanel;
-		nl_sim_util_ = nl_sim_util;
-	}
+    public MyPrintable(LayoutPanel layoutPanel, NLSimUtil nlSimUtil) {
+        this.layoutPanel = layoutPanel;
+        this.nlSimUtil = nlSimUtil;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.print.Printable#print(java.awt.Graphics,
-	 * java.awt.print.PageFormat, int)
-	 */
-	public int print(Graphics g, PageFormat pf, int pageIndex)
-			throws PrinterException {
-		if (pageIndex == 0) {
-			// the first page, draw layout
-			int imWidth = (int) pf.getImageableWidth();
-			int imHeight = (int) pf.getImageableHeight();
-			int cellWidth = layoutPanel.getCellWidth();
-			Dimension dim = layoutPanel.getLayoutSize();
-			int xlen = dim.width;
-			int ylen = dim.height;
-			int lWidth = xlen * cellWidth; // layout width
-			int lHeight = ylen * cellWidth; // layout height
+    public MyPrintable(PageFormat pageFormat, LayoutPanel layoutPanel, NLSimUtil nlSimUtil) {
+        this.pageFormat = pageFormat;
+        this.layoutPanel = layoutPanel;
+        this.nlSimUtil = nlSimUtil;
+    }
 
-			int tcWidth = cellWidth;
-			if (lWidth > imWidth) {
-				tcWidth = imWidth / xlen;
-			}
-			if (lHeight > imHeight) {
-				if (imHeight / ylen < tcWidth) {
-					tcWidth = imHeight / ylen;
-				}
-			}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.awt.print.Printable#print(java.awt.Graphics,
+     * java.awt.print.PageFormat, int)
+     */
+    public int print(Graphics g, PageFormat pf, int pageIndex) throws PrinterException {
+        if (pageIndex == 0) {
+            // the first page, draw layout
+            int imWidth = (int) pf.getImageableWidth();
+            int imHeight = (int) pf.getImageableHeight();
+            int cellWidth = layoutPanel.getCellWidth();
+            Dimension dim = layoutPanel.getLayoutSize();
+            int xlen = dim.width;
+            int ylen = dim.height;
+            int lWidth = xlen * cellWidth; // layout width
+            int lHeight = ylen * cellWidth; // layout height
 
-			// adjust cell size to fit the page
-			if (tcWidth < cellWidth) {
-				layoutPanel.setCellWidth(tcWidth);
-			}
+            int tcWidth = cellWidth;
+            if (lWidth > imWidth) {
+                tcWidth = imWidth / xlen;
+            }
+            if (lHeight > imHeight) {
+                if (imHeight / ylen < tcWidth) {
+                    tcWidth = imHeight / ylen;
+                }
+            }
 
-			// shift to allocate margin, and write layout
-			g.translate((int) pf.getImageableX(), (int) pf.getImageableY());
-			layoutPanel.writeToGraphics(g);
+            // adjust cell size to fit the page
+            if (tcWidth < cellWidth) {
+                layoutPanel.setCellWidth(tcWidth);
+            }
 
-			// restore to original cell size
-			if (tcWidth < cellWidth) {
-				layoutPanel.setCellWidth(cellWidth);
-			}
+            // shift to allocate margin, and write layout
+            g.translate((int) pf.getImageableX(), (int) pf.getImageableY());
+            layoutPanel.writeToGraphics(g);
 
-			return Printable.PAGE_EXISTS;
-		}
-		if (pageIndex == 1) {
-			// the second page, draw statistical data
-			String msg = nl_sim_util_ .getStatisticalMsg(false);
-			drawStringMultiLine((Graphics2D) g, pf, msg);
+            // restore to original cell size
+            if (tcWidth < cellWidth) {
+                layoutPanel.setCellWidth(cellWidth);
+            }
 
-			return Printable.PAGE_EXISTS;
-		} else {
-			return Printable.NO_SUCH_PAGE;
-		}
-	}
+            return Printable.PAGE_EXISTS;
+        }
+        if (pageIndex == 1) {
+            // the second page, draw statistical data
+            String msg = nlSimUtil.getStatisticalMsg(false);
+            drawStringMultiLine((Graphics2D) g, pf, msg);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.print.Pageable#getNumberOfPages()
-	 */
-	public int getNumberOfPages() {
-		return 2; // number of pages
-	}
+            return Printable.PAGE_EXISTS;
+        } else {
+            return Printable.NO_SUCH_PAGE;
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.print.Pageable#getPageFormat(int)
-	 */
-	public PageFormat getPageFormat(int pageIndex)
-			throws IndexOutOfBoundsException {
-		return pf; // return page format
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.awt.print.Pageable#getNumberOfPages()
+     */
+    public int getNumberOfPages() {
+        return 2; // number of pages
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.print.Pageable#getPrintable(int)
-	 */
-	public Printable getPrintable(int pageIndex)
-			throws IndexOutOfBoundsException {
-		return this;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.awt.print.Pageable#getPageFormat(int)
+     */
+    public PageFormat getPageFormat(int pageIndex) throws IndexOutOfBoundsException {
+        return pageFormat; // return page format
+    }
 
-	/**
-	 * draw multi-line string
-	 * 
-	 * @param g
-	 *            graphics object
-	 * @param pf
-	 *            page format
-	 * @param str
-	 *            string to draw
-	 */
-	private void drawStringMultiLine(Graphics2D g, PageFormat pf, String str) {
-		int x = (int) pf.getImageableX();
-		int y = (int) pf.getImageableY();
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.awt.print.Pageable#getPrintable(int)
+     */
+    public Printable getPrintable(int pageIndex) throws IndexOutOfBoundsException {
+        return this;
+    }
 
-		for (String line : str.split("\n")) {
-			g.drawString(line, x, y += g.getFontMetrics().getHeight());
-		}
-	}
+    /**
+     * Draw multi-line string.
+     *
+     * @param g  graphics object
+     * @param pf  page format
+     * @param str  string to draw
+     */
+    private void drawStringMultiLine(Graphics2D g, PageFormat pf, String str) {
+        int x = (int) pf.getImageableX();
+        int y = (int) pf.getImageableY();
+
+        for (String line : str.split("\n")) {
+            y += g.getFontMetrics().getHeight();
+            g.drawString(line, x, y);
+        }
+    }
 }

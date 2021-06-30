@@ -75,23 +75,15 @@ public class ScriptHistory {
     public void incrementVersion() {
         version++;
     }
-    
+
     /**
-     * Provides the version number of the next script that will be added to the
-     * project. This is a convenience function, the version number is determined
-     * based on the current script version
+     * Provides the version number of the next script that will be added to the project. This is a
+     * convenience function, the version number is determined based on the current script version.
      *
-     * @return The version number of the next script that will be added to the
-     * project when another script is generated.
+     * @return The version number of the next script that will be added to the project when another
+     *         script is generated.
      */
     public String getNextScriptVersion() {
-
-        String scriptVerNum;
-        try {
-            scriptVerNum = String.valueOf(version + 1);
-        } catch (NumberFormatException e) {
-            scriptVerNum = String.valueOf(version = 0);
-        }
-        return scriptVerNum;
+        return String.valueOf(version + 1);
     }
 }

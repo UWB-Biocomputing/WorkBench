@@ -1,18 +1,19 @@
 package edu.uwb.braingrid.workbench.project;
 // NOT CLEANED (Still Implementing / Testing / JavaDocs / Class Header)
 
-import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.model.ScriptHistory;
-import edu.uwb.braingrid.workbench.model.SimulationSpecification;
-import edu.uwb.braingrid.workbench.project.model.Datum;
-import edu.uwb.braingrid.workbench.project.model.ProjectData;
-import edu.uwb.braingrid.workbench.utils.DateTime;
 import java.io.IOException;
 import java.util.Date;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
+
+import edu.uwb.braingrid.workbench.FileManager;
+import edu.uwb.braingrid.workbench.model.ScriptHistory;
+import edu.uwb.braingrid.workbench.model.SimulationSpecification;
+import edu.uwb.braingrid.workbench.project.model.Datum;
+import edu.uwb.braingrid.workbench.project.model.ProjectData;
+import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
  *
@@ -21,6 +22,38 @@ import org.xml.sax.SAXException;
 public class ProjectManager {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
+    private static final int DEFAULT_SCRIPT_VERSION = 0;
+//    private static final String PROJECT_TAG_NAME = "project";
+//    private static final String PROJECT_NAME_ATTRIBUTE = "name";
+    private static final String PROV_TAG_NAME = "provenance";
+
+    // FIX THIS : Find where this is used
+//    private static final String PROV_LOCATION_TAG_NAME = "location";
+
+    private static final String PROV_ENABLED_ATTRIBUTE_NAME = "enabled";
+    private static final String SIMULATOR_TAG_NAME = "simulator";
+    private static final String SIMULATOR_EXECUTION_MACHINE = "executionMachine";
+    private static final String HOSTNAME_TAG_NAME = "hostname";
+    private static final String SIM_FOLDER_TAG_NAME = "simulatorFolder";
+    private static final String SIMULATION_TYPE_TAG_NAME = "ProcessingType";
+    private static final String SIMULATOR_SOURCE_CODE_UPDATING_TAG_NAME = "sourceCodeUpdating";
+    private static final String SHA1_KEY_TAG_NAME = "SHA1Key";
+    private static final String BUILD_OPTION_TAG_NAME = "BuildOption";
+//    private static final String SCRIPT_VERSION_TAG_NAME = "scriptVersion";
+    private static final String SCRIPT_VERSION_VERSION_TAG_NAME = "version";
+    private static final String SIMULATOR_VERSION_ANNOTATION_TAG_NAME = "version";
+    private static final String SIMULATOR_CODE_LOCATION_TAG_NAME = "repository";
+    private static final String SCRIPT_TAG_NAME = "script";
+    private static final String SCRIPT_FILE_TAG_NAME = "file";
+    private static final String SCRIPT_RAN_RUN_ATTRIBUTE_NAME = "ran";
+    private static final String SCRIPT_RAN_AT_ATTRIBUTE_NAME = "atMillis";
+//    private static final String SCRIPT_HOSTNAME_TAG_NAME = "hostname";
+    private static final String SCRIPT_COMPLETED_AT_ATTRIBUTE_NAME = "completedAt";
+    private static final String SCRIPT_ANALYZED_ATTRIBUTE_NAME = "outputAnalyzed";
+    private static final String SIM_CONFIG_FILE_TAG_NAME = "simConfigFile";
+    private static final String SIMULATION_CONFIGURATION_FILE_TAG_NAME
+            = "simulationConfigurationFile";
+
     private Project project;
 //    private Document doc;
 //    private String name;
@@ -32,72 +65,37 @@ public class ProjectManager {
 //    private Element simulationConfigurationFile;
 //    private Element script;
 //    private boolean provEnabled;
-//    private static final String projectTagName = "project";
-//    private static final String projectNameAttribute = "name";
-    private static final int defaultScriptVersion = 0;
-
-    private static final String provTagName = "provenance";
-
-    // FIX THIS : Find where this is used
-//    private static final String provLocationTagName = "location";
-
-    private static final String provEnabledAttributeName = "enabled";
-    private static final String simulatorTagName = "simulator";
-    private static final String simulatorExecutionMachine
-            = "executionMachine";
-    private static final String hostnameTagName = "hostname";
-    private static final String simFolderTagName = "simulatorFolder";
-    private static final String simulationTypeTagName = "ProcessingType";
-    private static final String simulatorSourceCodeUpdatingTagName
-            = "sourceCodeUpdating";
-    private static final String SHA1KeyTagName = "SHA1Key";
-    private static final String buildOptionTagName = "BuildOption";
-//    private static final String scriptVersionTagName = "scriptVersion";
-    private static final String scriptVersionVersionTagName = "version";
-    private static final String simulatorVersionAnnotationTagName = "version";
-    private static final String simulatorCodeLocationTagName = "repository";
-    private static final String scriptTagName = "script";
-    private static final String scriptFileTagName = "file";
-    private static final String scriptRanRunAttributeName = "ran";
-    private static final String scriptRanAtAttributeName = "atMillis";
-//    private static final String scriptHostnameTagName = "hostname";
-    private static final String scriptCompletedAtAttributeName = "completedAt";
-    private static final String scriptAnalyzedAttributeName = "outputAnalyzed";
-    private static final String simConfigFileTagName = "simConfigFile";
-    private static final String simulationConfigurationFileTagName
-            = "simulationConfigurationFile";
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Constructs a project including the XML document that constitutes the
-     * project, as well as project members
+     * Constructs a project including the XML document that constitutes the project, as well as
+     * project members.
      *
-     * @param rootNodeName - Name of the project. Name given to the root node
-     * @param load - True if the project should be loaded from disk, false
-     * otherwise
+     * @param rootNodeName  Name of the project. Name given to the root node.
+     * @param load  True if the project should be loaded from disk, false otherwise
      * @throws ParserConfigurationException
      * @throws java.io.IOException
      * @throws org.xml.sax.SAXException
      */
-    public ProjectManager(String rootNodeName, boolean load)
-            throws ParserConfigurationException, IOException, SAXException {
+    public ProjectManager(String rootNodeName, boolean load) throws ParserConfigurationException,
+            IOException, SAXException {
         initState();
         project.setProjectName(rootNodeName);
         if (load) {
-            project.load(project.determineProjectOutputLocation()
-                    + project.getProjectName() + ".xml");
+            project.load(project.determineProjectOutputLocation() + project.getProjectName()
+                    + ".xml");
         }
     }
 
     private void initState() {
         project = new Project("None");
     }
+    // </editor-fold>
 
-    //</editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Persistence">
     /**
-     * Writes the document representing this project to disk
+     * Writes the document representing this project to disk.
      *
      * @return The full path to the file that was persisted
      * @throws TransformerConfigurationException
@@ -105,17 +103,15 @@ public class ProjectManager {
      * @throws java.io.IOException
      * @throws javax.xml.parsers.ParserConfigurationException
      */
-    public String persist()
-            throws TransformerConfigurationException, TransformerException,
+    public String persist() throws TransformerConfigurationException, TransformerException,
             IOException, ParserConfigurationException {
         return project.persist();
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="ProjectMgr Configuration">
     /**
-     * Determines the folder location for storing provenance data for a given
-     * project
+     * Determines the folder location for storing provenance data for a given project.
      *
      * @return The path to the provenance folder for the specified project
      * @throws IOException
@@ -123,41 +119,38 @@ public class ProjectManager {
     public String determineProvOutputLocation()
             throws IOException {
         String projectDirectory = project.determineProjectOutputLocation();
-        String provOutputLocation = projectDirectory
-                + "provenance"
+        String provOutputLocation = projectDirectory + "provenance"
                 + FileManager.getFileManager().getFolderDelimiter();
         return provOutputLocation;
     }
 
     /**
-     * Determines the assumed folder location for a project of a given name
+     * Determines the assumed folder location for a project of a given name.
      *
      * @return The path to the project folder for the specified project
      * @throws IOException
      */
-    public static final String determineProjectOutputLocation(String name)
-            throws IOException {
+    public static final String determineProjectOutputLocation(String name) throws IOException {
         String workingDirectory = FileManager.getCanonicalWorkingDirectory();
         String ps = FileManager.getFileManager().getFolderDelimiter();
-        String projectDirectory = workingDirectory + ps + "projects" + ps
-                + name + ps;
+        String projectDirectory = workingDirectory + ps + "projects" + ps + name + ps;
         return projectDirectory;
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="Getters/Setters">
     /**
-     * Sets the project's name. This will also modify the name attribute for the
-     * project element of the project XML model
+     * Sets the project's name. This will also modify the name attribute for the project element of
+     * the project XML model.
      *
-     * @param name The name given to the project
+     * @param name  The name given to the project
      */
     public void setName(String name) {
         project.setProjectName(name);
     }
 
     /**
-     * Provides the name of the project
+     * Provides the name of the project.
      *
      * @return The name of the project
      */
@@ -166,28 +159,27 @@ public class ProjectManager {
     }
 
     /**
-     * Sets the value that used to determine if provenance support is enabled
-     * for this project. Also sets the value of the related attribute for the
-     * project element in the project XML
+     * Sets the value that used to determine if provenance support is enabled for this project. Also
+     * sets the value of the related attribute for the project element in the project XML.
      *
-     * @param enabled Whether of not this project should record provenance
+     * @param enabled  Whether of not this project should record provenance
      */
     public void setProvenanceEnabled(boolean enabled) {
-        ProjectData provData = new ProjectData(provTagName);
-        provData.addAttribute(provEnabledAttributeName, String.valueOf(enabled));
+        ProjectData provData = new ProjectData(PROV_TAG_NAME);
+        provData.addAttribute(PROV_ENABLED_ATTRIBUTE_NAME, String.valueOf(enabled));
         project.addProjectData(provData);
     }
 
     /**
-     * Indicates if provenance support is enabled for this project
+     * Indicates if provenance support is enabled for this project.
      *
      * @return True if provenance support is enabled, otherwise false
      */
     public boolean isProvenanceEnabled() {
         boolean provEnabled = false;
-        ProjectData provData = project.getProjectData(provTagName);
+        ProjectData provData = project.getProjectData(PROV_TAG_NAME);
         if (provData != null) {
-            String provEnabledAttribute = provData.getAttribute(provEnabledAttributeName);
+            String provEnabledAttribute = provData.getAttribute(PROV_ENABLED_ATTRIBUTE_NAME);
             if (provEnabledAttribute != null) {
                 provEnabled = Boolean.getBoolean(provEnabledAttribute);
             }
@@ -196,37 +188,35 @@ public class ProjectManager {
     }
 
     /**
-     * Determines if prerequisite project data is available in order to generate
-     * a script
+     * Determines if prerequisite project data is available in order to generate a script.
      *
-     * @return True if the prerequisite data is available for generating a
-     * script, false if not
+     * @return True if the prerequisite data is available for generating a script, false if not
      */
     public boolean scriptGenerationAvailable() {
-        ProjectData scriptData = project.getProjectData(scriptTagName);
-        ProjectData simulatorData = project.getProjectData(simulatorTagName);
+        ProjectData scriptData = project.getProjectData(SCRIPT_TAG_NAME);
+        ProjectData simulatorData = project.getProjectData(SIMULATOR_TAG_NAME);
         Datum simConfigData = null;
         if (scriptData != null) {
-            simConfigData = scriptData.getDatum(scriptFileTagName);
+            simConfigData = scriptData.getDatum(SCRIPT_FILE_TAG_NAME);
         }
         return simulatorData != null && simConfigData != null;
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="Data Manipulation">
     /**
-     * Provides the current simulation specification based on the content of the
-     * elements in the project XML document
+     * Provides the current simulation specification based on the content of the elements in the
+     * project XML document.
      *
-     * Note: guaranteed to be successful... If the simSpec has yet to be added
-     * to the project, it is automatically added here.
+     * Note: guaranteed to be successful... If the simSpec has yet to be added to the project, it is
+     * automatically added here.
      *
-     * @return A simulation specification as described by the text of related
-     * elements in the project
+     * @return A simulation specification as described by the text of related elements in the
+     *         project
      */
     public SimulationSpecification getSimulationSpecification() {
         SimulationSpecification simSpec = new SimulationSpecification();
-        ProjectData simData = project.getProjectData(simulatorTagName);
+        ProjectData simData = project.getProjectData(SIMULATOR_TAG_NAME);
 
         String simType = getSimulationType(simData);
         String codeLocation = getSimulatorCodeLocation(simData);
@@ -255,110 +245,103 @@ public class ProjectManager {
     }
 
     /**
-     * Provides the locale for the simulator. In other words the relationship
-     * between where a simulation should take place and the machine running the
-     * workbench. Since the simulator locale is set based on values from
-     * SimulationSpecification, the return value is indirectly dependent upon
-     * the definitions provided by the SimulationSpecification class.
+     * Provides the locale for the simulator. In other words the relationship between where a
+     * simulation should take place and the machine running the workbench. Since the simulator
+     * locale is set based on values from SimulationSpecification, the return value is indirectly
+     * dependent upon the definitions provided by the SimulationSpecification class.
      *
      * @return The locale for simulations associated with this project
      * @see edu.uwb.braingrid.workbench.model.SimulationSpecification
      */
     private String getSimulatorLocale(ProjectData simData) {
-        return getChildDataContent(simData, simulatorExecutionMachine);
+        return getChildDataContent(simData, SIMULATOR_EXECUTION_MACHINE);
     }
 
     /**
-     * Provides the version annotation for the simulation specification
-     * associated with this project.
+     * Provides the version annotation for the simulation specification associated with this
+     * project.
      *
      * @return The version annotation for the simulation
      */
     private String getSimulatorVersionAnnotation(ProjectData simData) {
-        return getChildDataContent(simData, simulatorVersionAnnotationTagName);
+        return getChildDataContent(simData, SIMULATOR_VERSION_ANNOTATION_TAG_NAME);
     }
 
     /**
-     * Provides the repository location (local or otherwise) for the code for
-     * compiling the simulator binaries.
+     * Provides the repository location (local or otherwise) for the code for compiling the
+     * simulator binaries.
      *
-     * @return The central location (possibly a repository URL or URI) where the
-     * code resides for compiling the simulator binaries
+     * @return The central location (possibly a repository URL or URI) where the code resides for
+     *         compiling the simulator binaries
      */
     private String getSimulatorCodeLocation(ProjectData simData) {
-        return getChildDataContent(simData, simulatorCodeLocationTagName);
+        return getChildDataContent(simData, SIMULATOR_CODE_LOCATION_TAG_NAME);
     }
 
     /**
-     * Provides the folder location where the simulator code is moved to and the
-     * simulator is built and executed.
+     * Provides the folder location where the simulator code is moved to and the simulator is built
+     * and executed.
      *
-     * Note: This may be an absolute or canonical path on the local file system,
-     * or it may be a path on a remote machine relative to the starting path of
-     * a remote connection.
+     * Note: This may be an absolute or canonical path on the local file system, or it may be a path
+     * on a remote machine relative to the starting path of a remote connection.
      *
-     * @return The folder location where the simulator code is moved to and the
-     * simulator is built and executed.
+     * @return The folder location where the simulator code is moved to and the simulator is built
+     *         and executed.
      */
     private String getSimulatorFolderLocation(ProjectData simData) {
-        return getChildDataContent(simData, simFolderTagName);
+        return getChildDataContent(simData, SIM_FOLDER_TAG_NAME);
     }
 
     /**
-     * Provides the host name of the machine where a simulation will be run.
-     * This value is not guaranteed to be set for all simulations. If the
-     * simulation is set to be run locally, this function will return a null
-     * value.
+     * Provides the host name of the machine where a simulation will be run. This value is not
+     * guaranteed to be set for all simulations. If the simulation is set to be run locally, this
+     * function will return a null value.
      *
-     * @return The host name of the machine where a simulation will be run, or
-     * null if the simulation is set to run locally.
+     * @return The host name of the machine where a simulation will be run, or null if the
+     *         simulation is set to run locally.
      */
     private String getSimulatorHostname(ProjectData simData) {
-        return getChildDataContent(simData, hostnameTagName);
+        return getChildDataContent(simData, HOSTNAME_TAG_NAME);
     }
 
     private String getSHA1Key(ProjectData simData) {
-        return getChildDataContent(simData, SHA1KeyTagName);
+        return getChildDataContent(simData, SHA1_KEY_TAG_NAME);
     }
 
     private String getBuildOption(ProjectData simData) {
-        return getChildDataContent(simData, buildOptionTagName);
+        return getChildDataContent(simData, BUILD_OPTION_TAG_NAME);
     }
 
     /**
-     * Provides the source code updating type for the simulation. Possible
-     * values are indirectly dependent on the SimulationSpecification model.
-     * Generally, this determines whether or not to update the code in the
-     * folder location where the simulator will be compiled and run prior to
+     * Provides the source code updating type for the simulation. Possible values are indirectly
+     * dependent on the SimulationSpecification model. Generally, this determines whether or not to
+     * update the code in the folder location where the simulator will be compiled and run prior to
      * executing the simulation.
      *
      * @return The source code updating type for the simulation
      * @see edu.uwb.braingrid.workbench.model.SimulationSpecification
      */
     private String getSimulatorSourceCodeUpdatingType(ProjectData simData) {
-        return getChildDataContent(simData, simulatorSourceCodeUpdatingTagName);
+        return getChildDataContent(simData, SIMULATOR_SOURCE_CODE_UPDATING_TAG_NAME);
     }
 
     /**
-     * Provides the simulation type associated with the simulation for this
-     * project. The possible values are indirectly determined by the Simulation
-     * Specification. In general, these values indicate the processing model for
-     * the simulation (The threading or core model). This value can be used to
-     * determine which executable to invoke in running the simulation.
+     * Provides the simulation type associated with the simulation for this project. The possible
+     * values are indirectly determined by the Simulation Specification. In general, these values
+     * indicate the processing model for the simulation (The threading or core model). This value
+     * can be used to determine which executable to invoke in running the simulation.
      *
-     * @return The simulation type associated with the simulation for this
-     * project
-     * @see
-     * edu.uwb.braingrid.workbench.model.SimulationSpecification.SimulatorType
+     * @return The simulation type associated with the simulation for this project
+     * @see edu.uwb.braingrid.workbench.model.SimulationSpecification.SimulatorType
      */
     private String getSimulationType(ProjectData simData) {
-        return getChildDataContent(simData, simulationTypeTagName);
+        return getChildDataContent(simData, SIMULATION_TYPE_TAG_NAME);
     }
 
-    private String getChildDataContent(ProjectData parentData, String tagname) {
+    private String getChildDataContent(ProjectData parentData, String tagName) {
         String content = null;
         if (parentData != null) {
-            content = parentData.getDatum(tagname).getContent();
+            content = parentData.getDatum(tagName).getContent();
             if (content.isEmpty()) {
                 content = null;
             }
@@ -366,21 +349,20 @@ public class ProjectManager {
         return content;
     }
 
-    private void setChildDataContent(ProjectData parentData, String tagname, String content) {
+    private void setChildDataContent(ProjectData parentData, String tagName, String content) {
         if (parentData != null) {
-            parentData.addDatum(tagname, content, null);
+            parentData.addDatum(tagName, content, null);
         }
     }
 
     /**
-     * Note: This should not be used to determine if the script has completed
-     * execution
+     * Note: This should not be used to determine if the script has completed execution.
      *
      * @return
      */
     public ScriptHistory getScriptHistory() {
         ScriptHistory scriptHistory = new ScriptHistory();
-        ProjectData scriptData = project.getProjectData(scriptTagName);
+        ProjectData scriptData = project.getProjectData(SCRIPT_TAG_NAME);
         String startedAt = getScriptTimeStarted(scriptData);
         String completedAt = getScriptTimeCompleted(scriptData);
         boolean outputAnalyzed = wasScriptAnalyzed(scriptData);
@@ -398,62 +380,61 @@ public class ProjectManager {
     }
 
     private String getScriptTimeStarted(ProjectData scriptData) {
-        return scriptData.getAttribute(scriptRanAtAttributeName);
+        return scriptData.getAttribute(SCRIPT_RAN_AT_ATTRIBUTE_NAME);
     }
 
     private String getScriptTimeCompleted(ProjectData scriptData) {
-        return scriptData.getAttribute(scriptCompletedAtAttributeName);
+        return scriptData.getAttribute(SCRIPT_COMPLETED_AT_ATTRIBUTE_NAME);
     }
 
     private boolean wasScriptAnalyzed(ProjectData scriptData) {
-        return Boolean.valueOf(scriptData.getAttribute(scriptAnalyzedAttributeName));
+        return Boolean.parseBoolean(scriptData.getAttribute(SCRIPT_ANALYZED_ATTRIBUTE_NAME));
     }
 
     private boolean hasScriptRun(ProjectData scriptData) {
-        return Boolean.valueOf(scriptData.getAttribute(scriptRanRunAttributeName));
+        return Boolean.parseBoolean(scriptData.getAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME));
     }
 
     private String getScriptFilename(ProjectData scriptData) {
-        return getChildDataContent(scriptData, scriptFileTagName);
+        return getChildDataContent(scriptData, SCRIPT_FILE_TAG_NAME);
     }
 
     private int getScriptVersion(ProjectData scriptData) {
         int version;
         try {
-            version = Integer.valueOf(getChildDataContent(scriptData,
-                    scriptVersionVersionTagName));
+            version = Integer.parseInt(getChildDataContent(scriptData,
+                    SCRIPT_VERSION_VERSION_TAG_NAME));
         } catch (NumberFormatException e) {
-            version = defaultScriptVersion;
+            version = DEFAULT_SCRIPT_VERSION;
         }
         return version;
     }
 
     /**
-     * Provides the version of the script currently associated with the project.
-     * This value can be used to determine the base name of the script file name
+     * Provides the version of the script currently associated with the project. This value can be
+     * used to determine the base name of the script file name.
      *
-     * Note: This should not be used to determine if the script has completed
-     * execution
+     * Note: This should not be used to determine if the script has completed execution
      *
      * @return The version of the script currently associated with the project
      */
     public String getScriptVersion() {
-        return String.valueOf(getScriptVersion(project.getProjectData(scriptTagName)));
+        return String.valueOf(getScriptVersion(project.getProjectData(SCRIPT_TAG_NAME)));
     }
 
     /**
-     * Sets the text content of the script version for the project. This value
-     * is only changed in the XML document for the project
+     * Sets the text content of the script version for the project. This value is only changed in
+     * the XML document for the project.
      *
-     * @param version - The version number of the current script for the project
+     * @param version  The version number of the current script for the project
      */
     public boolean setScriptVersion(String version) {
         boolean success = true;
-        String versionCopy = version;
         try {
-            int versionNumber = Integer.getInteger(versionCopy);
-            if (versionNumber >= 0 && versionNumber <= Integer.MAX_VALUE) {
-                setChildDataContent(project.getProjectData(scriptTagName), scriptVersionVersionTagName, version);
+            int versionNumber = Integer.getInteger(version);
+            if (versionNumber >= 0) {
+                setChildDataContent(project.getProjectData(SCRIPT_TAG_NAME),
+                        SCRIPT_VERSION_VERSION_TAG_NAME, version);
             } else {
                 success = false;
             }
@@ -464,80 +445,74 @@ public class ProjectManager {
     }
 
     /**
-     * Sets the value for the attribute used to determine whether the script has
-     * run or not.
+     * Sets the value for the attribute used to determine whether the script has run or not.
      *
-     * Note: guaranteed to be successful... If the script has yet to be added to
-     * the project, it is automatically added here.
+     * Note: guaranteed to be successful... If the script has yet to be added to the project, it is
+     * automatically added here.
      *
-     * @param hasRun Whether or not the script has been executed
+     * @param hasRun  Whether or not the script has been executed
      */
     public void setScriptRan(boolean hasRun) {
-        setChildDataContent(project.getProjectData(scriptTagName), scriptRanRunAttributeName, String.valueOf(hasRun));
+        setChildDataContent(project.getProjectData(SCRIPT_TAG_NAME), SCRIPT_RAN_RUN_ATTRIBUTE_NAME,
+                String.valueOf(hasRun));
     }
 
     /**
-     * Determines whether or not the script has been executed
+     * Determines whether or not the script has been executed.
      *
+     * Note: If the script has yet to be added to the project, it is automatically added here.
      *
-     * Note: If the script has yet to be added to the project, it is
-     * automatically added here.
-     *
-     * Note: This should not be used to determine if the script has completed
-     * execution
+     * Note: This should not be used to determine if the script has completed execution.
      *
      * @return True if the script has been executed, otherwise false
      */
     public boolean getScriptRan() {
-        ProjectData script = project.getProjectData(scriptTagName);
-        return Boolean.valueOf(script.getAttribute(scriptRanRunAttributeName));
+        ProjectData script = project.getProjectData(SCRIPT_TAG_NAME);
+        return Boolean.parseBoolean(script.getAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME));
     }
 
     /**
      *
-     * Note: guaranteed to be successful... If the script has yet to be added to
-     * the project, it is automatically added here. Sets the attribute used to
-     * determine whether or not the script has been executed to "true"
+     * Note: guaranteed to be successful... If the script has yet to be added to the project, it is
+     * automatically added here. Sets the attribute used to determine whether or not the script has
+     * been executed to "true".
      */
     public void setScriptRanAt() {
-        ProjectData script = project.getProjectData(scriptTagName);
-        script.addAttribute(scriptRanAtAttributeName,
-                String.valueOf(new Date().getTime()));
+        ProjectData script = project.getProjectData(SCRIPT_TAG_NAME);
+        script.addAttribute(SCRIPT_RAN_AT_ATTRIBUTE_NAME, String.valueOf(new Date().getTime()));
     }
 
     /**
      * Sets the attribute used to determine when the script completed execution.
      *
-     * Note: guaranteed to be successful... If the script has yet to be added to
-     * the project, it is automatically added here.
+     * Note: guaranteed to be successful... If the script has yet to be added to the project, it is
+     * automatically added here.
      *
      * Note: This should be verified through the OutputAnalyzer class first.
      *
-     * @param timeCompleted - The number of milliseconds since January 1, 1970,
-     * 00:00:00 GMT when execution completed for the script associated with this
-     * project
+     * @param timeCompleted  The number of milliseconds since January 1, 1970, 00:00:00 GMT when
+     *                       execution completed for the script associated with this project
      */
     public void setScriptCompletedAt(long timeCompleted) {
-        ProjectData script = project.getProjectData(scriptTagName);
-        script.addAttribute(scriptCompletedAtAttributeName,
-                String.valueOf(timeCompleted));
+        ProjectData script = project.getProjectData(SCRIPT_TAG_NAME);
+        script.addAttribute(SCRIPT_COMPLETED_AT_ATTRIBUTE_NAME, String.valueOf(timeCompleted));
     }
 
     /**
-     * Provides the number of milliseconds since January 1, 1970, 00:00:00 GMT
-     * when the execution started for the script associated with this project
+     * Provides the number of milliseconds since January 1, 1970, 00:00:00 GMT when the execution
+     * started for the script associated with this project.
      *
-     * Note: guaranteed to be successful... If the script has yet to be added to
-     * the project, it is automatically added here.
+     * Note: guaranteed to be successful... If the script has yet to be added to the project, it is
+     * automatically added here.
      *
-     * @return The number of milliseconds since January 1, 1970, 00:00:00 GMT
-     * when the execution started for the script associated with this project
+     * @return The number of milliseconds since January 1, 1970, 00:00:00 GMT when the execution
+     *         started for the script associated with this project
      */
     public long getScriptRanAt() {
         String millisText;
         long millis = DateTime.ERROR_TIME;
-        ProjectData script = project.getProjectData(scriptTagName);
-        millisText = script.getAttribute(scriptRanAtAttributeName);
+        ProjectData script = project.getProjectData(SCRIPT_TAG_NAME);
+        millisText = script.getAttribute(SCRIPT_RAN_AT_ATTRIBUTE_NAME);
         if (millisText != null) {
             try {
                 millis = Long.parseLong(millisText);
@@ -548,20 +523,20 @@ public class ProjectManager {
     }
 
     /**
-     * Provides the number of milliseconds since January 1, 1970, 00:00:00 GMT
-     * when execution completed for the script associated with this project
+     * Provides the number of milliseconds since January 1, 1970, 00:00:00 GMT when execution
+     * completed for the script associated with this project.
      *
-     * Note: guaranteed to be successful... If the script has yet to be added to
-     * the project, it is automatically added here.
+     * Note: guaranteed to be successful... If the script has yet to be added to the project, it is
+     * automatically added here.
      *
-     * @return The number of milliseconds since January 1, 1970, 00:00:00 GMT
-     * when execution completed for the script associated with this project
+     * @return The number of milliseconds since January 1, 1970, 00:00:00 GMT when execution
+     *         completed for the script associated with this project
      */
     public long getScriptCompletedAt() {
         String millisText;
         long timeCompleted = DateTime.ERROR_TIME;
-        ProjectData script = project.getProjectData(scriptTagName);
-        millisText = script.getAttribute(scriptCompletedAtAttributeName);
+        ProjectData script = project.getProjectData(SCRIPT_TAG_NAME);
+        millisText = script.getAttribute(SCRIPT_COMPLETED_AT_ATTRIBUTE_NAME);
         if (millisText != null) {
             try {
                 timeCompleted = Long.parseLong(millisText);
@@ -572,14 +547,14 @@ public class ProjectManager {
     }
 
     /**
-     * Gets the location of the script file
+     * Gets the location of the script file.
      *
-     * @return The location of the script file, or null if no file path is set.
+     * @return The location of the script file, or null if no file path is set
      */
     public String getScriptCanonicalFilePath() {
         String path = null;
-        ProjectData script = project.getProjectData(scriptTagName);
-        Datum fileDatum = script.getDatum(scriptFileTagName);
+        ProjectData script = project.getProjectData(SCRIPT_TAG_NAME);
+        Datum fileDatum = script.getDatum(SCRIPT_FILE_TAG_NAME);
 
         if (fileDatum != null) {
             path = fileDatum.getContent();
@@ -591,39 +566,42 @@ public class ProjectManager {
     }
 
     public void removeScript() {
-        project.remove(scriptTagName);
-        // return simSpec;
+        project.remove(SCRIPT_TAG_NAME);
     }
 
     /**
      * Specifies the script for this project.
      *
-     * @param scriptSpec - Model containing specification data
+     * @param scriptSpec  Model containing specification data
      */
     public void addSimulator(SimulationSpecification scriptSpec) {
-        ProjectData parentData = project.getProjectData(simulatorTagName);
-        setChildDataContent(parentData, simulatorExecutionMachine, scriptSpec.getSimulationLocale());
-        setChildDataContent(parentData, simulatorVersionAnnotationTagName, scriptSpec.getVersionAnnotation());
-        setChildDataContent(parentData, simulatorCodeLocationTagName, scriptSpec.getCodeLocation());
-        setChildDataContent(parentData, hostnameTagName, scriptSpec.getHostAddr());
-        setChildDataContent(parentData, simFolderTagName, scriptSpec.getSimulatorFolder());
-        setChildDataContent(parentData, simulationTypeTagName, scriptSpec.getSimulationType());
-        setChildDataContent(parentData, simulatorSourceCodeUpdatingTagName, scriptSpec.getSourceCodeUpdating());
-        setChildDataContent(parentData, SHA1KeyTagName, scriptSpec.getSHA1CheckoutKey());
-        setChildDataContent(parentData, buildOptionTagName, scriptSpec.getBuildOption());
+        ProjectData parentData = project.getProjectData(SIMULATOR_TAG_NAME);
+        setChildDataContent(parentData, SIMULATOR_EXECUTION_MACHINE,
+                scriptSpec.getSimulationLocale());
+        setChildDataContent(parentData, SIMULATOR_VERSION_ANNOTATION_TAG_NAME,
+                scriptSpec.getVersionAnnotation());
+        setChildDataContent(parentData, SIMULATOR_CODE_LOCATION_TAG_NAME,
+                scriptSpec.getCodeLocation());
+        setChildDataContent(parentData, HOSTNAME_TAG_NAME, scriptSpec.getHostAddr());
+        setChildDataContent(parentData, SIM_FOLDER_TAG_NAME, scriptSpec.getSimulatorFolder());
+        setChildDataContent(parentData, SIMULATION_TYPE_TAG_NAME, scriptSpec.getSimulationType());
+        setChildDataContent(parentData, SIMULATOR_SOURCE_CODE_UPDATING_TAG_NAME,
+                scriptSpec.getSourceCodeUpdating());
+        setChildDataContent(parentData, SHA1_KEY_TAG_NAME, scriptSpec.getSHA1CheckoutKey());
+        setChildDataContent(parentData, BUILD_OPTION_TAG_NAME, scriptSpec.getBuildOption());
     }
 
     /**
      * Specifies the location of the simulation configuration file.
      *
-     * @param filename - name of file on the local workbench system
+     * @param filename  Name of file on the local workbench system
      */
     public void addSimConfigFile(String filename) {
-        setChildDataContent(project.getProjectData(simConfigFileTagName),
-                simulationConfigurationFileTagName, filename
+        setChildDataContent(project.getProjectData(SIM_CONFIG_FILE_TAG_NAME),
+                SIMULATION_CONFIGURATION_FILE_TAG_NAME, filename
         );
     }
-//
+
 //    /**
 //     * Adds a generated script file to the project
 //     *
@@ -639,16 +617,14 @@ public class ProjectManager {
 //
 //            /* Create Elements */
 //            // this will overwrite previously defined script
-//            script = doc.createElement(scriptTagName);
+//            script = doc.createElement(SCRIPT_TAG_NAME);
 //            // file element of the script element
-//            Element scriptFile = doc.createElement(scriptFileTagName);
+//            Element scriptFile = doc.createElement(SCRIPT_FILE_TAG_NAME);
 //
 //            /* Add Values */
 //            // text element describing the file location
-//            Text scriptFileLocation = doc.createTextNode(scriptBasename + "."
-//                    + extension);
+//            Text scriptFileLocation = doc.createTextNode(scriptBasename + "." + extension);
 //
-//            // 
 //            /* Attach Elements */
 //            scriptFile.appendChild(scriptFileLocation);
 //            script.appendChild(scriptFile);
@@ -670,8 +646,7 @@ public class ProjectManager {
 //    }
 //
 //    public String getSimConfigFilename() {
-//        return getFirstChildTextContent(root,
-//                simConfigFileTagName);
+//        return getFirstChildTextContent(root, SIM_CONFIG_FILE_TAG_NAME);
 //    }
 //
 //    public boolean scriptGenerated() {
@@ -682,8 +657,7 @@ public class ProjectManager {
 //        String analyzedAttributeValue;
 //        boolean analyzed = false;
 //        if (script != null) {
-//            analyzedAttributeValue = script.getAttribute(
-//                    scriptAnalyzedAttributeName);
+//            analyzedAttributeValue = script.getAttribute(SCRIPT_ANALYZED_ATTRIBUTE_NAME);
 //            analyzed = Boolean.valueOf(analyzedAttributeValue);
 //        }
 //        return analyzed;
@@ -691,15 +665,13 @@ public class ProjectManager {
 //
 //    public void setScriptAnalyzed(boolean analyzed) {
 //        if (script != null) {
-//            script.setAttribute(scriptAnalyzedAttributeName,
-//                    String.valueOf(analyzed));
+//            script.setAttribute(SCRIPT_ANALYZED_ATTRIBUTE_NAME, String.valueOf(analyzed));
 //        }
 //    }
 //
 //    public void setSimStateOutputFile(String stateOutputFilename) {
 //        if (simulationConfigurationFile != null) {
-//            simulationConfigurationFile.setAttribute(
-//                    simulationConfigurationFileTagName,
+//            simulationConfigurationFile.setAttribute(SIMULATION_CONFIGURATION_FILE_TAG_NAME,
 //                    stateOutputFilename);
 //        }
 //    }
@@ -708,7 +680,7 @@ public class ProjectManager {
 //        String filename = null;
 //        if (simulationConfigurationFile != null) {
 //            filename = simulationConfigurationFile.getAttribute(
-//                    simulationConfigurationFileTagName);
+//                    SIMULATION_CONFIGURATION_FILE_TAG_NAME);
 //        }
 //        return filename;
 //    }*/

@@ -1,107 +1,104 @@
-/**
- * 
- */
 package edu.uwb.braingrid.workbenchdashboard.userModel;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.FileManagerShared;
-import edu.uwb.braingrid.workbench.provvisualizer.ProvVisGlobal;
+import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
 
 /**
- * @author Max
  *
+ * @author Max
  */
-public class User implements FileManagerShared {
-	
-	public static User user = new User();
+public final class User implements FileManagerShared {
 
-	
-	private User() {
-		
-	}
-	
-	private static void initUser() {
-		LOG.info("Initializing User Data");
-		User.user.setRootDir(System.getProperty("user.dir"));
-		User.user.setBrainGridRepoDirectory(User.user.getRootDir() + File.separator + ProvVisGlobal.BG_REPOSITORY_LOCAL);
-		User.user.setHomeDir(System.getProperty("user.home"));
-		save();
-	}
-	
-	public static boolean load() {
-		LOG.info("Loading User Information");
-		ObjectMapper mapper = new ObjectMapper();
-		File file = new File(USER_DATA_PATH);
-		JsonNode json = null;
-		if(file.exists()) {
-			try {
-				json = mapper.readTree(file);
-				User.user = mapper.readValue(new File(User.USER_DATA_PATH), User.class);
-				FileManager.updateStaticVals(User.user);
-			} catch (IOException e) {
-				LOG.severe(e.getMessage());
-				return false;
-			}
-		} else {
-			LOG.info("No User Info Found");
-			initUser();
-			return load();
-		}
-		LOG.info("User info loaded: "  + json.toString());
-		return true;
-	}
-	
-	public static boolean save() {
-		LOG.info("Saving User Data");
-		ObjectMapper mapper = new ObjectMapper();
-		
-		try {
-			mapper.writeValue(new File(User.USER_DATA_PATH), User.user);
-		} catch (IOException e) {
-			LOG.severe(e.getMessage());
-			return false;
-		}
-		return true;
-	}
-	
-	public String getRootDir() {
-		return this.rootDir;
-	}
+    private static final Logger LOG = Logger.getLogger(User.class.getName());
+    private static final String USER_DATA_PATH = "./user.json";
 
-	public void setRootDir(String rootDir) {
-		this.rootDir = rootDir;
-	}
+    private static User user = null;
 
-	public String getBrainGridRepoDirectory() {
-		return brainGridRepoDirectory;
-	}
+    private String rootDir;
+    private String homeDir;
+    private String brainGridRepoDirectory;
 
-	public void setBrainGridRepoDirectory(String brainGridRepoDirectory) {
-		FileManager.setBrainGridRepoDirectory(brainGridRepoDirectory);
-		this.brainGridRepoDirectory = brainGridRepoDirectory;
-	}
-	
+    private User() {
+        LOG.info("Initializing User Data");
+        setRootDir(System.getProperty("user.dir"));
+        setHomeDir(System.getProperty("user.home"));
+        setBrainGridRepoDirectory(getRootDir() + File.separator
+                + ProVisGlobal.BG_REPOSITORY_LOCAL);
+    }
 
-	public String getHomeDir() {
-		return homeDir;
-	}
+    public static User getInstance() {
+        if (user == null) {
+            user = new User();
+        }
+        return user;
+    }
 
-	public void setHomeDir(String homeDir) {
-		this.homeDir = homeDir;
-	}
+    public static boolean load() {
+        LOG.info("Loading User Information");
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File(USER_DATA_PATH);
+        JsonNode json;
+        if (file.exists()) {
+            try {
+                json = mapper.readTree(file);
+                user = mapper.readValue(new File(USER_DATA_PATH), User.class);
+                FileManager.updateStaticVals(user);
+            } catch (IOException e) {
+                LOG.severe(e.getMessage());
+                return false;
+            }
+        } else {
+            LOG.info("No User Info Found");
+            user = new User();
+            save();
+            return load();
+        }
+        LOG.info("User info loaded: "  + json.toString());
+        return true;
+    }
 
+    public static boolean save() {
+        LOG.info("Saving User Data");
+        ObjectMapper mapper = new ObjectMapper();
 
+        try {
+            mapper.writeValue(new File(USER_DATA_PATH), user);
+        } catch (IOException e) {
+            LOG.severe(e.getMessage());
+            return false;
+        }
+        return true;
+    }
 
-	private String brainGridRepoDirectory = "";
-	private String rootDir = "";
-	private String homeDir = "";
-	private final static Logger LOG = Logger.getLogger(User.class.getName());
-	private static final String USER_DATA_PATH = "./user.json";
+    public String getRootDir() {
+        return this.rootDir;
+    }
+
+    public void setRootDir(String rootDir) {
+        this.rootDir = rootDir;
+    }
+
+    public String getBrainGridRepoDirectory() {
+        return brainGridRepoDirectory;
+    }
+
+    public void setBrainGridRepoDirectory(String brainGridRepoDirectory) {
+        FileManager.setBrainGridRepoDirectory(brainGridRepoDirectory);
+        this.brainGridRepoDirectory = brainGridRepoDirectory;
+    }
+
+    public String getHomeDir() {
+        return homeDir;
+    }
+
+    public void setHomeDir(String homeDir) {
+        this.homeDir = homeDir;
+    }
 }

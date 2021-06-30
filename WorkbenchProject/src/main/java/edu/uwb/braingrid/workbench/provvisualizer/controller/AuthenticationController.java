@@ -1,74 +1,79 @@
 package edu.uwb.braingrid.workbench.provvisualizer.controller;
 
-import edu.uwb.braingrid.workbench.provvisualizer.model.*;
+import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.util.function.Consumer;
+
+import edu.uwb.braingrid.workbench.provvisualizer.model.AuthenticationInfo;
 
 public class AuthenticationController {
-	private Consumer<AuthenticationInfo> okButtonCallback;
 
-	@FXML
-	private Label hostnameLbl;
+    private Consumer<AuthenticationInfo> okButtonCallback;
 
-	@FXML
-	private TextField usernameTxtFd;
+    @FXML
+    private Label hostnameLbl;
 
-	@FXML
-	private PasswordField passwordPwdFd;
+    @FXML
+    private TextField usernameTxtFd;
 
-	@FXML
-	private Button okBtn;
+    @FXML
+    private PasswordField passwordPwdFd;
 
-	@FXML
-	private Button cancelBtn;
+    @FXML
+    private Button okBtn;
 
-	/**
-	 * Initializes the controller.
-	 */
-	@FXML
-	public void initialize() {
-		okBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if (okButtonCallback != null) {
-					okButtonCallback.accept(new AuthenticationInfo(hostnameLbl.getText(), usernameTxtFd.getText(),
-							passwordPwdFd.getText()));
-				}
-				((Stage) okBtn.getScene().getWindow()).close();
-			}
-		});
-		okBtn.setDefaultButton(true);
+    @FXML
+    private Button cancelBtn;
 
-		cancelBtn.setCancelButton(true);
-		cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				((Stage) cancelBtn.getScene().getWindow()).close();
-			}
-		});
-	}
+    /**
+     * Initializes the controller.
+     */
+    @FXML
+    public void initialize() {
+        okBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (okButtonCallback != null) {
+                    okButtonCallback.accept(new AuthenticationInfo(hostnameLbl.getText(),
+                            usernameTxtFd.getText(), passwordPwdFd.getText()));
+                }
+                ((Stage) okBtn.getScene().getWindow()).close();
+            }
+        });
+        okBtn.setDefaultButton(true);
 
-	public void setOkBtnCallback(Consumer<AuthenticationInfo> callback) {
-		okButtonCallback = callback;
-	}
+        cancelBtn.setCancelButton(true);
+        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ((Stage) cancelBtn.getScene().getWindow()).close();
+            }
+        });
+    }
 
-	public void setHostname(String hostname) {
-		hostnameLbl.setText(hostname);
-	}
+    public void setOkBtnCallback(Consumer<AuthenticationInfo> callback) {
+        okButtonCallback = callback;
+    }
 
-	public String getUsername() {
-		return usernameTxtFd.getText();
-	}
+    public void setHostname(String hostname) {
+        hostnameLbl.setText(hostname);
+    }
 
-	public void setUsername(String username) {
-		usernameTxtFd.setText(username);
-	}
+    public String getUsername() {
+        return usernameTxtFd.getText();
+    }
 
-	public String getPassword() {
-		return passwordPwdFd.getText();
-	}
+    public void setUsername(String username) {
+        usernameTxtFd.setText(username);
+    }
+
+    public String getPassword() {
+        return passwordPwdFd.getText();
+    }
 }

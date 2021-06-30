@@ -6,49 +6,52 @@ import java.util.ArrayList;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 
 /**
- * A class to manage starting directories the file explore opens.
+ * A class to manage starting directories the file explorer opens.
  */
 public class FileSelectorDirMgr {
-	
-	ArrayList<File> dirs = new ArrayList<File>();
 
-	/**
-	 *
-	 */
-	public FileSelectorDirMgr() {
-		
-	}
+    private final ArrayList<File> dirs = new ArrayList<>();
 
-	/**
-	 *
-	 * @return The last directory
-	 */
-	public File getLastDir() {
-		if(dirs.isEmpty()) {
-			return getDefault();
-		}
-		return dirs.get(dirs.size() - 1);
-	}
+    /**
+     * Provides the default (root) directory.
+     *
+     * @return The default directory
+     */
+    public File getDefault() {
+        return new File(User.getInstance().getRootDir());
+    }
 
-	/**
-	 *
-	 * @param index
-	 * @return
-	 */
-	public File getDir(int index) {
-		if(dirs.isEmpty() || index >= dirs.size()) {
-			return getDefault();
-		}
-		return dirs.get(index);
-	}
-	
-	public void add(File newdir) {
-		dirs.add(newdir);
-	}
-	
-	public File getDefault() {
-		return new File(User.user.getRootDir());
-	}
-	
+    /**
+     * Provides the last directory.
+     *
+     * @return The last directory
+     */
+    public File getLastDir() {
+        if (dirs.isEmpty()) {
+            return getDefault();
+        }
+        return dirs.get(dirs.size() - 1);
+    }
 
+    /**
+     * Provides the directory at the given index.
+     *
+     * @param index  The index of the desired directory
+     * @return The directory at the given index
+     */
+    public File getDir(int index) {
+        if (dirs.isEmpty() || index >= dirs.size()) {
+            return getDefault();
+        }
+        return dirs.get(index);
+    }
+
+    /**
+     * Adds a new directory.
+     *
+     * @param newDir  The directory to be added
+     */
+    public void add(File newDir) {
+        dirs.add(newDir);
+    }
 }

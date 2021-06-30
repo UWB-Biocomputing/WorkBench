@@ -1,28 +1,25 @@
 package edu.uwb.braingrid.workbench.ui;
 
-import edu.uwb.braingrid.provenance.ProvMgr;
-import edu.uwb.braingrid.provenance.model.ProvOntology;
-import edu.uwb.braingrid.provenance.model.ProvenanceStatement;
-import edu.uwb.braingrid.workbench.utils.DateTime;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uwb.braingrid.provenance.ProvMgr;
+import edu.uwb.braingrid.provenance.model.ProvOntology;
+import edu.uwb.braingrid.provenance.model.ProvenanceStatement;
+import edu.uwb.braingrid.workbench.utils.DateTime;
+
 /**
- * ToDo
  *
  * @author Nathan Duncan
  */
 public class ProvenanceQueryDialog extends javax.swing.JDialog {
+
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
+    private static final long SERIAL_VERSION_UID = 1L;
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -41,7 +38,7 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
         setTitle("Provenance Query");
         setMinimumSize(new java.awt.Dimension(500, 200));
 
-        predicateComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
+        predicateComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"None"}));
         predicateComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 predicateComboBoxActionPerformed(evt);
@@ -170,8 +167,7 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
             }
         }
 
-        //String result
-        //      = provMgr.queryProvenance(sbjct, prdct, objct, lineDelimiter);
+        //String result = provMgr.queryProvenance(sbjct, prdct, objct, lineDelimiter);
         outputTextArea.setText(result);
         DateTime.recordFunctionExecutionTime("ProvenanceQueryDialog", "searchButtonActionPerformed",
                 System.currentTimeMillis() - functionStartTime,
@@ -207,16 +203,16 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
     private final ProvMgr provMgr;
 //    private final String lineDelimiter = "\n";
-    List<String> predicateFullURIs = new ArrayList<>();
+    private List<String> predicateFullURIs = new ArrayList<>();
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Construction"> 
+    // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Constructs and initializes this provenance query dialog
+     * Constructs and initializes this provenance query dialog.
      *
-     * @param modal - True if the parent should be disabled while this dialog is
-     * open, otherwise false
-     * @param provManager - The provenance manager for the workbench
+     * @param modal  True if the parent should be disabled while this dialog is open, otherwise
+     *               false
+     * @param provManager The provenance manager for the workbench
      */
     public ProvenanceQueryDialog(boolean modal, ProvMgr provManager) {
         provMgr = provManager;
@@ -232,13 +228,12 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
         predicateFullURIs.add("");
         for (String predicate : provMgr.getPredicates()) {
             predicateFullURIs.add(predicate);
-            predicateComboBox.addItem(ProvOntology.translatePredicate(predicate,
-                    false));
+            predicateComboBox.addItem(ProvOntology.translatePredicate(predicate, false));
         }
     }
 
     /**
-     * Centers this dialog
+     * Centers this dialog.
      */
     private void center() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -256,33 +251,19 @@ public class ProvenanceQueryDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Utility">
     private void enableSearchButton() {
-        searchButton.setEnabled(isSubjectValid() || isPredicateValid()
-                || isObjectValid());
+        searchButton.setEnabled(isSubjectValid() || isPredicateValid() || isObjectValid());
     }
 
     private boolean isSubjectValid() {
-        if (subjectTextField.getText() != null
-                && !subjectTextField.getText().equals("")) {
-            return true;
-        } else {
-            return false;
-        }
+        return subjectTextField.getText() != null && !subjectTextField.getText().equals("");
     }
 
     private boolean isPredicateValid() {
-        if (!((String) predicateComboBox.getSelectedItem()).equals("None")) {
-            return true;
-        } else {
-            return false;
-        }
+        return !((String) predicateComboBox.getSelectedItem()).equals("None");
     }
 
     private boolean isObjectValid() {
-        if (!objectTextField.getText().equals("")) {
-            return true;
-        } else {
-            return false;
-        }
+        return !objectTextField.getText().equals("");
     }
     // </editor-fold>
 }

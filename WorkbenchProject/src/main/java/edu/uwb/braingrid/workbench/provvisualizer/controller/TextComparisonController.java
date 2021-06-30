@@ -3,6 +3,15 @@ package edu.uwb.braingrid.workbench.provvisualizer.controller;
 import difflib.Delta;
 import difflib.DiffUtils;
 import difflib.Patch;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Scanner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.fxmisc.flowless.VirtualizedScrollPane;
@@ -11,16 +20,11 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-
 public class TextComparisonController {
-    private static final Pattern XML_TAG = Pattern.compile("(?<ELEMENT>(</?\\h*)(\\w+)([^<>]*)(\\h*/?>))"
-            +"|(?<COMMENT><!--[^<>]+-->)");
+
+    private static final Pattern XML_TAG
+            = Pattern.compile("(?<ELEMENT>(</?\\h*)(\\w+)([^<>]*)(\\h*/?>))"
+            + "|(?<COMMENT><!--[^<>]+-->)");
 
     private static final Pattern ATTRIBUTES = Pattern.compile("(\\w+\\h*)(=)(\\h*\"[^\"]+\")");
 
@@ -54,17 +58,17 @@ public class TextComparisonController {
      * Initializes the controller.
      */
     @FXML
-    public void initialize(){
+    public void initialize() {
         configCodeAreas();
     }
 
-    private void configCodeAreas(){
+    private void configCodeAreas() {
         configCodeArea(true);
         configCodeArea(false);
     }
 
-    private void configCodeArea(boolean left){
-        CodeArea codeArea = left?codeAreaLeft:codeAreaRight;
+    private void configCodeArea(boolean left) {
+        CodeArea codeArea = left ? codeAreaLeft : codeAreaRight;
 
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.textProperty().addListener((obs, oldText, newText) -> {
@@ -72,54 +76,55 @@ public class TextComparisonController {
         });
     }
 
-    public void loadFiles(String filePathLeft, String filePathRight){
-        loadFile(filePathLeft,true);
-        loadFile(filePathRight,false);
+    public void loadFiles(String filePathLeft, String filePathRight) {
+        loadFile(filePathLeft, true);
+        loadFile(filePathRight, false);
 
         //highlight differences
         List<String> left = Arrays.asList(codeAreaLeft.getText().split("\\R"));
         List<String> right  = Arrays.asList(codeAreaRight.getText().split("\\R"));
-        Patch<String> patches = DiffUtils.diff(left,right);
+        Patch<String> patches = DiffUtils.diff(left, right);
 
-        for(Delta<String> delta : patches.getDeltas()){
-            if(delta.getType() == Delta.TYPE.INSERT){
-                for(int i = 0; i < delta.getRevised().size(); i++){
-                    codeAreaRight.setParagraphStyle(delta.getRevised().getPosition() + i, Collections.singleton("paragraph-inserted"));
+        for (Delta<String> delta : patches.getDeltas()) {
+            if (delta.getType() == Delta.TYPE.INSERT) {
+                for (int i = 0; i < delta.getRevised().size(); i++) {
+                    codeAreaRight.setParagraphStyle(delta.getRevised().getPosition() + i,
+                            Collections.singleton("paragraph-inserted"));
                 }
-            }
-            else if(delta.getType() == Delta.TYPE.CHANGE){
-                for(int i = 0; i < delta.getOriginal().size(); i++){
-                    codeAreaLeft.setParagraphStyle(delta.getOriginal().getPosition() + i, Collections.singleton("paragraph-changed"));
+            } else if (delta.getType() == Delta.TYPE.CHANGE) {
+                for (int i = 0; i < delta.getOriginal().size(); i++) {
+                    codeAreaLeft.setParagraphStyle(delta.getOriginal().getPosition() + i,
+                            Collections.singleton("paragraph-changed"));
                 }
 
-                for(int i = 0; i < delta.getRevised().size(); i++){
-                    codeAreaRight.setParagraphStyle(delta.getRevised().getPosition() + i, Collections.singleton("paragraph-changed"));
+                for (int i = 0; i < delta.getRevised().size(); i++) {
+                    codeAreaRight.setParagraphStyle(delta.getRevised().getPosition() + i,
+                            Collections.singleton("paragraph-changed"));
                 }
-            }
-            else if(delta.getType() == Delta.TYPE.DELETE){
-                for(int i = 0; i < delta.getOriginal().size(); i++){
-                    codeAreaLeft.setParagraphStyle(delta.getOriginal().getPosition() + i, Collections.singleton("paragraph-deleted"));
+            } else if (delta.getType() == Delta.TYPE.DELETE) {
+                for (int i = 0; i < delta.getOriginal().size(); i++) {
+                    codeAreaLeft.setParagraphStyle(delta.getOriginal().getPosition() + i,
+                            Collections.singleton("paragraph-deleted"));
                 }
             }
         }
-
     }
 
-    public void loadFile(String filePath, boolean left){
-        CodeArea codeArea = left?codeAreaLeft:codeAreaRight;
-        VirtualizedScrollPane scrollPane = left?scrollPaneLeft:scrollPaneRight;
+    public void loadFile(String filePath, boolean left) {
+        CodeArea codeArea = left ? codeAreaLeft : codeAreaRight;
+        VirtualizedScrollPane scrollPane = left ? scrollPaneLeft : scrollPaneRight;
 
         codeArea.clear();
-        Scanner in =null;
+        Scanner in = null;
 
         try {
-            in= new Scanner(new File(filePath));
+            in = new Scanner(new File(filePath));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
         in.useDelimiter("\\A");
-        if(in.hasNext()){
+        if (in.hasNext()) {
             codeArea.appendText(in.next());
         }
 
@@ -130,38 +135,46 @@ public class TextComparisonController {
         Matcher matcher = XML_TAG.matcher(text);
         int lastKwEnd = 0;
         StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
-        while(matcher.find()) {
-
+        while (matcher.find()) {
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
-            if(matcher.group("COMMENT") != null) {
+            if (matcher.group("COMMENT") != null) {
                 spansBuilder.add(Collections.singleton("comment"), matcher.end() - matcher.start());
-            }
-            else {
-                if(matcher.group("ELEMENT") != null) {
+            } else {
+                if (matcher.group("ELEMENT") != null) {
                     String attributesText = matcher.group(GROUP_ATTRIBUTES_SECTION);
 
-                    spansBuilder.add(Collections.singleton("tagmark"), matcher.end(GROUP_OPEN_BRACKET) - matcher.start(GROUP_OPEN_BRACKET));
-                    spansBuilder.add(Collections.singleton("anytag"), matcher.end(GROUP_ELEMENT_NAME) - matcher.end(GROUP_OPEN_BRACKET));
+                    spansBuilder.add(Collections.singleton("tagmark"),
+                            matcher.end(GROUP_OPEN_BRACKET) - matcher.start(GROUP_OPEN_BRACKET));
+                    spansBuilder.add(Collections.singleton("anytag"),
+                            matcher.end(GROUP_ELEMENT_NAME) - matcher.end(GROUP_OPEN_BRACKET));
 
-                    if(!attributesText.isEmpty()) {
-
+                    if (!attributesText.isEmpty()) {
                         lastKwEnd = 0;
 
                         Matcher amatcher = ATTRIBUTES.matcher(attributesText);
-                        while(amatcher.find()) {
+                        while (amatcher.find()) {
                             spansBuilder.add(Collections.emptyList(), amatcher.start() - lastKwEnd);
-                            spansBuilder.add(Collections.singleton("attribute"), amatcher.end(GROUP_ATTRIBUTE_NAME) - amatcher.start(GROUP_ATTRIBUTE_NAME));
-                            spansBuilder.add(Collections.singleton("tagmark"), amatcher.end(GROUP_EQUAL_SYMBOL) - amatcher.end(GROUP_ATTRIBUTE_NAME));
-                            spansBuilder.add(Collections.singleton("avalue"), amatcher.end(GROUP_ATTRIBUTE_VALUE) - amatcher.end(GROUP_EQUAL_SYMBOL));
+                            spansBuilder.add(Collections.singleton("attribute"),
+                                    amatcher.end(GROUP_ATTRIBUTE_NAME)
+                                            - amatcher.start(GROUP_ATTRIBUTE_NAME));
+                            spansBuilder.add(Collections.singleton("tagmark"),
+                                    amatcher.end(GROUP_EQUAL_SYMBOL)
+                                            - amatcher.end(GROUP_ATTRIBUTE_NAME));
+                            spansBuilder.add(Collections.singleton("avalue"),
+                                    amatcher.end(GROUP_ATTRIBUTE_VALUE)
+                                            - amatcher.end(GROUP_EQUAL_SYMBOL));
                             lastKwEnd = amatcher.end();
                         }
-                        if(attributesText.length() > lastKwEnd)
-                            spansBuilder.add(Collections.emptyList(), attributesText.length() - lastKwEnd);
+                        if (attributesText.length() > lastKwEnd) {
+                            spansBuilder.add(Collections.emptyList(),
+                                    attributesText.length() - lastKwEnd);
+                        }
                     }
 
                     lastKwEnd = matcher.end(GROUP_ATTRIBUTES_SECTION);
 
-                    spansBuilder.add(Collections.singleton("tagmark"), matcher.end(GROUP_CLOSE_BRACKET) - lastKwEnd);
+                    spansBuilder.add(Collections.singleton("tagmark"),
+                            matcher.end(GROUP_CLOSE_BRACKET) - lastKwEnd);
                 }
             }
             lastKwEnd = matcher.end();
