@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.io.File;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -81,18 +80,16 @@ public class WorkbenchDashboard extends Application {
         Scene scene = new Scene(workbenchDisplay, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT);
 
         // Add CSS files
-        scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/temp.css"))
-                .toURI().toURL().toExternalForm());
-        scene.getStylesheets().add((new File("../src/main/resources/simstarter/css/tempII.css"))
-                .toURI().toURL().toExternalForm());
-        scene.getStylesheets().add((new File("../src/main/resources/nledit/css/design.css"))
-                .toURI().toURL().toExternalForm());
-        scene.getStylesheets()
-                .add((new File("../src/main/resources/workbenchdisplay/css/design.css"))
-                        .toURI().toURL().toExternalForm());
-        scene.getStylesheets()
-                .add((new File("../src/main/resources/provvisualizer/css/design.css"))
-                        .toURI().toURL().toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/simstarter/css/temp.css")
+                .toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/simstarter/css/tempII.css")
+                .toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/nledit/css/design.css")
+                .toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/workbenchdisplay/css/design.css")
+                .toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/provvisualizer/css/design.css")
+                .toExternalForm());
 
         // Create Events
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
