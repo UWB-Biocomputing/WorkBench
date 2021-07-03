@@ -823,7 +823,7 @@ public class ScriptManager {
             }
         } else {
             // get script printf redirect output file
-            Path scriptStatusSourcePath = Paths.get(fm.getUserDir()
+            Path scriptStatusSourcePath = Paths.get(fm.getUserHome()
                     + fm.getFolderDelimiter()
                     + scriptStatusFilename);
             Path scriptStatusTargetPath = Paths.get(scriptStatusFileTargetLocation);

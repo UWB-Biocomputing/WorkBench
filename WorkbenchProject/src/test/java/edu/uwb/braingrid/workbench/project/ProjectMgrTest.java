@@ -322,7 +322,7 @@ public class ProjectMgrTest {
         SimulationSpecification ss = new SimulationSpecification();
         ss.setSimulationType(simType);
         ss.setCodeLocation(codeLocation);
-        ss.setSimulatorLocale(locale);
+        ss.setSimulationLocale(locale);
         ss.setSimulatorFolder(folder);
         ss.setHostAddr(hostname);
         ss.setSHA1CheckoutKey(sha1);

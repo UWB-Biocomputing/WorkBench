@@ -233,7 +233,7 @@ public class ProjectManager {
         }
         simSpec.setSimulationType(simType);
         simSpec.setCodeLocation(codeLocation);
-        simSpec.setSimulatorLocale(locale);
+        simSpec.setSimulationLocale(locale);
         simSpec.setSimulatorFolder(folder);
         simSpec.setHostAddr(hostname);
         simSpec.setSHA1CheckoutKey(sha1);

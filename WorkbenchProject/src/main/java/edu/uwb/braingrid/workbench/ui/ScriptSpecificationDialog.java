@@ -5,8 +5,6 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.logging.Logger;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
 
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
@@ -68,7 +66,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         codeRepositoryLocationLabel.setToolTipText(
                 "<html>Repository to pull from.<br>This URI must go to a local folder,<br>or to a valid network address</html>");
 
-        codeRepositoryLocationTextField.setText(getDefaultCodeLocation());
+        codeRepositoryLocationTextField.setText(DEFAULT_REPO_URI);
         codeRepositoryLocationTextField.setToolTipText(
                 "<html>Repository to pull from.<br>This URI must go to a local folder,<br>or to a valid network address</html>");
         codeRepositoryLocationTextField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -395,7 +393,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_passwordFieldKeyReleased
 
     private void simulatorLocationTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_simulatorLocationTextFieldKeyReleased
-        simulatorLocationChanged();
+        validateSimulatorLocation();
         if (runButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 specifySimulator();
@@ -458,9 +456,12 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
     private static final Logger LOG = Logger.getLogger(ScriptSpecificationDialog.class.getName());
     private static final long SERIAL_VERSION_UID = 1L;
+    private static final String LINUX_HOSTNAME_PATTERN
+            = "^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\\.([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*$";
     private static final String LINUX_USERNAME_PATTERN = "^[a-z][a-z0-9\\-]*$";
     private static final String DEFAULT_REPO_URI
             = "https://github.com/UWB-Biocomputing/BrainGrid.git";
+    private static final String DEFAULT_SIM_FOLDER = "BrainGrid";
     private boolean okButtonClicked = false;
     private boolean connectionTestSuccessful = false;
     // </editor-fold>
@@ -477,14 +478,11 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         LOG.info("New ScriptSpecificationDialog");
         setModal(modal);
         initComponents();
-        simulatorLocationTextField.setText("BrainGrid");
+        simulatorLocationTextField.setText(DEFAULT_SIM_FOLDER);
+        enableOkButton();
         center();
         pack();
         setVisible(true);
-    }
-
-    private String getDefaultCodeLocation() {
-        return DEFAULT_REPO_URI;
     }
 
     /**
@@ -509,10 +507,10 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         String userName = simSpec.getUsername();
         String folder = simSpec.getSimulatorFolder();
         String codeLocation = simSpec.getCodeLocation();
+        codeLocation = codeLocation == null || codeLocation.isEmpty()
+                ? DEFAULT_REPO_URI : codeLocation;
         String sha1Key = simSpec.hasCommitCheckout() ? simSpec.getSHA1CheckoutKey() : "";
         String buildOption = simSpec.getBuildOption();
-        codeLocation = codeLocation == null || codeLocation.isEmpty()
-                ? getDefaultCodeLocation() : codeLocation;
         String version = simSpec.getVersionAnnotation();
 
         if (remote) {
@@ -567,7 +565,9 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         pack();
         setVisible(true);
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="UI Manipulation">
     private void center() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
@@ -579,6 +579,114 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         }
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
+    }
+
+    private void setRemoteRelatedComponentsEnabled(boolean enabled) {
+        hostAddressLabel.setEnabled(enabled);
+        usernameLabel.setEnabled(enabled);
+        passwordLabel.setEnabled(enabled);
+        hostAddressTextField.setEnabled(enabled);
+        usernameTextField.setEnabled(enabled);
+        passwordField.setEnabled(enabled);
+    }
+
+    private void enableTestConnectionButton() {
+        testConnectionButton.setEnabled(isValidHostname(hostAddressTextField.getText())
+                && isValidUsername(usernameTextField.getText())
+                && passwordField.getPassword() != null);
+        connectionTestSuccessful = false;
+    }
+
+    private void updateStateOnBuildOptionChange() {
+        String buildOption = buildOptionComboBox.getSelectedItem().toString();
+        if (buildOption.equals(SimulationSpecification.PRE_BUILT_BUILD_OPTION)) {
+            sourceCodeUpdatingComboBox.setSelectedItem(SimulationSpecification.GIT_NONE);
+            sourceCodeUpdatingComboBox.setEnabled(false);
+        } else {
+            sourceCodeUpdatingComboBox.setEnabled(true);
+        }
+    }
+
+    private void enableOkButton() {
+        // determine if any requirements are null or invalid
+        boolean validSimLocation = isValidSimLocation(simulatorLocationTextField.getText());
+        boolean validHostAddress = isValidHostname(hostAddressTextField.getText());
+        // set ok enabled based on state of required fields
+        if (isRemoteExecution()) {
+            runButton.setEnabled(validSimLocation && validHostAddress);
+        } else {
+            runButton.setEnabled(validSimLocation);
+        }
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Getters">
+    /**
+     * Indicates the exit route taken by the user from this dialog.
+     *
+     * @return True if the user clicked OK, otherwise false.
+     */
+    public boolean getSuccess() {
+        return okButtonClicked;
+    }
+
+    /**
+     * Provides a simulator specification with values set to their respective equivalents from this
+     * dialog.
+     *
+     * @return A simulation specification populated from the state of this dialog
+     */
+    public SimulationSpecification toSimulatorSpecification() {
+        SimulationSpecification simSpec = new SimulationSpecification();
+        simSpec.setSimulatorFolder(simulatorLocationTextField.getText());
+        simSpec.setCodeLocation(codeRepositoryLocationTextField.getText());
+        simSpec.setVersionAnnotation(versionAnnotationTextField.getText());
+        String locale = simulatorLocationComboBox.getSelectedItem().toString();
+        simSpec.setSimulationLocale(locale);
+        String type = simulationTypeComboBox.getSelectedItem().toString();
+        simSpec.setSimulationType(type);
+        String update = sourceCodeUpdatingComboBox.getSelectedItem().toString();
+        simSpec.setSourceCodeUpdating(update);
+        simSpec.setHostAddr(hostAddressTextField.getText());
+        simSpec.setUsername(usernameTextField.getText());
+        simSpec.setSHA1CheckoutKey(SHA1CheckoutKeyTextField.getText());
+        String buildOption = buildOptionComboBox.getSelectedItem().toString();
+        simSpec.setBuildOption(buildOption);
+
+        return simSpec;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Validation">
+    private boolean isValidHostname(String text) {
+        return text != null && text.matches(LINUX_HOSTNAME_PATTERN);
+    }
+
+    private boolean isValidUsername(String text) {
+        return text != null && text.matches(LINUX_USERNAME_PATTERN);
+    }
+
+    private boolean isValidSimLocation(String text) {
+        return simulatorLocationTextField.getText() != null
+                && !simulatorLocationTextField.getText().isEmpty();
+    }
+
+    private boolean isRemoteExecution() {
+        return simulatorLocationComboBox.getSelectedItem() != null
+                && simulatorLocationComboBox.getSelectedItem().toString()
+                .equals(SimulationSpecification.REMOTE_EXECUTION);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="User Communication">
+    private void setRemoteConnectionMsg(String msg, String color) {
+        remoteSpecMessageContentLabel.setText("<html><i>Message: </i><b>" + "<span style=\"color:"
+                + color + "\">" + msg + "</span></html>");
+    }
+
+    private void setPathValidationMsg(String msg, String color) {
+        messageContentLabel.setText("<html><i>Message: </i><b>" + "<span style=\"color:" + color
+                + "\">" + msg + "</span></html>");
     }
     // </editor-fold>
 
@@ -603,11 +711,16 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     private void remoteOrLocalSet() {
         setRemoteRelatedComponentsEnabled(simulatorLocationComboBox.getSelectedIndex()
                 == SimulationSpecification.REMOTE_EXECUTION_INDEX);
+        if (!isRemoteExecution()) {
+            setRemoteConnectionMsg("", "black");
+        }
+        enableOkButton();
     }
 
     private void validateHostAddress() {
         enableTestConnectionButton();
-        if (hostAddressTextField.getText().equals("")) {
+        enableOkButton();
+        if (!isValidHostname(hostAddressTextField.getText())) {
             setRemoteConnectionMsg("Invalid Host Address", "red");
         } else {
             setRemoteConnectionMsg("", "black");
@@ -642,248 +755,13 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         testConnectionButton.setEnabled(true);
     }
 
-    private void simulatorLocationChanged() {
+    private void validateSimulatorLocation() {
         enableOkButton();
-    }
-
-    // private boolean validateSimulatorLocation() {
-    // return isValidFilename(simulatorLocationTextField.getText());
-    // }
-    //
-    // private void validateCodeRepositoryLocation() {
-    // }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Getters">
-    /**
-     * Indicates the exit route taken by the user from this dialog.
-     *
-     * @return True if the user clicked OK, otherwise false.
-     */
-    public boolean getSuccess() {
-        return okButtonClicked;
-    }
-
-    /**
-     * Provides the location of the folder where the simulator will be (conditionally based on
-     * options set in the specification) cloned/checked out to, built, and executed.
-     *
-     * @return The location of the folder where the simulator will be (conditionally based on
-     *         options set in the specification) cloned/checked out to, built, and executed.
-     */
-    public String getSimulatorFolder() {
-        return simulatorLocationTextField.getText();
-    }
-
-    /**
-     * Provides the location of the source code. If source code updating is turned off in this
-     * specification, then this location points to a folder on the machine where the simulation will
-     * take place. If source code updating is turned on in this specification, then this location
-     * points to a source code repository.
-     *
-     * @return The location of the source code
-     */
-    public String getCodeLocation() {
-        return codeRepositoryLocationTextField.getText();
-    }
-
-    /**
-     * Provides the annotation (a note) text entered by the user to describe the version of the
-     * simulator that will be executed.
-     *
-     * @return The annotation (a note) text entered by the user to describe the version of the
-     *         simulator that will be executed
-     */
-    public String getVersionAnnotation() {
-        return versionAnnotationTextField.getText();
-    }
-
-    /**
-     * Provides the selected option text indicating the locale relationship between where the
-     * simulator will run and the local machine.
-     *
-     * @return The selected option text indicating the locale relationship between where the
-     *         simulator will run and the local machine
-     */
-    public String getSimulatorExecutionMachine() {
-        return simulatorLocationComboBox.getSelectedItem().toString();
-    }
-
-    /**
-     * Provides the selected option text indicating which processor threading/core model should be
-     * used for a simulation.
-     *
-     * @return The selected option text indicating which processor threading/core model should be
-     *         used for a simulation
-     */
-    public String getSimulationType() {
-        return simulationTypeComboBox.getSelectedItem().toString();
-    }
-
-    /**
-     * Provides the selected option text indicating whether source code should be updated prior to
-     * executing the simulation.
-     *
-     * @return The option selected indicating whether source code should be updated prior to
-     *         executing the simulation
-     */
-    public String getSourceCodeUpdating() {
-        return sourceCodeUpdatingComboBox.getSelectedItem().toString();
-    }
-
-    /**
-     * Provides the host name or address entered or an empty string if the for the respective field
-     * is null.
-     *
-     * @return The host name or address entered or an empty string if the for the respective field
-     *         is null
-     */
-    public String getHostAddr() {
-        return hostAddressTextField.getText() == null ? "" : hostAddressTextField.getText();
-    }
-
-    /**
-     * Provides the username entered or an empty string if the data for the field is null.
-     *
-     * @return The username entered or an empty string if the data for the respective field is null
-     */
-    public String getUsername() {
-        return usernameTextField.getText() == null ? "" : usernameTextField.getText();
-    }
-
-    /**
-     * Indicates whether or not testing the connection to the specified host, with the login
-     * credentials provided, was successful.
-     *
-     * @return True if the connection test was successful, otherwise false
-     */
-    public boolean testConnectionPassed() {
-        return connectionTestSuccessful;
-    }
-
-    /**
-     * Provides a simulator specification with values set to their respective equivalents from this
-     * dialog.
-     *
-     * @return A simulation specification populated from the state of this dialog
-     */
-    public SimulationSpecification toSimulatorSpecification() {
-        SimulationSpecification simSpec = new SimulationSpecification();
-        simSpec.setSimulatorFolder(simulatorLocationTextField.getText());
-        simSpec.setCodeLocation(codeRepositoryLocationTextField.getText());
-        simSpec.setVersionAnnotation(versionAnnotationTextField.getText());
-        String locale = simulatorLocationComboBox.getSelectedItem().toString();
-        simSpec.setSimulatorLocale(locale);
-        String type = simulationTypeComboBox.getSelectedItem().toString();
-        simSpec.setSimulationType(type);
-        String update = sourceCodeUpdatingComboBox.getSelectedItem().toString();
-        simSpec.setSourceCodeUpdating(update);
-        String address = hostAddressTextField.getText() == null ? ""
-                : hostAddressTextField.getText();
-        simSpec.setHostAddr(address);
-        String username = usernameTextField.getText() == null ? "" : usernameTextField.getText();
-        simSpec.setUsername(username);
-        String sha1 = SHA1CheckoutKeyTextField.getText() == null ? ""
-                : SHA1CheckoutKeyTextField.getText();
-        simSpec.setSHA1CheckoutKey(sha1);
-        String buildOption = buildOptionComboBox.getSelectedItem().toString();
-        simSpec.setBuildOption(buildOption);
-
-        return simSpec;
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="UI Manipulation">
-    private void setRemoteRelatedComponentsEnabled(boolean enabled) {
-        hostAddressLabel.setEnabled(enabled);
-        usernameLabel.setEnabled(enabled);
-        passwordLabel.setEnabled(enabled);
-        hostAddressTextField.setEnabled(enabled);
-        usernameTextField.setEnabled(enabled);
-        passwordField.setEnabled(enabled);
-    }
-
-    private void enableTestConnectionButton() {
-        testConnectionButton.setEnabled(hostAddressTextField.getText() != null
-                && !hostAddressTextField.getText().equals("")
-                && usernameTextField.getText() != null
-                && !usernameTextField.getText().equals("")
-                && passwordField.getPassword() != null);
-        connectionTestSuccessful = false;
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="User Communication">
-    private void setRemoteConnectionMsg(String msg, String color) {
-        remoteSpecMessageContentLabel.setText("<html><i>Message: </i><b>" + "<span style=\"color:"
-                + color + "\">" + msg + "</span></html>");
-    }
-
-//    private void setPathValidationMsg(String msg, String color) {
-//        messageContentLabel.setText("<html><i>Message: </i><b>" + "<span style=\"color:" + color
-//                + "\">" + msg + "</span></html>");
-//    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Validation">
-    private boolean isValidUsername(String text) {
-        return text.matches(LINUX_USERNAME_PATTERN);
-    }
-
-//    /**
-//     * Checks a string representing a filename for adherence to Windows filename conventions.
-//     * Windows need not be the platform that this function is concerned with, it just happens to
-//     * have the most restrictions on filename characters.
-//     *
-//     * @param fileName  String representing a filename
-//     * @return True if the filename specified was valid, False if not
-//     */
-//    private static boolean isValidFilename(String fileName) {
-//        Pattern pattern = Pattern.compile(
-//                "# Match a valid Windows filename (unspecified file system).          \n"
-//                        + "^                                # Anchor to start of string.        \n"
-//                        + "(?!                              # Assert filename is not: CON, PRN, \n"
-//                        + "  (?:                            # AUX, NUL, COM1, COM2, COM3, COM4, \n"
-//                        + "    CON|PRN|AUX|NUL|             # COM5, COM6, COM7, COM8, COM9,     \n"
-//                        + "    COM[1-9]|LPT[1-9]            # LPT1, LPT2, LPT3, LPT4, LPT5,     \n"
-//                        + "  )                              # LPT6, LPT7, LPT8, and LPT9...     \n"
-//                        + "  (?:\\.[^.]*)?                  # followed by optional extension    \n"
-//                        + "  $                              # and end of string                 \n"
-//                        + ")                                # End negative lookahead assertion. \n"
-//                        + "[^<>:\"/\\\\|?*\\x00-\\x1F]*     # Zero or more valid filename chars.\n"
-//                        + "[^<>:\"/\\\\|?*\\x00-\\x1F\\ .]  # Last char is not a space or dot.  \n"
-//                        + "$                                # Anchor to end of string.            ",
-//                Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.COMMENTS);
-//        Matcher matcher = pattern.matcher(fileName);
-//        boolean isMatch = matcher.matches();
-//        return isMatch;
-//    }
-
-    private void enableOkButton() {
-        // determine if any requirements are null or empty
-        boolean nullLocation = simulatorLocationTextField.getText() == null;
-        boolean simulatorLocationEmpty = simulatorLocationTextField.getText().equals("");
-        boolean remoteExecution = this.simulatorLocationComboBox.getSelectedItem().toString()
-                .equals(SimulationSpecification.REMOTE_EXECUTION);
-        boolean nullHostAddr = hostAddressTextField.getText() == null;
-        boolean emptyHostAddr = hostAddressTextField.getText().equals("");
-        // set ok enabled based on required fields filled
-        if (remoteExecution) {
-            runButton.setEnabled(!nullLocation && !simulatorLocationEmpty && !nullHostAddr
-                    && !emptyHostAddr);
+        if (simulatorLocationTextField.getText().isEmpty()) {
+            setPathValidationMsg("Invalid Simulator Location", "red");
         } else {
-            runButton.setEnabled(!nullLocation && !simulatorLocationEmpty);
+            setPathValidationMsg("", "black");
         }
     }
     // </editor-fold>
-
-    private void updateStateOnBuildOptionChange() {
-        String buildOption = buildOptionComboBox.getSelectedItem().toString();
-        if (buildOption.equals(SimulationSpecification.PRE_BUILT_BUILD_OPTION)) {
-            sourceCodeUpdatingComboBox.setSelectedItem(SimulationSpecification.GIT_NONE);
-            sourceCodeUpdatingComboBox.setEnabled(false);
-        } else {
-            sourceCodeUpdatingComboBox.setEnabled(true);
-        }
-    }
 }

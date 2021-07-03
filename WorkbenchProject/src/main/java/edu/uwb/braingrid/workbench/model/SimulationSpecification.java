@@ -128,30 +128,30 @@ public class SimulationSpecification {
     }
 
     /**
-     * Provides the location of the folder where the simulator is executed, where its code is
-     * downloaded to, and where it is built.
+     * Provides the location of the folder where the simulator is downloaded, built, and executed.
+     * If the simulator execution is specified to take place on a remote machine, this is relative
+     * to the root directory for the user.
      *
-     * @return The location of the simulator folder. If the simulator execution is specified to take
-     *         place on a remote machine, this is relative to the root directory for the user.
+     * @return The location of the simulator folder
      */
     public String getSimulatorFolder() {
         return simulationFolder;
     }
 
     /**
-     * Provides the location for the simulator code. This location may be a repository depending on
-     * what the source code updating option is set to, or it may simply be a folder where the code
-     * resides if not.
+     * Provides the location for the simulator code. If source code updating is turned on, then the
+     * location is a source code repository, otherwise it is simply the folder where the source code
+     * resides.
      *
-     * @return The location for the simulator code
+     * @return The location of the source code for the simulation
      */
     public String getCodeLocation() {
         return codeRepositoryLocation;
     }
 
     /**
-     * Provides the version annotation (note regarding the version of the code used to build the
-     * software) for this simulation.
+     * Provides the annotation text (a note) entered by the user to describe the version of the
+     * simulator that will be executed.
      *
      * @return The version annotation for this simulation
      */
@@ -165,7 +165,7 @@ public class SimulationSpecification {
      * LOCAL_EXECUTION.
      *
      * @return The locale where the simulation will take place with respect to the machine where the
-     *         workbench is running.
+     *         workbench is running
      */
     public String getSimulationLocale() {
         return simulationLocale;
@@ -190,17 +190,18 @@ public class SimulationSpecification {
      *
      * TODO: Move GIT_PULL_CLONE to enum
      *
-     * @return The description of the source code updating type
+     * @return A description of the source code updating type
      */
     public String getSourceCodeUpdating() {
         return sourceCodeUpdating;
     }
 
     /**
-     * Provides the host name or address specified for this simulation.
+     * Provides the host name or address of the remote machine where the simulation will take place,
+     * or an empty string if the respective field is null.
      *
-     * @return The host name or address of the remote machine where the simulation should take
-     *         place, or null if LOCAL_EXECUTION is the locale for the simulation
+     * @return The host name or address of the remote machine where the simulation will take place,
+     *         or an empty string if the respective field is null
      */
     public String getHostAddr() {
         return hostAddress == null ? "" : hostAddress;
@@ -240,20 +241,20 @@ public class SimulationSpecification {
     }
 
     /**
-     * Sets the location of the folder where the simulator will be (conditionally based on options
-     * set in the specification) cloned/checked out to, built, and executed.
+     * Sets the location of the folder where the simulator is downloaded, built, and executed. If
+     * the simulator execution is specified to take place on a remote machine, this is relative to
+     * the root directory for the user.
      *
-     * @param simFolder  The location of the top-level folder of the simulation
+     * @param simFolder  The location of the simulator folder
      */
     public void setSimulatorFolder(String simFolder) {
         simulationFolder = simFolder;
     }
 
     /**
-     * Sets the location of the source code. If source code updating is turned off in this
-     * specification, then this location points to a folder on the machine where the simulation will
-     * take place. If source code updating is turned on in this specification, then this location
-     * points to a source code repository.
+     * Sets the location for the simulator code. If source code updating is turned on, then the
+     * location is a source code repository, otherwise it is simply the folder where the source code
+     * resides.
      *
      * @param url  The location of the source code for the simulation
      */
@@ -262,38 +263,35 @@ public class SimulationSpecification {
     }
 
     /**
-     * Sets the annotation (a note) text entered by the user to describe the version of the
+     * Sets the annotation text (a note) entered by the user to describe the version of the
      * simulator that will be executed.
      *
-     * @param annotation  The annotation (a note) text entered by the user to describe the version
-     *                    of the simulator that will be executed.
+     * @param annotation  The version annotation for this simulation
      */
     public void setVersionAnnotation(String annotation) {
         versionAnnotation = annotation;
     }
 
     /**
-     * Sets the locale for the simulation. This can be remote or local, but should be set based on
-     * the related static strings from this class.
+     * Sets the locale where the simulation will take place with respect to the machine where the
+     * workbench is running. This value corresponds to the static members REMOTE_EXECUTION or
+     * LOCAL_EXECUTION.
      *
      * TODO: Make this an enum? -Max, or atleast move the values of REMOTE_EXECUTION and
      *       LOCAL_EXECUTION to ProjectMgr
      *
-     * @param locale  The locale for the simulation. One of the following values:
-     *                SimulationSpecification.REMOTE_EXECUTION or
-     *                SimulationSpecification.LOCAL_EXECUTION
+     * @param locale  The locale where the simulation will take place with respect to the machine
+     *                where the workbench is running
      */
-    public void setSimulatorLocale(String locale) {
+    public void setSimulationLocale(String locale) {
         simulationLocale = locale;
     }
 
     /**
-     * Sets the text for the simulation execution model associated with this specification. This
-     * text should be the same as the return of the toString method for one of the values in the
-     * SimulatorType enumeration.
+     * Sets the execution model for the simulation. This value should correspond to the toString
+     * return of one of the values from the SimulatorType enumeration.
      *
-     * @param type  Text representation of one of the values in the SimulatorType enumeration. The
-     *              type describes the execution model for the simulation
+     * @param type  A description of the execution model for the simulation
      * @see edu.uwb.braingrid.workbench.model.SimulationSpecification.SimulatorType
      */
     public void setSimulationType(String type) {
@@ -312,9 +310,10 @@ public class SimulationSpecification {
     }
 
     /**
-     * Sets the host name or address where the simulation will take place.
+     * Sets the host name or address of the remote machine where the simulation will take place.
      *
-     * @param hostAddr  The host name or address where the simulation will take place.
+     * @param hostAddr  The host name or address of the remote machine where the simulation will
+     *                  take place
      */
     public void setHostAddr(String hostAddr) {
         hostAddress = hostAddr;
