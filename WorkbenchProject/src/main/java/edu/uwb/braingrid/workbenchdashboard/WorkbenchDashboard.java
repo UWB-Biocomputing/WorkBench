@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 
 import edu.uwb.braingrid.general.LoggerHelper;
@@ -92,33 +92,27 @@ public class WorkbenchDashboard extends Application {
                 .toExternalForm());
 
         // Create Events
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent arg0) {
-                if (arg0.getCode() == KeyCode.CONTROL) {
-                    ctrl = true;
-                }
-                if (arg0.getCode() == KeyCode.G && ctrl) {
-                    workbenchDisplay.pushGSLEPane();
-                }
-                if (arg0.getCode() == KeyCode.S && ctrl) {
-                    workbenchDisplay.pushSimWizPop();
-                }
-                if (arg0.getCode() == KeyCode.P && ctrl) {
-                    workbenchDisplay.pushProVisStarterPage();
-                }
-                if (arg0.getCode() == KeyCode.U && ctrl) {
-                    workbenchDisplay.pushUserViewPage();
-                }
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.CONTROL) {
+                ctrl = true;
+            }
+            if (event.getCode() == KeyCode.G && ctrl) {
+                workbenchDisplay.pushGSLEPane();
+            }
+            if (event.getCode() == KeyCode.S && ctrl) {
+                workbenchDisplay.pushSimWizPop();
+            }
+            if (event.getCode() == KeyCode.P && ctrl) {
+                workbenchDisplay.pushProVisStarterPage();
+            }
+            if (event.getCode() == KeyCode.U && ctrl) {
+                workbenchDisplay.pushUserViewPage();
             }
         });
 
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent arg0) {
-                if (arg0.getCode() == KeyCode.CONTROL) {
-                    ctrl = false;
-                }
+        scene.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.CONTROL) {
+                ctrl = false;
             }
         });
 
@@ -131,6 +125,12 @@ public class WorkbenchDashboard extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
+
+        // Exit application on window close
+        primaryStage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
 
         // Init
         RunInit runInit = new RunInit();
