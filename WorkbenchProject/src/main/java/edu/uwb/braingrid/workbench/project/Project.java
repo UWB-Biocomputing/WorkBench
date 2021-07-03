@@ -88,31 +88,30 @@ public class Project {
         Element root = doc.getDocumentElement();
 
         NodeList childList = root.getChildNodes();
-        NodeList eChildren;
+        NodeList elemChildren;
         ProjectData projData;
-        Element e;
-        Element eChild;
+        Element elem;
+        Element elemChild;
         Datum datum;
         NamedNodeMap attributes;
         String tagName;
         for (int i = 0, im = childList.getLength(); i < im; i++) {
             try {
-                e = (Element) childList.item(i);
-                tagName = e.getTagName();
+                elem = (Element) childList.item(i);
+                tagName = elem.getTagName();
                 projData = new ProjectData(tagName);
-                eChildren = e.getChildNodes();
-                for (int j = 0, jm = eChildren.getLength(); j < jm; j++) {
-                    eChild = (Element) eChildren.item(j);
-                    datum = new Datum(eChild.getTagName());
-                    attributes = eChild.getAttributes();
+                elemChildren = elem.getChildNodes();
+                for (int j = 0, jm = elemChildren.getLength(); j < jm; j++) {
+                    elemChild = (Element) elemChildren.item(j);
+                    datum = new Datum(elemChild.getTagName());
+                    attributes = elemChild.getAttributes();
                     for (int k = 0, km = attributes.getLength(); k < km; k++) {
                         datum.setAttribute(attributes.item(k).getNodeName(),
-                                eChild.getAttribute(attributes.item(k).getNodeName()));
+                                elemChild.getAttribute(attributes.item(k).getNodeName()));
                     }
-                    datum.setContent(eChild.getTextContent());
+                    datum.setContent(elemChild.getTextContent());
                 }
-
-            } catch (ClassCastException ex) {
+            } catch (ClassCastException e) {
             }
         }
         return this;

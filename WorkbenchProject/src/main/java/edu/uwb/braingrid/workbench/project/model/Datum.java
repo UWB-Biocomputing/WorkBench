@@ -51,12 +51,12 @@ public class Datum {
     }
 
     public Node getElement(Document doc) {
-        Element e = doc.createElement(name);
+        Element element = doc.createElement(name);
         Set<String> keys = attributes.keySet();
         for (String key : keys) {
-            e.setAttribute(key, attributes.get(key));
+            element.setAttribute(key, attributes.get(key));
         }
-        e.setTextContent(content);
-        return e;
+        element.setTextContent(content);
+        return element;
     }
 }

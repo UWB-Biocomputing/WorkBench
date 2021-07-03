@@ -1,6 +1,7 @@
 package edu.uwb.braingrid.workbenchdashboard.nledit;
 
 import java.io.File;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,7 +22,7 @@ import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
  * @author Fumitaka Kawasaki
  * @version 1.2
  */
-public class ExportPanel extends Pane implements EventHandler<javafx.event.ActionEvent> {
+public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
 
     /** Number of input fields. */
     public static final int NUM_FIELDS = 3;
@@ -73,10 +74,10 @@ public class ExportPanel extends Pane implements EventHandler<javafx.event.Actio
     }
 
     @Override
-    public void handle(javafx.event.ActionEvent arg0) {
+    public void handle(ActionEvent event) {
         int iSource = 0;
         for (int i = 0; i < NUM_FIELDS; i++) {
-            if (arg0.getSource() == buttons[i]) {
+            if (event.getSource() == buttons[i]) {
                 iSource = i;
                 break;
             }

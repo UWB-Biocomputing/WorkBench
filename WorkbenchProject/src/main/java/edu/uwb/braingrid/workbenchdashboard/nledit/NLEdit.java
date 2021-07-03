@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingNode;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -95,7 +94,6 @@ public class NLEdit extends WorkbenchApp {
 
     @Override
     public boolean close() {
-        // TODO Auto-generated method stub
         return true;
     }
 
@@ -113,13 +111,13 @@ public class NLEdit extends WorkbenchApp {
 
         layoutPanel = new LayoutPanel(this, new Dimension(LayoutPanel.DEF_X_CELLS,
                 LayoutPanel.DEF_Y_CELLS), neuronsLayout);
-        JScrollPane scrollpane = new JScrollPane(layoutPanel,
+        JScrollPane scrollPane = new JScrollPane(layoutPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        layoutPanel.setScrollPane(scrollpane);
+        layoutPanel.setScrollPane(scrollPane);
 
         SwingNode scrollPaneNode = new SwingNode();
-        scrollPaneNode.setContent(scrollpane);
+        scrollPaneNode.setContent(scrollPane);
         borderPane.setCenter(scrollPaneNode);
         nlSimUtil = new NLSimUtil(layoutPanel, neuronsLayout);
     }
@@ -161,48 +159,34 @@ public class NLEdit extends WorkbenchApp {
                 "/icons/baseline-clear-black-18/1x/baseline_clear_black_18dp.png",
                 "Clear Neurons");
         clearItemBtn.getStyleClass().add("clear-button");
-        clearItemBtn.setOnAction(event -> {
-            actionClear();
-        });
+        clearItemBtn.setOnAction(event -> actionClear());
 
         primeButton(importItemBtn,
                 "/icons/baseline-input-black-18/1x/baseline_input_black_18dp.png",
                 "Import Neuron Layout");
-        importItemBtn.setOnAction(event -> {
-            actionImport();
-        });
+        importItemBtn.setOnAction(event -> actionImport());
 
         primeButton(exportItemBtn,
                 "/icons/baseline-save_alt-black-18/1x/baseline_save_alt_black_18dp.png",
                 "Export Neuron Layout");
-        exportItemBtn.setOnAction(event -> {
-            actionExport();
-        });
+        exportItemBtn.setOnAction(event -> actionExport());
 
         primeButton(printItemBtn, "/icons/baseline-local_printshop-black-18/1x/"
                 + "baseline_local_printshop_black_18dp.png", "Print");
-        printItemBtn.setOnAction(event -> {
-            actionPrint();
-        });
+        printItemBtn.setOnAction(event -> actionPrint());
 
         primeButton(bcellItemBtn,
                 "/icons/baseline-zoom_in-black-18/1x/baseline_zoom_in_black_18dp.png", "Zoom In");
-        bcellItemBtn.setOnAction(event -> {
-            actionBiggerCells();
-        });
+        bcellItemBtn.setOnAction(event -> actionBiggerCells());
 
         primeButton(scellItemBtn, "/icons/baseline-zoom_out-black-18/1x/"
                 + "baseline_zoom_out_black_18dp.png", "Zoom Out");
-        scellItemBtn.setOnAction(event -> {
-            actionSmallerCells();
-        });
+        scellItemBtn.setOnAction(event -> actionSmallerCells());
 
         primeButton(sdatItemBtn,
                 "/icons/baseline-data_usage-black-18/1x/baseline_data_usage_black_18dp.png",
                 "Stats");
-        sdatItemBtn.setOnAction(event -> {
-            actionStatisticalData();
-        });
+        sdatItemBtn.setOnAction(event -> actionStatisticalData());
 
         HBox toolbar = new HBox(bcellItemBtn, scellItemBtn, printItemBtn, sdatItemBtn,
                 importItemBtn, exportItemBtn, clearItemBtn);
@@ -221,7 +205,7 @@ public class NLEdit extends WorkbenchApp {
         String url = "resources" + path;
         button.getStyleClass().add("toolbar-button");
         try {
-            Image image = new Image(this.getClass().getClassLoader().getResourceAsStream(url));
+            Image image = new Image(this.getClass().getResourceAsStream(url));
             button.setGraphic(new ImageView(image));
         } catch (NullPointerException e) {
             System.out.println(e.toString());
@@ -263,13 +247,13 @@ public class NLEdit extends WorkbenchApp {
             if (inboundsX && inboundsY) {
                 actionModifySize(sizeX, sizeY);
 
-                JScrollPane scrollpane = new JScrollPane(layoutPanel,
+                JScrollPane scrollPane = new JScrollPane(layoutPanel,
                         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                layoutPanel.setScrollPane(scrollpane);
+                layoutPanel.setScrollPane(scrollPane);
 
                 SwingNode scrollPaneNode = new SwingNode();
-                scrollPaneNode.setContent(scrollpane);
+                scrollPaneNode.setContent(scrollPane);
 
                 borderPane.setCenter(scrollPaneNode);
             } else {
@@ -282,13 +266,8 @@ public class NLEdit extends WorkbenchApp {
             }
         });
 
-        gpatItemBtn.setOnAction(event -> {
-            actionGeneratePattern();
-        });
-
-        aprbItemBtn.setOnAction(event -> {
-            actionArrangeProbes();
-        });
+        gpatItemBtn.setOnAction(event -> actionGeneratePattern());
+        aprbItemBtn.setOnAction(event -> actionArrangeProbes());
 
         toggleGroup = new ToggleGroup();
 
@@ -342,28 +321,20 @@ public class NLEdit extends WorkbenchApp {
         dialog.initModality(Modality.NONE);
         dialog.initOwner(WorkbenchDisplay.getPrimaryStage());
 
-        imprt.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_INH_LIST].getText(),
-                        neuronsLayout.inhNList, LayoutPanel.INH);
-                readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_ACT_LIST].getText(),
-                        neuronsLayout.activeNList, LayoutPanel.ACT);
-                readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_PRB_LIST].getText(),
-                        neuronsLayout.probedNList, LayoutPanel.PRB);
+        imprt.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_INH_LIST].getText(),
+                    neuronsLayout.inhNList, LayoutPanel.INH);
+            readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_ACT_LIST].getText(),
+                    neuronsLayout.activeNList, LayoutPanel.ACT);
+            readNeuronListFromFile(myPanel.tFields[ImportPanel.IDX_PRB_LIST].getText(),
+                    neuronsLayout.probedNList, LayoutPanel.PRB);
 
-                Graphics g = layoutPanel.getGraphics();
-                layoutPanel.writeToGraphics(g);
-                layoutPanel.repaint();
-                dialog.close();
-            }
+            Graphics g = layoutPanel.getGraphics();
+            layoutPanel.writeToGraphics(g);
+            layoutPanel.repaint();
+            dialog.close();
         });
-        cancel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                dialog.close();
-            }
-        });
+        cancel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> dialog.close());
 
         HBox hbox = new HBox(imprt, cancel);
         hbox.setAlignment(Pos.CENTER);
@@ -437,97 +408,88 @@ public class NLEdit extends WorkbenchApp {
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
 
-        yes.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                Long accumulatedTime = 0L;
-                writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(),
-                        neuronsLayout.inhNList, LayoutPanel.INH);
-                // add to workbench project
-                if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
-                    Long startTime = System.currentTimeMillis();
-                    Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                            "InhibitoryNeuronListExport" + java.util.UUID.randomUUID(),
-                            "neuronListExport", "NLEdit", null, false,
-                            myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(), null, null);
+        yes.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            Long accumulatedTime1 = 0L;
+            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(),
+                    neuronsLayout.inhNList, LayoutPanel.INH);
+            // add to workbench project
+            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
+                Long startTime = System.currentTimeMillis();
+                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
+                        "InhibitoryNeuronListExport" + java.util.UUID.randomUUID(),
+                        "neuronListExport", "NLEdit", null, false,
+                        myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(), null, null);
 
-                    // Tell Java to stop considering the file to be in it's control
-                    try {
-                        ((FileOutputStream) file).close();
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-
-                    accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
+                // Tell Java to stop considering the file to be in it's control
+                try {
+                    ((FileOutputStream) file).close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-                writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(),
-                        neuronsLayout.activeNList, LayoutPanel.ACT);
-                // add to workbench project
-                if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
-                    Long startTime = System.currentTimeMillis();
-                    Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                            "ActiveNeuronListExport" + java.util.UUID.randomUUID(),
-                            "neuronListExport", "NLEdit", null, false,
-                            myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(), null, null);
-                    accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
-
-                    // Tell Java to stop considering the file to be in it's control
-                    try {
-                        ((FileOutputStream) file).close();
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                }
-
-                writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(),
-                        neuronsLayout.probedNList, LayoutPanel.PRB);
-                // add to workbench project
-                if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
-                    Long startTime = System.currentTimeMillis();
-                    Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                            "ProbedNeuronListExport" + java.util.UUID.randomUUID(),
-                            "neuronListExport", "NLEdit", null, false,
-                            myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(), null, null);
-                    accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
-
-                    // Tell Java to stop considering the file to be in it's control
-                    try {
-                        ((FileOutputStream) file).close();
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                }
-
-                // In the original function this executed at the end of the popup regarless of
-                // what occured.
-                DateTime.recordFunctionExecutionTime("ControlFrame", "actionExport",
-                        System.currentTimeMillis() - functionStartTime,
-                        workbenchMgr.isProvEnabled());
-                if (workbenchMgr.isProvEnabled()) {
-                    DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport",
-                            accumulatedTime);
-                }
-                dialog.close();
+                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
             }
+
+            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(),
+                    neuronsLayout.activeNList, LayoutPanel.ACT);
+            // add to workbench project
+            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
+                Long startTime = System.currentTimeMillis();
+                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
+                        "ActiveNeuronListExport" + java.util.UUID.randomUUID(),
+                        "neuronListExport", "NLEdit", null, false,
+                        myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(), null, null);
+                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
+
+                // Tell Java to stop considering the file to be in it's control
+                try {
+                    ((FileOutputStream) file).close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(),
+                    neuronsLayout.probedNList, LayoutPanel.PRB);
+            // add to workbench project
+            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
+                Long startTime = System.currentTimeMillis();
+                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
+                        "ProbedNeuronListExport" + java.util.UUID.randomUUID(),
+                        "neuronListExport", "NLEdit", null, false,
+                        myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(), null, null);
+                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
+
+                // Tell Java to stop considering the file to be in it's control
+                try {
+                    ((FileOutputStream) file).close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // In the original function this executed at the end of the popup regardless of
+            // what occurred.
+            DateTime.recordFunctionExecutionTime("ControlFrame", "actionExport",
+                    System.currentTimeMillis() - functionStartTime,
+                    workbenchMgr.isProvEnabled());
+            if (workbenchMgr.isProvEnabled()) {
+                DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport",
+                        accumulatedTime1);
+            }
+            dialog.close();
         });
-        no.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                // In the original function this executed at the end of the popup regarless of
-                // what occured.
-                DateTime.recordFunctionExecutionTime("ControlFrame", "actionExport",
-                        System.currentTimeMillis() - functionStartTime,
-                        workbenchMgr.isProvEnabled());
-                if (workbenchMgr.isProvEnabled()) {
-                    DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport",
-                            accumulatedTime);
-                }
-                dialog.close();
+        no.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            // In the original function this executed at the end of the popup regardless of
+            // what occurred.
+            DateTime.recordFunctionExecutionTime("ControlFrame", "actionExport",
+                    System.currentTimeMillis() - functionStartTime,
+                    workbenchMgr.isProvEnabled());
+            if (workbenchMgr.isProvEnabled()) {
+                DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport",
+                        accumulatedTime);
             }
+            dialog.close();
         });
 
         HBox hbox = new HBox(yes, no);
@@ -573,8 +535,8 @@ public class NLEdit extends WorkbenchApp {
 
             XMLOutputter xmlOutput = new XMLOutputter(Format.getPrettyFormat());
             xmlOutput.output(doc, new FileOutputStream(nameNListFile));
-        } catch (IOException ie) {
-            System.err.println(ie);
+        } catch (IOException e) {
+            System.err.println(e);
         }
     }
 
@@ -669,41 +631,33 @@ public class NLEdit extends WorkbenchApp {
         dialog.initModality(Modality.NONE);
         dialog.initOwner(WorkbenchDisplay.getPrimaryStage());
 
-        yes.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                try {
-                    float ratioInh = Float.parseFloat(myPanel.tFields[GPatternPanel.IDX_INH]
-                            .getText());
-                    float ratioAct = Float.parseFloat(myPanel.tFields[GPatternPanel.IDX_ACT]
-                            .getText());
+        yes.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                float ratioInh = Float.parseFloat(myPanel.tFields[GPatternPanel.IDX_INH]
+                        .getText());
+                float ratioAct = Float.parseFloat(myPanel.tFields[GPatternPanel.IDX_ACT]
+                        .getText());
 
-                    // validate ratios
-                    if ((ratioInh < 0 || ratioInh > 1.0) || (ratioAct < 0 || ratioAct > 1.0)
-                            || (ratioInh + ratioAct > 1.0)) {
-                        throw new NumberFormatException();
-                    }
-
-                    if (myPanel.rButtons[GPatternPanel.IDX_REG].isSelected()) {
-                        nlSimUtil.genRegularPattern(ratioInh, ratioAct);
-                    } else if (myPanel.rButtons[GPatternPanel.IDX_RND].isSelected()) {
-                        nlSimUtil.genRandomPattern(ratioInh, ratioAct);
-                    }
-
-                    Graphics g = layoutPanel.getGraphics();
-                    layoutPanel.writeToGraphics(g);
-                } catch (NumberFormatException ne) {
-                    JOptionPane.showMessageDialog(null, "Invalid ratio.");
+                // validate ratios
+                if ((ratioInh < 0 || ratioInh > 1.0) || (ratioAct < 0 || ratioAct > 1.0)
+                        || (ratioInh + ratioAct > 1.0)) {
+                    throw new NumberFormatException();
                 }
-                dialog.close();
+
+                if (myPanel.rButtons[GPatternPanel.IDX_REG].isSelected()) {
+                    nlSimUtil.genRegularPattern(ratioInh, ratioAct);
+                } else if (myPanel.rButtons[GPatternPanel.IDX_RND].isSelected()) {
+                    nlSimUtil.genRandomPattern(ratioInh, ratioAct);
+                }
+
+                Graphics g = layoutPanel.getGraphics();
+                layoutPanel.writeToGraphics(g);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid ratio.");
             }
+            dialog.close();
         });
-        no.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                dialog.close();
-            }
-        });
+        no.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> dialog.close());
 
         HBox hbox = new HBox(yes, no);
         hbox.setAlignment(Pos.CENTER);
@@ -733,36 +687,27 @@ public class NLEdit extends WorkbenchApp {
         dialog.initModality(Modality.NONE);
         dialog.initOwner(WorkbenchDisplay.getPrimaryStage());
 
-        yes.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                try {
-                    int numProbes = Integer.parseInt(myPanel.tField.getText());
+        yes.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                int numProbes = Integer.parseInt(myPanel.tField.getText());
 
-                    // validate number
-                    Dimension dim = layoutPanel.getLayoutSize();
-                    if (numProbes > dim.height * dim.width) {
-                        throw new NumberFormatException();
-                    }
-
-                    nlSimUtil.genProbes(numProbes);
-
-                    Graphics g = layoutPanel.getGraphics();
-                    layoutPanel.writeToGraphics(g);
-                    dialog.close();
-                    layoutPanel.repaintScrollpane();
-                } catch (NumberFormatException ne) {
-                    JOptionPane.showMessageDialog(null, "Invalid number.");
+                // validate number
+                Dimension dim = layoutPanel.getLayoutSize();
+                if (numProbes > dim.height * dim.width) {
+                    throw new NumberFormatException();
                 }
-            }
-        });
-        no.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
 
+                nlSimUtil.genProbes(numProbes);
+
+                Graphics g = layoutPanel.getGraphics();
+                layoutPanel.writeToGraphics(g);
                 dialog.close();
+                layoutPanel.repaintScrollpane();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid number.");
             }
         });
+        no.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> dialog.close());
 
         HBox hbox = new HBox(yes, no);
         hbox.setAlignment(Pos.CENTER);

@@ -8,10 +8,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.animation.AnimationTimer;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,8 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -162,260 +156,214 @@ public class ProVisCtrl {
     }
 
     private void initGUIEvents() {
-        adjustForceSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue,
-                    Number newValue) {
-                dataProvGraph.setC3(newValue.doubleValue() * 1500);
+        adjustForceSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            dataProvGraph.setC3(newValue.doubleValue() * 1500);
+        });
+
+        showNodeIds.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                dataProvGraph.setShowAllNodeIds(true);
+            } else {
+                dataProvGraph.setShowAllNodeIds(false);
             }
         });
 
-        showNodeIds.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-                    Boolean newValue) {
-                if (newValue) {
-                    dataProvGraph.setShowAllNodeIds(true);
-                } else {
-                    dataProvGraph.setShowAllNodeIds(false);
-                }
+        showRelationships.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                dataProvGraph.setShowAllRelationships(true);
+            } else {
+                dataProvGraph.setShowAllRelationships(false);
             }
         });
 
-        showRelationships.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-                    Boolean newValue) {
-                if (newValue) {
-                    dataProvGraph.setShowAllRelationships(true);
-                } else {
-                    dataProvGraph.setShowAllRelationships(false);
-                }
+        showLegend.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                dataProvGraph.setShowLegend(true);
+            } else {
+                dataProvGraph.setShowLegend(false);
             }
         });
 
-        showLegend.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-                    Boolean newValue) {
-                if (newValue) {
-                    dataProvGraph.setShowLegend(true);
-                } else {
-                    dataProvGraph.setShowLegend(false);
-                }
+        builderModeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                buildModeON = true;
+            } else {
+                buildModeON = false;
+                enableBuildButton(false);
+                clearBuildControlDisplay();
             }
         });
 
-        builderModeToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-                    Boolean newValue) {
-                if (newValue) {
-                    buildModeON = true;
-                } else if (oldValue) {
-                    buildModeON = false;
-                    enableBuildButton(false);
-                    clearBuildControlDisplay();
-                }
-            }
-        });
+        chooseFileBtn.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select provenance file");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 
-        chooseFileBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Select provenance file");
-                fileChooser.getExtensionFilters().addAll(
-                        new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
-                fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+            File selectedFile = fileChooser.showOpenDialog(canvasPane.getScene().getWindow());
 
-                File selectedFile = null;
-                selectedFile = fileChooser.showOpenDialog(canvasPane.getScene().getWindow());
-
-                if (selectedFile != null) {
-                    dataProvGraph.clearAllIdsRelationships();
-                    dataProvGraph.clearNodesNEdges();
-                    showNodeIds.setSelected(false);
-                    showRelationships.setSelected(false);
-                    initNodeEdge(selectedFile.getAbsolutePath());
-                    proVis.setTitle(selectedFile.getName());
-                }
-            }
-        });
-
-        importFileBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+            if (selectedFile != null) {
                 dataProvGraph.clearAllIdsRelationships();
                 dataProvGraph.clearNodesNEdges();
                 showNodeIds.setSelected(false);
                 showRelationships.setSelected(false);
-                openUniversalProvenance();
+                initNodeEdge(selectedFile.getAbsolutePath());
+                proVis.setTitle(selectedFile.getName());
             }
         });
 
-        clearPresetsButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clearBuildControlDisplay();
-                bGVersionSelected = null;
-                simSpecifications = null;
-                nListPresets.clear();
-            }
+        importFileBtn.setOnAction(event -> {
+            dataProvGraph.clearAllIdsRelationships();
+            dataProvGraph.clearNodesNEdges();
+            showNodeIds.setSelected(false);
+            showRelationships.setSelected(false);
+            openUniversalProvenance();
         });
 
-        buildFromPrevButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                simStartWiz = new SimStartWiz(simSpecifications, bGVersionSelected, nListPresets);
-            }
+        clearPresetsButton.setOnAction(event -> {
+            clearBuildControlDisplay();
+            bGVersionSelected = null;
+            simSpecifications = null;
+            nListPresets.clear();
+        });
+
+        buildFromPrevButton.setOnAction(event -> {
+            simStartWiz = new SimStartWiz(simSpecifications, bGVersionSelected, nListPresets);
         });
     }
 
-    private void initMouseEvents() { //@cs-: MethodLength influence 0
-        visCanvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.isPrimaryButtonDown()) {
-                    if (draggedNode != null) { // drag node
-                        draggedNode.setX(event.getX() / zoomRatio + displayWindowLocation[0]);
-                        draggedNode.setY(event.getY() / zoomRatio + displayWindowLocation[1]);
+    private void initMouseEvents() {
+        visCanvas.setOnMouseDragged(event -> {
+            if (event.isPrimaryButtonDown()) {
+                if (draggedNode != null) { // drag node
+                    draggedNode.setX(event.getX() / zoomRatio + displayWindowLocation[0]);
+                    draggedNode.setY(event.getY() / zoomRatio + displayWindowLocation[1]);
 
-                        Node comparingNode = dataProvGraph.getComparingNode(
-                                event.getX() / zoomRatio + displayWindowLocation[0],
-                                event.getY() / zoomRatio + displayWindowLocation[1],
-                                draggedNode, zoomRatio, true);
-                        if (draggedNode instanceof EntityNode
-                                && comparingNode instanceof EntityNode) {
-                            dataProvGraph.setComparingNode(comparingNode);
-                        } else {
-                            dataProvGraph.setComparingNode(null);
-                        }
-                    } else {
-                        displayWindowLocation[0] = displayWindowLocationTmp[0] + pressedXY[0]
-                                - event.getX() / zoomRatio;
-                        displayWindowLocation[1] = displayWindowLocationTmp[1] + pressedXY[1]
-                                - event.getY() / zoomRatio;
-                    }
-                }
-            }
-        });
-
-        visCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.isPrimaryButtonDown()) {
-                    draggedNode = dataProvGraph.getSelectedNode(
+                    Node comparingNode = dataProvGraph.getComparingNode(
                             event.getX() / zoomRatio + displayWindowLocation[0],
-                            event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
-                    pressedXY = new double[] {event.getX() / zoomRatio, event.getY() / zoomRatio};
-
-                    if (draggedNode == null) {
-                        displayWindowLocationTmp = displayWindowLocation.clone();
+                            event.getY() / zoomRatio + displayWindowLocation[1],
+                            draggedNode, zoomRatio, true);
+                    if (draggedNode instanceof EntityNode
+                            && comparingNode instanceof EntityNode) {
+                        dataProvGraph.setComparingNode(comparingNode);
+                    } else {
+                        dataProvGraph.setComparingNode(null);
                     }
+                } else {
+                    displayWindowLocation[0] = displayWindowLocationTmp[0] + pressedXY[0]
+                            - event.getX() / zoomRatio;
+                    displayWindowLocation[1] = displayWindowLocationTmp[1] + pressedXY[1]
+                            - event.getY() / zoomRatio;
                 }
             }
         });
 
-        visCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    if (event.getClickCount() == 1) {
-                        Edge edge = dataProvGraph.getSelectedEdge(
-                                event.getX() / zoomRatio + displayWindowLocation[0],
-                                event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio);
-
-                        if (edge != null) {
-                            dataProvGraph.addOrRemoveDispRelationship(edge);
-                        }
-
-                        if (buildModeON) {
-                            selectedNode = dataProvGraph.getSelectedNode(
-                                    event.getX() / zoomRatio + displayWindowLocation[0],
-                                    event.getY() / zoomRatio + displayWindowLocation[1],
-                                    zoomRatio, false);
-                            if (selectedNode != null) {
-                                prepBuildInputParams(selectedNode);
-                            }
-                        }
-                    } else if (event.getClickCount() == 2) {
-                        dataProvGraph.clearAllIdsRelationships();
-                    }
-                }
-            }
-        });
-
-        visCanvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Node node = dataProvGraph.getSelectedNode(
+        visCanvas.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown()) {
+                draggedNode = dataProvGraph.getSelectedNode(
                         event.getX() / zoomRatio + displayWindowLocation[0],
                         event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
+                pressedXY = new double[] {event.getX() / zoomRatio, event.getY() / zoomRatio};
 
-                dataProvGraph.setMouseOnNode(node);
-
-                Edge edge = dataProvGraph.getSelectedEdge(
-                        event.getX() / zoomRatio + displayWindowLocation[0],
-                        event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio);
-
-                dataProvGraph.setMouseOnEdge(edge);
+                if (draggedNode == null) {
+                    displayWindowLocationTmp = displayWindowLocation.clone();
+                }
             }
         });
 
-        visCanvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (draggedNode != null && pressedXY[0] == event.getX() / zoomRatio
-                        && pressedXY[1] == event.getY() / zoomRatio) {
-                    dataProvGraph.addOrRemoveDispNodeId(draggedNode);
+        visCanvas.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 1) {
+                    Edge edge = dataProvGraph.getSelectedEdge(
+                            event.getX() / zoomRatio + displayWindowLocation[0],
+                            event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio);
 
-                    if (draggedNode instanceof ActivityNode) {
-                        dataProvGraph.addOrRemoveSelectedActivityNode((ActivityNode) draggedNode);
+                    if (edge != null) {
+                        dataProvGraph.addOrRemoveDispRelationship(edge);
                     }
+
+                    if (buildModeON) {
+                        selectedNode = dataProvGraph.getSelectedNode(
+                                event.getX() / zoomRatio + displayWindowLocation[0],
+                                event.getY() / zoomRatio + displayWindowLocation[1],
+                                zoomRatio, false);
+                        if (selectedNode != null) {
+                            prepBuildInputParams(selectedNode);
+                        }
+                    }
+                } else if (event.getClickCount() == 2) {
+                    dataProvGraph.clearAllIdsRelationships();
                 }
-
-                Node comparingNode = dataProvGraph.getComparingNode();
-                if (comparingNode != null) {
-                    // check if the files exist in local file system
-                    // download the files if they are not in the file system.
-                    boolean comparingNodeFileReady = checkIfNodeFileExists(comparingNode);
-                    if (!comparingNodeFileReady) {
-                        comparingNodeFileReady = downloadNodeFile(comparingNode);
-                    }
-
-                    boolean draggedNodeFileReady = checkIfNodeFileExists(draggedNode);
-                    if (!draggedNodeFileReady) {
-                        draggedNodeFileReady = downloadNodeFile(draggedNode);
-                    }
-
-                    if (comparingNodeFileReady && draggedNodeFileReady) {
-                        // start comparing files
-                        compareNodes(draggedNode, comparingNode);
-                    }
-                }
-
-                dataProvGraph.setComparingNode(null);
-                draggedNode = null;
             }
         });
 
-        visCanvas.setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                // update zoomRatio
-                double deltaY = event.getDeltaY();
-                double oldZoomRatio = zoomRatio;
+        visCanvas.setOnMouseMoved(event -> {
+            Node node = dataProvGraph.getSelectedNode(
+                    event.getX() / zoomRatio + displayWindowLocation[0],
+                    event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio, false);
 
-                if (deltaY > 0) {
-                    zoomRatio = zoomRatio * (1 + zoomSpeed);
-                } else if (deltaY < 0) {
-                    zoomRatio = zoomRatio / (1 + zoomSpeed);
+            dataProvGraph.setMouseOnNode(node);
+
+            Edge edge = dataProvGraph.getSelectedEdge(
+                    event.getX() / zoomRatio + displayWindowLocation[0],
+                    event.getY() / zoomRatio + displayWindowLocation[1], zoomRatio);
+
+            dataProvGraph.setMouseOnEdge(edge);
+        });
+
+        visCanvas.setOnMouseReleased(event -> {
+            if (draggedNode != null && pressedXY[0] == event.getX() / zoomRatio
+                    && pressedXY[1] == event.getY() / zoomRatio) {
+                dataProvGraph.addOrRemoveDispNodeId(draggedNode);
+
+                if (draggedNode instanceof ActivityNode) {
+                    dataProvGraph.addOrRemoveSelectedActivityNode((ActivityNode) draggedNode);
+                }
+            }
+
+            Node comparingNode = dataProvGraph.getComparingNode();
+            if (comparingNode != null) {
+                // check if the files exist in local file system
+                // download the files if they are not in the file system.
+                boolean comparingNodeFileReady = checkIfNodeFileExists(comparingNode);
+                if (!comparingNodeFileReady) {
+                    comparingNodeFileReady = downloadNodeFile(comparingNode);
                 }
 
-                if (deltaY != 0) {
-                    displayWindowSize[0] = visCanvas.getWidth() / zoomRatio;
-                    displayWindowSize[1] = visCanvas.getHeight() / zoomRatio;
-                    displayWindowLocation[0] = ((zoomRatio - oldZoomRatio)
-                            / (zoomRatio * oldZoomRatio)) * event.getX() + displayWindowLocation[0];
-                    displayWindowLocation[1] = ((zoomRatio - oldZoomRatio)
-                            / (zoomRatio * oldZoomRatio)) * event.getY() + displayWindowLocation[1];
+                boolean draggedNodeFileReady = checkIfNodeFileExists(draggedNode);
+                if (!draggedNodeFileReady) {
+                    draggedNodeFileReady = downloadNodeFile(draggedNode);
                 }
+
+                if (comparingNodeFileReady && draggedNodeFileReady) {
+                    // start comparing files
+                    compareNodes(draggedNode, comparingNode);
+                }
+            }
+
+            dataProvGraph.setComparingNode(null);
+            draggedNode = null;
+        });
+
+        visCanvas.setOnScroll(event -> {
+            // update zoomRatio
+            double deltaY = event.getDeltaY();
+            double oldZoomRatio = zoomRatio;
+
+            if (deltaY > 0) {
+                zoomRatio = zoomRatio * (1 + zoomSpeed);
+            } else if (deltaY < 0) {
+                zoomRatio = zoomRatio / (1 + zoomSpeed);
+            }
+
+            if (deltaY != 0) {
+                displayWindowSize[0] = visCanvas.getWidth() / zoomRatio;
+                displayWindowSize[1] = visCanvas.getHeight() / zoomRatio;
+                displayWindowLocation[0] = ((zoomRatio - oldZoomRatio)
+                        / (zoomRatio * oldZoomRatio)) * event.getX() + displayWindowLocation[0];
+                displayWindowLocation[1] = ((zoomRatio - oldZoomRatio)
+                        / (zoomRatio * oldZoomRatio)) * event.getY() + displayWindowLocation[1];
             }
         });
     }
@@ -602,7 +550,7 @@ public class ProVisCtrl {
                                 dataProvGraph.getNode(subjectStr)));
                     }
                 } else { // create a Default Node to store the label value.
-                    Node node = null;
+                    Node node;
                     if (objectStr.equals("commit")) {
                         node = nodeFactory.createCommitNode();
                     } else {

@@ -40,7 +40,7 @@ public class WorkbenchDashboard extends Application {
     /**
      * WorkbenchDashboard main executable.
      *
-     * @param args
+     * @param args  The command line arguments
      */
     public static void main(String[] args) {
         launch(args);

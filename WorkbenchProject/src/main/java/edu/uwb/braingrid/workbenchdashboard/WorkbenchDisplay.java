@@ -84,9 +84,7 @@ public class WorkbenchDisplay extends BorderPane {
         // Generate menu item
         MenuItem openMenu = new MenuItem("Open");
         // Define functionality
-        openMenu.setOnAction(event -> {
-            pushSimOpen();
-        });
+        openMenu.setOnAction(event -> pushSimOpen());
         return openMenu;
     }
 
@@ -97,25 +95,19 @@ public class WorkbenchDisplay extends BorderPane {
         MenuItem gsle = new MenuItem("_Growth Simulation Layout Editor");
 
         // Define Functionality
-        gsle.setOnAction(event -> {
-            pushGSLEPane();
-        });
+        gsle.setOnAction(event -> pushGSLEPane());
 
         // Generate Items
         MenuItem simstarter = new MenuItem("_Simulation Starter");
 
         // Define Functionality
-        simstarter.setOnAction(event -> {
-            pushSimWizPop();
-        });
+        simstarter.setOnAction(event -> pushSimWizPop());
 
         // Generate Items
         MenuItem provis = new MenuItem("_ProVis");
 
         // Define Functionality
-        provis.setOnAction(event -> {
-            pushProVisStarterPage();
-        });
+        provis.setOnAction(event -> pushProVisStarterPage());
 
         // Add
         newMenu.getItems().add(gsle);
@@ -128,9 +120,7 @@ public class WorkbenchDisplay extends BorderPane {
         Menu repoMenu = new Menu("_Repo");
         MenuItem updateMain = new MenuItem("Update Main");
 
-        updateMain.setOnAction(event -> {
-            RepoManager.getMasterBranch();
-        });
+        updateMain.setOnAction(event -> RepoManager.getMasterBranch());
 
         repoMenu.getItems().add(updateMain);
 
@@ -161,7 +151,7 @@ public class WorkbenchDisplay extends BorderPane {
      Creates a new Simulation Starter Pop-up.
      */
     public void pushSimWizPop() {
-        SimStartWiz ssw = new SimStartWiz();
+        new SimStartWiz();
     }
 
     /**

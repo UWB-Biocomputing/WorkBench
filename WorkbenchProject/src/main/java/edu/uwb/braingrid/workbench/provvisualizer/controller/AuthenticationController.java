@@ -1,8 +1,6 @@
 package edu.uwb.braingrid.workbench.provvisualizer.controller;
 
 import java.util.function.Consumer;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,24 +34,18 @@ public class AuthenticationController {
      */
     @FXML
     public void initialize() {
-        okBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (okButtonCallback != null) {
-                    okButtonCallback.accept(new AuthenticationInfo(hostnameLbl.getText(),
-                            usernameTxtFd.getText(), passwordPwdFd.getText()));
-                }
-                ((Stage) okBtn.getScene().getWindow()).close();
+        okBtn.setOnAction(event -> {
+            if (okButtonCallback != null) {
+                okButtonCallback.accept(new AuthenticationInfo(hostnameLbl.getText(),
+                        usernameTxtFd.getText(), passwordPwdFd.getText()));
             }
+            ((Stage) okBtn.getScene().getWindow()).close();
         });
         okBtn.setDefaultButton(true);
 
         cancelBtn.setCancelButton(true);
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                ((Stage) cancelBtn.getScene().getWindow()).close();
-            }
+        cancelBtn.setOnAction(event -> {
+            ((Stage) cancelBtn.getScene().getWindow()).close();
         });
     }
 

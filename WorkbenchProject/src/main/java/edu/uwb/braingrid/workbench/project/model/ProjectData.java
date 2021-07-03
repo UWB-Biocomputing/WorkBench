@@ -65,16 +65,16 @@ public class ProjectData {
     }
 
     public Element appendElement(Document doc, Element parent) {
-        Element e = doc.createElement(name);
+        Element element = doc.createElement(name);
         Set<String> attrKeys = attributes.keySet();
         for (String key : attrKeys) {
-            e.setAttribute(key, attributes.get(key));
+            element.setAttribute(key, attributes.get(key));
         }
         Set<String> datumKeys = data.keySet();
         for (String key : datumKeys) {
-            e.appendChild(data.get(key).getElement(doc));
+            element.appendChild(data.get(key).getElement(doc));
         }
-        parent.appendChild(e);
-        return e;
+        parent.appendChild(element);
+        return element;
     }
 }

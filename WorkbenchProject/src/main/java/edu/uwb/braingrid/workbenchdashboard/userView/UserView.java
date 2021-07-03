@@ -23,22 +23,20 @@ public class UserView extends WorkbenchApp {
     public UserView(Tab tab) {
         super(tab);
         tab.setText("User View");
-        this.initAttribues();
+        initAttributes();
     }
 
-    private void initAttribues() {
+    private void initAttributes() {
         display.getChildren().addAll(userDir, userDirField, bgRepoDir, bgRepoDirField);
     }
 
     @Override
     public boolean close() {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     @Override
     public Node getDisplay() {
-        // TODO Auto-generated method stub
         return display;
     }
 }

@@ -104,13 +104,11 @@ public class ProVis extends WorkbenchApp {
 
     @Override
     public boolean close() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public Node getDisplay() {
-        // TODO Auto-generated method stub
         return borderPane;
     }
 
