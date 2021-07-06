@@ -507,8 +507,9 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         String userName = simSpec.getUsername();
         String folder = simSpec.getSimulatorFolder();
         String codeLocation = simSpec.getCodeLocation();
-        codeLocation = codeLocation == null || codeLocation.isEmpty()
-                ? DEFAULT_REPO_URI : codeLocation;
+        if (codeLocation == null || codeLocation.isEmpty()) {
+            codeLocation = DEFAULT_REPO_URI;
+        }
         String sha1Key = simSpec.hasCommitCheckout() ? simSpec.getSHA1CheckoutKey() : "";
         String buildOption = simSpec.getBuildOption();
         String version = simSpec.getVersionAnnotation();
