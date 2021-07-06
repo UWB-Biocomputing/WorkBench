@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4678834.svg)](https://doi.org/10.5281/zenodo.4678834)
+
 ## About BrainGrid Workbench
 
 The idea behind the BrainGrid Workbench is to develop an application to ease creating simulations, managing simulation artifacts, and analyzing simulation results. This is done by using graphical user interfaces, recording provenance and visualizations.
