@@ -130,7 +130,7 @@ public class SimulationSpecification {
     /**
      * Provides the location of the folder where the simulator is downloaded, built, and executed.
      * If the simulator execution is specified to take place on a remote machine, this is relative
-     * to the root directory for the user.
+     * to the home directory for the user.
      *
      * @return The location of the simulator folder
      */
@@ -243,7 +243,7 @@ public class SimulationSpecification {
     /**
      * Sets the location of the folder where the simulator is downloaded, built, and executed. If
      * the simulator execution is specified to take place on a remote machine, this is relative to
-     * the root directory for the user.
+     * the home directory for the user.
      *
      * @param simFolder  The location of the simulator folder
      */
