@@ -504,7 +504,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         String gitPull = simSpec.getSourceCodeUpdating();
 
         String hostAddr = simSpec.getHostAddr();
-        String userName = simSpec.getUsername();
+        String username = simSpec.getUsername();
         String folder = simSpec.getSimulatorFolder();
         String codeLocation = simSpec.getCodeLocation();
         if (codeLocation == null || codeLocation.isEmpty()) {
@@ -520,8 +520,8 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
             if (hostAddr != null) {
                 hostAddressTextField.setText(hostAddr);
             }
-            if (userName != null) {
-                usernameTextField.setText(userName);
+            if (username != null) {
+                usernameTextField.setText(username);
             }
         } else {
             simulatorLocationComboBox.setSelectedIndex(
@@ -721,8 +721,11 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     private void validateHostAddress() {
         enableTestConnectionButton();
         enableOkButton();
+        String username = usernameTextField.getText();
         if (!isValidHostname(hostAddressTextField.getText())) {
             setRemoteConnectionMsg("Invalid Host Address", "red");
+        } else if (!isValidUsername(username) && !username.isEmpty()) {
+            setRemoteConnectionMsg("Invalid Username", "red");
         } else {
             setRemoteConnectionMsg("", "black");
         }
@@ -730,8 +733,11 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
 
     private void validateUsername() {
         enableTestConnectionButton();
-        if (!isValidUsername(usernameTextField.getText())) {
+        String username = usernameTextField.getText();
+        if (!isValidUsername(username) && !username.isEmpty()) {
             setRemoteConnectionMsg("Invalid Username", "red");
+        } else if (!isValidHostname(hostAddressTextField.getText())) {
+            setRemoteConnectionMsg("Invalid Host Address", "red");
         } else {
             setRemoteConnectionMsg("", "black");
         }
