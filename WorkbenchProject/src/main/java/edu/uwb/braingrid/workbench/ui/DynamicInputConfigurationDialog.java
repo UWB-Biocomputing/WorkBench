@@ -147,7 +147,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                 paramStrs.add(paramsTextFields.get(i).getText());
         }
 
-        lastStateOutputFileName = ensureValidOutputName(stateOutputFileNameTextField.getText());
+        lastResultFileName = ensureValidResultFileName(resultFileNameTextField.getText());
 
         icm.updateParamValues(paramStrs);
 
@@ -202,10 +202,10 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     private DynamicInputConfigurationManager icm;
     private Document xmlDoc = null;
     private ArrayList<JTextField> paramsTextFields = new ArrayList<>();
-    private JTextField stateOutputFileNameTextField = null;
+    private JTextField resultFileNameTextField = null;
     private boolean runClicked = false;
     private String lastBuiltFile = null;
-    private String lastStateOutputFileName = null;
+    private String lastResultFileName = null;
     private String projectName = null;
     private ArrayList<String> tabPaths = new ArrayList<>();
     private HashMap<Character, String> nListPresets = null;
@@ -373,10 +373,10 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                                                 .addComponent(label).addComponent(field)));
                             }
 
-                            if (nodeName.equals(SystemConfig.STATE_OUTPUT_FILE_NAME_TAG_NAME)) {
-                                field.setText(setInitialOutputFilename());
-                                stateOutputFileNameTextField = field;
-                                lastStateOutputFileName = field.getText();
+                            if (nodeName.equals(SystemConfig.RESULT_FILE_NAME_TAG_NAME)) {
+                                field.setText(setInitialResultFileName());
+                                resultFileNameTextField = field;
+                                lastResultFileName = field.getText();
                             }
                             paramsTextFields.add(field);
                             contentPanel.add(subPanel);
@@ -475,10 +475,10 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         return builtFile;
     }
 
-    public String getStateOutputFilename() {
+    public String getResultFileName() {
         String fileName = null;
         if (runClicked) {
-            fileName = lastStateOutputFileName;
+            fileName = lastResultFileName;
         }
         return fileName;
     }
@@ -505,24 +505,24 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     /**
-     * Helper function ensures stateOutputFileName has "results/" as prefix and ".xml" as postfix.
+     * Helper function ensures resultFileName has "results/" as prefix and ".xml" as postfix.
      *
-     * @param outputName  The output name to be validated
-     * @return An output name that is guaranteed to have the proper prefix and postfix
+     * @param resultFileName  The result file name to be validated
+     * @return An result file name that is guaranteed to have the proper prefix and postfix
      */
-    private String ensureValidOutputName(String outputName) {
-        String validOutputName = outputName;
-        if (!outputName.startsWith("results/")) {
-            validOutputName = "results/" + outputName;
+    private String ensureValidResultFileName(String resultFileName) {
+        String validResultFileName = resultFileName;
+        if (!resultFileName.startsWith("results/")) {
+            validResultFileName = "results/" + resultFileName;
         }
-        if (!outputName.endsWith(".xml")) {
-            validOutputName += ".xml";
+        if (!resultFileName.endsWith(".xml")) {
+            validResultFileName += ".xml";
         }
-        return validOutputName;
+        return validResultFileName;
     }
 
-    private String setInitialOutputFilename() {
-        return "results/historyDump_" + projectName + ".xml";
+    private String setInitialResultFileName() {
+        return "results/" + projectName + "-out.xml";
     }
 
     private void importNeuronList(InputType aType, JTextField aField, String path) {

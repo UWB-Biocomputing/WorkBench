@@ -500,15 +500,15 @@ public class ProjectMgrTest {
     }
 
     @Test
-    public void setGetSimSTateOutputFileTest() {
+    public void setGetSimResultFileTest() {
         ProjectMgr pm = getPmNameFalseLoad();
         this.addSimulatorTo(pm);
         this.addScriptToProject(pm);
-        Assertions.assertNull(pm.getSimStateOutputFile());
-        String simStateOutputFile = "TheOutputFileToRuleThemAll.txt";
+        Assertions.assertNull(pm.getSimResultFile());
+        String simResultFile = "TheResultFileToRuleThemAll.txt";
         pm.addSimConfigFile("Example");
-        pm.setSimStateOutputFile(simStateOutputFile);
-        Assertions.assertEquals(simStateOutputFile, pm.getSimStateOutputFile());
+        pm.setSimResultFile(simResultFile);
+        Assertions.assertEquals(simResultFile, pm.getSimResultFile());
     }
 
     // </editor-fold>

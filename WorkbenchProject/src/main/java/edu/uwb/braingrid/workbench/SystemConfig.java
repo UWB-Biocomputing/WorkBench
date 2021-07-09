@@ -34,7 +34,8 @@ public final class SystemConfig {
     public static final String SYNAPSES_PARAMS_CLASSES_TAG_NAME = "SynapsesParamsClasses";
     public static final String CONNECTIONS_PARAMS_CLASSES_TAG_NAME = "ConnectionsParamsClasses";
     public static final String LAYOUT_PARAMS_CLASSES_TAG_NAME = "LayoutParamsClasses";
-    public static final String STATE_OUTPUT_FILE_NAME_TAG_NAME = "stateOutputFileName";
+    public static final String RESULT_FILE_NAME_TAG_NAME = "stateOutputFileName";
+    //TODO: update RESULT_FILE_NAME_TAG_NAME to "resultFileName" for Graphitti
 
     private SystemConfig() {
         // utility class cannot be instantiated

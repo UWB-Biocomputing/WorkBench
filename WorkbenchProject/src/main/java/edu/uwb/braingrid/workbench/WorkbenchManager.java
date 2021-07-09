@@ -135,13 +135,13 @@ public class WorkbenchManager {
                 DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
                         projectName, true, configFilename, iccsd.getInputConfigMgr(), null);
                 String simulationConfigurationFile;
-                String stateOutputFilename;
+                String resultFileName;
                 if (icd.getSuccess()) {
                     simulationConfigurationFile = icd.getBuiltFile();
-                    stateOutputFilename = icd.getStateOutputFilename();
-                    if (simulationConfigurationFile != null && stateOutputFilename != null) {
+                    resultFileName = icd.getResultFileName();
+                    if (simulationConfigurationFile != null && resultFileName != null) {
                         projectMgr.addSimConfigFile(simulationConfigurationFile);
-                        projectMgr.setSimStateOutputFile(stateOutputFilename);
+                        projectMgr.setSimResultFile(resultFileName);
                         if (projectMgr.isProvenanceEnabled()) {
                             prov.addFileGeneration("simulation_input_file_generation", null,
                                     "workbench", null, false, simulationConfigurationFile,
@@ -175,13 +175,13 @@ public class WorkbenchManager {
                 DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
                         projectName, true, configFilename, iccsd.getInputConfigMgr(), nListPresets);
                 String simulationConfigurationFile;
-                String stateOutputFilename;
+                String resultFileName;
                 if (icd.getSuccess()) {
                     simulationConfigurationFile = icd.getBuiltFile();
-                    stateOutputFilename = icd.getStateOutputFilename();
-                    if (simulationConfigurationFile != null && stateOutputFilename != null) {
+                    resultFileName = icd.getResultFileName();
+                    if (simulationConfigurationFile != null && resultFileName != null) {
                         projectMgr.addSimConfigFile(simulationConfigurationFile);
-                        projectMgr.setSimStateOutputFile(stateOutputFilename);
+                        projectMgr.setSimResultFile(resultFileName);
                         if (projectMgr.isProvenanceEnabled()) {
                             prov.addFileGeneration("simulation_input_file_generation", null,
                                     "workbench", null, false, simulationConfigurationFile,
