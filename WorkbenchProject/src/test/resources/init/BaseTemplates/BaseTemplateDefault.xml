@@ -18,7 +18,8 @@
          <value name="value">1</value>
       </Seed>
       <OutputParams name="OutputParams">
-         <stateOutputFileName name="stateOutputFileName">results/tR_1.9--fE_0.98_historyDump_1.xml</stateOutputFileName>
+         <!-- rename tag to resultFileName for Graphitti simulator -->
+         <stateOutputFileName name="stateOutputFileName"/>
       </OutputParams>
    </SimInfoParams>
 

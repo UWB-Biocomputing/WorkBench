@@ -95,8 +95,4 @@
   <suppress checks="Javadoc(Method)" files="WorkbenchDisplay.java"/>
   <suppress checks="Javadoc(Method|Type)" files="WorkbenchStatusBar.java"/>
   <!-- Other issues that need correction -->
-
-  <!-- File contains commented code that exceeds the 100 character limit. -->
-  <!-- The commented code should be removed or uncommented. -->
-  <suppress checks="LineLength*" files="ScriptSpecificationDialog.java" lines="840-860"/>
 </suppressions>

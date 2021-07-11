@@ -68,9 +68,8 @@ public class ProjectMgr {
     private static final String SCRIPT_HOSTNAME_TAG_NAME = "hostname";
     private static final String SCRIPT_COMPLETED_AT_ATTRIBUTE_NAME = "completedAt";
     private static final String SCRIPT_ANALYZED_ATTRIBUTE_NAME = "outputAnalyzed";
-    private static final String SCRIPT_CONFIG_FILE_TAG_NAME = "simConfigFile";
-    private static final String SIMULATION_CONFIGURATION_FILE_ATTRIBUTE_NAME
-            = "simulationConfigurationFile";
+    private static final String SIM_CONFIG_FILE_TAG_NAME = "simConfigFile";
+    private static final String RESULT_FILE_NAME_ATTRIBUTE_NAME = "resultFileName";
 
     public static final String REMOTE_EXECUTION = "Remote";
     public static final String LOCAL_EXECUTION = "Local";
@@ -194,7 +193,7 @@ public class ProjectMgr {
             inputs.add((Element) inputList.item(i));
         }
 
-        simulationConfigurationFile = getElementFromDom(SCRIPT_CONFIG_FILE_TAG_NAME);
+        simulationConfigurationFile = getElementFromDom(SIM_CONFIG_FILE_TAG_NAME);
 
         // load simulator data
         simulator = getElementFromDom(SIMULATOR_TAG_NAME);
@@ -394,7 +393,7 @@ public class ProjectMgr {
         }
         simSpec.setSimulationType(simType);
         simSpec.setCodeLocation(codeLocation);
-        simSpec.setSimulatorLocale(locale);
+        simSpec.setSimulationLocale(locale);
         simSpec.setSimulatorFolder(folder);
         simSpec.setHostAddr(hostname);
         simSpec.setSHA1CheckoutKey(sha1);
@@ -893,7 +892,7 @@ public class ProjectMgr {
         boolean success = true;
         try {
             removeSimulationConfigurationFile();
-            simulationConfigurationFile = doc.createElement(SCRIPT_CONFIG_FILE_TAG_NAME);
+            simulationConfigurationFile = doc.createElement(SIM_CONFIG_FILE_TAG_NAME);
             Text configFileText = doc.createTextNode(filename);
             simulationConfigurationFile.appendChild(configFileText);
             root.appendChild(simulationConfigurationFile);
@@ -954,7 +953,7 @@ public class ProjectMgr {
      *         was specified in the project.
      */
     public String getSimConfigFilename() {
-        return getFirstChildTextContent(root, SCRIPT_CONFIG_FILE_TAG_NAME);
+        return getFirstChildTextContent(root, SIM_CONFIG_FILE_TAG_NAME);
     }
 
     /**
@@ -994,10 +993,10 @@ public class ProjectMgr {
         }
     }
 
-    public void setSimStateOutputFile(String stateOutputFilename) {
+    public void setSimResultFile(String resultFileName) {
         if (simulationConfigurationFile != null) {
-            simulationConfigurationFile.setAttribute(SIMULATION_CONFIGURATION_FILE_ATTRIBUTE_NAME,
-                    stateOutputFilename);
+            simulationConfigurationFile.setAttribute(RESULT_FILE_NAME_ATTRIBUTE_NAME,
+                    resultFileName);
         }
     }
 
@@ -1009,11 +1008,10 @@ public class ProjectMgr {
      * @return The filename of the raw simulation output imported into the workbench. To be clear,
      *         this is the filename of the target of the import, not the source of the import.
      */
-    public String getSimStateOutputFile() {
+    public String getSimResultFile() {
         String filename = null;
         if (simulationConfigurationFile != null) {
-            filename = simulationConfigurationFile.getAttribute(
-                    SIMULATION_CONFIGURATION_FILE_ATTRIBUTE_NAME);
+            filename = simulationConfigurationFile.getAttribute(RESULT_FILE_NAME_ATTRIBUTE_NAME);
         }
         return filename;
     }

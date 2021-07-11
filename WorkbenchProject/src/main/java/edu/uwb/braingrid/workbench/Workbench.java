@@ -32,7 +32,7 @@ public final class Workbench {
     /**
      * Entry point for the application.
      *
-     * @param args the command line arguments
+     * @param args  The command line arguments
      */
     public static void main(String[] args) {
         /* Set the Nimbus look and feel */

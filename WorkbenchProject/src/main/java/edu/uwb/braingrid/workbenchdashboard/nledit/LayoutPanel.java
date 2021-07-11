@@ -194,24 +194,21 @@ public class LayoutPanel extends JPanel implements MouseListener {
      *
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent event) {
 
     }
 
-    public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
+    public void mouseEntered(MouseEvent event) {
 
     }
 
-    public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
+    public void mouseExited(MouseEvent event) {
 
     }
 
-    public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
+    public void mousePressed(MouseEvent event) {
         if (!mousePressed) {
-            Point pt = e.getPoint();
+            Point pt = event.getPoint();
             int i = (pt.x - theInsets.left) / cellWidth;
             int j = (pt.y - theInsets.top) / cellWidth;
             if (i >= xlen || j >= ylen) {
@@ -232,8 +229,7 @@ public class LayoutPanel extends JPanel implements MouseListener {
         }
     }
 
-    public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
+    public void mouseReleased(MouseEvent event) {
         // find a point to click
         mousePressed = false;
     }

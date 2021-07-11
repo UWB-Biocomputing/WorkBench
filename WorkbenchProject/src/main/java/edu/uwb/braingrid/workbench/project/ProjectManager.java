@@ -53,6 +53,7 @@ public class ProjectManager {
     private static final String SIM_CONFIG_FILE_TAG_NAME = "simConfigFile";
     private static final String SIMULATION_CONFIGURATION_FILE_TAG_NAME
             = "simulationConfigurationFile";
+    private static final String RESULT_FILE_NAME_ATTRIBUTE_NAME = "resultFileName";
 
     private Project project;
 //    private Document doc;
@@ -233,7 +234,7 @@ public class ProjectManager {
         }
         simSpec.setSimulationType(simType);
         simSpec.setCodeLocation(codeLocation);
-        simSpec.setSimulatorLocale(locale);
+        simSpec.setSimulationLocale(locale);
         simSpec.setSimulatorFolder(folder);
         simSpec.setHostAddr(hostname);
         simSpec.setSHA1CheckoutKey(sha1);
@@ -598,8 +599,7 @@ public class ProjectManager {
      */
     public void addSimConfigFile(String filename) {
         setChildDataContent(project.getProjectData(SIM_CONFIG_FILE_TAG_NAME),
-                SIMULATION_CONFIGURATION_FILE_TAG_NAME, filename
-        );
+                SIMULATION_CONFIGURATION_FILE_TAG_NAME, filename);
     }
 
 //    /**
@@ -669,18 +669,17 @@ public class ProjectManager {
 //        }
 //    }
 //
-//    public void setSimStateOutputFile(String stateOutputFilename) {
+//    public void setSimResultFile(String resultFileName) {
 //        if (simulationConfigurationFile != null) {
-//            simulationConfigurationFile.setAttribute(SIMULATION_CONFIGURATION_FILE_TAG_NAME,
-//                    stateOutputFilename);
+//            simulationConfigurationFile.setAttribute(RESULT_FILE_NAME_ATTRIBUTE_NAME,
+//                    resultFileName);
 //        }
 //    }
 //
-//    public String getSimStateOutputFile() {
+//    public String getSimResultFile() {
 //        String filename = null;
 //        if (simulationConfigurationFile != null) {
-//            filename = simulationConfigurationFile.getAttribute(
-//                    SIMULATION_CONFIGURATION_FILE_TAG_NAME);
+//            filename = simulationConfigurationFile.getAttribute(RESULT_FILE_NAME_ATTRIBUTE_NAME);
 //        }
 //        return filename;
 //    }*/

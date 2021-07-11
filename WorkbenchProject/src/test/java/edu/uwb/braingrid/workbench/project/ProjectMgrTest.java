@@ -322,7 +322,7 @@ public class ProjectMgrTest {
         SimulationSpecification ss = new SimulationSpecification();
         ss.setSimulationType(simType);
         ss.setCodeLocation(codeLocation);
-        ss.setSimulatorLocale(locale);
+        ss.setSimulationLocale(locale);
         ss.setSimulatorFolder(folder);
         ss.setHostAddr(hostname);
         ss.setSHA1CheckoutKey(sha1);
@@ -500,15 +500,15 @@ public class ProjectMgrTest {
     }
 
     @Test
-    public void setGetSimSTateOutputFileTest() {
+    public void setGetSimResultFileTest() {
         ProjectMgr pm = getPmNameFalseLoad();
         this.addSimulatorTo(pm);
         this.addScriptToProject(pm);
-        Assertions.assertNull(pm.getSimStateOutputFile());
-        String simStateOutputFile = "TheOutputFileToRuleThemAll.txt";
+        Assertions.assertNull(pm.getSimResultFile());
+        String simResultFile = "TheResultFileToRuleThemAll.txt";
         pm.addSimConfigFile("Example");
-        pm.setSimStateOutputFile(simStateOutputFile);
-        Assertions.assertEquals(simStateOutputFile, pm.getSimStateOutputFile());
+        pm.setSimResultFile(simResultFile);
+        Assertions.assertEquals(simResultFile, pm.getSimResultFile());
     }
 
     // </editor-fold>

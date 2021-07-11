@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import edu.uwb.braingrid.workbench.FileManager;
 
 /**
  * Dialog for specifying a new project. This dialog is only responsible to collect information from
@@ -220,7 +220,7 @@ public class NewProjectDialog extends javax.swing.JDialog {
     private boolean validateNewProjectName() {
         boolean valid = true;
         /* Validate the currently specified project name */
-        if (!isValidFileName(newProjectNameTextField.getText())) {
+        if (!FileManager.isValidFilename(newProjectNameTextField.getText())) {
             valid = false;
             // disable the ok button
             newProjectOKButton.setEnabled(false);
@@ -278,37 +278,6 @@ public class NewProjectDialog extends javax.swing.JDialog {
      */
     public boolean isRunning() {
         return isRunning;
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Utility Functions">
-    /**
-     * Performs a check on string representing a filename for adherence to Windows filename
-     * conventions. Windows need not be the platform that this function is concerned with, it just
-     * happens to have the most restrictions on filename characters.
-     *
-     * @param fileName  String representing a filename
-     * @return True if the filename specified was valid, False if not
-     */
-    private static boolean isValidFileName(String fileName) {
-        Pattern pattern = Pattern.compile(
-                "# Match a valid Windows filename (unspecified file system).          \n"
-                        + "^                                # Anchor to start of string.        \n"
-                        + "(?!                              # Assert filename is not: CON, PRN, \n"
-                        + "  (?:                            # AUX, NUL, COM1, COM2, COM3, COM4, \n"
-                        + "    CON|PRN|AUX|NUL|             # COM5, COM6, COM7, COM8, COM9,     \n"
-                        + "    COM[1-9]|LPT[1-9]            # LPT1, LPT2, LPT3, LPT4, LPT5,     \n"
-                        + "  )                              # LPT6, LPT7, LPT8, and LPT9...     \n"
-                        + "  (?:\\.[^.]*)?                  # followed by optional extension    \n"
-                        + "  $                              # and end of string                 \n"
-                        + ")                                # End negative lookahead assertion. \n"
-                        + "[^<>:\"/\\\\|?*\\x00-\\x1F]*     # Zero or more valid filename chars.\n"
-                        + "[^<>:\"/\\\\|?*\\x00-\\x1F\\ .]  # Last char is not a space or dot.  \n"
-                        + "$                                # Anchor to end of string.            ",
-                Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.COMMENTS);
-        Matcher matcher = pattern.matcher(fileName);
-        boolean isMatch = matcher.matches();
-        return isMatch;
     }
     // </editor-fold>
 }

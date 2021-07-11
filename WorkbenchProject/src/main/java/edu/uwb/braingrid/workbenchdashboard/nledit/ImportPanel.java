@@ -73,10 +73,10 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
         getChildren().add(gp);
     }
 
-    private void importFiles(ActionEvent e) {
+    private void importFiles(ActionEvent event) {
         int iSource = 0;
         for (int i = 0; i < NUM_FIELDS; i++) {
-            if (e.getSource() == buttons[i]) {
+            if (event.getSource() == buttons[i]) {
                 iSource = i;
                 break;
             }
@@ -145,10 +145,8 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
                     if (attr != null) {
                         tFields[IDX_PRB_LIST].setText(configDir + "/" + attr.getValue());
                     }
-                } catch (JDOMException je) {
-                    // System.err.println(je);
-                } catch (IOException ie) {
-                    // System.err.println(ie);
+                } catch (JDOMException | IOException e) {
+                    // System.err.println(e);
                 }
             } else {
                 nListDir = option.getParent();
@@ -157,9 +155,8 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
     }
 
     @Override
-    public void handle(ActionEvent arg0) {
-        // TODO Auto-generated method stub
-        importFiles(arg0);
+    public void handle(ActionEvent event) {
+        importFiles(event);
     }
 
     public static String getNListDir() {
