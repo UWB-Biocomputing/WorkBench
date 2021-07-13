@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -153,6 +155,19 @@ public class ProVisCtrl {
         };
 
         timer.start();
+
+        // Add an event handler to the primary stage to stop the timer when the application is minimized (iconified),
+        // and start it again when it is no longer minimized.
+        Stage primaryStage = WorkbenchDisplay.getPrimaryStage();
+        primaryStage.iconifiedProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        timer.stop();
+                    } else {
+                        timer.start();
+                    }
+                }
+        );
     }
 
     private void initGUIEvents() {
