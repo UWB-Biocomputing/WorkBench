@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
