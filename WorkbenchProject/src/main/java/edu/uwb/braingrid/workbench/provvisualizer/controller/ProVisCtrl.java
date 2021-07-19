@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import edu.uwb.braingrid.workbench.FileManager;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -199,7 +201,7 @@ public class ProVisCtrl {
             fileChooser.setTitle("Select provenance file");
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
-            fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+            fileChooser.setInitialDirectory(FileManager.getUserDir().toFile());
 
             File selectedFile = fileChooser.showOpenDialog(canvasPane.getScene().getWindow());
 
@@ -764,8 +766,8 @@ public class ProVisCtrl {
      * Display universalProvenance on ProVis.
      */
     public void openUniversalProvenance() {
-        File universalProvenance = new File(System.getProperty("user.dir") + File.separator
-                + "projects" + File.separator + "UniversalProvenance.ttl");
+        File universalProvenance = FileManager.getUserDir().resolve("projects")
+                .resolve("UniversalProvenance.ttl").toFile();
         if (universalProvenance.exists()) {
             dataProvGraph.clearNodesNEdges();
             initNodeEdge(universalProvenance.getAbsolutePath());

@@ -110,4 +110,8 @@ public final class SystemProperties {
     public static void setOSType(OSType sysOSType) {
         osTypeUserDef = sysOSType;
     }
+
+    public static boolean isWindowsSystem() {
+        return osType == OSType.Windows;
+    }
 }

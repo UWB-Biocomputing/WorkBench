@@ -10,22 +10,20 @@ import java.nio.file.StandardCopyOption;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.FileUtils;
 
-import edu.uwb.braingrid.general.DirMgr;
 import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 
 /**
- * Handles all file operations for the workbench. The purpose behind this singleton manager is
- * two-fold:
- * 1. Provides conditional support between operating system file paths (this is not possible in
- *    static manner without querying the system properties repeatedly);
- * 2. Provides a separation of concerns in terms of workbench configuration for file operations
- *    (such as folder hierarchical relationships and names);
- * 3. Provides workbench specific robustness in terms of file operations such as copy.
- *
- * Note: As mentioned in the overview above, this is a singleton class. Many methods are non-static.
- * In order to use the file manager, obtain a reference by calling FileManager.getFileManager.
+ * Handles all file operations for the workbench. The purpose behind this manager is to:
+ * <ol>
+ *   <li>Provide conditional support between operating system file paths (this is not possible in
+ *   a static manner without querying the system properties repeatedly);</li>
+ *   <li>Provide a separation of concerns in terms of workbench configuration for file operations
+ *   (such as folder hierarchical relationships and names);</li>
+ *   <li>Provide workbench specific robustness in terms of file operations such as copy.</li>
+ * </ol>
  *
  * @author Del Davis
  */
@@ -33,97 +31,50 @@ public final class FileManager {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(FileManager.class.getName());
-    private static FileManager instance = null;
-    private static String brainGridRepoDirectory = DirMgr.getBrainGridRepoDirectory();
+    private static final String PROJECTS_FOLDER_NAME = "projects";
+    private static final String CONFIG_FILES_FOLDER_NAME = "configfiles";
+    private static final String NEURON_LIST_FOLDER_NAME = "NList";
+
+    private static User user = User.getUser();
     private static Pattern filenamePattern = null;
     private static Pattern directoryNamePattern = null;
-
-    private final boolean isWindowsSystem;
-    private final String folderDelimiter;
-    private final String projectsFolderName = "projects";
-    private final String configFilesFolderName = "configfiles";
-    private final String neuronListFolderName = "NList";
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
-    /**
-     * This is here to make sure that classes from other packages cannot instantiate the file
-     * manager. This is to ensure that only one file manager is present in the workbench for the
-     * life of the workbench control thread.
-     */
     private FileManager() {
-        LOG.info("New " + getClass().getName());
-        String osName = System.getProperty("os.name").toLowerCase();
-        isWindowsSystem = osName.startsWith("windows");
-        folderDelimiter = isWindowsSystem ? "\\" : "/";
+        // utility class cannot be instantiated
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Getters/Setters">
-    /**
-     * Gets or instantiates this file manager.
-     *
-     * Note: This is a singleton class with lazy instantiation.
-     *
-     * @return The file manager for the workbench
-     */
-    public static FileManager getFileManager() {
-        if (instance == null) {
-            instance = new FileManager();
-        }
-        return instance;
-    }
-
-    public String[] getNeuronListFilenames(String projectName) throws IOException {
-        String[] filenames = null;
-        File[] files;
-        String folder = getSimConfigDirectoryPath(projectName, false)
-                + neuronListFolderName + folderDelimiter;
-        File folderFile = Paths.get(folder).toFile();
-        if (folderFile.isDirectory()) {
-            files = folderFile.listFiles();
-            filenames = new String[files.length];
-            for (int i = 0, im = files.length; i < im; i++) {
-                filenames[i] = files[i].getCanonicalPath();
-            }
-        }
-        return filenames;
+    public static String[] getNeuronListFilenames(String projectName) throws IOException {
+        Path folder = Paths.get(getSimConfigDirectoryPath(projectName, false),
+                NEURON_LIST_FOLDER_NAME);
+        return Files.list(folder)
+                .filter(Files::isRegularFile)
+                .map(Path::toString)
+                .toArray(String[]::new);
     }
 
     /**
-     * Provides the operating system dependent folder delimiter, not to be confused with the poorly
-     * named File.PathSeperator.
+     * Provides the path for the workbench (data) directory. This path is not user-specified.
      *
-     * @return The string that delimits folders from parent folders on the operating system where
-     *         the workbench was invoked
+     * @return A string representation of the workbench (data) directory path
      */
-    public String getFolderDelimiter() {
-        return folderDelimiter;
+    public static String getWorkbenchDirectory() {
+        return getUserHome().resolve(".workbench").toString();
     }
 
-    /**
-     * Returns the canonical form of the current working directory.
-     *
-     * @return A string representation of the system dependent unique canonical form of the current
-     *         working directory
-     * @throws java.io.IOException
-     */
-    public static String getCanonicalWorkingDirectory() throws IOException {
-        return Paths.get("").toFile().getCanonicalPath();
+    public static String getProjectsDirectory() {
+        return user.getProjectsDirectory();
     }
 
-    public String getCanonicalProjectsDirectory() throws IOException {
-        return getCanonicalWorkingDirectory() + folderDelimiter + projectsFolderName;
+    public static String getSimulationsDirectory() {
+        return user.getSimulationsDirectory();
     }
 
-    /**
-     * Indicates whether or not the operating system is some version of Microsoft Windows.
-     *
-     * @return True if the system is a windows-based system, otherwise false. As of the implementing
-     *         of this workbench, false can be interpreted as a Posix-based system.
-     */
-    public boolean isWindowsSystem() {
-        return isWindowsSystem;
+    public static String getBrainGridRepoDirectory() {
+        return user.getBrainGridRepoDirectory();
     }
 
     /**
@@ -143,9 +94,9 @@ public final class FileManager {
      * @return The canonical location of the specified simulation configuration file.
      * @throws IOException
      */
-    public String getSimConfigFilePath(String projectName, String filename, boolean mkdirs)
+    public static String getSimConfigFilePath(String projectName, String filename, boolean mkdirs)
             throws IOException {
-        return getSimConfigDirectoryPath(projectName, mkdirs) + filename;
+        return buildPathString(getSimConfigDirectoryPath(projectName, mkdirs), filename);
     }
 
     /**
@@ -164,14 +115,14 @@ public final class FileManager {
      * @return The canonical location of the specified simulation configuration file
      * @throws IOException
      */
-    public String getNeuronListFilePath(String projectName, String filename, boolean mkdirs)
+    public static String getNeuronListFilePath(String projectName, String filename, boolean mkdirs)
             throws IOException {
-        String folder = getSimConfigDirectoryPath(projectName, mkdirs)
-                + neuronListFolderName + folderDelimiter;
+        Path folder = Paths.get(getSimConfigDirectoryPath(projectName, mkdirs),
+                NEURON_LIST_FOLDER_NAME);
         if (mkdirs) {
-            new File(folder).mkdirs();
+            Files.createDirectories(folder);
         }
-        return folder + filename;
+        return folder.resolve(filename).toString();
     }
 
     /**
@@ -190,13 +141,13 @@ public final class FileManager {
      *         related files.
      * @throws IOException
      */
-    public String getSimConfigDirectoryPath(String projectName, boolean mkdirs) throws IOException {
-        String folder = getProjectDirectory(projectName, mkdirs)
-                + configFilesFolderName + folderDelimiter;
+    public static String getSimConfigDirectoryPath(String projectName, boolean mkdirs)
+            throws IOException {
+        Path dir = Paths.get(getProjectDirectory(projectName, mkdirs), CONFIG_FILES_FOLDER_NAME);
         if (mkdirs) {
-            new File(folder).mkdirs();
+            Files.createDirectories(dir);
         }
-        return folder;
+        return dir.toString();
     }
 
     /**
@@ -210,43 +161,31 @@ public final class FileManager {
      *         to a given project.
      * @throws IOException
      */
-    public String getProjectDirectory(String projectName, boolean mkdirs) throws IOException {
-        String directory = getCanonicalProjectsDirectory()
-                + folderDelimiter + projectName + folderDelimiter;
+    public static String getProjectDirectory(String projectName, boolean mkdirs)
+            throws IOException {
+        Path dir = Paths.get(getProjectsDirectory(), PROJECTS_FOLDER_NAME, projectName);
         if (mkdirs) {
-            new File(directory).mkdirs();
+            Files.createDirectories(dir);
         }
-        return directory;
+        return dir.toString();
     }
 
     /**
-     * Provides the canonical location of the working directory of the current user.
+     * Provides the working directory of the current user.
      *
-     * @return The canonical location of the working directory of the current user
+     * @return The working directory of the current user
      */
-    public String getUserDir() {
-        return User.getInstance().getRootDir() + folderDelimiter;
+    public static Path getUserDir() {
+        return Paths.get(System.getProperty("user.dir"));
     }
 
     /**
-     * Provides the canonical location of the home directory of the current user.
+     * Provides the home directory of the current user.
      *
-     * @return The canonical location of the home directory of the current user
+     * @return The home directory of the current user
      */
-    public String getUserHome() {
-        return User.getInstance().getHomeDir() + folderDelimiter;
-    }
-
-    public static void updateStaticVals(FileManagerShared obj) {
-        setBrainGridRepoDirectory(obj.getBrainGridRepoDirectory());
-    }
-
-    public static String getBrainGridRepoDirectory() {
-        return FileManager.brainGridRepoDirectory;
-    }
-
-    public static void setBrainGridRepoDirectory(String brainGridRepoDirectory) {
-        FileManager.brainGridRepoDirectory = brainGridRepoDirectory;
+    public static Path getUserHome() {
+        return Paths.get(System.getProperty("user.home"));
     }
     // </editor-fold>
 
@@ -260,31 +199,15 @@ public final class FileManager {
      *         folders
      */
     public static String getSimpleFilename(String longFilename) {
-        String filename = longFilename;
-        if (longFilename.contains("\\")) {
-            int lastBackslash = longFilename.lastIndexOf('\\');
-            if (lastBackslash != longFilename.length() - 1) {
-                filename = longFilename.substring(lastBackslash + 1);
-            }
-        } else if (longFilename.contains("/")) {
-            int lastForwardslash = longFilename.lastIndexOf('/');
-            if (lastForwardslash != longFilename.length() - 1) {
-                filename = longFilename.substring(lastForwardslash + 1);
-            }
-        } else {
-            filename = longFilename;
-        }
-        return filename;
+        return FilenameUtils.getName(longFilename);
     }
 
-    public static String getLastNamePrefix(String longFilename) {
-        String lastNamePrefix = null;
-        if (longFilename != null) {
-            String filename = getSimpleFilename(longFilename);
-            int lastIndexOfDot = filename.lastIndexOf('.');
-            lastNamePrefix = filename.substring(0, lastIndexOfDot);
-        }
-        return lastNamePrefix;
+    public static String getBaseFilename(String longFilename) {
+        return FilenameUtils.getBaseName(longFilename);
+    }
+
+    public static String buildPathString(String first, String... more) {
+        return Paths.get(first, more).toString();
     }
 
     /**

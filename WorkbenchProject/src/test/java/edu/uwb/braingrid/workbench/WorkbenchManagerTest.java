@@ -182,7 +182,7 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void getProjectDirectoryPathTest() {
+    public void getProjectsDirectoryPathTest() {
         WorkbenchManager wm = blankWorkbenchManagerFactory();
         boolean result = wm.initProject(correctFileName, true);
         boolean windowsOS = System.getProperty("os.name").

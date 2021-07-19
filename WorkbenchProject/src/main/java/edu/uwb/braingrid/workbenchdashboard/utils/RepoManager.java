@@ -15,9 +15,9 @@ import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Ref;
 
+import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
 import edu.uwb.braingrid.workbenchdashboard.threads.RunUpdateRepo;
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 
 public final class RepoManager {
 
@@ -60,7 +60,7 @@ public final class RepoManager {
     }
 
     public static String getMasterBranchDirectory() {
-        return User.getInstance().getBrainGridRepoDirectory() + File.separator + MASTER_BRANCH_NAME;
+        return FileManager.getBrainGridRepoDirectory() + File.separator + MASTER_BRANCH_NAME;
     }
 
     public static List<String> fetchGitBranches() {

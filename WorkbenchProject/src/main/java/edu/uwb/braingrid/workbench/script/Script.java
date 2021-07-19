@@ -467,7 +467,7 @@ public class Script {
     }
 
     /**
-     * Determines the last name of a script persisted with a given version number.
+     * Provides the last name of a script persisted with a given version number.
      *
      * @param version  The version of the script persisted
      * @return The last name of the script without any directories

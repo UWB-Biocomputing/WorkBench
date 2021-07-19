@@ -45,7 +45,7 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
     /** The text fields for this Pane. */
     TextField[] tFields = new TextField[NUM_FIELDS];
 
-    private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
+    private FileSelectorDirMgr fileSelector = new FileSelectorDirMgr();
 
     public ImportPanel() {
         GridPane gp = new GridPane();
@@ -90,7 +90,7 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
         // }
 
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(fileMgr.getLastDir());
+        chooser.setInitialDirectory(fileSelector.getLastDir());
 
         chooser.setTitle("Open File");
         // fileChooser.showOpenDialog(stage);
@@ -122,7 +122,7 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
         File option = chooser.showOpenDialog(WorkbenchDisplay.getPrimaryStage());
         if (option != null) {
             tFields[iSource].setText(option.getAbsolutePath());
-            fileMgr.add(option.getParentFile());
+            fileSelector.addDir(option.getParentFile());
             if (iSource == IDX_CONFIG_FILE) { // configuration files is specified.
                 // parse config file, extract names of neurons list files, and
                 // show them in the corresponding fields

@@ -35,7 +35,6 @@
   <!-- Temporary suppressions                             -->
   <!-- ================================================== -->
   <!-- Javadoc needed for the following files -->
-  <suppress checks="Javadoc(Type)" files="DirMgr.java"/>
   <suppress checks="Javadoc(Type)" files="LoggerHelper.java"/>
   <suppress checks="Javadoc(Method)" files="ScriptHistory.java"/>
   <suppress checks="Javadoc(Method|Style)" files="Datum.java"/>
@@ -84,11 +83,9 @@
   <suppress checks="Javadoc(Method|Type)" files="Project.java"/>
   <suppress checks="Javadoc(Method|Type)" files="SimManager.java"/>
   <suppress checks="Javadoc(Method)" files="SimStarterWiz.java"/>
-  <suppress checks="Javadoc(Method|Type)" files="RunInit.java"/>
   <suppress checks="Javadoc(Method|Type)" files="RunUpdateRepo.java"/>
   <suppress checks="Javadoc(Method|Style)" files="User.java"/>
   <suppress checks="Javadoc(Method|Type)" files="UserView.java"/>
-  <suppress checks="Javadoc(Method|Type)" files="Init.java"/>
   <suppress checks="Javadoc(Method|Type)" files="RepoManager.java"/>
   <suppress checks="Javadoc(Method|Variable|Type)" files="SystemProperties.java"/>
   <suppress checks="Javadoc(Method|Type)" files="ThreadManager.java"/>

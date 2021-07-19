@@ -90,8 +90,7 @@ public class DynamicInputConfigurationManager {
             TransformerConfigurationException, IOException {
         String fullPath = null;
 
-        FileManager fm = FileManager.getFileManager();
-        fullPath = fm.getSimConfigFilePath(projectName, filename, true);
+        fullPath = FileManager.getSimConfigFilePath(projectName, filename, true);
         inputConfigBuilder.persist(inputConfig.getDocument(), fullPath);
 
         return fullPath;

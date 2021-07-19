@@ -4,6 +4,8 @@ package edu.uwb.braingrid.workbench.project;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,7 +105,7 @@ public class ProjectMgr {
         name = rootNodeName.split("\\.")[0];
         LOG.info("New Project Manager for project: " + name);
         if (load) {
-            load(determineProjectOutputLocation() + name + ".xml");
+            load(Paths.get(getProjectLocation(), name + ".xml").toString());
         } else {
             initXML(rootNodeName);
         }
@@ -138,7 +140,7 @@ public class ProjectMgr {
         provElement.setAttribute(PROV_ENABLED_ATTRIBUTE_NAME, "");
         // set location of provenance file for this project
         Element provLocationElem = doc.createElement(PROV_LOCATION_TAG_NAME);
-        Text locationText = doc.createTextNode(determineProvOutputLocation());
+        Text locationText = doc.createTextNode(getProvLocation());
         provLocationElem.appendChild(locationText);
         provElement.appendChild(provLocationElem);
         initScriptVersion();
@@ -232,7 +234,7 @@ public class ProjectMgr {
         String projectFilename = getProjectFilename();
 
         // create any necessary non-existent directories
-        new File(determineProjectOutputLocation()).mkdirs();
+        Files.createDirectories(Paths.get(getProjectLocation()));
 
         // create the file we want to save
         File projectFile = new File(projectFilename);
@@ -249,53 +251,40 @@ public class ProjectMgr {
 
     // <editor-fold defaultstate="collapsed" desc="ProjectMgr Configuration">
     /**
-     * Determines the folder location for storing provenance data for a given project.
+     * Provides the folder location for storing provenance data for a given project.
      *
      * @return The path to the provenance folder for the specified project
-     * @throws IOException
      */
-    public String determineProvOutputLocation() throws IOException {
-        String projectDirectory = determineProjectOutputLocation();
-        String provOutputLocation = projectDirectory + "provenance"
-                + FileManager.getFileManager().getFolderDelimiter();
-        return provOutputLocation;
+    public String getProvLocation() {
+        return Paths.get(getProjectLocation(), "provenance").toString();
     }
 
     /**
-     * Determines the folder location for storing provenance data for in relation to all other
+     * Provides the folder location for storing provenance data for in relation to all other
      * projects.
      *
      * @return The path to the provenance folder for the specified project
-     * @throws IOException
      */
-    public String determineUniversalProvOutputLocation() throws IOException {
-        String workingDirectory = FileManager.getCanonicalWorkingDirectory();
-        String ps = FileManager.getFileManager().getFolderDelimiter();
-        String provOutputLocation = workingDirectory + ps + "projects" + ps;
-        return provOutputLocation;
+    public String getUniversalProvLocation() {
+        return Paths.get(FileManager.getProjectsDirectory(), "projects").toString();
     }
 
     /**
-     * Determines the folder location for a project based on the currently loaded configuration.
+     * Provides the folder location for a project based on the currently loaded configuration.
      *
      * @return The path to the project folder for the specified project
-     * @throws IOException
      */
-    public String determineProjectOutputLocation() throws IOException {
-        return ProjectMgr.determineProjectOutputLocation(this.getName());
+    public String getProjectLocation() {
+        return ProjectMgr.getProjectLocation(name);
     }
 
     /**
-     * Determines the assumed folder location for a project of a given name.
+     * Provides the assumed folder location for a project of a given name.
      *
      * @return The path to the project folder for the specified project
-     * @throws IOException
      */
-    public static String determineProjectOutputLocation(String name) throws IOException {
-        String workingDirectory = FileManager.getCanonicalWorkingDirectory();
-        String ps = FileManager.getFileManager().getFolderDelimiter();
-        String projectDirectory = workingDirectory + ps + "projects" + ps + name + ps;
-        return projectDirectory;
+    public static String getProjectLocation(String projectName) {
+        return Paths.get(FileManager.getProjectsDirectory(), "projects", projectName).toString();
     }
 
     /**
@@ -309,7 +298,7 @@ public class ProjectMgr {
         if (name == null) {
             throw new IOException();
         }
-        return determineProjectOutputLocation() + this.getName() + ".xml";
+        return Paths.get(getProjectLocation(), name + ".xml").toString();
     }
     // </editor-fold>
 

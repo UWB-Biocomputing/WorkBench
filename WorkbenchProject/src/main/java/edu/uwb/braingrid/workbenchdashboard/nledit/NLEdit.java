@@ -204,7 +204,7 @@ public class NLEdit extends WorkbenchApp {
     private void setButtonImage(Button button, String path) {
         button.getStyleClass().add("toolbar-button");
         try {
-            Image image = new Image(this.getClass().getResourceAsStream(path));
+            Image image = new Image(getClass().getResourceAsStream(path));
             button.setGraphic(new ImageView(image));
         } catch (NullPointerException e) {
             System.out.println(e.toString());

@@ -9,7 +9,9 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 /**
  * These tested are based on reading edu/uwb/braingrid/workbench/project/ProjectMgr.java and then
@@ -123,61 +125,45 @@ public class ProjectMgrTest {
     }
 
     @Test
-    public void determinieProjectOutputLocationTest() {
+    public void getProjectLocationTest() {
         // New Prj
         ProjectMgr pmNew = getPmNameFalseLoad();
-        this.determinieProjectOutputLocationTestHelper(pmNew);
+        this.getProjectLocationTestHelper(pmNew);
 
         // Load Prj
         ProjectMgr pmLoad = getPmNameTrueLoadActualProject();
-        this.determinieProjectOutputLocationTestHelper(pmLoad);
+        this.getProjectLocationTestHelper(pmLoad);
     }
 
-    private void determinieProjectOutputLocationTestHelper(ProjectMgr pm) {
-        String workingDirectory = null;
-        try {
-            workingDirectory = FileManager.getCanonicalWorkingDirectory();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String ps = FileManager.getFileManager().getFolderDelimiter();
-        String projectDirectory = workingDirectory + ps + "projects" + ps
-                + pm.getName() + ps;
-        try {
-            Assertions.assertEquals(projectDirectory, pm.determineProjectOutputLocation());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private void getProjectLocationTestHelper(ProjectMgr pm) {
+        String workingDirectory = FileManager.getProjectsDirectory();
 
+        String fs = File.separator;
+        String projectDirectory = workingDirectory + fs + "projects" + fs
+                + pm.getName() + fs;
+        Assertions.assertEquals(projectDirectory, pm.getProjectLocation());
+    }
 
     @Test
-    public void determineProvOutputLocationTest() {
-
+    public void getProvLocationTest() {
         // New Prj
         ProjectMgr pmNew = getPmNameFalseLoad();
-        this.determineProvOutputLocationTestHelper(pmNew);
+        this.getProvLocationTestHelper(pmNew);
 
         // Load Prj
         ProjectMgr pmLoad = getPmNameTrueLoadActualProject();
-        this.determineProvOutputLocationTestHelper(pmLoad);
-
-
+        this.getProvLocationTestHelper(pmLoad);
     }
 
-    private void determineProvOutputLocationTestHelper(ProjectMgr pm) {
-        String workingDirectory = null;
-        try {
-            workingDirectory = FileManager.getCanonicalWorkingDirectory();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String ps = FileManager.getFileManager().getFolderDelimiter();
-        String projectDirectory = workingDirectory + ps + "projects" + ps
-                + pm.getName() + ps;
+    private void getProvLocationTestHelper(ProjectMgr pm) {
+        String workingDirectory = FileManager.getProjectsDirectory();
+
+        String fs = File.separator;
+        String projectDirectory = workingDirectory + fs + "projects" + fs
+                + pm.getName() + fs;
 
         try {
-            Assertions.assertEquals(projectDirectory, ProjectManager.determineProjectOutputLocation(pm.getName()));
+            Assertions.assertEquals(projectDirectory, ProjectManager.getProjectLocation(pm.getName()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -209,8 +195,6 @@ public class ProjectMgrTest {
                 SimulationSpecification.GIT_NONE,
                 "",
                 SimulationSpecification.PRE_BUILT_BUILD_OPTION));
-
-
     }
 
     @Test
@@ -224,14 +208,14 @@ public class ProjectMgrTest {
         Assertions.assertFalse(pm.scriptGenerated());
     }
 
-
-    // <editor-fold defaultstate="collapsed" desc="Getters/Setter Tests">
+    // <editor-fold defaultstate="collapsed" desc="Getters/Setters Tests">
     @Test
     public void getProjectFileNameTest() {
         // New Project
         ProjectMgr pmNew = getPmNameFalseLoad();
         try {
-            Assertions.assertEquals(pmNew.determineProjectOutputLocation() + pmNew.getName() + ".xml", pmNew.getProjectFilename());
+            String projectFile = Paths.get(pmNew.getProjectLocation(), pmNew.getName() + ".xml").toString();
+            Assertions.assertEquals(projectFile, pmNew.getProjectFilename());
         } catch (IOException e) {
 
         }
@@ -239,11 +223,11 @@ public class ProjectMgrTest {
         // Load Project
         ProjectMgr pmLoad = getPmNameTrueLoadActualProject();
         try {
-            Assertions.assertEquals(pmLoad.determineProjectOutputLocation() + pmLoad.getName() + ".xml", pmLoad.getProjectFilename());
+            String projectFile = Paths.get(pmLoad.getProjectLocation(), pmLoad.getName() + ".xml").toString();
+            Assertions.assertEquals(projectFile, pmLoad.getProjectFilename());
         } catch (IOException e) {
 
         }
-
     }
 
     @Test
@@ -255,17 +239,14 @@ public class ProjectMgrTest {
         pmNew.setName(newName);
         Assertions.assertEquals(newName, pmNew.getName());
 
-
         // Load Prj
         ProjectMgr pmLoad = getPmNameTrueLoadActualProject();
         pmLoad.setName(newName);
         Assertions.assertEquals(newName, pmLoad.getName());
-
     }
 
     @Test
     public void setAndGetProvenanceEnabledTest() {
-
         // New Prj
         ProjectMgr pmNew = getPmNameFalseLoad();
 
@@ -273,7 +254,6 @@ public class ProjectMgrTest {
         Assertions.assertFalse(pmNew.isProvenanceEnabled());
         pmNew.setProvenanceEnabled(true);
         Assertions.assertTrue(pmNew.isProvenanceEnabled());
-
 
         // Load Prj
         ProjectMgr pmLoad = getPmNameTrueLoadActualProject();
@@ -378,7 +358,6 @@ public class ProjectMgrTest {
         String sha1key = "qwerty";
         Assertions.assertFalse(pm.setSHA1Key(sha1key)); // Not sure why false is right
         Assertions.assertEquals(sha1key, pm.getSHA1Key());
-
     }
 
     @Test
@@ -510,10 +489,7 @@ public class ProjectMgrTest {
         pm.setSimResultFile(simResultFile);
         Assertions.assertEquals(simResultFile, pm.getSimResultFile());
     }
-
     // </editor-fold>
-
-
 
     // <editor-fold defaultstate="collapsed" desc="Simulator"
     private String locale = ProjectMgr.LOCAL_EXECUTION;
@@ -547,11 +523,9 @@ public class ProjectMgrTest {
     private void addScriptToProject(ProjectMgr pm) {
         pm.addScript(scriptName, scriptExtension);
     }
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Factories">
-
     // name, true, invalid project
     private ProjectMgr getPmNameTrueLoadActualProject() {
         ProjectMgr pm = null;
@@ -620,7 +594,6 @@ public class ProjectMgrTest {
         return pm;
     }
 
-
     // null name, false
     private ProjectMgr getPmNullNameFalseLoad() {
         ProjectMgr pm = null;
@@ -638,7 +611,5 @@ public class ProjectMgrTest {
         }
         return pm;
     }
-
-    //</editor-fold>
-
+    // </editor-fold>
 }

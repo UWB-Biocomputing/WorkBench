@@ -4,6 +4,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.FileHandler;
@@ -80,9 +81,11 @@ public class WorkbenchManager {
     }
 
     private void initFileOutput() {
+        Path logsDir = Paths.get(FileManager.getWorkbenchDirectory(), "logs");
+        String logFile = logsDir.resolve("WD-WorkbenchManager-log.%u").toString();
         FileHandler handler = null;
         try {
-            handler = new FileHandler("WD-WorkbenchManager-log.%u");
+            handler = new FileHandler(logFile);
         } catch (SecurityException | IOException e) {
             LOG.severe(e.getMessage());
         }
@@ -229,21 +232,21 @@ public class WorkbenchManager {
                 try {
                     File selectedFile = chooser.getSelectedFile();
                     try {
-                        projectMgr = new ProjectMgr(FileManager.getLastNamePrefix(
+                        projectMgr = new ProjectMgr(FileManager.getBaseFilename(
                                 selectedFile.getName()), true);
 
                     } catch (IOException ex1) {
                         messageAccumulator += "\n"
                                 + "Unmanaged project selected.\n"
                                 + "Attempting to import project...\n";
-                        String destFolder = ProjectMgr.determineProjectOutputLocation(
-                                selectedFile.getName().split("\\.")[0]);
+                        String destFolder = ProjectMgr.getProjectLocation(
+                                FileManager.getBaseFilename(selectedFile.getName()));
                         FileManager.copyFolder(selectedFile.getParent(), destFolder);
                         messageAccumulator += "\n" + "Folder contents copied..."
                                 + "\nFrom: " + selectedFile.getParent()
                                 + "\nTo:   "
                                 + destFolder + "\n";
-                        projectMgr = new ProjectMgr(FileManager.getLastNamePrefix(
+                        projectMgr = new ProjectMgr(FileManager.getBaseFilename(
                                 selectedFile.getName()), true);
                     }
                     updateSimSpec();
@@ -440,7 +443,7 @@ public class WorkbenchManager {
                     messageAccumulator += "\n"
                             + "Gathering simulation provenance...\n";
                     String targetFolder = ScriptManager.getScriptFolder(
-                            projectMgr.determineProjectOutputLocation());
+                            projectMgr.getProjectLocation());
                     timeCompleted = scriptMgr.analyzeScriptOutput(simulatorSpecification,
                             projectMgr, prov, targetFolder);
                     if (timeCompleted != DateTime.ERROR_TIME) {
@@ -484,11 +487,11 @@ public class WorkbenchManager {
                 projectMgr.getSimConfigFilename());
         if (script != null) {
             try {
-                String projectFolder = projectMgr.determineProjectOutputLocation();
-                String scriptsFolder = projectFolder + "scripts" + folderDelimiter;
+                String projectFolder = projectMgr.getProjectLocation();
+                String scriptsFolder = FileManager.buildPathString(projectFolder, "scripts");
                 new File(scriptsFolder).mkdirs();
                 String scriptName = getNextScriptName();
-                String scriptFilename = scriptsFolder + scriptName;
+                String scriptFilename = FileManager.buildPathString(scriptsFolder, scriptName);
                 script.persist(scriptFilename);
                 success = projectMgr.addScript(scriptFilename, "sh");
                 if (success) {
@@ -524,8 +527,7 @@ public class WorkbenchManager {
         ScriptManager sm = new ScriptManager();
         try {
             String scriptPath = projectMgr.getScriptCanonicalFilePath();
-            String[] neuronLists = FileManager.getFileManager()
-                    .getNeuronListFilenames(projectMgr.getName());
+            String[] neuronLists = FileManager.getNeuronListFilenames(projectMgr.getName());
             success = sm.runScript(prov, simulatorSpecification, scriptPath,
                     projectMgr.getScriptVersion(), neuronLists, projectMgr.getSimConfigFilename());
             projectMgr.setScriptRan(success);
@@ -639,7 +641,7 @@ public class WorkbenchManager {
      * @return The full system-dependent canonical form of the path to the projects directory
      */
     public Path getProjectsDirectoryPath() {
-        return Paths.get(getWorkingDirectory() + projectsDir);
+        return Paths.get(getWorkingDirectory(), projectsDir);
     }
 
     private File getProjectsDirectory() {
@@ -871,12 +873,11 @@ public class WorkbenchManager {
             String simCodeLocation = simulatorSpecification.getCodeLocation();
             boolean simAttributeAddedToText = false;
             if (simFoldername != null) {
-                FileManager fm = FileManager.getFileManager();
                 String home;
                 if (simulatorSpecification.isRemote()) {
                     home = "~/";
                 } else {
-                    home = fm.getUserDir();
+                    home = FileManager.getUserDir().toString();
                 }
                 overview += "location: " + home + simFoldername;
                 simAttributeAddedToText = true;

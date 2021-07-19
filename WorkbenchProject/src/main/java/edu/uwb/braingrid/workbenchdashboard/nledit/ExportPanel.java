@@ -41,7 +41,7 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
     /** The text fields for this Pane. */
     TextField[] tFields = new TextField[NUM_FIELDS];
 
-    private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
+    private FileSelectorDirMgr fileSelector = new FileSelectorDirMgr();
 
     /**
      * A class constructor, which creates UI components, and registers action listener.
@@ -84,7 +84,7 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
         }
         // create a file chooser
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(fileMgr.getLastDir());
+        chooser.setInitialDirectory(fileSelector.getLastDir());
         chooser.setTitle("Save File");
 
         ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "xml");
@@ -113,7 +113,7 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
         if (option != null) {
             tFields[iSource].setText(option.getAbsolutePath());
 //            nListDir = option.getParent();
-            fileMgr.add(option.getParentFile());
+            fileSelector.addDir(option.getParentFile());
         }
     }
 }

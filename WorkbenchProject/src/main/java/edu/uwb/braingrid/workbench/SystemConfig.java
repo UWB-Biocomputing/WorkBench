@@ -1,11 +1,13 @@
 package edu.uwb.braingrid.workbench;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 
@@ -16,8 +18,8 @@ import edu.uwb.braingrid.workbench.data.InputAnalyzer;
  */
 public final class SystemConfig {
 
-    // The base template Config file path
-    public static final String BASE_TEMPLATE_INFO_XML_FILE_URL = "BaseTemplateConfig.xml";
+    // The base template config file path
+    public static final String BASE_TEMPLATE_CONFIG_FILE_URL = "/templates/BaseTemplateConfig.xml";
 
     // Attribute names
     public static final String TEMPLATE_PATH_ATTRIBUTE_NAME = "templatePath";
@@ -51,31 +53,35 @@ public final class SystemConfig {
         }
     };
 
-    // Get Base Template Info Document
-    public static Document getBaseTemplateInfoDoc() throws Exception {
+    // Get Base Template Config Document
+    public static Document getBaseTemplateInfoDoc() throws IOException, SAXException,
+            ParserConfigurationException {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(getBaseTemplateInfoDocPath());
+                .parse(SystemConfig.class.getResourceAsStream(BASE_TEMPLATE_CONFIG_FILE_URL));
     }
 
-    public static String getBaseTemplateInfoDocPath() {
-        return System.getProperty("user.dir") + File.separator
-                + SystemConfig.BASE_TEMPLATE_INFO_XML_FILE_URL;
-    }
-
-    // get the file path of the all params classes info file stored in Base Template
-    // Info Document
-    public static String getAllParamsClassesFilePath() throws Exception {
+    // Get Sim Params Document
+    public static Document getSimParamsDoc() throws IOException, SAXException,
+            ParserConfigurationException {
         Document baseTemplateInfoDoc = getBaseTemplateInfoDoc();
         Node baseTemplateInfoNode = baseTemplateInfoDoc.getFirstChild();
-        String allParamsClassesFilePath = ((Element) baseTemplateInfoNode)
-                .getAttribute(SystemConfig.ALL_PARAMS_CLASSES_PATH_ATTRIBUTE_NAME);
+        String templatePath = ((Element) baseTemplateInfoNode)
+                .getAttribute(TEMPLATE_PATH_ATTRIBUTE_NAME);
 
-        return System.getProperty("user.dir") + File.separator + allParamsClassesFilePath;
+        return DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                .parse(SystemConfig.class.getResourceAsStream("/templates/" + templatePath));
     }
 
-    // get the document of the all params classes info
-    public static Document getAllParamsClassesDoc() throws Exception {
+    // Get All Params Classes Document
+    public static Document getAllParamsClassesDoc() throws IOException, SAXException,
+            ParserConfigurationException {
+        Document baseTemplateInfoDoc = getBaseTemplateInfoDoc();
+        Node baseTemplateInfoNode = baseTemplateInfoDoc.getFirstChild();
+        String allParamsClassesPath = ((Element) baseTemplateInfoNode)
+                .getAttribute(ALL_PARAMS_CLASSES_PATH_ATTRIBUTE_NAME);
+
         return DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(getAllParamsClassesFilePath());
+                .parse(SystemConfig.class.getResourceAsStream("/templates/"
+                        + allParamsClassesPath));
     }
 }

@@ -5,6 +5,8 @@ package edu.uwb.braingrid.workbench.project;
 // FIX THIS!!! (Needs JavaDocs / Line Comments)
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -61,7 +63,7 @@ public class Project {
         String projectFilename = getProjectFilename();
 
         // create any necessary non-existent directories
-        new File(determineProjectOutputLocation()).mkdirs();
+        Files.createDirectories(Paths.get(getProjectLocation()));
 
         // create the file we want to save
         File projectFile = new File(projectFilename);
@@ -152,7 +154,7 @@ public class Project {
         if (projectName == null) {
             throw new IOException();
         }
-        return determineProjectOutputLocation() + projectName + ".xml";
+        return FileManager.buildPathString(getProjectLocation(), projectName + ".xml");
     }
 
     public ProjectData remove(String projectDataKey) {
@@ -160,15 +162,12 @@ public class Project {
     }
 
     /**
-     * Determines the folder location for a project based on the currently loaded configuration.
+     * Provides the folder location for a project based on the currently loaded configuration.
      *
      * @return The path to the project folder for the specified project
      * @throws IOException
      */
-    public final String determineProjectOutputLocation() throws IOException {
-        String workingDirectory = FileManager.getCanonicalWorkingDirectory();
-        String ps = FileManager.getFileManager().getFolderDelimiter();
-        String projectDirectory = workingDirectory + ps + "projects" + ps + projectName + ps;
-        return projectDirectory;
+    public final String getProjectLocation() throws IOException {
+        return ProjectManager.getProjectLocation(projectName);
     }
 }

@@ -63,8 +63,7 @@ public class SimulationConfigurationManager {
         boolean success = true;
         if (success) {
             simConfigBuilder.build(simConfig);
-            FileManager fm = FileManager.getFileManager();
-            fullPath = fm.getSimConfigFilePath(projectName, filename, true);
+            fullPath = FileManager.getSimConfigFilePath(projectName, filename, true);
             simConfigBuilder.persist(fullPath);
         }
         return fullPath;

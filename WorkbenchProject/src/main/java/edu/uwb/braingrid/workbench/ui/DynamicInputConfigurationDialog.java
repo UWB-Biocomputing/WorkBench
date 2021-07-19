@@ -389,7 +389,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         icm.setInputParamElements(inputElements);
     }
 
-    private FileSelectorDirMgr dirMgr = new FileSelectorDirMgr();
+    private FileSelectorDirMgr fileSelector = new FileSelectorDirMgr();
     // File Button Listener used to handle the copy of the file and set the path
     private class ImportFileButtonListener implements ActionListener {
         private InputType type;
@@ -407,14 +407,13 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         }
 
         private void importNeuronList(InputType aType, JTextField aField) {
-            FileManager fm = FileManager.getFileManager();
             // get starting folder
             String simConfFilesDir;
             try {
-                if (dirMgr.getLastDir() == dirMgr.getDefault()) {
-                    simConfFilesDir = fm.getSimConfigDirectoryPath(projectName, true);
+                if (fileSelector.getLastDir() == fileSelector.getDefault()) {
+                    simConfFilesDir = FileManager.getSimConfigDirectoryPath(projectName, true);
                 } else {
-                    simConfFilesDir = dirMgr.getLastDir().getAbsolutePath();
+                    simConfFilesDir = fileSelector.getLastDir().getAbsolutePath();
                 }
             } catch (IOException e) {
                 messageLabelText.setText("<html><span style=\"color:red\">" + e.getClass()
@@ -435,13 +434,13 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                     // if type is correct
                     if (InputAnalyzer.getInputType(file) == aType) {
                         Path sourceFilePath = file.toPath();
-                        String destPathText = fm.getNeuronListFilePath(projectName,
+                        String destPathText = FileManager.getNeuronListFilePath(projectName,
                                 file.getName(), true);
                         Path destFilePath = new File(destPathText).toPath();
                         if (FileManager.copyFile(sourceFilePath, destFilePath)) {
                             aField.setText("workbenchconfigfiles/NList/"
-                                    + fm.getSimpleFilename(destFilePath.toString()));
-                            dirMgr.add(file.getParentFile());
+                                    + FileManager.getSimpleFilename(destFilePath.toString()));
+                            fileSelector.addDir(file.getParentFile());
                         }
                         messageLabelText.setText("<html><span style=\"color:green\">"
                                 + "Good!</span></html>");
@@ -526,14 +525,13 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     }
 
     private void importNeuronList(InputType aType, JTextField aField, String path) {
-        FileManager fm = FileManager.getFileManager();
         // get starting folder
-        String simConfFilesDir;
+        String simConfigFilesDir;
         try {
-            if (dirMgr.getLastDir() == dirMgr.getDefault()) {
-                simConfFilesDir = fm.getSimConfigDirectoryPath(projectName, true);
+            if (fileSelector.getLastDir() == fileSelector.getDefault()) {
+                simConfigFilesDir = FileManager.getSimConfigDirectoryPath(projectName, true);
             } else {
-                simConfFilesDir = dirMgr.getLastDir().getAbsolutePath();
+                simConfigFilesDir = fileSelector.getLastDir().getAbsolutePath();
             }
         } catch (IOException e) {
             messageLabelText.setText("<html><span style=\"color:red\">" + e.getClass()
@@ -546,12 +544,13 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             // if type is correct
             if (InputAnalyzer.getInputType(file) == aType) {
                 Path sourceFilePath = file.toPath();
-                String destPathText = fm.getNeuronListFilePath(projectName, file.getName(), true);
+                String destPathText = FileManager.getNeuronListFilePath(projectName,
+                        file.getName(), true);
                 Path destFilePath = new File(destPathText).toPath();
                 if (FileManager.copyFile(sourceFilePath, destFilePath)) {
                     aField.setText("workbenchconfigfiles/NList/"
-                            + fm.getSimpleFilename(destFilePath.toString()));
-                    dirMgr.add(file.getParentFile());
+                            + FileManager.getSimpleFilename(destFilePath.toString()));
+                    fileSelector.addDir(file.getParentFile());
                 }
                 messageLabelText.setText("<html><span style=\"color:green\">"
                         + "Good!</span></html>");

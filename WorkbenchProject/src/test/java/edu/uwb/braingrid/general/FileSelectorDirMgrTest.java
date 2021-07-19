@@ -14,9 +14,9 @@ public class FileSelectorDirMgrTest {
         FileSelectorDirMgr fs = new FileSelectorDirMgr();
 
         File main = new File("./main");
-        fs.add(main);
+        fs.addDir(main);
         File resources = new File("./resources");
-        fs.add(resources);
+        fs.addDir(resources);
         Assertions.assertEquals(resources, fs.getLastDir());
 
         return fs;
@@ -29,11 +29,11 @@ public class FileSelectorDirMgrTest {
         Assertions.assertEquals(fs.getDefault(), fs.getLastDir());
 
         File main = new File("./main");
-        fs.add(main);
+        fs.addDir(main);
         Assertions.assertEquals(main, fs.getLastDir());
 
         File resources = new File("./resources");
-        fs.add(resources);
+        fs.addDir(resources);
         Assertions.assertEquals(resources, fs.getLastDir());
     }
 

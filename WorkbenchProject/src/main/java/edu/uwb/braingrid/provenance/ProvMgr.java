@@ -95,7 +95,8 @@ public class ProvMgr {
     private void init(ProjectMgr project) throws IOException {
         // create RDF model
         model = ModelFactory.createDefaultModel();
-        provOutputFileURI = project.determineProvOutputLocation() + project.getName() + ".ttl";
+        provOutputFileURI = FileManager.buildPathString(project.getProvLocation(),
+                project.getName() + ".ttl");
         // set prefixes for...
         // RDF syntax
         model.setNsPrefix("rdf", ProvOntology.getRDFNameSpaceURI());
@@ -117,7 +118,7 @@ public class ProvMgr {
      */
     private void load(ProjectMgr project) throws RiotNotFoundException, IOException {
         String name = project.getName();
-        provOutputFileURI = project.determineProvOutputLocation() + name + ".ttl";
+        provOutputFileURI = project.getProvLocation() + name + ".ttl";
         model = RDFDataMgr.loadModel(provOutputFileURI);
         localNameSpaceURI = getLocalNameSpaceURI();
         model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceURI);
@@ -839,14 +840,15 @@ public class ProvMgr {
      *                 name, which is used as the base name for the provenance file)
      */
     public void persist(ProjectMgr project) throws IOException {
-        String directory = project.determineProvOutputLocation();
+        String directory = project.getProvLocation();
         new File(directory).mkdirs();
-        model.write(new FileOutputStream(directory + project.getName() + ".ttl", false), "TURTLE");
-        //add provenance to UniversalProvenance.ttl
-        directory = project.determineUniversalProvOutputLocation();
+        String provLocation = FileManager.buildPathString(directory, project.getName() + ".ttl");
+        model.write(new FileOutputStream(provLocation, false), "TURTLE");
+        // add provenance to UniversalProvenance.ttl
+        directory = project.getUniversalProvLocation();
         new File(directory).mkdirs();
-        model.write(new FileOutputStream(directory + "UniversalProvenance" + ".ttl", true),
-                "TURTLE");
+        provLocation = FileManager.buildPathString(directory, "UniversalProvenance.ttl");
+        model.write(new FileOutputStream(provLocation, true), "TURTLE");
     }
 
     /**

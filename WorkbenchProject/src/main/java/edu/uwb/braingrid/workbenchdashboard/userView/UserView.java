@@ -6,19 +6,19 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 
 public class UserView extends WorkbenchApp {
 
     private VBox display = new VBox();
 
-    private Label userDir = new Label("Main Directory: ");
-    private TextField userDirField = new TextField(User.getInstance().getRootDir());
+    private Label projectDir = new Label("Projects Directory: ");
+    private TextField projectDirField = new TextField(FileManager.getProjectsDirectory());
 
     private Label bgRepoDir = new Label("Brain Grid Repos Directory: ");
     private TextField bgRepoDirField
-            = new TextField(User.getInstance().getBrainGridRepoDirectory());
+            = new TextField(FileManager.getBrainGridRepoDirectory());
 
     public UserView(Tab tab) {
         super(tab);
@@ -27,7 +27,7 @@ public class UserView extends WorkbenchApp {
     }
 
     private void initAttributes() {
-        display.getChildren().addAll(userDir, userDirField, bgRepoDir, bgRepoDirField);
+        display.getChildren().addAll(projectDir, projectDirField, bgRepoDir, bgRepoDirField);
     }
 
     @Override

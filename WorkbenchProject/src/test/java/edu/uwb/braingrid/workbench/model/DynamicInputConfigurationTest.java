@@ -16,18 +16,15 @@ import java.io.IOException;
 public class DynamicInputConfigurationTest {
 
     @Test
-    public void testgetDocumentAndConstructors() {
+    public void testGetDocumentAndConstructors() {
         DynamicInputConfiguration dic = factory();
 
         Document baseTemplateInfoDoc = null;
         try {
             baseTemplateInfoDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(System.getProperty("user.dir") + File.separator + SystemConfig.BASE_TEMPLATE_INFO_XML_FILE_URL);
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+                    .parse(getClass().getResourceAsStream("/templates/"
+                            + SystemConfig.BASE_TEMPLATE_CONFIG_FILE_URL));
+        } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();
         }
         Node baseTemplateNode = baseTemplateInfoDoc.getFirstChild();
@@ -35,12 +32,8 @@ public class DynamicInputConfigurationTest {
         Document inputConfig = null;
         try {
             inputConfig = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(System.getProperty("user.dir") + File.separator + templatePath);
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+                    .parse(getClass().getResourceAsStream("/templates/" + templatePath));
+        } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();
         }
 

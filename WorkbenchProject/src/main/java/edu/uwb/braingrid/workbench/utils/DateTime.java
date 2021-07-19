@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import edu.uwb.braingrid.workbench.FileManager;
+
 /**
  * Collection of static helper functions centered around temporal operations.
  *
@@ -60,9 +62,11 @@ public final class DateTime {
 
     public static void recordFunctionExecutionTime(String className, String functionName,
             Long totalTime, boolean provEnabled) {
+        String file = FileManager.buildPathString(FileManager.getWorkbenchDirectory(), "logs",
+                "provOverhead.txt");
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new FileWriter("provOverhead.txt", true)));
+                    new FileWriter(file, true)));
             out.println(className + "." + functionName + ";provEnabled=" + provEnabled
                     + ";total milliseconds:" + totalTime);
             out.close();
@@ -74,9 +78,11 @@ public final class DateTime {
 
     public static void recordAccumulatedProvTiming(String className, String functionName,
             Long totalProvTime) {
+        String file = FileManager.buildPathString(FileManager.getWorkbenchDirectory(), "logs",
+                "provOverhead.txt");
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new FileWriter("provOverhead.txt", true)));
+                    new FileWriter(file, true)));
             out.println(className + "." + functionName + ";total prov overhead:" + totalProvTime);
             out.close();
         } catch (IOException e) {

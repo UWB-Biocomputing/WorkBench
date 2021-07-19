@@ -3,7 +3,7 @@ package edu.uwb.braingrid.general;
 import java.io.File;
 import java.util.ArrayList;
 
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
+import edu.uwb.braingrid.workbench.FileManager;
 
 /**
  * A class to manage starting directories the file explorer opens.
@@ -18,7 +18,7 @@ public class FileSelectorDirMgr {
      * @return The default directory
      */
     public File getDefault() {
-        return new File(User.getInstance().getRootDir());
+        return new File(FileManager.getProjectsDirectory());
     }
 
     /**
@@ -51,7 +51,7 @@ public class FileSelectorDirMgr {
      *
      * @param newDir  The directory to be added
      */
-    public void add(File newDir) {
+    public void addDir(File newDir) {
         dirs.add(newDir);
     }
 }
