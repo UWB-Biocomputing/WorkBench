@@ -161,40 +161,6 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void addInputFileTest() {
-        // Dead code, no test
-    }
-
-    @Test
-    public void getWorkingDirectoryTest() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        boolean result = wm.initProject(correctFileName, true);
-
-        String rootDir = ".";
-        String root;
-        try {
-            root = new File(rootDir).getCanonicalPath();
-        } catch (IOException e) {
-            root = rootDir;
-        }
-
-        Assertions.assertEquals(root, wm.getWorkingDirectory());
-    }
-
-    @Test
-    public void getProjectsDirectoryPathTest() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        boolean result = wm.initProject(correctFileName, true);
-        boolean windowsOS = System.getProperty("os.name").
-                toLowerCase().startsWith("windows");
-        String folderDelimiter = windowsOS ? "\\" : "/";
-        String projectsDir = folderDelimiter + "projects" + folderDelimiter;
-
-        Assertions.assertEquals(Paths.get(wm.getWorkingDirectory() + projectsDir), wm.getProjectsDirectoryPath());
-
-    }
-
-    @Test
     public void getProjectNameTest() {
         WorkbenchManager wm = blankWorkbenchManagerFactory();
         Assertions.assertEquals("None", wm.getProjectName());

@@ -38,7 +38,7 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
  */
 public class WorkbenchManager {
 
-    // <editor-fold defaultstate="collapsed" desc="Member Variables">
+    // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(WorkbenchManager.class.getName());
 
     /** Value indicating that an exception occurred during an operation. */
@@ -57,9 +57,6 @@ public class WorkbenchManager {
     private String messageAccumulator;
 
     /* Configuration Data */
-    private final String folderDelimiter;
-    private final String rootDir;
-    private final String projectsDir;
     private SimulationSpecification simulatorSpecification;
     // </editor-fold>
 
@@ -68,12 +65,8 @@ public class WorkbenchManager {
      * Responsible for allocating this manager and initializing all members.
      */
     public WorkbenchManager() {
-        boolean windowsOS = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        folderDelimiter = windowsOS ? "\\" : "/";
-        rootDir = ".";
         messageAccumulator = "";
         msgFromOtherThread = "";
-        projectsDir = folderDelimiter + "projects" + folderDelimiter;
         prov = null;
         projectMgr = null;
         simulatorSpecification = null;
@@ -96,7 +89,7 @@ public class WorkbenchManager {
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Action Helpers">
+    // <editor-fold defaultstate="collapsed" desc="Project Controls">
     /**
      * Creates a new project through the NewProjectDialog.
      *
@@ -120,93 +113,59 @@ public class WorkbenchManager {
     }
 
     /**
-     * Allows the user to configure the input for the simulation.
+     * Initializes a new project by setting the name of the current project. Used externally when
+     * a new project is specified. Also used when a new project specification is canceled in order
+     * to notify the user from the workbench message center.
      *
-     * @return True if the user followed through on the specification, False if the user canceled
-     *         the specification.
+     * @param name  Name to give the current project (as well as the base name of the file to record
+     *              the project in.
+     * @param provEnabled  True if provenance should be enabled for this project
+     * @return
      */
-    public boolean configureSimulation() {
-        String projectName = getProjectName();
-        LOG.info("Configuring Simulation for " + projectName);
-        boolean success = false;
+    public boolean initProject(String name, boolean provEnabled) {
+        LOG.info("Initializing a New Project: " + name);
+        Long functionStartTime = System.currentTimeMillis();
+        Long accumulatedTime = 0L;
+        boolean success = true;
+        /* Create a new project */
+        try {
+            // make a new project (with new XML doc model)
+            projectMgr = new ProjectMgr(name, false);
+            messageAccumulator += "\n" + "New project specified\n";
 
-        if (!projectName.equals("None")) {
-            String configFilename = projectMgr.getSimConfigFilename();
-            InputConfigClassSelectionDialog iccsd
-                    = new InputConfigClassSelectionDialog(projectName, true, configFilename);
-            if (iccsd.getSuccess()) {
-                DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
-                        projectName, true, configFilename, iccsd.getInputConfigMgr(), null);
-                String simulationConfigurationFile;
-                String resultFileName;
-                if (icd.getSuccess()) {
-                    simulationConfigurationFile = icd.getBuiltFile();
-                    resultFileName = icd.getResultFileName();
-                    if (simulationConfigurationFile != null && resultFileName != null) {
-                        projectMgr.addSimConfigFile(simulationConfigurationFile);
-                        projectMgr.setSimResultFile(resultFileName);
-                        if (projectMgr.isProvenanceEnabled()) {
-                            prov.addFileGeneration("simulation_input_file_generation", null,
-                                    "workbench", null, false, simulationConfigurationFile,
-                                    null, null);
-                        }
-                        success = true;
-                    }
+            /* Set Provenance */
+            projectMgr.setProvenanceEnabled(provEnabled);
+            if (provEnabled) {
+                Long startTime = System.currentTimeMillis();
+                try {
+                    prov = new ProvMgr(projectMgr, false);
+                } catch (IOException ex) {
+                    messageAccumulator += "\n"
+                            + ">Error initializing provenance"
+                            + "home directory for this project...\n" + ex
+                            + "\n";
+                    throw ex;
                 }
+                accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
+            } else {
+                prov = null;
             }
+        } catch (IOException | ParserConfigurationException | SAXException
+                | NullPointerException e) {
+            success = false;
+            messageAccumulator += "\n"
+                    + "Exception occurred while constructing project XML"
+                    + "\n" + e.toString();
+            projectMgr = null;
+            prov = null;
+        }
+        DateTime.recordFunctionExecutionTime("WorkbenchManager", "initProject",
+                System.currentTimeMillis() - functionStartTime, projectMgr.isProvenanceEnabled());
+        if (projectMgr.isProvenanceEnabled()) {
+            DateTime.recordAccumulatedProvTiming("WorkbenchManager", "initProject",
+                    accumulatedTime);
         }
         return success;
-    }
-
-    /**
-     * Allows the user to configure the input for the simulation via interactions with ProVis.
-     *
-     * @return True if the user followed through on the specification, False if the user canceled
-     *         the specification.
-     */
-    public boolean configureSimulation(String inputPresets,
-            HashMap<Character, String> nListPresets) {
-        String projectName = getProjectName();
-        LOG.info("Configuring Simulation for " + projectName);
-        boolean success = false;
-
-        if (!projectName.equals("None")) {
-            String configFilename = inputPresets;
-            InputConfigClassSelectionDialog iccsd = new InputConfigClassSelectionDialog(projectName,
-                    true, configFilename);
-            if (iccsd.getSuccess()) {
-                DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
-                        projectName, true, configFilename, iccsd.getInputConfigMgr(), nListPresets);
-                String simulationConfigurationFile;
-                String resultFileName;
-                if (icd.getSuccess()) {
-                    simulationConfigurationFile = icd.getBuiltFile();
-                    resultFileName = icd.getResultFileName();
-                    if (simulationConfigurationFile != null && resultFileName != null) {
-                        projectMgr.addSimConfigFile(simulationConfigurationFile);
-                        projectMgr.setSimResultFile(resultFileName);
-                        if (projectMgr.isProvenanceEnabled()) {
-                            prov.addFileGeneration("simulation_input_file_generation", null,
-                                    "workbench", null, false, simulationConfigurationFile,
-                                    null, null);
-                        }
-                        success = true;
-                    }
-                }
-            }
-        }
-        return success;
-    }
-
-    /**
-     * Allows the user to query the provenance for the currently open project.
-     *
-     * Note: In order for this action helper to be invoked, there must be a provenance file
-     * associated with a project. Implicitly, a project must be loaded, otherwise this code should
-     * not be reachable.
-     */
-    public void viewProvenance() {
-        ProvenanceQueryDialog pqd = new ProvenanceQueryDialog(true, prov);
     }
 
     /**
@@ -221,7 +180,7 @@ public class WorkbenchManager {
         Long accumulatedTime = 0L;
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Select a Project Specification...");
-        File projectsDirectory = getProjectsDirectory();
+        File projectsDirectory = new File(FileManager.getProjectsDirectory());
         chooser.setCurrentDirectory(projectsDirectory);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("XML file (*.xml)", "xml");
         chooser.addChoosableFileFilter(filter);
@@ -335,6 +294,87 @@ public class WorkbenchManager {
                     accumulatedTime);
         }
     }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Simulation Controls">
+    /**
+     * Allows the user to configure the input for the simulation.
+     *
+     * @return True if the user followed through on the specification, False if the user canceled
+     *         the specification.
+     */
+    public boolean configureSimulation() {
+        String projectName = getProjectName();
+        LOG.info("Configuring Simulation for " + projectName);
+        boolean success = false;
+
+        if (!projectName.equals("None")) {
+            String configFilename = projectMgr.getSimConfigFilename();
+            InputConfigClassSelectionDialog iccsd
+                    = new InputConfigClassSelectionDialog(projectName, true, configFilename);
+            if (iccsd.getSuccess()) {
+                DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
+                        projectName, true, configFilename, iccsd.getInputConfigMgr(), null);
+                String simulationConfigurationFile;
+                String resultFileName;
+                if (icd.getSuccess()) {
+                    simulationConfigurationFile = icd.getBuiltFile();
+                    resultFileName = icd.getResultFileName();
+                    if (simulationConfigurationFile != null && resultFileName != null) {
+                        projectMgr.addSimConfigFile(simulationConfigurationFile);
+                        projectMgr.setSimResultFile(resultFileName);
+                        if (projectMgr.isProvenanceEnabled()) {
+                            prov.addFileGeneration("simulation_input_file_generation", null,
+                                    "workbench", null, false, simulationConfigurationFile,
+                                    null, null);
+                        }
+                        success = true;
+                    }
+                }
+            }
+        }
+        return success;
+    }
+
+    /**
+     * Allows the user to configure the input for the simulation via interactions with ProVis.
+     *
+     * @return True if the user followed through on the specification, False if the user canceled
+     *         the specification.
+     */
+    public boolean configureSimulation(String inputPresets,
+            HashMap<Character, String> nListPresets) {
+        String projectName = getProjectName();
+        LOG.info("Configuring Simulation for " + projectName);
+        boolean success = false;
+
+        if (!projectName.equals("None")) {
+            String configFilename = inputPresets;
+            InputConfigClassSelectionDialog iccsd = new InputConfigClassSelectionDialog(projectName,
+                    true, configFilename);
+            if (iccsd.getSuccess()) {
+                DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
+                        projectName, true, configFilename, iccsd.getInputConfigMgr(), nListPresets);
+                String simulationConfigurationFile;
+                String resultFileName;
+                if (icd.getSuccess()) {
+                    simulationConfigurationFile = icd.getBuiltFile();
+                    resultFileName = icd.getResultFileName();
+                    if (simulationConfigurationFile != null && resultFileName != null) {
+                        projectMgr.addSimConfigFile(simulationConfigurationFile);
+                        projectMgr.setSimResultFile(resultFileName);
+                        if (projectMgr.isProvenanceEnabled()) {
+                            prov.addFileGeneration("simulation_input_file_generation", null,
+                                    "workbench", null, false, simulationConfigurationFile,
+                                    null, null);
+                        }
+                        success = true;
+                    }
+                }
+            }
+        }
+        return success;
+    }
 
     /**
      * Updates the simulation specification for the currently open project based on user inputs
@@ -427,53 +467,6 @@ public class WorkbenchManager {
     }
 
     /**
-     * Analyzes the redirected provenance output from an executed script.
-     *
-     * @return The time in milliseconds since January 1, 1970, 00:00:00 GMT when the simulator
-     *         finished execution. DateTime.ERROR_TIME indicates that the simulator has not finished
-     *         execution
-     * @see edu.uwb.braingrid.workbench.utils.DateTime
-     */
-    public long analyzeScriptOutput() {
-        long timeCompleted = DateTime.ERROR_TIME;
-        if (projectMgr != null) {
-            if (!projectMgr.scriptOutputAnalyzed()) {
-                ScriptManager scriptMgr = new ScriptManager();
-                try {
-                    messageAccumulator += "\n"
-                            + "Gathering simulation provenance...\n";
-                    String targetFolder = ScriptManager.getScriptFolder(
-                            projectMgr.getProjectLocation());
-                    timeCompleted = scriptMgr.analyzeScriptOutput(simulatorSpecification,
-                            projectMgr, prov, targetFolder);
-                    if (timeCompleted != DateTime.ERROR_TIME) {
-                        projectMgr.setScriptCompletedAt(timeCompleted);
-                        projectMgr.setScriptAnalyzed(true);
-                    }
-                    messageAccumulator += scriptMgr.getOutstandingMessages();
-                    messageAccumulator += "\n" + "Simulation provenance gathered\n";
-                } catch (IOException | JSchException | SftpException e) {
-                    messageAccumulator += scriptMgr.getOutstandingMessages();
-                    messageAccumulator += "\n"
-                            + "Simulation provenance could not be gathered due to "
-                            + e.getClass() + "...\n";
-                    messageAccumulator += "Exception message: " + e.getMessage();
-                    e.printStackTrace();
-                }
-            } else {
-                messageAccumulator += "\n"
-                        + "Script output has already been analyzed for this simulation run"
-                        + "\nTo analyze another run, please respecify script or input and run again"
-                        + "\n";
-            }
-        } else {
-            messageAccumulator += "\n"
-                    + "No project loaded... nothing to analyze.\n";
-        }
-        return timeCompleted;
-    }
-
-    /**
      * Generates a script based on simulator input files and the simulation specification.
      *
      * @return True if the script was generated and persisted successfully, otherwise false
@@ -541,66 +534,96 @@ public class WorkbenchManager {
 
         return success;
     }
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Inter-Frame Communication">
     /**
-     * Initializes a new project by setting the name of the current project. Used externally when
-     * a new project is specified. Also used when a new project specification is canceled in order
-     * to notify the user from the workbench message center.
+     * Analyzes the redirected provenance output from an executed script.
      *
-     * @param name  Name to give the current project (as well as the base name of the file to record
-     *              the project in.
-     * @param provEnabled  True if provenance should be enabled for this project
-     * @return
+     * @return The time in milliseconds since January 1, 1970, 00:00:00 GMT when the simulator
+     *         finished execution. DateTime.ERROR_TIME indicates that the simulator has not finished
+     *         execution
+     * @see edu.uwb.braingrid.workbench.utils.DateTime
      */
-    public boolean initProject(String name, boolean provEnabled) {
-        LOG.info("Initializing a New Project: " + name);
-        Long functionStartTime = System.currentTimeMillis();
-        Long accumulatedTime = 0L;
-        boolean success = true;
-        /* Create a new project */
-        try {
-            // make a new project (with new XML doc model)
-            projectMgr = new ProjectMgr(name, false);
-            messageAccumulator += "\n" + "New project specified\n";
-
-            /* Set Provenance */
-            projectMgr.setProvenanceEnabled(provEnabled);
-            if (provEnabled) {
-                Long startTime = System.currentTimeMillis();
+    public long analyzeScriptOutput() {
+        long timeCompleted = DateTime.ERROR_TIME;
+        if (projectMgr != null) {
+            if (!projectMgr.scriptOutputAnalyzed()) {
+                ScriptManager scriptMgr = new ScriptManager();
                 try {
-                    prov = new ProvMgr(projectMgr, false);
-                } catch (IOException ex) {
                     messageAccumulator += "\n"
-                            + ">Error initializing provenance"
-                            + "home directory for this project...\n" + ex
-                            + "\n";
-                    throw ex;
+                            + "Gathering simulation provenance...\n";
+                    String targetFolder = ScriptManager.getScriptFolder(
+                            projectMgr.getProjectLocation());
+                    timeCompleted = scriptMgr.analyzeScriptOutput(simulatorSpecification,
+                            projectMgr, prov, targetFolder);
+                    if (timeCompleted != DateTime.ERROR_TIME) {
+                        projectMgr.setScriptCompletedAt(timeCompleted);
+                        projectMgr.setScriptAnalyzed(true);
+                    }
+                    messageAccumulator += scriptMgr.getOutstandingMessages();
+                    messageAccumulator += "\n" + "Simulation provenance gathered\n";
+                } catch (IOException | JSchException | SftpException e) {
+                    messageAccumulator += scriptMgr.getOutstandingMessages();
+                    messageAccumulator += "\n"
+                            + "Simulation provenance could not be gathered due to "
+                            + e.getClass() + "...\n";
+                    messageAccumulator += "Exception message: " + e.getMessage();
+                    e.printStackTrace();
                 }
-                accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
             } else {
-                prov = null;
+                messageAccumulator += "\n"
+                        + "Script output has already been analyzed for this simulation run"
+                        + "\nTo analyze another run, please respecify script or input and run again"
+                        + "\n";
             }
-        } catch (IOException | ParserConfigurationException | SAXException
-                | NullPointerException e) {
-            success = false;
+        } else {
             messageAccumulator += "\n"
-                    + "Exception occurred while constructing project XML"
-                    + "\n" + e.toString();
-            projectMgr = null;
-            prov = null;
+                    + "No project loaded... nothing to analyze.\n";
         }
-        DateTime.recordFunctionExecutionTime("WorkbenchManager", "initProject",
-                System.currentTimeMillis() - functionStartTime, projectMgr.isProvenanceEnabled());
-        if (projectMgr.isProvenanceEnabled()) {
-            DateTime.recordAccumulatedProvTiming("WorkbenchManager", "initProject",
-                    accumulatedTime);
-        }
-        return success;
+        return timeCompleted;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Data Manipulation">
+    /**
+     * Removes the script from the project. Invalidation should occur whenever the script
+     * specification or simulation specification changes. This is a safety measure meant to protect
+     * against utilizing an expired script (i.e. the version doesn't match, but the script gets used
+     * anyway).
+     */
+    public void invalidateScriptGenerated() {
+        projectMgr.removeScript();
+    }
+
+    /**
+     * Sets the ScriptRan attribute of the Project to false. Run invalidation should occur whenever
+     * the script specification or simulation specification changes. This attribute is used by the
+     * provvisualizer.view to update workflow state (which buttons are enabled and what text is
+     * shown to the user).
+     */
+    public void invalidateScriptRan() {
+        projectMgr.setScriptRan(false);
+    }
+
+    /**
+     * Sets the time when the script completed execution to an error code. Invalidation should occur
+     * whenever script specification or simulation specification occurs. This is a safety measure
+     * for the provvisualizer.view in updating the overview of script output analysis.
+     */
+    public void invalidateScriptAnalyzed() {
+        projectMgr.setScriptCompletedAt(DateTime.ERROR_TIME);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Provenance Controls">
+    /**
+     * Allows the user to query the provenance for the currently open project.
+     *
+     * Note: In order for this action helper to be invoked, there must be a provenance file
+     * associated with a project. Implicitly, a project must be loaded, otherwise this code should
+     * not be reachable.
+     */
+    public void viewProvenance() {
+        ProvenanceQueryDialog pqd = new ProvenanceQueryDialog(true, prov);
+    }
+
     private void persistProvenance() {
         if (projectMgr != null) {
             try {
@@ -617,81 +640,6 @@ public class WorkbenchManager {
             messageAccumulator += "\n"
                     + "Unable to persist provenance... no project is loaded\n";
         }
-    }
-    // </editor-fold>
-
-    /**
-     * Delivers a full system-dependent canonical form of the path to the working directory.
-     *
-     * @return A full system-dependent canonical path to the working directory
-     */
-    public String getWorkingDirectory() {
-        String root;
-        try {
-            root = new File(rootDir).getCanonicalPath();
-        } catch (IOException e) {
-            root = rootDir;
-        }
-        return root;
-    }
-
-    /**
-     * Delivers the full system-dependent canonical form of the path to the projects directory.
-     *
-     * @return The full system-dependent canonical form of the path to the projects directory
-     */
-    public Path getProjectsDirectoryPath() {
-        return Paths.get(getWorkingDirectory(), projectsDir);
-    }
-
-    private File getProjectsDirectory() {
-        File projectsDirectory = new File(getProjectsDirectoryPath().toString());
-        if (!projectsDirectory.exists()) {
-            messageAccumulator += "\n"
-                    + "The projects directory does not exist.\n"
-                    + "Creating projects directory...\n";
-            if (!projectsDirectory.mkdirs()) {
-                messageAccumulator += "\n"
-                        + "The projects directory could not be created at:";
-                try {
-                    messageAccumulator += "\n"
-                            + projectsDirectory.getCanonicalPath() + "\n";
-                } catch (IOException e) {
-                    messageAccumulator += "\n"
-                            + "Unknown path due to an IOException\n";
-                }
-            }
-        }
-        return projectsDirectory;
-    }
-
-    /**
-     * Sets the ScriptRan attribute of the Project to false. Run invalidation should occur whenever
-     * the script specification or simulation specification changes. This attribute is used by the
-     * provvisualizer.view to update workflow state (which buttons are enabled and what text is
-     * shown to the user).
-     */
-    public void invalidateScriptRan() {
-        projectMgr.setScriptRan(false);
-    }
-
-    /**
-     * Removes the script from the project. Invalidation should occur whenever the script
-     * specification or simulation specification changes. This is a safety measure meant to protect
-     * against utilizing an expired script (i.e. the version doesn't match, but the script gets used
-     * anyway).
-     */
-    public void invalidateScriptGenerated() {
-        projectMgr.removeScript();
-    }
-
-    /**
-     * Sets the time when the script completed execution to an error code. Invalidation should occur
-     * whenever script specification or simulation specification occurs. This is a safety measure
-     * for the provvisualizer.view in updating the overview of script output analysis.
-     */
-    public void invalidateScriptAnalyzed() {
-        projectMgr.setScriptCompletedAt(DateTime.ERROR_TIME);
     }
     // </editor-fold>
 
@@ -775,22 +723,6 @@ public class WorkbenchManager {
     }
 
     /**
-     * Retrieves a textual representation of the inputs specified in the currently open project.
-     *
-     * @return An overview of the input files for the project
-     */
-    public String getSimConfigFileOverview() {
-        String labelText = "None";
-        if (projectMgr != null) {
-            String input = projectMgr.getSimConfigFilename();
-            if (input != null) {
-                labelText = input;
-            }
-        }
-        return labelText;
-    }
-
-    /**
      * Provides the current simulation specification of the currently open project.
      *
      * @return The current simulation specification for the current project
@@ -857,6 +789,22 @@ public class WorkbenchManager {
             analyzed = projectMgr.scriptOutputAnalyzed();
         }
         return analyzed;
+    }
+
+    /**
+     * Provides a textual representation of the inputs specified in the currently open project.
+     *
+     * @return An overview of the input files for the project
+     */
+    public String getSimConfigFileOverview() {
+        String labelText = "None";
+        if (projectMgr != null) {
+            String input = projectMgr.getSimConfigFilename();
+            if (input != null) {
+                labelText = input;
+            }
+        }
+        return labelText;
     }
 
     /**
@@ -950,9 +898,7 @@ public class WorkbenchManager {
     public ProvMgr getProvMgr() {
         return prov;
     }
-    // </editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="User Communication">
     /**
      * Provides all of the messages that have accumulated since the construction of this manager.
      *
@@ -964,7 +910,7 @@ public class WorkbenchManager {
     // </editor-fold>
 
     public boolean configureParamsClasses() {
-        //This function will be able to add/modify/delete parameter classes.
+        // This function will be able to add/modify/delete parameter classes.
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
