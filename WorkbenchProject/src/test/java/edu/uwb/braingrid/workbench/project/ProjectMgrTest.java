@@ -58,7 +58,7 @@ public class ProjectMgrTest {
         // New Project
         ProjectMgr pmNew = getPmNameFalseLoad();
         try {
-            pmNew.load("not-gunna-be-a-file");
+            pmNew.load();
             Assertions.fail("An io exception should be thrown. This line should not be reached");
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class ProjectMgrTest {
         // Load project
         ProjectMgr pmLoad = getPmNameTrueLoadActualProject();
         try {
-            pmLoad.load("not-gunna-be-a-file");
+            pmLoad.load();
             Assertions.fail("An io exception should be thrown. This line should not be reached");
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -100,7 +100,7 @@ public class ProjectMgrTest {
         }
 
         try {
-            Assertions.assertEquals(pmNew.getProjectFilename(), pmNew.persist());
+            Assertions.assertEquals(pmNew.getProjectFilePath(), pmNew.persist());
         } catch (TransformerException e) {
             Assertions.fail("Transformer Exception");
             e.printStackTrace();
@@ -112,7 +112,7 @@ public class ProjectMgrTest {
         // Load project
         ProjectMgr pmLoad = getPmNameTrueLoadActualProject();
         try {
-            Assertions.assertEquals(pmLoad.getProjectFilename(), pmLoad.persist());
+            Assertions.assertEquals(pmLoad.getProjectFilePath(), pmLoad.persist());
         } catch (TransformerException e) {
             Assertions.fail("Transformer Exception");
             e.printStackTrace();
@@ -136,7 +136,7 @@ public class ProjectMgrTest {
     }
 
     private void getProjectLocationTestHelper(ProjectMgr pm) {
-        String workingDirectory = FileManager.getProjectsDirectory();
+        String workingDirectory = FileManager.getProjectsDirectory().toString();
 
         String fs = File.separator;
         String projectDirectory = workingDirectory + fs + "projects" + fs
@@ -156,17 +156,13 @@ public class ProjectMgrTest {
     }
 
     private void getProvLocationTestHelper(ProjectMgr pm) {
-        String workingDirectory = FileManager.getProjectsDirectory();
+        String workingDirectory = FileManager.getProjectsDirectory().toString();
 
         String fs = File.separator;
         String projectDirectory = workingDirectory + fs + "projects" + fs
                 + pm.getName() + fs;
 
-        try {
-            Assertions.assertEquals(projectDirectory, ProjectManager.getProjectLocation(pm.getName()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertEquals(projectDirectory, ProjectManager.getProjectLocation(pm.getName()));
     }
 
     @Test
@@ -213,21 +209,15 @@ public class ProjectMgrTest {
     public void getProjectFileNameTest() {
         // New Project
         ProjectMgr pmNew = getPmNameFalseLoad();
-        try {
-            String projectFile = Paths.get(pmNew.getProjectLocation(), pmNew.getName() + ".xml").toString();
-            Assertions.assertEquals(projectFile, pmNew.getProjectFilename());
-        } catch (IOException e) {
 
-        }
+        String projectFile = pmNew.getProjectLocation().resolve(pmNew.getName() + ".xml").toString();
+        Assertions.assertEquals(projectFile, pmNew.getProjectFilePath());
 
         // Load Project
         ProjectMgr pmLoad = getPmNameTrueLoadActualProject();
-        try {
-            String projectFile = Paths.get(pmLoad.getProjectLocation(), pmLoad.getName() + ".xml").toString();
-            Assertions.assertEquals(projectFile, pmLoad.getProjectFilename());
-        } catch (IOException e) {
 
-        }
+        projectFile = pmLoad.getProjectLocation().resolve(pmLoad.getName() + ".xml").toString();
+        Assertions.assertEquals(projectFile, pmLoad.getProjectFilePath());
     }
 
     @Test
@@ -450,7 +440,7 @@ public class ProjectMgrTest {
         ProjectMgr pm = getPmNameFalseLoad();
         this.addSimulatorTo(pm);
         this.addScriptToProject(pm);
-        String comp = scriptName + "." + scriptExtension;
+        String comp = scriptFilename;
         Assertions.assertEquals(comp, pm.getScriptCanonicalFilePath());
     }
 
@@ -518,10 +508,9 @@ public class ProjectMgrTest {
                 buildOption);
     }
 
-    String scriptName = "Hello";
-    String scriptExtension = "xml";
+    String scriptFilename = "Hello.sh";
     private void addScriptToProject(ProjectMgr pm) {
-        pm.addScript(scriptName, scriptExtension);
+        pm.addScript(scriptFilename);
     }
     // </editor-fold>
 

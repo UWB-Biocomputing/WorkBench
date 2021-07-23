@@ -2,11 +2,9 @@ package edu.uwb.braingrid.workbench;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.HashMap;
@@ -74,7 +72,7 @@ public class WorkbenchManager {
     }
 
     private void initFileOutput() {
-        Path logsDir = Paths.get(FileManager.getWorkbenchDirectory(), "logs");
+        Path logsDir = FileManager.getWorkbenchDirectory().resolve("logs");
         String logFile = logsDir.resolve("WD-WorkbenchManager-log.%u").toString();
         FileHandler handler = null;
         try {
@@ -180,8 +178,7 @@ public class WorkbenchManager {
         Long accumulatedTime = 0L;
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Select a Project Specification...");
-        File projectsDirectory = new File(FileManager.getProjectsDirectory());
-        chooser.setCurrentDirectory(projectsDirectory);
+        chooser.setCurrentDirectory(FileManager.getProjectsDirectory().toFile());
         FileNameExtensionFilter filter = new FileNameExtensionFilter("XML file (*.xml)", "xml");
         chooser.addChoosableFileFilter(filter);
         chooser.setFileFilter(filter);
@@ -189,24 +186,21 @@ public class WorkbenchManager {
         switch (choice) {
             case JFileChooser.APPROVE_OPTION:
                 try {
-                    File selectedFile = chooser.getSelectedFile();
+                    Path selectedFile = chooser.getSelectedFile().toPath();
+                    String projectName = FileManager.getBaseFilename(selectedFile);
                     try {
-                        projectMgr = new ProjectMgr(FileManager.getBaseFilename(
-                                selectedFile.getName()), true);
+                        projectMgr = new ProjectMgr(projectName, true);
 
                     } catch (IOException ex1) {
                         messageAccumulator += "\n"
                                 + "Unmanaged project selected.\n"
                                 + "Attempting to import project...\n";
-                        String destFolder = ProjectMgr.getProjectLocation(
-                                FileManager.getBaseFilename(selectedFile.getName()));
+                        Path destFolder = ProjectMgr.getProjectLocation(projectName);
                         FileManager.copyFolder(selectedFile.getParent(), destFolder);
                         messageAccumulator += "\n" + "Folder contents copied..."
                                 + "\nFrom: " + selectedFile.getParent()
-                                + "\nTo:   "
-                                + destFolder + "\n";
-                        projectMgr = new ProjectMgr(FileManager.getBaseFilename(
-                                selectedFile.getName()), true);
+                                + "\nTo:   " + destFolder + "\n";
+                        projectMgr = new ProjectMgr(projectName, true);
                     }
                     updateSimSpec();
                     if (projectMgr.isProvenanceEnabled()) {
@@ -435,7 +429,7 @@ public class WorkbenchManager {
             simulatorSpecification.setSHA1CheckoutKey(commitVersion);
             simulatorSpecification.setSourceCodeUpdating("Pull");
             simulatorSpecification.setBuildOption("Build");
-            simulatorSpecification.setSimulatorFolder("BrainGrid/");
+            simulatorSpecification.setSimulatorFolder("BrainGrid");
             spd = new ScriptSpecificationDialog(true, simulatorSpecification);
         } else {
             spd = new ScriptSpecificationDialog(true);
@@ -480,15 +474,15 @@ public class WorkbenchManager {
                 projectMgr.getSimConfigFilename());
         if (script != null) {
             try {
-                String projectFolder = projectMgr.getProjectLocation();
-                String scriptsFolder = FileManager.buildPathString(projectFolder, "scripts");
-                new File(scriptsFolder).mkdirs();
+                Path projectFolder = projectMgr.getProjectLocation();
+                Path scriptsFolder = projectFolder.resolve("scripts");
+                Files.createDirectories(scriptsFolder);
                 String scriptName = getNextScriptName();
-                String scriptFilename = FileManager.buildPathString(scriptsFolder, scriptName);
+                String scriptFilename = scriptsFolder.resolve(scriptName + ".sh").toString();
                 script.persist(scriptFilename);
-                success = projectMgr.addScript(scriptFilename, "sh");
+                success = projectMgr.addScript(scriptFilename);
                 if (success) {
-                    messageAccumulator += "\n" + "Script generated at: " + scriptFilename + ".sh\n";
+                    messageAccumulator += "\n" + "Script generated at: " + scriptFilename + "\n";
                     // this is where prov would be if we didn't want to wait till
                     // script execution to record the script's existence
                 } else {
@@ -551,7 +545,7 @@ public class WorkbenchManager {
                 try {
                     messageAccumulator += "\n"
                             + "Gathering simulation provenance...\n";
-                    String targetFolder = ScriptManager.getScriptFolder(
+                    Path targetFolder = ScriptManager.getScriptFolder(
                             projectMgr.getProjectLocation());
                     timeCompleted = scriptMgr.analyzeScriptOutput(simulatorSpecification,
                             projectMgr, prov, targetFolder);

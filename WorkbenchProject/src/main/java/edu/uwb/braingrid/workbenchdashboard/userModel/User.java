@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.FileManager;
@@ -17,22 +19,24 @@ import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
 public final class User implements FileManagerShared {
 
     private static final Logger LOG = Logger.getLogger(User.class.getName());
-    private static final String USER_DATA_PATH = FileManager.getWorkbenchDirectory()
-            + File.separator + "user.json";
 
     private static User user = null;
 
-    private String projectsDirectory;
-    private String simulationsDirectory;
-    private String brainGridRepoDirectory;
+    private Path projectsDirectory;
+    private Path simulationsDirectory;
+    private Path brainGridRepoDirectory;
 
     private User() {
         LOG.info("Initializing User Data");
         //TODO: get project and sim dirs from user
-        setProjectsDirectory(System.getProperty("user.dir"));
-        setSimulationsDirectory(System.getProperty("user.home"));
-        setBrainGridRepoDirectory(getProjectsDirectory() + File.separator
-                + ProVisGlobal.BG_REPOSITORY_LOCAL);
+        Path projectsDir = FileManager.getUserHome()
+                .resolve("Documents")
+                .resolve("WorkbenchProjects");
+        Path simulationsDir = FileManager.getUserHome();
+        setProjectsDirectory(projectsDir);
+        setSimulationsDirectory(simulationsDir);
+        setBrainGridRepoDirectory(getProjectsDirectory()
+                .resolve(ProVisGlobal.BG_REPOSITORY_LOCAL));
     }
 
     public static User getUser() {
@@ -46,7 +50,7 @@ public final class User implements FileManagerShared {
         LOG.info("Loading User Information");
         ObjectMapper mapper = new ObjectMapper();
 
-        File file = new File(USER_DATA_PATH);
+        File file = getUserDataPath().toFile();
         JsonNode json;
         if (file.exists()) {
             try {
@@ -69,11 +73,11 @@ public final class User implements FileManagerShared {
     public static boolean save() {
         LOG.info("Saving User Data");
         ObjectMapper mapper = new ObjectMapper();
-        File file = new File(USER_DATA_PATH);
+        Path userDataPath = getUserDataPath();
 
         try {
-            file.getParentFile().mkdirs();
-            mapper.writeValue(file, user);
+            Files.createDirectories(userDataPath.getParent());
+            mapper.writeValue(userDataPath.toFile(), user);
         } catch (IOException e) {
             LOG.severe(e.getMessage());
             return false;
@@ -81,30 +85,34 @@ public final class User implements FileManagerShared {
         return true;
     }
 
-    public String getProjectsDirectory() {
+    public Path getProjectsDirectory() {
         return this.projectsDirectory;
     }
 
-    public void setProjectsDirectory(String projectsDirectory) {
+    public void setProjectsDirectory(Path projectsDirectory) {
         LOG.info("Workbench Projects Path: " + projectsDirectory);
         this.projectsDirectory = projectsDirectory;
     }
 
-    public String getBrainGridRepoDirectory() {
+    public Path getBrainGridRepoDirectory() {
         return brainGridRepoDirectory;
     }
 
-    public void setBrainGridRepoDirectory(String brainGridRepoDirectory) {
+    public void setBrainGridRepoDirectory(Path brainGridRepoDirectory) {
         LOG.info("BrainGrid Repo Path: " + brainGridRepoDirectory);
         this.brainGridRepoDirectory = brainGridRepoDirectory;
     }
 
-    public String getSimulationsDirectory() {
+    public Path getSimulationsDirectory() {
         return simulationsDirectory;
     }
 
-    public void setSimulationsDirectory(String simulationsDirectory) {
+    public void setSimulationsDirectory(Path simulationsDirectory) {
         LOG.info("Workbench Simulations Path: " + simulationsDirectory);
         this.simulationsDirectory = simulationsDirectory;
+    }
+
+    private static Path getUserDataPath() {
+        return FileManager.getWorkbenchDirectory().resolve("user.json");
     }
 }

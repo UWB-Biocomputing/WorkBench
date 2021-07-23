@@ -3,7 +3,6 @@ package edu.uwb.braingrid.workbenchdashboard;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -46,7 +45,7 @@ public class WorkbenchDashboard extends Application {
     }
 
     private void initFileOutput() {
-        Path logsDir = Paths.get(FileManager.getWorkbenchDirectory(), "logs");
+        Path logsDir = FileManager.getWorkbenchDirectory().resolve("logs");
         String logFile = logsDir.resolve("WD-log.%u").toString();
         FileHandler handler = null;
         try {

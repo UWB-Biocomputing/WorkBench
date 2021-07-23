@@ -190,7 +190,7 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void getMextScriptNameTest() {
+    public void getNextScriptNameTest() {
         test();
     }
 

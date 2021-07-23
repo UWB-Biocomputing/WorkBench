@@ -14,11 +14,12 @@ public class UserView extends WorkbenchApp {
     private VBox display = new VBox();
 
     private Label projectDir = new Label("Projects Directory: ");
-    private TextField projectDirField = new TextField(FileManager.getProjectsDirectory());
+    private TextField projectDirField
+            = new TextField(FileManager.getProjectsDirectory().toString());
 
     private Label bgRepoDir = new Label("Brain Grid Repos Directory: ");
     private TextField bgRepoDirField
-            = new TextField(FileManager.getBrainGridRepoDirectory());
+            = new TextField(FileManager.getBrainGridRepoDirectory().toString());
 
     public UserView(Tab tab) {
         super(tab);

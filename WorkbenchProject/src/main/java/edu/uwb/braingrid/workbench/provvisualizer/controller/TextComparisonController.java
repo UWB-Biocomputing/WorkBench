@@ -110,17 +110,18 @@ public class TextComparisonController {
         }
     }
 
-    public void loadFile(String filePath, boolean left) {
+    public boolean loadFile(String filePath, boolean left) {
         CodeArea codeArea = left ? codeAreaLeft : codeAreaRight;
         VirtualizedScrollPane scrollPane = left ? scrollPaneLeft : scrollPaneRight;
 
         codeArea.clear();
-        Scanner in = null;
+        Scanner in;
 
         try {
             in = new Scanner(new File(filePath));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return false;
         }
 
         in.useDelimiter("\\A");
@@ -129,6 +130,7 @@ public class TextComparisonController {
         }
 
         scrollPane.scrollYToPixel(0);
+        return true;
     }
 
     private static StyleSpans<Collection<String>> computeHighlighting(String text) {

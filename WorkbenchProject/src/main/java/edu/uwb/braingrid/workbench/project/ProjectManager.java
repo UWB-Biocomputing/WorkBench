@@ -2,7 +2,7 @@ package edu.uwb.braingrid.workbench.project;
 // NOT CLEANED (Still Implementing / Testing / JavaDocs / Class Header)
 
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Date;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -85,7 +85,7 @@ public class ProjectManager {
         initState();
         project.setProjectName(rootNodeName);
         if (load) {
-            project.load(project.getProjectFilename());
+            project.load();
         }
     }
 
@@ -115,20 +115,18 @@ public class ProjectManager {
      * Provides the folder location for storing provenance data for a given project.
      *
      * @return The path to the provenance folder for the specified project
-     * @throws IOException
      */
-    public String getProvLocation() throws IOException {
-        return Paths.get(project.getProjectLocation(), "provenance").toString();
+    public Path getProvLocation() {
+        return project.getProjectLocation().resolve("provenance");
     }
 
     /**
      * Provides the assumed folder location for a project of a given name.
      *
      * @return The path to the project folder for the specified project
-     * @throws IOException
      */
-    public static String getProjectLocation(String name) throws IOException {
-        return Paths.get(FileManager.getProjectsDirectory(), "projects", name).toString();
+    public static Path getProjectLocation(String name) {
+        return FileManager.getProjectsDirectory().resolve("projects").resolve(name);
     }
     // </editor-fold>
 

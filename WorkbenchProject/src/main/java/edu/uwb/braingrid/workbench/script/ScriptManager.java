@@ -40,6 +40,8 @@ import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
  */
 public class ScriptManager {
 
+    private static final Logger LOG = Logger.getLogger(ScriptManager.class.getName());
+
     private String outstandingMessages;
     //private ProjectManager projectManager = new ProjectManager();
 
@@ -241,8 +243,8 @@ public class ScriptManager {
      *         stored. Depending on the form of the project folder provided, this may represent a
      *         relative path.
      */
-    public static String getScriptFolder(String projectFolder) {
-        return Paths.get(projectFolder, "scripts").toString();
+    public static Path getScriptFolder(Path projectFolder) {
+        return projectFolder.resolve("scripts");
     }
 
     /**
@@ -415,10 +417,9 @@ public class ScriptManager {
         Path userDir = FileManager.getUserDir();
         Path scriptSourcePath = Paths.get(scriptLocation);
         // get the location where the script will execute
-        Path scriptTargetPath = userDir.resolve(FileManager.getSimpleFilename(scriptLocation));
+        Path scriptTargetPath = userDir.resolve(scriptSourcePath.getFileName());
         Path simConfigSourcePath = Paths.get(simConfigFilename);
-        Path simConfigTargetPath = userDir.resolve(
-                FileManager.getSimpleFilename(simConfigFilename));
+        Path simConfigTargetPath = userDir.resolve(simConfigSourcePath.getFileName());
         Path[] nListSourcePaths = null;
         Path[] nListTargetPaths = null;
         // calculate source and target paths
@@ -428,9 +429,8 @@ public class ScriptManager {
             for (int i = 0, im = inputFilenames.length; i < im; i++) {
                 nListSourcePaths[i] = Paths.get(inputFilenames[i]);
             }
-            for (int i = 0, im = inputFilenames.length; i < im; i++) {
-                nListTargetPaths[i] = userDir.resolve(
-                        FileManager.getSimpleFilename(inputFilenames[i]));
+            for (int i = 0, im = nListSourcePaths.length; i < im; i++) {
+                nListTargetPaths[i] = userDir.resolve(nListSourcePaths[i].getFileName());
             }
         }
         try {
@@ -515,8 +515,7 @@ public class ScriptManager {
         String oldWrkDir = System.getProperty("user.dir");
         //String homeDir = System.getProperty("user.home");
         System.setProperty("user.dir", System.getProperty("user.home"));
-        String cmd = "sh " + userDir.resolve(
-                FileManager.getSimpleFilename(scriptTargetPath.toString())).toString();
+        String cmd = "sh " + scriptTargetPath.toString();
         // run the script
         try {
             if (Desktop.isDesktopSupported() && SystemProperties.isWindowsSystem()) {
@@ -537,7 +536,7 @@ public class ScriptManager {
         } catch (IOException e) {
             success = false;
             outstandingMessages += "\n"
-                    + "An input/output error occured while executing: "
+                    + "An input/output error occurred while executing: "
                     + "\n" + scriptTargetPath
                     + "\n";
             e.printStackTrace();
@@ -552,7 +551,7 @@ public class ScriptManager {
                     accumulatedTime);
         }
         if (success) {
-            LOG.info("Script " + scriptTargetPath + " Ran Succsesfully");
+            LOG.info("Script " + scriptTargetPath + " Ran Successfully");
         } else {
             LOG.info("Script " + scriptTargetPath + " Failed");
         }
@@ -580,7 +579,7 @@ public class ScriptManager {
      * @throws java.io.IOException
      */
     public long analyzeScriptOutput(SimulationSpecification simSpec, ProjectMgr projectMgr,
-            ProvMgr provMgr, String outputTargetFolder) throws JSchException, SftpException,
+            ProvMgr provMgr, Path outputTargetFolder) throws JSchException, SftpException,
             IOException {
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
@@ -604,8 +603,8 @@ public class ScriptManager {
                 }
                 /* Simulation */
                 ExecutedCommand sim = analyzer.getFirstCommand("./" + simExec);
-                Path resultFilePath = Paths.get(projectMgr.getProjectLocation(),
-                        projectMgr.getSimResultFile());
+                Path resultFilePath = projectMgr.getProjectLocation()
+                        .resolve(projectMgr.getSimResultFile());
                 boolean simSuccessful = Files.exists(resultFilePath);
                 if (sim != null && simSuccessful) {
                     String userDir = FileManager.getUserDir().toString();
@@ -662,15 +661,14 @@ public class ScriptManager {
                             + projectMgr.getScriptVersion()
                             + "_"
                             + Script.SHA1_KEY_FILENAME;
-                    String sha1Pathname = outputTargetFolder + sha1KeyFilename;
-                    File sha1File = new File(sha1Pathname);
-                    if (sha1File.exists()) {
+                    Path sha1KeyFilePath = outputTargetFolder.resolve(sha1KeyFilename);
+                    if (Files.exists(sha1KeyFilePath)) {
                         // open the file
-                        Scanner fileReader = null;
-                        String sha1key = null;
+                        Scanner fileReader;
+                        String sha1key;
                         /* Stage Error Handling */
                         try { // try to start reading from the given file path
-                            fileReader = new Scanner(new FileReader(sha1File));
+                            fileReader = new Scanner(new FileReader(sha1KeyFilePath.toFile()));
                             if (fileReader.hasNext()) {
                                 // read the line to create a revision entity
                                 sha1key = fileReader.nextLine();
@@ -683,7 +681,7 @@ public class ScriptManager {
                                 }
                             }
                         } catch (FileNotFoundException e) {
-                            System.err.println("File not found: " + sha1Pathname);
+                            System.err.println("File not found: " + sha1KeyFilePath);
                         }
                     }
                 }
@@ -717,7 +715,7 @@ public class ScriptManager {
     }
 
     private String fetchScriptOutputFiles(ProjectMgr projectMgr, SimulationSpecification simSpec,
-            String outputStorageFolder) throws JSchException, SftpException, IOException {
+            Path scriptOutputFolder) throws JSchException, SftpException, IOException {
         String filename = null;
         char[] password = null;
         // determine script output filenames
@@ -744,12 +742,11 @@ public class ScriptManager {
                 + "_"
                 + Script.COMMAND_OUTPUT_FILENAME;
         // determine script output file target paths
-        Path scriptOutputFolder = Paths.get(outputStorageFolder);
         Path scriptStatusFileTarget = scriptOutputFolder.resolve(scriptStatusFilename);
         Path simStatusFileTarget = scriptOutputFolder.resolve(simStatusFilename);
         Path sha1KeyFileTarget = scriptOutputFolder.resolve(sha1KeyFilename);
         // prep folder for simulation results
-        Path simResultsFolder = Paths.get(projectMgr.getProjectLocation(), "results");
+        Path simResultsFolder = projectMgr.getProjectLocation().resolve("results");
         Files.createDirectories(simResultsFolder);
         // determine simulation result file target path
         Path resultFileTarget = simResultsFolder.getParent().resolve(projectMgr.getSimResultFile());
@@ -777,7 +774,7 @@ public class ScriptManager {
                     sft.downloadFile(simStatusFilename, simStatusFileTarget.toString(), hostname,
                             lcd.getUsername(), password);
                     outstandingMessages += "\nLatest output from simulation:\n"
-                            + getLastLine(simStatusFileTarget.toString())
+                            + getLastLine(simStatusFileTarget)
                             + "\n";
                 } catch (SftpException e) {
                     outstandingMessages += "\nDownload failed for: "
@@ -835,7 +832,7 @@ public class ScriptManager {
                 try {
                     FileManager.copyFile(simStatusFileSource, simStatusFileTarget);
                     outstandingMessages += "\nLatest output from simulation:\n"
-                            + getLastLine(simStatusFileTarget.toString())
+                            + getLastLine(simStatusFileTarget)
                             + "\n";
                 } catch (IOException e) {
                     outstandingMessages += "\nSimulation status copy operation failed: \n"
@@ -919,24 +916,21 @@ public class ScriptManager {
         return projectName + "_script" + version;
     }
 
-    public static String getLastLine(String filename) {
+    public static String getLastLine(Path filePath) {
         String lastLine = "";
-        File file = new File(filename);
-        if (file.exists()) {
+        if (Files.exists(filePath)) {
             // open the file
             Scanner fileReader;
             /* Stage Error Handling */
             try { // try to start reading from the given file path
-                fileReader = new Scanner(new FileReader(file));
+                fileReader = new Scanner(new FileReader(filePath.toFile()));
                 while (fileReader.hasNext()) {
                     lastLine = fileReader.nextLine();
                 }
             } catch (FileNotFoundException e) {
-                System.err.println("File not found: " + filename);
+                System.err.println("File not found: " + filePath);
             }
         }
         return lastLine;
     }
-
-    private static final Logger LOG = Logger.getLogger(ScriptManager.class.getName());
 }

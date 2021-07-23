@@ -13,12 +13,12 @@ public class FileSelectorDirMgr {
     private final ArrayList<File> dirs = new ArrayList<>();
 
     /**
-     * Provides the default (root) directory.
+     * Provides the default (home) directory.
      *
      * @return The default directory
      */
     public File getDefault() {
-        return new File(FileManager.getProjectsDirectory());
+        return FileManager.getUserHome().toFile();
     }
 
     /**

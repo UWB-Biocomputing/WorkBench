@@ -5,17 +5,14 @@ import edu.uwb.braingrid.workbench.ui.WorkbenchControlFrame;
 /**
  * <h2>Project Manager for the Brain Grid Toolbox.</h2>
  *
- * <p>
- * The workbench is usable from a command line interface through runCLI or through a graphical user
- * interface through runGUI. These two types of invocation are determined based on the amount of
- * command line arguments specified at execution</p>
+ * <p>The workbench is usable from a command line interface through runCLI or through a graphical
+ * user interface through runGUI. These two types of invocation are determined based on the amount
+ * of command line arguments specified at execution</p>
  *
- * <p>
- * Specifying zero arguments (double clicking the java archive BrainGridWorkbench.jar file) will
+ * <p>Specifying zero arguments (double clicking the java archive BrainGridWorkbench.jar file) will
  * launch the graphical workbench</p>
  *
- * <p>
- * Specifying the input file names, simulator type, and output file name as arguments will launch
+ * <p>Specifying the input file names, simulator type, and output file name as arguments will launch
  * the application in simple-mode. Simple-mode results in writing RDF provenance represented as a
  * turtle file. The resulting turtle file is named after the output file, but with the .ttl
  * extension</p>

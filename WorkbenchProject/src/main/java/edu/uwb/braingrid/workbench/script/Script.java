@@ -434,15 +434,15 @@ public class Script {
     /**
      * Writes the script to disk. The script must be constructed prior to being persisted.
      *
-     * @param filePathWithBaseName  The relative, absolute, or canonical path to the file that will
-     *                              contain the script data, without the file extension
+     * @param scriptFilename  The relative, absolute, or canonical path to the file that will
+     *                        contain the script data
      * @return True if both the bash script and batch script were persisted successfully, otherwise
      *         false
      */
-    public boolean persist(String filePathWithBaseName) {
+    public boolean persist(String scriptFilename) {
         boolean bashScriptPersisted = false;
         if (bashScriptConstructed) {
-            bashScriptPersisted = persistBashScript(filePathWithBaseName + ".sh");
+            bashScriptPersisted = persistBashScript(scriptFilename);
         }
         return bashScriptPersisted;
     }
@@ -451,13 +451,13 @@ public class Script {
      * Writes the script to disk as a bash script. The script must be constructed by calling the
      * construct function prior to being persisted.
      *
-     * @param filePath  The relative, absolute, or canonical path to the file that will contain the
-     *                  script data
+     * @param scriptFilename  The relative, absolute, or canonical path to the file that will
+     *                        contain the script data
      * @return True if the bash script was persisted successfully, otherwise false
      */
-    public boolean persistBashScript(String filePath) {
+    public boolean persistBashScript(String scriptFilename) {
         boolean success = true;
-        File scriptFile = new File(filePath);
+        File scriptFile = new File(scriptFilename);
         try (FileWriter scriptWriter = new FileWriter(scriptFile, false)) {
             scriptWriter.write(bashScript);
         } catch (IOException e) {

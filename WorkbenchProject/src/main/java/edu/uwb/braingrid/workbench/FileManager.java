@@ -1,6 +1,5 @@
 package edu.uwb.braingrid.workbench;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -37,7 +36,6 @@ public final class FileManager {
 
     private static User user = User.getUser();
     private static Pattern filenamePattern = null;
-    private static Pattern directoryNamePattern = null;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -48,8 +46,8 @@ public final class FileManager {
 
     // <editor-fold defaultstate="collapsed" desc="Getters/Setters">
     public static String[] getNeuronListFilenames(String projectName) throws IOException {
-        Path folder = Paths.get(getSimConfigDirectoryPath(projectName, false),
-                NEURON_LIST_FOLDER_NAME);
+        Path folder = getSimConfigDirectoryPath(projectName, false)
+                .resolve(NEURON_LIST_FOLDER_NAME);
         return Files.list(folder)
                 .filter(Files::isRegularFile)
                 .map(Path::toString)
@@ -61,19 +59,19 @@ public final class FileManager {
      *
      * @return A string representation of the workbench (data) directory path
      */
-    public static String getWorkbenchDirectory() {
-        return getUserHome().resolve(".workbench").toString();
+    public static Path getWorkbenchDirectory() {
+        return getUserHome().resolve(".workbench");
     }
 
-    public static String getProjectsDirectory() {
+    public static Path getProjectsDirectory() {
         return user.getProjectsDirectory();
     }
 
-    public static String getSimulationsDirectory() {
+    public static Path getSimulationsDirectory() {
         return user.getSimulationsDirectory();
     }
 
-    public static String getBrainGridRepoDirectory() {
+    public static Path getBrainGridRepoDirectory() {
         return user.getBrainGridRepoDirectory();
     }
 
@@ -94,9 +92,9 @@ public final class FileManager {
      * @return The canonical location of the specified simulation configuration file.
      * @throws IOException
      */
-    public static String getSimConfigFilePath(String projectName, String filename, boolean mkdirs)
+    public static Path getSimConfigFilePath(String projectName, String filename, boolean mkdirs)
             throws IOException {
-        return buildPathString(getSimConfigDirectoryPath(projectName, mkdirs), filename);
+        return getSimConfigDirectoryPath(projectName, mkdirs).resolve(filename);
     }
 
     /**
@@ -115,14 +113,14 @@ public final class FileManager {
      * @return The canonical location of the specified simulation configuration file
      * @throws IOException
      */
-    public static String getNeuronListFilePath(String projectName, String filename, boolean mkdirs)
+    public static Path getNeuronListFilePath(String projectName, String filename, boolean mkdirs)
             throws IOException {
-        Path folder = Paths.get(getSimConfigDirectoryPath(projectName, mkdirs),
-                NEURON_LIST_FOLDER_NAME);
+        Path folder = getSimConfigDirectoryPath(projectName, false)
+                .resolve(NEURON_LIST_FOLDER_NAME);
         if (mkdirs) {
             Files.createDirectories(folder);
         }
-        return folder.resolve(filename).toString();
+        return folder.resolve(filename);
     }
 
     /**
@@ -141,13 +139,13 @@ public final class FileManager {
      *         related files.
      * @throws IOException
      */
-    public static String getSimConfigDirectoryPath(String projectName, boolean mkdirs)
+    public static Path getSimConfigDirectoryPath(String projectName, boolean mkdirs)
             throws IOException {
-        Path dir = Paths.get(getProjectDirectory(projectName, mkdirs), CONFIG_FILES_FOLDER_NAME);
+        Path dir = getProjectDirectory(projectName, mkdirs).resolve(CONFIG_FILES_FOLDER_NAME);
         if (mkdirs) {
             Files.createDirectories(dir);
         }
-        return dir.toString();
+        return dir;
     }
 
     /**
@@ -161,13 +159,12 @@ public final class FileManager {
      *         to a given project.
      * @throws IOException
      */
-    public static String getProjectDirectory(String projectName, boolean mkdirs)
-            throws IOException {
-        Path dir = Paths.get(getProjectsDirectory(), PROJECTS_FOLDER_NAME, projectName);
+    public static Path getProjectDirectory(String projectName, boolean mkdirs) throws IOException {
+        Path dir = getProjectsDirectory().resolve(PROJECTS_FOLDER_NAME).resolve(projectName);
         if (mkdirs) {
             Files.createDirectories(dir);
         }
-        return dir.toString();
+        return dir;
     }
 
     /**
@@ -202,8 +199,16 @@ public final class FileManager {
         return FilenameUtils.getName(longFilename);
     }
 
+    public static String getSimpleFilename(Path longFilename) {
+        return FilenameUtils.getName(longFilename.toString());
+    }
+
     public static String getBaseFilename(String longFilename) {
         return FilenameUtils.getBaseName(longFilename);
+    }
+
+    public static String getBaseFilename(Path longFilename) {
+        return FilenameUtils.getBaseName(longFilename.toString());
     }
 
     public static String buildPathString(String first, String... more) {
@@ -219,13 +224,13 @@ public final class FileManager {
      * exist, then this method merges the source with the destination, with the source taking
      * precedence.
      *
-     * @param src  Location of the source directory
-     * @param dst  Location of the target directory to hold copies of all files and subdirectories
-     *             from the source directory
+     * @param source  Location of the source directory
+     * @param target  Location of the target directory to hold copies of all files and
+     *                subdirectories from the source directory
      * @throws IOException
      */
-    public static void copyFolder(String src, String dst) throws IOException {
-        FileUtils.copyDirectory(new File(src), new File(dst));
+    public static void copyFolder(Path source, Path target) throws IOException {
+        FileUtils.copyDirectory(source.toFile(), target.toFile());
     }
 
     /**
@@ -243,12 +248,10 @@ public final class FileManager {
      */
     public static boolean copyFile(Path source, Path target) throws IOException {
         boolean success = true;
-        File fromFile = source.toFile();
-        if (fromFile.exists()) {
-            File toFile = target.toFile();
-            if (!toFile.exists()) {
-                target.getParent().toFile().mkdirs();
-                toFile.createNewFile();
+        if (Files.exists(source)) {
+            if (!Files.exists(target)) {
+                Files.createDirectories(target.getParent());
+                Files.createFile(target);
             }
         } else {
             success = false;

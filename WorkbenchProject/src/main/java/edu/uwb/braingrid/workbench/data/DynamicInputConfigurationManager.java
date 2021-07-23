@@ -88,11 +88,8 @@ public class DynamicInputConfigurationManager {
      */
     public String buildAndPersist(String projectName, String filename) throws TransformerException,
             TransformerConfigurationException, IOException {
-        String fullPath = null;
-
-        fullPath = FileManager.getSimConfigFilePath(projectName, filename, true);
+        String fullPath = FileManager.getSimConfigFilePath(projectName, filename, true).toString();
         inputConfigBuilder.persist(inputConfig.getDocument(), fullPath);
-
         return fullPath;
     }
 }

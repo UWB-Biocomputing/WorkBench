@@ -62,11 +62,11 @@ public final class DateTime {
 
     public static void recordFunctionExecutionTime(String className, String functionName,
             Long totalTime, boolean provEnabled) {
-        String file = FileManager.buildPathString(FileManager.getWorkbenchDirectory(), "logs",
-                "provOverhead.txt");
+        String filename = FileManager.getWorkbenchDirectory().resolve("logs")
+                .resolve("provOverhead.txt").toString();
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new FileWriter(file, true)));
+                    new FileWriter(filename, true)));
             out.println(className + "." + functionName + ";provEnabled=" + provEnabled
                     + ";total milliseconds:" + totalTime);
             out.close();
@@ -78,11 +78,11 @@ public final class DateTime {
 
     public static void recordAccumulatedProvTiming(String className, String functionName,
             Long totalProvTime) {
-        String file = FileManager.buildPathString(FileManager.getWorkbenchDirectory(), "logs",
-                "provOverhead.txt");
+        String filename = FileManager.getWorkbenchDirectory().resolve("logs")
+                .resolve("provOverhead.txt").toString();
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new FileWriter(file, true)));
+                    new FileWriter(filename, true)));
             out.println(className + "." + functionName + ";total prov overhead:" + totalProvTime);
             out.close();
         } catch (IOException e) {

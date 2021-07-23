@@ -7,8 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import edu.uwb.braingrid.workbench.FileManager;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +28,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 
+import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ConnectionUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.FileUtility;
@@ -201,7 +200,7 @@ public class ProVisCtrl {
             fileChooser.setTitle("Select provenance file");
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
-            fileChooser.setInitialDirectory(FileManager.getUserDir().toFile());
+            fileChooser.setInitialDirectory(FileManager.getProjectsDirectory().toFile());
 
             File selectedFile = fileChooser.showOpenDialog(canvasPane.getScene().getWindow());
 
@@ -406,8 +405,8 @@ public class ProVisCtrl {
         String hostname = null;
         String nodeFileRemoteFullPath = node.getId();
         String[] splitStrs = null;
-        String nodeFileLclPath = FileUtility.getNodeFileLocalAbsolutePath(node);
-        String nodeFileRemoteRelPath = FileUtility.getNodeFileRemoteRelativePath(node);
+        String nodeFileLocalPath = FileUtility.getNodeFileLocalAbsolutePath(node);
+        String nodeFileRemotePath = FileUtility.getNodeFileRemoteRelativePath(node);
         boolean downloadSuccess = false;
         authenticationInfo = null;
 
@@ -436,13 +435,13 @@ public class ProVisCtrl {
 
         if (authenticationInfo != null) {
             do {
-                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath,
-                        nodeFileLclPath, authenticationInfo);
+                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemotePath,
+                        nodeFileLocalPath, authenticationInfo);
             } while (!downloadSuccess && requestAuthenticationInfo(hostname, username));
         } else {
             while (!downloadSuccess && requestAuthenticationInfo(hostname, username)) {
-                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath,
-                        nodeFileLclPath, authenticationInfo);
+                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemotePath,
+                        nodeFileLocalPath, authenticationInfo);
             }
         }
 
@@ -708,15 +707,15 @@ public class ProVisCtrl {
         } else if (typeOfNode == 'I') {
             inhibitoryTextField.clear();
             inhibitoryTextField.appendText(aSelectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, aSelectedNode);
+            setNLEditForBuild(typeOfNode, aSelectedNode);
         } else if (typeOfNode == 'A') {
             activeTextField.clear();
             activeTextField.appendText(aSelectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, aSelectedNode);
+            setNLEditForBuild(typeOfNode, aSelectedNode);
         } else if (typeOfNode == 'P') {
             probedTextField.clear();
             probedTextField.appendText(aSelectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, aSelectedNode);
+            setNLEditForBuild(typeOfNode, aSelectedNode);
         }
         buildFromPrevButton.setDisable(false);
         return true;
@@ -726,7 +725,7 @@ public class ProVisCtrl {
      * Returns char N for failure, A = Active, I = inhibitory, P = probed, S = Sim Input.
      */
     private char loadFile(String filePath) {
-        Scanner in = null;
+        Scanner in;
         try {
             in = new Scanner(new File(filePath));
         } catch (FileNotFoundException e) {
@@ -757,7 +756,7 @@ public class ProVisCtrl {
     /**
      * Adds NList inputs selected by user to simStartWiz called by buildFromPrevButton.
      */
-    private void setNLEditforBuild(char inputType, Node inputNode) {
+    private void setNLEditForBuild(char inputType, Node inputNode) {
         nListPresets.put(inputType, FileUtility.getNodeFileLocalAbsolutePath(inputNode));
     }
 
@@ -766,7 +765,7 @@ public class ProVisCtrl {
      * Display universalProvenance on ProVis.
      */
     public void openUniversalProvenance() {
-        File universalProvenance = FileManager.getUserDir().resolve("projects")
+        File universalProvenance = FileManager.getProjectsDirectory().resolve("projects")
                 .resolve("UniversalProvenance.ttl").toFile();
         if (universalProvenance.exists()) {
             dataProvGraph.clearNodesNEdges();

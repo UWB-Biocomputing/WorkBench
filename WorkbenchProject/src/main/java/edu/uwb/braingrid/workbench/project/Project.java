@@ -1,12 +1,8 @@
 package edu.uwb.braingrid.workbench.project;
 
-// CLOSED FOR MODIFICATION
-// NOT CLEANED
-// FIX THIS!!! (Needs JavaDocs / Line Comments)
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,7 +19,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.project.model.Datum;
 import edu.uwb.braingrid.workbench.project.model.ProjectData;
 
@@ -36,8 +31,8 @@ public class Project {
     private HashMap<String, ProjectData> projectData;
     private String projectName;
 
-    public Project(String projName) {
-        projectName = projName;
+    public Project(String projectName) {
+        this.projectName = projectName;
     }
 
     /**
@@ -60,32 +55,28 @@ public class Project {
         }
 
         // calculate the full path to the project file
-        String projectFilename = getProjectFilename();
+        Path projectFilePath = getProjectFilePath();
 
         // create any necessary non-existent directories
-        Files.createDirectories(Paths.get(getProjectLocation()));
-
-        // create the file we want to save
-        File projectFile = new File(projectFilename);
+        Files.createDirectories(projectFilePath.getParent());
 
         // write the content into xml file
         Transformer t = TransformerFactory.newInstance().newTransformer();
         t.setOutputProperty(OutputKeys.INDENT, "yes");
         t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-        t.transform(new DOMSource(doc), new StreamResult(projectFile));
+        t.transform(new DOMSource(doc), new StreamResult(projectFilePath.toFile()));
 
-        return projectFilename;
+        return projectFilePath.toString();
     }
 
     /**
      *
-     * @param filename
      * @return this Project
      */
-    public Project load(String filename) throws SAXException, ParserConfigurationException,
+    public Project load() throws SAXException, ParserConfigurationException,
             IOException {
-        File file = new File(filename);
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                .parse(getProjectFilePath().toFile());
         doc.getDocumentElement().normalize();
         Element root = doc.getDocumentElement();
 
@@ -119,12 +110,8 @@ public class Project {
         return this;
     }
 
-    public void setProjectName(String projName) {
-        if (projName == null) {
-            projectName = "None";
-        } else {
-            projectName = projName;
-        }
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public String getProjectName() {
@@ -148,13 +135,9 @@ public class Project {
      *
      * @return The full path, including the filename, for the file containing the XML for this
      *         project
-     * @throws IOException
      */
-    public String getProjectFilename() throws IOException {
-        if (projectName == null) {
-            throw new IOException();
-        }
-        return FileManager.buildPathString(getProjectLocation(), projectName + ".xml");
+    public Path getProjectFilePath() {
+        return getProjectLocation().resolve(projectName + ".xml");
     }
 
     public ProjectData remove(String projectDataKey) {
@@ -165,9 +148,8 @@ public class Project {
      * Provides the folder location for a project based on the currently loaded configuration.
      *
      * @return The path to the project folder for the specified project
-     * @throws IOException
      */
-    public final String getProjectLocation() throws IOException {
+    public final Path getProjectLocation() {
         return ProjectManager.getProjectLocation(projectName);
     }
 }

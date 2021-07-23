@@ -1,12 +1,15 @@
 package edu.uwb.braingrid.workbench.provvisualizer.utility;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.commons.io.FilenameUtils;
 
+import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.provvisualizer.model.Node;
 
 public final class FileUtility {
@@ -21,29 +24,29 @@ public final class FileUtility {
     }
 
     public static String getNodeFileRemoteRelativePath(Node node) {
-        String relPath = getNodeFileLocalRelativePath(node);
-        relPath = relPath.substring(relPath.indexOf("/") + 1);
+        Path relPath = getNodeFileRelativePath(node);
+        relPath = relPath.subpath(1, relPath.getNameCount());
 
-        if (relPath.charAt(0) == '~') {
-            relPath = relPath.substring(2);
+        if (relPath.startsWith("~")) {
+            relPath = relPath.subpath(1, relPath.getNameCount());
         }
 
-        return relPath;
-    }
-
-    public static String getNodeFileLocalRelativePath(Node node) {
-        String nodeId = node.getId();
-
-        if (nodeId.contains(PREFIX_LOCAL)) {
-            return nodeId.replaceFirst(PREFIX_LOCAL, "");
-        } else {
-            return nodeId.replaceFirst(FILE_PROTOCOL_REGEX, "");
-        }
+        return FilenameUtils.separatorsToUnix(relPath.toString());
     }
 
     public static String getNodeFileLocalAbsolutePath(Node node) {
-        return System.getProperty("user.dir") + File.separator + ARTIFACTS_DIR + File.separator
-                + getNodeFileLocalRelativePath(node);
+        return FileManager.getProjectsDirectory().resolve(ARTIFACTS_DIR)
+                .resolve(getNodeFileRelativePath(node)).toString();
+    }
+
+    private static Path getNodeFileRelativePath(Node node) {
+        String nodeId = node.getId();
+
+        if (nodeId.contains(PREFIX_LOCAL)) {
+            return Paths.get(nodeId.replaceFirst(PREFIX_LOCAL, ""));
+        } else {
+            return Paths.get(nodeId.replaceFirst(FILE_PROTOCOL_REGEX, ""));
+        }
     }
 
     public static List<String> fileToLines(String filename) {

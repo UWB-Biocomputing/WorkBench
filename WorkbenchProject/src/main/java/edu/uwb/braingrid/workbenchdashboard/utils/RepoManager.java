@@ -1,9 +1,8 @@
 package edu.uwb.braingrid.workbenchdashboard.utils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,16 +34,16 @@ public final class RepoManager {
         LOG.info("Updating Master Branch");
         updatingBranch = true;
         Git git;
-        String masterBranchPath = RepoManager.getMasterBranchDirectory();
-        if (Files.exists(Paths.get(masterBranchPath))) {
-            LOG.info("Pulling Fresh Repo");
-            git = Git.open(new File(masterBranchPath));
+        Path masterBranchPath = RepoManager.getMasterBranchDirectory();
+        if (Files.exists(masterBranchPath)) {
+            LOG.info("Updating Repo");
+            git = Git.open(masterBranchPath.toFile());
             git.pull().call();
         } else {
-            LOG.info("Updating Repo");
+            LOG.info("Cloning Repo");
             git = Git.cloneRepository()
                     .setURI(ProVisGlobal.BG_REPOSITORY_URI)
-                    .setDirectory(new File(masterBranchPath))
+                    .setDirectory(masterBranchPath.toFile())
                     .call();
         }
         updatingBranch = false;
@@ -59,8 +58,8 @@ public final class RepoManager {
         updateRepo.start();
     }
 
-    public static String getMasterBranchDirectory() {
-        return FileManager.getBrainGridRepoDirectory() + File.separator + MASTER_BRANCH_NAME;
+    public static Path getMasterBranchDirectory() {
+        return FileManager.getBrainGridRepoDirectory().resolve(MASTER_BRANCH_NAME);
     }
 
     public static List<String> fetchGitBranches() {

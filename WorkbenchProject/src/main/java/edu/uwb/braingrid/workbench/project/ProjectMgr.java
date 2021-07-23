@@ -5,7 +5,7 @@ package edu.uwb.braingrid.workbench.project;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,21 +93,21 @@ public class ProjectMgr {
      * Constructs a project including the XML document that constitutes the project, as well as
      * project members.
      *
-     * @param rootNodeName  Name of the project. Name given to the root node.
+     * @param projectName  Name of the project
      * @param load  True if the project should be loaded from disk, false otherwise
      * @throws ParserConfigurationException
      * @throws java.io.IOException
      * @throws org.xml.sax.SAXException
      */
-    public ProjectMgr(String rootNodeName, boolean load) throws ParserConfigurationException,
-            IOException, SAXException, NullPointerException {
+    public ProjectMgr(String projectName, boolean load) throws ParserConfigurationException,
+            IOException, SAXException {
         initState();
-        name = rootNodeName.split("\\.")[0];
-        LOG.info("New Project Manager for project: " + name);
+        this.name = projectName;
+        LOG.info("New Project Manager for project: " + projectName);
         if (load) {
-            load(Paths.get(getProjectLocation(), name + ".xml").toString());
+            load();
         } else {
-            initXML(rootNodeName);
+            initXML(projectName);
         }
     }
 
@@ -140,7 +140,7 @@ public class ProjectMgr {
         provElement.setAttribute(PROV_ENABLED_ATTRIBUTE_NAME, "");
         // set location of provenance file for this project
         Element provLocationElem = doc.createElement(PROV_LOCATION_TAG_NAME);
-        Text locationText = doc.createTextNode(getProvLocation());
+        Text locationText = doc.createTextNode(getProvLocation().toString());
         provLocationElem.appendChild(locationText);
         provElement.appendChild(provLocationElem);
         initScriptVersion();
@@ -158,18 +158,16 @@ public class ProjectMgr {
     /**
      * Loads a project XML from disk.
      *
-     * @param filename  The name of the file to load
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
      * @throws java.io.IOException
      */
-    public final void load(String filename) throws ParserConfigurationException, SAXException,
-            IOException {
+    public final void load() throws ParserConfigurationException, SAXException, IOException {
         /* Load the Document */
-        File file = new File(filename);
+        File projectFile = getProjectFilePath().toFile();
 
         // ParserConfigurationException and SAXException possibly thrown here
-        doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+        doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(projectFile);
         doc.getDocumentElement().normalize();
 
         /* Load Members */
@@ -231,13 +229,13 @@ public class ProjectMgr {
     public String persist() throws TransformerConfigurationException, TransformerException,
             IOException {
         // calculate the full path to the project file
-        String projectFilename = getProjectFilename();
+        Path projectFilePath = getProjectFilePath();
 
         // create any necessary non-existent directories
-        Files.createDirectories(Paths.get(getProjectLocation()));
+        Files.createDirectories(projectFilePath.getParent());
 
         // create the file we want to save
-        File projectFile = new File(projectFilename);
+        File projectFile = projectFilePath.toFile();
 
         // write the content into xml file
         Transformer t = TransformerFactory.newInstance().newTransformer();
@@ -245,7 +243,7 @@ public class ProjectMgr {
         t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         t.transform(new DOMSource(doc), new StreamResult(projectFile));
 
-        return projectFilename;
+        return projectFilePath.toString();
     }
     // </editor-fold>
 
@@ -255,8 +253,8 @@ public class ProjectMgr {
      *
      * @return The path to the provenance folder for the specified project
      */
-    public String getProvLocation() {
-        return Paths.get(getProjectLocation(), "provenance").toString();
+    public Path getProvLocation() {
+        return getProjectLocation().resolve("provenance");
     }
 
     /**
@@ -265,8 +263,8 @@ public class ProjectMgr {
      *
      * @return The path to the provenance folder for the specified project
      */
-    public String getUniversalProvLocation() {
-        return Paths.get(FileManager.getProjectsDirectory(), "projects").toString();
+    public Path getUniversalProvLocation() {
+        return FileManager.getProjectsDirectory().resolve("projects");
     }
 
     /**
@@ -274,7 +272,7 @@ public class ProjectMgr {
      *
      * @return The path to the project folder for the specified project
      */
-    public String getProjectLocation() {
+    public Path getProjectLocation() {
         return ProjectMgr.getProjectLocation(name);
     }
 
@@ -283,8 +281,8 @@ public class ProjectMgr {
      *
      * @return The path to the project folder for the specified project
      */
-    public static String getProjectLocation(String projectName) {
-        return Paths.get(FileManager.getProjectsDirectory(), "projects", projectName).toString();
+    public static Path getProjectLocation(String projectName) {
+        return FileManager.getProjectsDirectory().resolve("projects").resolve(projectName);
     }
 
     /**
@@ -292,13 +290,9 @@ public class ProjectMgr {
      *
      * @return The full path, including the filename, for the file containing the XML for this
      *         project
-     * @throws IOException
      */
-    public String getProjectFilename() throws IOException {
-        if (name == null) {
-            throw new IOException();
-        }
-        return Paths.get(getProjectLocation(), name + ".xml").toString();
+    public Path getProjectFilePath() {
+        return getProjectLocation().resolve(name + ".xml");
     }
     // </editor-fold>
 
@@ -307,14 +301,11 @@ public class ProjectMgr {
      * Sets the project's name. This will also modify the name attribute for the project element of
      * the project XML model.
      *
-     * Do not give a null string. For now, I don't have time to fix it right now. -Max
-     * TODO: Refactor project and allow this to throw a nullpointer exception
-     *
-     * @param name The name given to the project
+     * @param projectName The name given to the project
      */
-    public void setName(String name) {
-        this.name = name;
-        root.setAttribute(PROJECT_NAME_ATTRIBUTE, name);
+    public void setName(String projectName) {
+        this.name = projectName;
+        root.setAttribute(PROJECT_NAME_ATTRIBUTE, projectName);
     }
 
     /**
@@ -895,11 +886,10 @@ public class ProjectMgr {
     /**
      * Adds a generated script file to the project.
      *
-     * @param scriptBasename  The base-name of the file path
-     * @param extension  The extension of the file path
+     * @param scriptFilename  The base-name of the file path
      * @return True if the script was added to the model correctly, false if not
      */
-    public boolean addScript(String scriptBasename, String extension) {
+    public boolean addScript(String scriptFilename) {
         boolean success = true;
         try {
             /* Remove Previous Script */
@@ -913,7 +903,7 @@ public class ProjectMgr {
 
             /* Add Values */
             // text element describing the file location
-            Text scriptFileLocation = doc.createTextNode(scriptBasename + "." + extension);
+            Text scriptFileLocation = doc.createTextNode(scriptFilename);
 
             /* Attach Elements */
             scriptFile.appendChild(scriptFileLocation);
