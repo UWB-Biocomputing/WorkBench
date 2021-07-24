@@ -95,30 +95,26 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
         } else {
             chooser.setInitialDirectory(lastDir);
         }
-        chooser.setTitle("Open File");
 
         ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "*.xml");
         chooser.getExtensionFilters().add(filter);
 
         switch (iSource) {
         case IDX_CONFIG_FILE:
-            chooser.setInitialFileName("config");
             chooser.setTitle("Open Configuration File");
             break;
         case IDX_INH_LIST:
-            chooser.setInitialFileName("inh");
             chooser.setTitle("Open Inhibitory Neurons List");
             break;
         case IDX_ACT_LIST:
-            chooser.setInitialFileName("act");
             chooser.setTitle("Open Active Neurons List");
             break;
         case IDX_PRB_LIST:
-            chooser.setInitialFileName("prb");
             chooser.setTitle("Open Probed Neurons List");
             break;
         default:
-            // do nothing
+            chooser.setTitle("Open File");
+            break;
         }
 
         File option = chooser.showOpenDialog(WorkbenchDisplay.getPrimaryStage());

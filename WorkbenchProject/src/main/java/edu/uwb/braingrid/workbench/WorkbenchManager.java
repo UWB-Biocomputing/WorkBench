@@ -184,59 +184,59 @@ public class WorkbenchManager {
         chooser.setFileFilter(filter);
         int choice = chooser.showOpenDialog(null);
         switch (choice) {
-            case JFileChooser.APPROVE_OPTION:
+        case JFileChooser.APPROVE_OPTION:
+            try {
+                Path selectedFile = chooser.getSelectedFile().toPath();
+                String projectName = FileManager.getBaseFilename(selectedFile);
                 try {
-                    Path selectedFile = chooser.getSelectedFile().toPath();
-                    String projectName = FileManager.getBaseFilename(selectedFile);
-                    try {
-                        projectMgr = new ProjectMgr(projectName, true);
+                    projectMgr = new ProjectMgr(projectName, true);
 
-                    } catch (IOException ex1) {
-                        messageAccumulator += "\n"
-                                + "Unmanaged project selected.\n"
-                                + "Attempting to import project...\n";
-                        Path destFolder = ProjectMgr.getProjectLocation(projectName);
-                        FileManager.copyFolder(selectedFile.getParent(), destFolder);
-                        messageAccumulator += "\n" + "Folder contents copied..."
-                                + "\nFrom: " + selectedFile.getParent()
-                                + "\nTo:   " + destFolder + "\n";
-                        projectMgr = new ProjectMgr(projectName, true);
-                    }
-                    updateSimSpec();
-                    if (projectMgr.isProvenanceEnabled()) {
-                        Long startTime = System.currentTimeMillis();
-                        prov = new ProvMgr(projectMgr, true);
-                        accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
-                    } else {
-                        prov = null;
-                    }
-                    messageAccumulator += "\n" + "Project: "
-                            + projectMgr.getName()
-                            + " loaded...\n";
-                } catch (ParserConfigurationException | IOException | SAXException ex1) {
-                    choice = EXCEPTION_OPTION;
-                    projectMgr = null;
-                    prov = null;
-                    simulatorSpecification = null;
+                } catch (IOException ex1) {
                     messageAccumulator += "\n"
-                            + "Project did not load correctly!\n"
-                            + ex1.getClass().getSimpleName() + "..."
-                            + " occurred\n";
+                            + "Unmanaged project selected.\n"
+                            + "Attempting to import project...\n";
+                    Path destFolder = ProjectMgr.getProjectLocation(projectName);
+                    FileManager.copyFolder(selectedFile.getParent(), destFolder);
+                    messageAccumulator += "\n" + "Folder contents copied..."
+                            + "\nFrom: " + selectedFile.getParent()
+                            + "\nTo:   " + destFolder + "\n";
+                    projectMgr = new ProjectMgr(projectName, true);
                 }
-                break;
-            // cancel was chosen (can't load project)
-            case JFileChooser.CANCEL_OPTION:
+                updateSimSpec();
+                if (projectMgr.isProvenanceEnabled()) {
+                    Long startTime = System.currentTimeMillis();
+                    prov = new ProvMgr(projectMgr, true);
+                    accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
+                } else {
+                    prov = null;
+                }
+                messageAccumulator += "\n" + "Project: "
+                        + projectMgr.getName()
+                        + " loaded...\n";
+            } catch (ParserConfigurationException | IOException | SAXException ex1) {
+                choice = EXCEPTION_OPTION;
+                projectMgr = null;
+                prov = null;
+                simulatorSpecification = null;
                 messageAccumulator += "\n"
-                        + "Open Project Operation Cancelled\n";
-                break;
-            // a file system error occurred within the dialog
-            case JFileChooser.ERROR_OPTION:
-                messageAccumulator += "\n"
-                        + "Open project operation encountered an error\n"
-                        + "Error occurred within the open file dialog\n";
-                break;
-            default:
-                // unknown option
+                        + "Project did not load correctly!\n"
+                        + ex1.getClass().getSimpleName() + "..."
+                        + " occurred\n";
+            }
+            break;
+        // cancel was chosen (can't load project)
+        case JFileChooser.CANCEL_OPTION:
+            messageAccumulator += "\n"
+                    + "Open Project Operation Cancelled\n";
+            break;
+        // a file system error occurred within the dialog
+        case JFileChooser.ERROR_OPTION:
+            messageAccumulator += "\n"
+                    + "Open project operation encountered an error\n"
+                    + "Error occurred within the open file dialog\n";
+            break;
+        default:
+            // unknown option
         }
         if (projectMgr != null) {
             DateTime.recordFunctionExecutionTime("WorkbenchManager", "openProject",

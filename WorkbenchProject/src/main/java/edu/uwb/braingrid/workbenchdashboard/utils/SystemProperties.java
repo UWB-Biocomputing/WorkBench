@@ -51,35 +51,36 @@ public final class SystemProperties {
 
     private static void initOSTypeByString(String sysOS) {
         switch (sysOS) {
-            case "Windows 10":
-                informOSType("Windows 10", OS.Windows_10, OSType.Windows);
-                break;
-            case "Windows XP":
-                informOSType("Windows XP", OS.Windows_XP, OSType.Windows);
-                break;
-            case "Windows 2003":
-                informOSType("Windows 2003", OS.Windows_2003, OSType.Windows);
-                break;
-            case "Windows NT":
-                informOSType("Windows NT", OS.Windows_NT, OSType.Windows);
-                break;
-            case "Windows Me":
-                informOSType("Windows NT", OS.Windows_Me, OSType.Windows);
-                break;
-            case "Linux":
-                informOSType("Linux", OS.Linux, OSType.Linux);
-                break;
-            case "Mac OS X":
-                informOSType("Mac OS X", OS.Mac_OS_X, OSType.Mac);
-                break;
-            case "SunOS":
-                informOSType("SunOS", OS.SunOS, OSType.SunOS);
-                break;
-            case "FreeBSD":
-                informOSType("FreeBSD", OS.FreeBSD, OSType.FreeBSD);
-                break;
-            default:
-                informOSType("UNKNOWN", OS.UNKNOWN, OSType.UNKNOWN);
+        case "Windows 10":
+            informOSType("Windows 10", OS.Windows_10, OSType.Windows);
+            break;
+        case "Windows XP":
+            informOSType("Windows XP", OS.Windows_XP, OSType.Windows);
+            break;
+        case "Windows 2003":
+            informOSType("Windows 2003", OS.Windows_2003, OSType.Windows);
+            break;
+        case "Windows NT":
+            informOSType("Windows NT", OS.Windows_NT, OSType.Windows);
+            break;
+        case "Windows Me":
+            informOSType("Windows NT", OS.Windows_Me, OSType.Windows);
+            break;
+        case "Linux":
+            informOSType("Linux", OS.Linux, OSType.Linux);
+            break;
+        case "Mac OS X":
+            informOSType("Mac OS X", OS.Mac_OS_X, OSType.Mac);
+            break;
+        case "SunOS":
+            informOSType("SunOS", OS.SunOS, OSType.SunOS);
+            break;
+        case "FreeBSD":
+            informOSType("FreeBSD", OS.FreeBSD, OSType.FreeBSD);
+            break;
+        default:
+            informOSType("UNKNOWN", OS.UNKNOWN, OSType.UNKNOWN);
+            break;
         }
     }
 

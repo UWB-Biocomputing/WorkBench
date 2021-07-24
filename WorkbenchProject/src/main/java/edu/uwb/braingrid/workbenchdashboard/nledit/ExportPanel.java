@@ -92,26 +92,26 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
         } else {
             chooser.setInitialDirectory(lastDir);
         }
-        chooser.setTitle("Save File");
 
         ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "*.xml");
         chooser.getExtensionFilters().add(filter);
 
         switch (iSource) {
-            case IDX_INH_LIST:
-                chooser.setInitialFileName("inh.xml");
-                chooser.setTitle("Save Inhibitory Neurons List");
-                break;
-            case IDX_ACT_LIST:
-                chooser.setInitialFileName("act.xml");
-                chooser.setTitle("Save Active Neurons List");
-                break;
-            case IDX_PRB_LIST:
-                chooser.setInitialFileName("prb.xml");
-                chooser.setTitle("Save Probed Neurons List");
-                break;
-            default:
-                // do nothing
+        case IDX_INH_LIST:
+            chooser.setInitialFileName("inh.xml");
+            chooser.setTitle("Save Inhibitory Neurons List");
+            break;
+        case IDX_ACT_LIST:
+            chooser.setInitialFileName("act.xml");
+            chooser.setTitle("Save Active Neurons List");
+            break;
+        case IDX_PRB_LIST:
+            chooser.setInitialFileName("prb.xml");
+            chooser.setTitle("Save Probed Neurons List");
+            break;
+        default:
+            chooser.setTitle("Save File");
+            break;
         }
 
         File option = chooser.showSaveDialog(WorkbenchDisplay.getPrimaryStage());

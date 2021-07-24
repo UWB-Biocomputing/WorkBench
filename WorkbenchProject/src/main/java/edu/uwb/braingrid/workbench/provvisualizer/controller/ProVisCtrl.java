@@ -744,17 +744,17 @@ public class ProVisCtrl {
         String inputFromSelected = in.nextLine();
         String determineType = inputFromSelected.substring(0, 3);
         switch (determineType) {
-            case "<A>":
-                return 'A';
-            case "<I>":
-                return 'I';
-            case "<P>":
-                return 'P';
-            case "<!-":
-                // do nothing, this is an output file
-                break;
-            default:  // simulation input file
-                return 'S';
+        case "<A>":
+            return 'A';
+        case "<I>":
+            return 'I';
+        case "<P>":
+            return 'P';
+        case "<!-":
+            // do nothing, this is an output file
+            break;
+        default:  // simulation input file
+            return 'S';
         }
         return 'N';
     }
