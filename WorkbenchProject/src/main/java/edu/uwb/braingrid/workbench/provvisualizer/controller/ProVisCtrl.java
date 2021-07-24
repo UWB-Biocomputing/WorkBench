@@ -197,13 +197,19 @@ public class ProVisCtrl {
 
         chooseFileBtn.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select provenance file");
+            fileChooser.setTitle("Select Provenance File");
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
-            fileChooser.setInitialDirectory(FileManager.getProjectsDirectory().toFile());
+
+            // set starting folder
+            File initialDir = FileManager.getProjectsDirectory().toFile();
+            if (initialDir.exists()) {
+                fileChooser.setInitialDirectory(initialDir);
+            } else {
+                fileChooser.setInitialDirectory(null);
+            }
 
             File selectedFile = fileChooser.showOpenDialog(canvasPane.getScene().getWindow());
-
             if (selectedFile != null) {
                 dataProvGraph.clearAllIdsRelationships();
                 dataProvGraph.clearNodesNEdges();
