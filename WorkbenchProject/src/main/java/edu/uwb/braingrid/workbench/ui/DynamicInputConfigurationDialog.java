@@ -437,7 +437,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                         Path destFilePath = FileManager.getNeuronListFilePath(projectName,
                                 sourceFile.getName(), true);
                         if (FileManager.copyFile(sourceFile.toPath(), destFilePath)) {
-                            aField.setText("workbenchconfigfiles/NList/" + sourceFile.getName());
+                            aField.setText("configfiles/NList/" + sourceFile.getName());
                             fileSelector.addDir(sourceFile.getParentFile());
                         }
                         messageLabelText.setText("<html><span style=\"color:green\">"
@@ -530,7 +530,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                 Path destFilePath = FileManager.getNeuronListFilePath(projectName,
                         sourceFile.getName(), true);
                 if (FileManager.copyFile(sourceFile.toPath(), destFilePath)) {
-                    aField.setText("workbenchconfigfiles/NList/" + sourceFile.getName());
+                    aField.setText("configfiles/NList/" + sourceFile.getName());
                     fileSelector.addDir(sourceFile.getParentFile());
                 }
                 messageLabelText.setText("<html><span style=\"color:green\">"
