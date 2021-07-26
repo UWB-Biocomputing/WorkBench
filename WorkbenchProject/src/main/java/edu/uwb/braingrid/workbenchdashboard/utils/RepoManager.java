@@ -15,13 +15,15 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Ref;
 
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
 import edu.uwb.braingrid.workbenchdashboard.threads.RunUpdateRepo;
 
 public final class RepoManager {
 
     private static final Logger LOG = Logger.getLogger(RepoManager.class.getName());
 
+    /** Remote repository location. */
+    public static final String BG_REPOSITORY_URI
+            = "git://github.com/UWB-Biocomputing/BrainGrid.git";
     /** Name of the master branch. */
     public static final String MASTER_BRANCH_NAME = "master";
     private static boolean updatingBranch = false;
@@ -42,7 +44,7 @@ public final class RepoManager {
         } else {
             LOG.info("Cloning Repo");
             git = Git.cloneRepository()
-                    .setURI(ProVisGlobal.BG_REPOSITORY_URI)
+                    .setURI(BG_REPOSITORY_URI)
                     .setDirectory(masterBranchPath.toFile())
                     .call();
         }
@@ -68,7 +70,7 @@ public final class RepoManager {
         try {
             refs = Git.lsRemoteRepository()
                     .setHeads(true)
-                    .setRemote(ProVisGlobal.BG_REPOSITORY_URI)
+                    .setRemote(BG_REPOSITORY_URI)
                     .call();
             for (Ref ref : refs) {
                 branches.add(ref.getName().substring(ref.getName().lastIndexOf("/") + 1));
