@@ -62,13 +62,11 @@
   <suppress checks="Javadoc(Method|Variable|Type)" files="ProvUtility.java"/>
   <suppress checks="Javadoc(Method|Type)" files="VisCanvas.java"/>
   <suppress checks="Javadoc(Method)" files="ProVis.java"/>
-  <suppress checks="Javadoc(Type)" files="ProVisGlobal.java"/>
   <suppress checks="Javadoc(Method)" files="ScriptManager.java"/>
   <suppress checks="Javadoc(Method|Style)" files="DynamicInputConfigurationDialog.java"/>
   <suppress checks="Javadoc(Method|Style)" files="InputConfigClassSelectionDialog.java"/>
   <suppress checks="Javadoc(Style)" files="ProvenanceQueryDialog.java"/>
   <suppress checks="Javadoc(Method)" files="DateTime.java"/>
-  <suppress checks="Javadoc(Method)" files="FileManager.java"/>
   <suppress checks="Javadoc(Method)" files="FileManagerShared.java"/>
   <suppress checks="Javadoc(Method|Variable)" files="SystemConfig.java"/>
   <suppress checks="Javadoc(Method)" files="WorkbenchManager.java"/>
@@ -84,7 +82,6 @@
   <suppress checks="Javadoc(Method|Type)" files="SimManager.java"/>
   <suppress checks="Javadoc(Method)" files="SimStarterWiz.java"/>
   <suppress checks="Javadoc(Method|Type)" files="RunUpdateRepo.java"/>
-  <suppress checks="Javadoc(Method|Style)" files="User.java"/>
   <suppress checks="Javadoc(Method|Type)" files="UserView.java"/>
   <suppress checks="Javadoc(Method|Type)" files="RepoManager.java"/>
   <suppress checks="Javadoc(Method|Variable|Type)" files="SystemProperties.java"/>

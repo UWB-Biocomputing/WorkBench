@@ -45,6 +45,13 @@ public final class FileManager {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Getters/Setters">
+    /**
+     * Provides the filenames for all neurons list files for a given project.
+     *
+     * @param projectName  The project containing the neuron list files
+     * @return The filenames for all neurons list files in the project directory
+     * @throws IOException
+     */
     public static String[] getNeuronListFilenames(String projectName) throws IOException {
         Path folder = getSimConfigDirectoryPath(projectName, false)
                 .resolve(NEURON_LIST_FOLDER_NAME);
@@ -55,24 +62,40 @@ public final class FileManager {
     }
 
     /**
-     * Provides the path for the workbench (data) directory. This path is not user-specified.
+     * Provides the path to the workbench (data) directory. This path is not user-specified.
      *
-     * @return A string representation of the workbench (data) directory path
+     * @return The path to the workbench (data) directory
      */
     public static Path getWorkbenchDirectory() {
         return getUserHome().resolve(".workbench");
     }
 
+    /**
+     * Provides the path to the projects directory for the current user.
+     *
+     * @return The path to the projects directory
+     */
     public static Path getProjectsDirectory() {
         return user.getProjectsDirectory();
     }
 
-    public static Path getSimulationsDirectory() {
-        return user.getSimulationsDirectory();
-    }
-
+    /**
+     * Provides the path to the local simulator repository for the current user.
+     *
+     * @return The path to the local simulator repository
+     */
     public static Path getBrainGridRepoDirectory() {
         return user.getBrainGridRepoDirectory();
+    }
+
+    /**
+     * Provides the path to the simulations directory for the current user. This path is relative to
+     * the simulation machine which may be remote.
+     *
+     * @return A string representation of the simulations directory (may be a remote path)
+     */
+    public static String getSimulationsDirectory() {
+        return user.getSimulationsDirectory();
     }
 
     /**
@@ -199,18 +222,48 @@ public final class FileManager {
         return FilenameUtils.getName(longFilename);
     }
 
+    /**
+     * Utility function that returns the last name of a specified path containing parent folders.
+     *
+     * @param longFilename  Path containing parent folders
+     * @return The last name of the file, including the base name and extension, but no parent
+     *         folders
+     */
     public static String getSimpleFilename(Path longFilename) {
         return FilenameUtils.getName(longFilename.toString());
     }
 
+    /**
+     * Utility function that returns the base filename (no extension) of a specified path string
+     * containing parent folders and/or an extension.
+     *
+     * @param longFilename  Path string containing parent folders and/or extension
+     * @return The base filename (i.e. no parent folders or extension)
+     */
     public static String getBaseFilename(String longFilename) {
         return FilenameUtils.getBaseName(longFilename);
     }
 
+    /**
+     * Utility function that returns the base filename (no extension) of a specified path containing
+     * parent folders and/or an extension.
+     *
+     * @param longFilename  Path containing parent folders and/or extension
+     * @return The base filename (i.e. no parent folders or extension)
+     */
     public static String getBaseFilename(Path longFilename) {
         return FilenameUtils.getBaseName(longFilename.toString());
     }
 
+    /**
+     * Utility function that builds a path string from one or more string arguments. The order of
+     * the path strings provided as arguments is maintained in the final path string, and the file
+     * separator character is based on the current file system.
+     *
+     * @param first  first path string to convert
+     * @param more  more path strings to convert
+     * @return The path string built from the given path string arguments
+     */
     public static String buildPathString(String first, String... more) {
         return Paths.get(first, more).toString();
     }
@@ -265,10 +318,10 @@ public final class FileManager {
      * Utility function provides for the purpose of manipulating file locations to a Posix-valid
      * form.
      *
-     * @param stmt  A file name or other statement that may contain characters that could be
+     * @param stmt  A file path or other statement that may contain characters that could be
      *              misinterpreted by Bash as parts of a filename rather than individual, but
      *              concatenated, parent directories
-     * @return
+     * @return A valid Posix file path or statement
      */
     public static String toBashValidNotation(String stmt) {
         return stmt.replaceAll("\\\\", "/");

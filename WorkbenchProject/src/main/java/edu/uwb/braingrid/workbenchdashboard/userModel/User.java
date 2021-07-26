@@ -7,14 +7,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
+import org.apache.commons.io.FilenameUtils;
 
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.FileManagerShared;
-import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
 
 /**
+ * <p>Represents the active user profile. Provides user-specified information including paths to
+ * this user's project data, local simulator repository, and simulation data directories.</p>
  *
- * @author Max
+ * <p>User information is saved to and loaded from a JSON file located in the user's Workbench Data
+ * directory.</p>
+ *
+ * @author Max Wright
  */
 public final class User implements FileManagerShared {
 
@@ -23,22 +28,32 @@ public final class User implements FileManagerShared {
     private static User user = null;
 
     private Path projectsDirectory;
-    private Path simulationsDirectory;
     private Path brainGridRepoDirectory;
+    private String simulationsDirectory;
 
+    /**
+     * Creates a User object with the specified user-information. This private constructor can only
+     * be accessed via the public getUser method if there is not already a loaded user profile.
+     */
     private User() {
         LOG.info("Initializing User Data");
         //TODO: get project and sim dirs from user
         Path projectsDir = FileManager.getUserHome()
                 .resolve("Documents")
                 .resolve("WorkbenchProjects");
-        Path simulationsDir = FileManager.getUserHome();
+        Path repoDir = getProjectsDirectory()
+                .resolve("BrainGridRepos");
+        String simulationsDir = "~/.workbench/simulations"; // may be remote
         setProjectsDirectory(projectsDir);
+        setBrainGridRepoDirectory(repoDir);
         setSimulationsDirectory(simulationsDir);
-        setBrainGridRepoDirectory(getProjectsDirectory()
-                .resolve(ProVisGlobal.BG_REPOSITORY_LOCAL));
     }
 
+    /**
+     * Provides the single instance of the user profile.
+     *
+     * @return The current user profile
+     */
     public static User getUser() {
         if (user == null) {
             load();
@@ -46,6 +61,12 @@ public final class User implements FileManagerShared {
         return user;
     }
 
+    /**
+     * Loads the user profile from disk, if one exists. If no user profile is found, creates a new
+     * user profile, saves it, and then loads it.
+     *
+     * @return True if the user profile was loaded successfully, otherwise false
+     */
     private static boolean load() {
         LOG.info("Loading User Information");
         ObjectMapper mapper = new ObjectMapper();
@@ -70,6 +91,11 @@ public final class User implements FileManagerShared {
         return true;
     }
 
+    /**
+     * Saves the active user profile to disk in JSON format.
+     *
+     * @return True if the user profile was saved successfully, otherwise false
+     */
     public static boolean save() {
         LOG.info("Saving User Data");
         ObjectMapper mapper = new ObjectMapper();
@@ -85,33 +111,77 @@ public final class User implements FileManagerShared {
         return true;
     }
 
+    /**
+     * Provides the path to the user's projects directory.
+     *
+     * @return The path to the user's projects directory
+     */
     public Path getProjectsDirectory() {
         return this.projectsDirectory;
     }
 
+    /**
+     * Sets the user's projects directory path.
+     *
+     * @param projectsDirectory  The new path to the user projects directory
+     */
     public void setProjectsDirectory(Path projectsDirectory) {
         LOG.info("Workbench Projects Path: " + projectsDirectory);
         this.projectsDirectory = projectsDirectory;
     }
 
+    /**
+     * Provides the path to the user's local simulator repository.
+     *
+     * @return The path to the user's local simulator repository
+     */
     public Path getBrainGridRepoDirectory() {
         return brainGridRepoDirectory;
     }
 
+    /**
+     * Sets the user's local simulator repository path.
+     *
+     * @param brainGridRepoDirectory  The new path to the local simulator repository
+     */
     public void setBrainGridRepoDirectory(Path brainGridRepoDirectory) {
         LOG.info("BrainGrid Repo Path: " + brainGridRepoDirectory);
         this.brainGridRepoDirectory = brainGridRepoDirectory;
     }
 
-    public Path getSimulationsDirectory() {
+    /**
+     * Provides the location of the user's simulation data directory.
+     *
+     * Note: This directory is relative to the simulation machine (which may be remote) and may not
+     * match the local file system. Since simulations can only run on a Linux machine, this will
+     * always be a Posix path.
+     *
+     * @return The location of the user's simulation data directory
+     */
+    public String getSimulationsDirectory() {
         return simulationsDirectory;
     }
 
-    public void setSimulationsDirectory(Path simulationsDirectory) {
-        LOG.info("Workbench Simulations Path: " + simulationsDirectory);
-        this.simulationsDirectory = simulationsDirectory;
+    /**
+     * Sets the user's simulation data directory path.
+     *
+     * Note: This directory is relative to the simulation machine (which may be remote) and may not
+     * match the local file system. Since simulations can only run on a Linux machine, this will
+     * always be a Posix path.
+     *
+     * @param simulationsDirectory  The new path to the simulation data directory
+     */
+    public void setSimulationsDirectory(String simulationsDirectory) {
+        String simsDir = FilenameUtils.separatorsToUnix(simulationsDirectory);
+        LOG.info("Workbench Simulations Path: " + simsDir);
+        this.simulationsDirectory = simsDir;
     }
 
+    /**
+     * Provides the path to the user profile JSON file.
+     *
+     * @return The path to the user profile JSON file
+     */
     private static Path getUserDataPath() {
         return FileManager.getWorkbenchDirectory().resolve("user.json");
     }

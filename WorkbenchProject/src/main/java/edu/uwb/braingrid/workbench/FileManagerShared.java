@@ -6,7 +6,7 @@ public interface FileManagerShared {
 
     Path getProjectsDirectory();
 
-    Path getSimulationsDirectory();
-
     Path getBrainGridRepoDirectory();
+
+    String getSimulationsDirectory();
 }
