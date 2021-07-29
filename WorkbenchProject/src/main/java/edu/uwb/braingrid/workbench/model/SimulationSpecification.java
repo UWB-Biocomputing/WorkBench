@@ -248,7 +248,12 @@ public class SimulationSpecification {
      * @param simFolder  The location of the simulator folder
      */
     public void setSimulatorFolder(String simFolder) {
-        simulationFolder = simFolder;
+        // convert to absolute path
+        String fullPath = simFolder;
+        if (!simFolder.startsWith("~") && !simFolder.startsWith("/")) {
+            fullPath = "~/" + simFolder;
+        }
+        simulationFolder = fullPath;
     }
 
     /**

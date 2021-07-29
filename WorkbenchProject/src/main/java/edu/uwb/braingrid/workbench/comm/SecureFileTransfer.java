@@ -94,6 +94,8 @@ public class SecureFileTransfer {
             String username, char[] password, SftpProgressMonitor progressMonitor)
             throws JSchException, FileNotFoundException, SftpException {
         boolean success = true;
+        String altRemoteDirectory = remoteDirectory.startsWith("~/") ? remoteDirectory.substring(2)
+                : remoteDirectory;
         try {
             JSch jsch = new JSch();
             // apply user info to connection attempt
@@ -110,11 +112,12 @@ public class SecureFileTransfer {
             if (fileToUpload != null) {
                 File f = new File(fileToUpload);
                 if (f.exists()) {
+                    String remotePath = altRemoteDirectory + "/" + f.getName();
                     if (progressMonitor != null) {
-                        channelSftp.put(new FileInputStream(f), f.getName(), progressMonitor,
+                        channelSftp.put(new FileInputStream(f), remotePath, progressMonitor,
                                 ChannelSftp.OVERWRITE);
                     } else {
-                        channelSftp.put(new FileInputStream(f), f.getName(), ChannelSftp.OVERWRITE);
+                        channelSftp.put(new FileInputStream(f), remotePath, ChannelSftp.OVERWRITE);
                     }
                 } else {
                     success = false;
@@ -149,6 +152,8 @@ public class SecureFileTransfer {
     public boolean downloadFile(String remoteFilePath, String localFilePath, String hostname,
             String username, char[] password) throws JSchException, SftpException {
         boolean success = true;
+        String altRemoteFilePath = remoteFilePath.startsWith("~/") ? remoteFilePath.substring(2)
+                : remoteFilePath;
         try {
             JSch jsch = new JSch();
             // apply user info to connection attempt
@@ -162,7 +167,7 @@ public class SecureFileTransfer {
             // download file
             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
             channelSftp.connect();
-            channelSftp.get(remoteFilePath, localFilePath);
+            channelSftp.get(altRemoteFilePath, localFilePath);
             channelSftp.disconnect();
         } catch (JSchException | SftpException e) {
             success = false;
@@ -192,6 +197,7 @@ public class SecureFileTransfer {
     public boolean executeCommand(String command, String hostname, String username, char[] password,
             boolean readInputStream) {
         boolean success = false;
+        String altCommand = command.replaceAll("(?<=[^;\" ])~/", "");
         try {
             JSch jsch = new JSch();
             // apply user info to connection attempt
@@ -204,7 +210,7 @@ public class SecureFileTransfer {
             session.connect();
             // setup command
             ChannelExec cExec = (ChannelExec) session.openChannel("exec");
-            cExec.setCommand(command);
+            cExec.setCommand(altCommand);
             // setup I/O
             if (readInputStream) {
                 cExec.setInputStream(null);

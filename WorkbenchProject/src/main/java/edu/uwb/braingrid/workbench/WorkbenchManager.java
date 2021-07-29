@@ -513,9 +513,10 @@ public class WorkbenchManager {
         boolean success = false;
         ScriptManager sm = new ScriptManager();
         try {
+            String projectName = projectMgr.getName();
             String scriptPath = projectMgr.getScriptCanonicalFilePath();
-            String[] neuronLists = FileManager.getNeuronListFilenames(projectMgr.getName());
-            success = sm.runScript(prov, simulatorSpecification, scriptPath,
+            String[] neuronLists = FileManager.getNeuronListFilenames(projectName);
+            success = sm.runScript(prov, simulatorSpecification, projectName, scriptPath,
                     projectMgr.getScriptVersion(), neuronLists, projectMgr.getSimConfigFilename());
             projectMgr.setScriptRan(success);
             projectMgr.setScriptRanAt();
@@ -810,18 +811,18 @@ public class WorkbenchManager {
         String overview = "<html>None";
         if (simulatorSpecification != null) {
             overview = "<html>";
-            String simFoldername = simulatorSpecification.getSimulatorFolder();
+            String simFolder = simulatorSpecification.getSimulatorFolder();
             String simVersionAnnotation = simulatorSpecification.getVersionAnnotation();
             String simCodeLocation = simulatorSpecification.getCodeLocation();
             boolean simAttributeAddedToText = false;
-            if (simFoldername != null) {
+            if (simFolder != null) {
                 String home;
                 if (simulatorSpecification.isRemote()) {
                     home = "~/";
                 } else {
                     home = FileManager.getUserDir().toString();
                 }
-                overview += "location: " + home + simFoldername;
+                overview += "location: " + home + simFolder;
                 simAttributeAddedToText = true;
             }
             if (simVersionAnnotation != null) {

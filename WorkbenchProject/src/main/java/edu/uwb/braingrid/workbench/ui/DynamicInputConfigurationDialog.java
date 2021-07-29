@@ -409,17 +409,10 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         private void importNeuronList(InputType aType, JTextField aField) {
             // get starting folder
             String simConfigFilesDir;
-            try {
-                if (fileSelector.getLastDir() == null) {
-                    simConfigFilesDir = FileManager.getSimConfigDirectoryPath(projectName, true)
-                            .toString();
-                } else {
-                    simConfigFilesDir = fileSelector.getLastDir().getAbsolutePath();
-                }
-            } catch (IOException e) {
-                messageLabelText.setText("<html><span style=\"color:red\">" + e.getClass()
-                        + "occurred, import failed...</span></html>");
-                return;
+            if (fileSelector.getLastDir() == null) {
+                simConfigFilesDir = FileManager.getProjectsDirectory().toString();
+            } else {
+                simConfigFilesDir = fileSelector.getLastDir().getAbsolutePath();
             }
 
             JFileChooser dlg = new JFileChooser(simConfigFilesDir);

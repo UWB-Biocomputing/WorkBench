@@ -315,7 +315,7 @@ public final class FileManager {
     }
 
     /**
-     * Utility function provides for the purpose of manipulating file locations to a Posix-valid
+     * Utility function provided for the purpose of manipulating file locations to a Posix-valid
      * form.
      *
      * @param stmt  A file path or other statement that may contain characters that could be

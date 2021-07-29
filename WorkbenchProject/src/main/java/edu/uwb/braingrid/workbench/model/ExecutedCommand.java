@@ -2,11 +2,12 @@ package edu.uwb.braingrid.workbench.model;
 
 import java.util.Date;
 
+import edu.uwb.braingrid.workbench.FileManager;
+
 /**
- * Created by Nathan on 9/1/2014. Modified by Del on 9/3/2014
+ * Represents a command executed by the bash script on the simulation machine.
  *
- * I have noooooooooooooo idea what the ExecutedCommand is. Is it a command to the GUI? A command to
- * the command line? - Max on 10/7/2018
+ * Created by Nathan on 9/1/2014. Modified by Del on 9/3/2014
  */
 public class ExecutedCommand {
 
@@ -29,13 +30,10 @@ public class ExecutedCommand {
      */
     public ExecutedCommand(String newCommand) {
         fullCommand = newCommand;
-        int firstSpaceIndex = fullCommand.indexOf(" ");
-        if (firstSpaceIndex < 0) {
-            firstSpaceIndex = fullCommand.length();
-        }
-        simpleCommand = fullCommand.substring(0, firstSpaceIndex);
+        simpleCommand = fullToSimpleCommand(fullCommand);
         timeStarted = null;
         timeCompleted = null;
+        exitStatus = -1;
     }
 
     /**
@@ -137,5 +135,16 @@ public class ExecutedCommand {
      */
     public boolean hasCompleted() {
         return timeCompleted != null;
+    }
+
+    /**
+     * Provides the simple command associated with a given full command. The simple command contains
+     * only the name of the executable without its path or arguments.
+     *
+     * @param fullCommand  The full command including path and arguments
+     * @return The simple command with no path or arguments
+     */
+    public static String fullToSimpleCommand(String fullCommand) {
+        return FileManager.getSimpleFilename(fullCommand.split("\\s+")[0]);
     }
 }

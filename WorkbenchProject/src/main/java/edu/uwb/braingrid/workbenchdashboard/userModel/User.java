@@ -41,8 +41,7 @@ public final class User implements FileManagerShared {
         Path projectsDir = FileManager.getUserHome()
                 .resolve("Documents")
                 .resolve("WorkbenchProjects");
-        Path repoDir = getProjectsDirectory()
-                .resolve("BrainGridRepos");
+        Path repoDir = projectsDir.resolve("BrainGridRepos");
         String simulationsDir = "~/.workbench/simulations"; // may be remote
         setProjectsDirectory(projectsDir);
         setBrainGridRepoDirectory(repoDir);

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
+import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.model.ExecutedCommand;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 import edu.uwb.braingrid.workbench.script.Script;
@@ -184,7 +185,8 @@ public class OutputAnalyzer {
         ExecutedCommand ec = null;
         HashMap<String, ExecutedCommand> map = null;
         if (fullCommand != null) {
-            map = commandsRun.get(fullCommand.split("\\s+")[0]);
+            String simpleCommand = ExecutedCommand.fullToSimpleCommand(fullCommand);
+            map = commandsRun.get(simpleCommand);
         }
         if (map != null) {
             ec = map.get(fullCommand);
@@ -241,7 +243,8 @@ public class OutputAnalyzer {
      */
     public Collection<ExecutedCommand> getCollectionByExecName(String executableName) {
         Collection<ExecutedCommand> commands = null;
-        HashMap<String, ExecutedCommand> map = commandsRun.get(executableName);
+        String exec = FileManager.getBaseFilename(executableName);
+        HashMap<String, ExecutedCommand> map = commandsRun.get(exec);
         if (map != null) {
             commands = map.values();
         }
