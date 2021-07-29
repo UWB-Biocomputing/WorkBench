@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.FileUtils;
 
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
+import edu.uwb.braingrid.workbenchdashboard.user.User;
 
 /**
  * Handles all file operations for the workbench. The purpose behind this manager is to:

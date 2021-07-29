@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbenchdashboard.userModel;
+package edu.uwb.braingrid.workbenchdashboard.user;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +42,7 @@ public final class User implements FileManagerShared {
                 .resolve("Documents")
                 .resolve("WorkbenchProjects");
         Path repoDir = projectsDir.resolve("BrainGridRepos");
-        String simulationsDir = "~/.workbench/simulations"; // may be remote
+        String simulationsDir = "~/WorkbenchSimulations"; // may be remote
         setProjectsDirectory(projectsDir);
         setBrainGridRepoDirectory(repoDir);
         setSimulationsDirectory(simulationsDir);

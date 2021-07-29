@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbenchdashboard.userView;
+package edu.uwb.braingrid.workbenchdashboard.user;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;

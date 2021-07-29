@@ -14,7 +14,7 @@ import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLEdit;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
-import edu.uwb.braingrid.workbenchdashboard.userView.UserView;
+import edu.uwb.braingrid.workbenchdashboard.user.UserView;
 import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
 
 /**
