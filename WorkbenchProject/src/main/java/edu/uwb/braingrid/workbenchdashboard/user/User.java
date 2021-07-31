@@ -116,7 +116,7 @@ public final class User implements FileManagerShared {
      * @return The path to the user's projects directory
      */
     public Path getProjectsDirectory() {
-        return this.projectsDirectory;
+        return projectsDirectory;
     }
 
     /**
