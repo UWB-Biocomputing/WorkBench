@@ -23,7 +23,6 @@ public class SimStartWiz {
 
     private TextArea msgText = new TextArea("");
     private WorkbenchManager workbenchManager = new WorkbenchManager();
-    private SimManager simManager;
     private SimulationRuntimeDialog srd;
     private String commitVersionSelected = null;
 
@@ -47,9 +46,8 @@ public class SimStartWiz {
                 }
             }
         }
-        simManager = new SimManager(workbenchManager);
         if (cancelButtonClicked) {
-            simManager.saveProject();
+            workbenchManager.saveProject();
         }
     }
 
@@ -78,9 +76,8 @@ public class SimStartWiz {
                 }
             }
         }
-        simManager = new SimManager(workbenchManager);
         if (cancelButtonClicked) {
-            simManager.saveProject();
+            workbenchManager.saveProject();
         }
     }
 

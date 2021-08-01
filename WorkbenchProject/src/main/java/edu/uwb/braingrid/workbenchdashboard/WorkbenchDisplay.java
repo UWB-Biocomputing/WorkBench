@@ -11,9 +11,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbenchdashboard.simstarter.SimStartWiz;
 import edu.uwb.braingrid.workbenchdashboard.nledit.NLEdit;
-import edu.uwb.braingrid.workbenchdashboard.simstarter.SimManager;
 import edu.uwb.braingrid.workbenchdashboard.user.UserView;
 import edu.uwb.braingrid.workbenchdashboard.utils.RepoManager;
 
@@ -140,11 +140,11 @@ public class WorkbenchDisplay extends BorderPane {
     }
 
     /**
-     * initializes SimManager and allows the opening of project specification.
+     * Initializes SimManager and allows the opening of project specification.
      */
     public void pushSimOpen() {
-        SimManager pv = new SimManager();
-        pv.openProject();
+        WorkbenchManager wbm = new WorkbenchManager();
+        wbm.openProject();
     }
 
     /**

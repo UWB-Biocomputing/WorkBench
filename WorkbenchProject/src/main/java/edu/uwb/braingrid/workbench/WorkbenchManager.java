@@ -309,18 +309,17 @@ public class WorkbenchManager {
             if (iccsd.getSuccess()) {
                 DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
                         projectName, true, configFilename, iccsd.getInputConfigMgr(), null);
-                String simulationConfigurationFile;
+                String simConfigFile;
                 String resultFileName;
                 if (icd.getSuccess()) {
-                    simulationConfigurationFile = icd.getBuiltFile();
+                    simConfigFile = icd.getBuiltFile();
                     resultFileName = icd.getResultFileName();
-                    if (simulationConfigurationFile != null && resultFileName != null) {
-                        projectMgr.addSimConfigFile(simulationConfigurationFile);
+                    if (simConfigFile != null && resultFileName != null) {
+                        projectMgr.addSimConfigFile(simConfigFile);
                         projectMgr.setSimResultFile(resultFileName);
                         if (projectMgr.isProvenanceEnabled()) {
                             prov.addFileGeneration("simulation_input_file_generation", null,
-                                    "workbench", null, false, simulationConfigurationFile,
-                                    null, null);
+                                    "workbench", null, false, simConfigFile, null, null);
                         }
                         success = true;
                     }
@@ -349,18 +348,17 @@ public class WorkbenchManager {
             if (iccsd.getSuccess()) {
                 DynamicInputConfigurationDialog icd = new DynamicInputConfigurationDialog(
                         projectName, true, configFilename, iccsd.getInputConfigMgr(), nListPresets);
-                String simulationConfigurationFile;
+                String simConfigFile;
                 String resultFileName;
                 if (icd.getSuccess()) {
-                    simulationConfigurationFile = icd.getBuiltFile();
+                    simConfigFile = icd.getBuiltFile();
                     resultFileName = icd.getResultFileName();
-                    if (simulationConfigurationFile != null && resultFileName != null) {
-                        projectMgr.addSimConfigFile(simulationConfigurationFile);
+                    if (simConfigFile != null && resultFileName != null) {
+                        projectMgr.addSimConfigFile(simConfigFile);
                         projectMgr.setSimResultFile(resultFileName);
                         if (projectMgr.isProvenanceEnabled()) {
                             prov.addFileGeneration("simulation_input_file_generation", null,
-                                    "workbench", null, false, simulationConfigurationFile,
-                                    null, null);
+                                    "workbench", null, false, simConfigFile, null, null);
                         }
                         success = true;
                     }
