@@ -1,6 +1,5 @@
 package edu.uwb.braingrid.workbenchdashboard.simstarter;
 
-import java.util.Date;
 import java.util.logging.Logger;
 import java.util.HashMap;
 import javafx.scene.control.TextArea;
@@ -191,7 +190,7 @@ public class SimStartWiz {
     private boolean runScript() {
         boolean wasSuccessful = false;
         if (workbenchManager.runScript()) {
-            String time = DateTime.getTime(new Date().getTime());
+            String time = DateTime.getTime(DateTime.now());
             String msg = "Script execution started at: " + time;
             wasSuccessful = true;
         }

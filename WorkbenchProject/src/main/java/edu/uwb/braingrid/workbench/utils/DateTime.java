@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import edu.uwb.braingrid.workbench.FileManager;
 
@@ -24,6 +25,15 @@ public final class DateTime {
 
     private DateTime() {
         // utility class cannot be instantiated
+    }
+
+    /**
+     * Provides the current time as the number of milliseconds since January 1, 1970, 00:00:00 GMT.
+     *
+     * @return The current time as the number of milliseconds since January 1, 1970, 00:00:00 GMT
+     */
+    public static long now() {
+        return new Date().getTime();
     }
 
     /**
