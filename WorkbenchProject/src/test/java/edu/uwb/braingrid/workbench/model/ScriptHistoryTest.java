@@ -3,14 +3,16 @@ package edu.uwb.braingrid.workbench.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import edu.uwb.braingrid.workbench.utils.DateTime;
+
 public class ScriptHistoryTest {
 
     @Test
     public void testGetSetStartedAt() {
         ScriptHistory sh = factory();
 
-        Assertions.assertEquals(null, sh.getStartedAt());
-        String startedAt = "A String?";
+        Assertions.assertEquals(DateTime.ERROR_TIME, sh.getStartedAt());
+        long startedAt = DateTime.now();
         sh.setStartedAt(startedAt);
         Assertions.assertEquals(startedAt, sh.getStartedAt());
     }
@@ -20,8 +22,8 @@ public class ScriptHistoryTest {
     public void testGetSetCompletedAt() {
         ScriptHistory sh = factory();
 
-        Assertions.assertEquals(null, sh.getStartedAt());
-        String completedAt = "A String";
+        Assertions.assertEquals(DateTime.ERROR_TIME, sh.getStartedAt());
+        long completedAt = DateTime.now();
         sh.setCompletedAt(completedAt);
         Assertions.assertEquals(completedAt, sh.getCompletedAt());
     }
@@ -29,17 +31,17 @@ public class ScriptHistoryTest {
     @Test
     public void testGetSetOutputAnalyzed() {
         ScriptHistory sh = factory();
-        Assertions.assertFalse(sh.getOutputAnalyzed());
+        Assertions.assertFalse(sh.wasOutputAnalyzed());
         sh.setOutputAnalyzed(true);
-        Assertions.assertTrue(sh.getOutputAnalyzed());
+        Assertions.assertTrue(sh.wasOutputAnalyzed());
     }
 
     @Test
     public void testGetSetRan() {
         ScriptHistory sh = factory();
-        Assertions.assertFalse(sh.getRan());
+        Assertions.assertFalse(sh.hasRun());
         sh.setRan(true);
-        Assertions.assertTrue(sh.getRan());
+        Assertions.assertTrue(sh.hasRun());
     }
 
     @Test
@@ -71,17 +73,7 @@ public class ScriptHistoryTest {
         Assertions.assertEquals(version + 1, sh.getVersion());
     }
 
-    @Test
-    public void testGetNextScriptVersion() {
-        ScriptHistory sh = factory();
-        Assertions.assertEquals("1", sh.getNextScriptVersion());
-        Assertions.assertEquals("1", sh.getNextScriptVersion());
-        int version = 10;
-        sh.setVersion(version);
-        Assertions.assertEquals(String.valueOf(version + 1), sh.getNextScriptVersion());
-    }
-
     private ScriptHistory factory() {
-        return new ScriptHistory();
+        return new ScriptHistory("None");
     }
 }

@@ -148,22 +148,22 @@ public class OutputAnalyzer {
                     if (lineParts.length > 1) {
                         simSpec.setSimExecutable(lineParts[1].trim());
                     }
-                } else if (currentLine.startsWith(SimulationSpecification.SIM_INPUTS_TEXT)) {
-                    String[] lineParts = currentLine.trim().split(":");
-                    if (lineParts.length > 1) {
-                        String[] inputs = lineParts[1].trim().split("\\s+");
-                        for (String input : inputs) {
-                            simSpec.addInput(input);
-                        }
-                    }
-                } else if (currentLine.startsWith(SimulationSpecification.SIM_OUTPUTS_TEXT)) {
-                    String[] lineParts = currentLine.split(":");
-                    if (lineParts.length > 1) {
-                        String[] outputs = lineParts[1].trim().split("\\s+");
-                        for (String output : outputs) {
-                            simSpec.addOutput(output);
-                        }
-                    }
+//                } else if (currentLine.startsWith(SimulationSpecification.SIM_INPUTS_TEXT)) {
+//                    String[] lineParts = currentLine.trim().split(":");
+//                    if (lineParts.length > 1) {
+//                        String[] inputs = lineParts[1].trim().split("\\s+");
+//                        for (String input : inputs) {
+//                            simSpec.addInput(input);
+//                        }
+//                    }
+//                } else if (currentLine.startsWith(SimulationSpecification.SIM_OUTPUTS_TEXT)) {
+//                    String[] lineParts = currentLine.split(":");
+//                    if (lineParts.length > 1) {
+//                        String[] outputs = lineParts[1].trim().split("\\s+");
+//                        for (String output : outputs) {
+//                            simSpec.addOutput(output);
+//                        }
+//                    }
                 }
             } else {
                 break;

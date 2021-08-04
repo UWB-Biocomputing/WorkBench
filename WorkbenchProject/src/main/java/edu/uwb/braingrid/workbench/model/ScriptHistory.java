@@ -1,71 +1,72 @@
 package edu.uwb.braingrid.workbench.model;
-// NOT CLEANED
+
+import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
- * FIX THIS!!! (Needs JavaDocs) ALL CLASSES NEED A HEADER TOO
+ * Represents the history for a script associated with a simulation.
  *
- * @author Aaron
+ * @author Aaron Conrad
  */
 public class ScriptHistory {
 
-    private String startedAt;
-    private String completedAt;
+    private long startedAt;
+    private long completedAt;
     private boolean outputAnalyzed;
     private boolean ran;
     private String filename;
     private int version;
 
-    public ScriptHistory() {
-        startedAt = null;
-        completedAt = null;
+    public ScriptHistory(String filename) {
+        this.filename = filename;
+        startedAt = DateTime.ERROR_TIME;
+        completedAt = DateTime.ERROR_TIME;
         outputAnalyzed = false;
         ran = false;
-        filename = null;
         version = 0;
     }
 
-    public String getStartedAt() {
+    public long getStartedAt() {
         return startedAt;
     }
 
-    public String getCompletedAt() {
-        return completedAt;
-    }
-
-    public boolean getOutputAnalyzed() {
-        return outputAnalyzed;
-    }
-
-    public boolean getRan() {
-        return ran;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setStartedAt(String startedAt) {
+    public void setStartedAt(long startedAt) {
         this.startedAt = startedAt;
     }
 
-    public void setCompletedAt(String completedAt) {
+    public long getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(long completedAt) {
         this.completedAt = completedAt;
+    }
+
+    public boolean wasOutputAnalyzed() {
+        return outputAnalyzed;
     }
 
     public void setOutputAnalyzed(boolean outputAnalyzed) {
         this.outputAnalyzed = outputAnalyzed;
     }
 
+    public boolean hasRun() {
+        return ran;
+    }
+
     public void setRan(boolean ran) {
         this.ran = ran;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     public void setVersion(int version) {
@@ -74,16 +75,5 @@ public class ScriptHistory {
 
     public void incrementVersion() {
         version++;
-    }
-
-    /**
-     * Provides the version number of the next script that will be added to the project. This is a
-     * convenience function, the version number is determined based on the current script version.
-     *
-     * @return The version number of the next script that will be added to the project when another
-     *         script is generated.
-     */
-    public String getNextScriptVersion() {
-        return String.valueOf(version + 1);
     }
 }
