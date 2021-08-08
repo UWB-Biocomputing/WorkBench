@@ -290,8 +290,11 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             tabs.add(((Element) tab).getAttribute(SystemConfig.NAME_ATTRIBUTE_NAME),
                     new JScrollPane(contentPanel));
 
-            // go to next node if current node doesn't have child.
-            if (!tab.hasChildNodes()) {
+            // go to next node if current node is empty
+            if (!tab.hasChildNodes() || (tab.getChildNodes().getLength() == 1
+                    && tab.getFirstChild().getNodeType() == Node.TEXT_NODE
+                    && tab.getFirstChild().getNodeValue().trim().isEmpty())) {
+                contentPanel.add(new JLabel("No parameters to configure"));
                 continue;
             }
 
@@ -410,7 +413,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             // get starting folder
             String simConfigFilesDir;
             if (fileSelector.getLastDir() == null) {
-                simConfigFilesDir = FileManager.getProjectsDirectory().toString();
+                simConfigFilesDir = FileManager.getDefaultProjectDirectory().toString();
             } else {
                 simConfigFilesDir = fileSelector.getLastDir().getAbsolutePath();
             }

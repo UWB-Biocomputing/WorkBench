@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.model.ExecutedCommand;
-import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 import edu.uwb.braingrid.workbench.script.Script;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
@@ -22,20 +21,15 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
  */
 public class OutputAnalyzer {
 
-    private static final int ERROR_VERSION = -1;
     private static final int MILLISECONDS_PER_SECOND = 1000;
 
     private final HashMap<String, HashMap<String, ExecutedCommand>> commandsRun;
-    private final SimulationSpecification simSpec;
-    private int scriptVersion;
 
     /**
      * Responsible for allocating this analyzer and initializing all members.
      */
     public OutputAnalyzer() {
         commandsRun = new HashMap<>();
-        simSpec = new SimulationSpecification();
-        scriptVersion = ERROR_VERSION;
     }
 
     /**
@@ -55,24 +49,6 @@ public class OutputAnalyzer {
         // given file path does not exist
         if (fileReader == null) {
             return;
-        }
-        if (!analyzeVersionNumber(fileReader)) {
-            System.err.println("Script version information not found in " + filepath);
-            return;
-        }
-        // analyze simulation information, if simspec ending prefix not detected
-        if (!analyzeSimSpec(fileReader)) {
-            // reset filereader
-            try { // try to start reading from the given file path
-                fileReader = null;
-                fileReader = new Scanner(new FileReader(new File(filepath)));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            // given file path does not exist
-            if (fileReader == null) {
-                return;
-            }
         }
         /* Analyze */
         // iterate through the file
@@ -109,67 +85,6 @@ public class OutputAnalyzer {
             }
         }
         fileReader.close();
-    }
-
-    private boolean analyzeVersionNumber(Scanner fileReader) {
-        boolean versionFound = false;
-        while (true) {
-            if (fileReader.hasNext()) {
-                String currentLine = fileReader.nextLine();
-                if (currentLine.startsWith(Script.VERSION_TEXT)) {
-                    String[] lineParts = currentLine.split(":");
-                    if (lineParts.length > 1) {
-                        try {
-                            scriptVersion = Integer.parseInt(lineParts[1].trim());
-                            versionFound = true;
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            } else {
-                break;
-            }
-        }
-        return versionFound;
-    }
-
-    private boolean analyzeSimSpec(Scanner fileReader) {
-        boolean endSimSpecEncountered = false;
-        while (true) {
-            if (fileReader.hasNext()) {
-                String currentLine = fileReader.nextLine();
-                // end of simulation information?(if never, then eof after loop)
-                if (currentLine.startsWith(SimulationSpecification.END_SIM_SPEC_TEXT)) {
-                    endSimSpecEncountered = true; // possibly not eof after loop
-                    break;
-                } else if (currentLine.startsWith(SimulationSpecification.SIM_EXEC_TEXT)) {
-                    String[] lineParts = currentLine.split(":");
-                    if (lineParts.length > 1) {
-                        simSpec.setSimExecutable(lineParts[1].trim());
-                    }
-//                } else if (currentLine.startsWith(SimulationSpecification.SIM_INPUTS_TEXT)) {
-//                    String[] lineParts = currentLine.trim().split(":");
-//                    if (lineParts.length > 1) {
-//                        String[] inputs = lineParts[1].trim().split("\\s+");
-//                        for (String input : inputs) {
-//                            simSpec.addInput(input);
-//                        }
-//                    }
-//                } else if (currentLine.startsWith(SimulationSpecification.SIM_OUTPUTS_TEXT)) {
-//                    String[] lineParts = currentLine.split(":");
-//                    if (lineParts.length > 1) {
-//                        String[] outputs = lineParts[1].trim().split("\\s+");
-//                        for (String output : outputs) {
-//                            simSpec.addOutput(output);
-//                        }
-//                    }
-                }
-            } else {
-                break;
-            }
-        }
-        return endSimSpecEncountered;
     }
 
     /**
@@ -225,16 +140,6 @@ public class OutputAnalyzer {
     }
 
     /**
-     * Provides the version of the script that was used to generate the file which was analyzed.
-     *
-     * @return The version of the script, or null if it wasn't present or if the file has yet to be
-     * analyzed.
-     */
-    public int getScriptVersion() {
-        return scriptVersion;
-    }
-
-    /**
      * Provides a collection of commands invoked from the provided executable file.
      *
      * @param executableName  The executable filename that starts the commands. This may include
@@ -274,20 +179,6 @@ public class OutputAnalyzer {
             map.put(ec.getFullCommand(), ec);
             commandsRun.put(ec.getSimpleCommand(), map);
         }
-    }
-
-    /**
-     * Provides the simulation specification values relevant for executing the simulator.
-     *
-     * Note: The specification returned should not be relied upon for attributes that do not effect
-     * the composition of the command statement. (i.e. if its not an argument, or the executable
-     * filename, its not in there)
-     *
-     * @return A specification containing the values relevant for composing the execution command
-     *         for the simulation
-     */
-    public SimulationSpecification getSimSpec() {
-        return simSpec;
     }
 
     /**

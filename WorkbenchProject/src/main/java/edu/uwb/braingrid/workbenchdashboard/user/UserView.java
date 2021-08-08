@@ -18,7 +18,7 @@ public class UserView extends WorkbenchApp {
     private TextField projectsDirField
             = new TextField(user.getProjectsDirectory().toString());
 
-    private Label bgRepoDirLabel = new Label("Brain Grid Repos Directory: ");
+    private Label bgRepoDirLabel = new Label("BrainGrid Repo Directory: ");
     private TextField bgRepoDirField
             = new TextField(user.getBrainGridRepoDirectory().toString());
 

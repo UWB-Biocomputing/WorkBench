@@ -91,11 +91,8 @@ public class ScriptManager {
         /* Print Header Data */
         script.printf(Script.VERSION_TEXT, version, false);
         // determine which simulator file to execute
-        String type = simSpec.getSimulationType();
-        String simExecutableToInvoke;
-        simExecutableToInvoke = SimulationSpecification.getSimFilename(type);
-        success = simExecutableToInvoke != null;
-        printfSimSpecToScript(script, simExecutableToInvoke, configFilename, true);
+        String simExecutableToInvoke = simSpec.getSimExecutable();
+        script.printf(SimulationSpecification.SIM_EXEC_TEXT, simExecutableToInvoke, true);
         /* Prep From Simulation Data */
         // simulator build and execute location
         String simFolder = simSpec.getSimulatorFolder();
@@ -171,7 +168,7 @@ public class ScriptManager {
                 + "_"
                 + Script.SIM_STATUS_FILENAME, true);
         /* Put Script Together and Save */
-        if (!success || !script.construct()) {
+        if (simExecutableToInvoke == null || !script.construct()) {
             script = null; // or indicate unsuccessful operation
         }
         return script;
@@ -539,10 +536,8 @@ public class ScriptManager {
             OutputAnalyzer analyzer = new OutputAnalyzer();
             analyzer.analyzeOutput(scriptStatusFilename);
             /* Completed */
-            long atTime;
             String simExec = simSpec.getSimExecutable();
-            atTime = analyzer.completedAt(simExec);
-            timeCompleted = atTime;
+            timeCompleted = analyzer.completedAt(simExec);
             if (timeCompleted != DateTime.ERROR_TIME && provMgr != null) {
                 Long startTime = System.currentTimeMillis();
                 /* Set Remote Namespace Prefix */
@@ -571,7 +566,7 @@ public class ScriptManager {
                     // connect the two
                     provMgr.wasAssociatedWith(simActivity, simAgent);
                     provMgr.startedAtTime(simActivity, new Date(analyzer.startedAt(simExec)));
-                    provMgr.endedAtTime(simActivity, new Date(atTime));
+                    provMgr.endedAtTime(simActivity, new Date(timeCompleted));
                     String resultFile = simulationDir + "/" + simulation.getSimResultFile();
                     // add entity for simulation result file, don't replace if exists
                     Resource simResultFile = provMgr.addEntity(resultFile, "simResult",
@@ -847,17 +842,6 @@ public class ScriptManager {
         String msg = outstandingMessages;
         outstandingMessages = "";
         return msg;
-    }
-
-    //TODO: This does not seem necessary. Consider removing. -Steven
-    private static void printfSimSpecToScript(Script script, String simFile,
-            String simInputFilename, boolean append) {
-        script.printf(SimulationSpecification.SIM_EXEC_TEXT, simFile, append);
-//        script.printf(SimulationSpecification.SIM_INPUTS_TEXT, simInputFilename, true);
-//        // printf the outputs
-//        script.printf(SimulationSpecification.SIM_OUTPUTS_TEXT, "output.xml", true);
-        // printf the end tag for the sim spec data
-        script.printf(SimulationSpecification.END_SIM_SPEC_TEXT, "", true);
     }
 
     public static String getScriptName(String simulationName, String version) {

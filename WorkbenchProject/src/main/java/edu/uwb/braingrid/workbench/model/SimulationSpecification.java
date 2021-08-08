@@ -41,7 +41,6 @@ public class SimulationSpecification {
     public static final int GIT_PULL_AND_CLONE_INDEX = 1;
     public static final int GIT_NONE_INDEX = 0;
     public static final String SIM_EXEC_TEXT = "simExecutable";
-    public static final String END_SIM_SPEC_TEXT = "endSimSpec";
 //    public static final String SIM_INPUTS_TEXT = "simInputs";
 //    public static final String SIM_OUTPUTS_TEXT = "simOutputs";
 
@@ -55,7 +54,6 @@ public class SimulationSpecification {
     private String sourceCodeUpdating;
     private String sha1Key;
     private String versionAnnotation;
-    private String simExecutable;
 //    private List<String> simInputs;
 //    private List<String> simOutputs;
     // </editor-fold>
@@ -75,7 +73,6 @@ public class SimulationSpecification {
         sourceCodeUpdating = null;
         sha1Key = null;
         versionAnnotation = null;
-        simExecutable = null;
 //        simInputs = new ArrayList<>();
 //        simOutputs = new ArrayList<>();
     }
@@ -315,16 +312,7 @@ public class SimulationSpecification {
      * @return The file name for the executable file that will be invoked to start the simulation
      */
     public String getSimExecutable() {
-        return simExecutable;
-    }
-
-    /**
-     * Sets the executable filename to invoke for this simulation.
-     *
-     * @param executableFilename  The executable filename to invoke for this simulation
-     */
-    public void setSimExecutable(String executableFilename) {
-        simExecutable = executableFilename;
+        return getSimExecutable(simulatorType);
     }
 
     /**
@@ -334,13 +322,13 @@ public class SimulationSpecification {
      *                       executable file names
      * @return The executable file name related to the specified simulation type
      */
-    public static String getSimFilename(String simulatorType) {
-        String simExecutableToInvoke = null;
+    public static String getSimExecutable(String simulatorType) {
+        String executable = null;
         if (simulatorType != null) {
-            simExecutableToInvoke = simulatorType.equals(
-                    SimulationSpecification.SEQUENTIAL_SIMULATION) ? "growth" : "growth_cuda";
+            executable = simulatorType.equals(SimulationSpecification.SEQUENTIAL_SIMULATION)
+                    ? "growth" : "growth_cuda";
         }
-        return simExecutableToInvoke;
+        return executable;
     }
 
 //    /**
@@ -453,8 +441,7 @@ public class SimulationSpecification {
                 && Objects.equals(codeRepository, that.codeRepository)
                 && Objects.equals(sourceCodeUpdating, that.sourceCodeUpdating)
                 && Objects.equals(sha1Key, that.sha1Key)
-                && Objects.equals(versionAnnotation, that.versionAnnotation)
-                && Objects.equals(simExecutable, that.simExecutable);
+                && Objects.equals(versionAnnotation, that.versionAnnotation);
 //                && Objects.equals(getSimInputs(), that.getSimInputs())
 //                && Objects.equals(getSimOutputs(), that.getSimOutputs());
     }
@@ -462,9 +449,8 @@ public class SimulationSpecification {
     @Override
     public int hashCode() {
         return Objects.hash(simulationLocale, hostname, username, simulatorFolder, simulatorType,
-                buildOption, codeRepository, sourceCodeUpdating, sha1Key, versionAnnotation,
-                simExecutable);
-//                simExecutable, getSimInputs(), getSimOutputs());
+                buildOption, codeRepository, sourceCodeUpdating, sha1Key, versionAnnotation);
+//                getSimInputs(), getSimOutputs());
     }
     // </editor-fold>
 }

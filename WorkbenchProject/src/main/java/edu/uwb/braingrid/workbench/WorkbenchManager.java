@@ -578,25 +578,6 @@ public class WorkbenchManager {
     public void invalidateScriptGenerated() {
         simulation.removeScript();
     }
-
-    /**
-     * Sets the ScriptRan attribute of the Project to false. Run invalidation should occur whenever
-     * the script specification or simulation specification changes. This attribute is used by the
-     * provvisualizer.view to update workflow state (which buttons are enabled and what text is
-     * shown to the user).
-     */
-    public void invalidateScriptRan() {
-        simulation.setScriptRan(false);
-    }
-
-    /**
-     * Sets the time when the script completed execution to an error code. Invalidation should occur
-     * whenever script specification or simulation specification occurs. This is a safety measure
-     * for the provvisualizer.view in updating the overview of script output analysis.
-     */
-    public void invalidateScriptAnalyzed() {
-        simulation.setScriptCompletedAt(DateTime.ERROR_TIME);
-    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Provenance Controls">
@@ -698,13 +679,10 @@ public class WorkbenchManager {
     }
 
     private String getNextScriptName() {
-        String name;
-        name = null;
+        String name = null;
         if (simulation != null) {
-            String version = simulation.getNextScriptVersion();
-            if (version != null) {
-                name = ScriptManager.getScriptName(simulation.getName(), version);
-            }
+            name = ScriptManager.getScriptName(simulation.getName(),
+                    simulation.getNextScriptVersion());
         }
         return name;
     }

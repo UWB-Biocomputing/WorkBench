@@ -99,8 +99,6 @@ public class SimStartWiz {
         boolean wasSuccessful = false;
         if (workbenchManager.configureSimulation()) {
             workbenchManager.invalidateScriptGenerated();
-            workbenchManager.invalidateScriptRan();
-            workbenchManager.invalidateScriptAnalyzed();
             wasSuccessful = true;
         }
         setMsg();
@@ -124,8 +122,6 @@ public class SimStartWiz {
         boolean wasSuccessful = false;
         if (workbenchManager.configureSimulation(simInputPresets, nListPresets)) {
             workbenchManager.invalidateScriptGenerated();
-            workbenchManager.invalidateScriptRan();
-            workbenchManager.invalidateScriptAnalyzed();
             wasSuccessful = true;
         }
         setMsg();
@@ -142,8 +138,6 @@ public class SimStartWiz {
         boolean wasSuccessful = false;
         if (workbenchManager.specifyScript()) {
             workbenchManager.invalidateScriptGenerated();
-            workbenchManager.invalidateScriptRan();
-            workbenchManager.invalidateScriptAnalyzed();
             wasSuccessful = true;
         }
         setMsg();
@@ -164,8 +158,6 @@ public class SimStartWiz {
         boolean wasSuccessful = false;
         if (workbenchManager.specifyScript(runtimeSpecifications)) {
         workbenchManager.invalidateScriptGenerated();
-        workbenchManager.invalidateScriptRan();
-        workbenchManager.invalidateScriptAnalyzed();
         wasSuccessful = true;
         }
         setMsg();

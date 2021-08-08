@@ -841,10 +841,9 @@ public class ProvMgr {
         String provLocation = directory.resolve(simulation.getName() + ".ttl").toString();
         model.write(new FileOutputStream(provLocation, false), "TURTLE");
         // add provenance to UniversalProvenance.ttl
-        directory = simulation.getSimulationLocation();
-        Files.createDirectories(directory);
-        provLocation = directory.resolve("UniversalProvenance.ttl").toString();
-        model.write(new FileOutputStream(provLocation, true), "TURTLE");
+        String universalProvLocation = FileManager.getDefaultProjectDirectory()
+                .resolve("UniversalProvenance.ttl").toString();
+        model.write(new FileOutputStream(universalProvLocation, true), "TURTLE");
     }
 
     /**

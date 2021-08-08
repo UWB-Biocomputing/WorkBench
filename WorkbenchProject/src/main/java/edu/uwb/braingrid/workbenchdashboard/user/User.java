@@ -38,10 +38,8 @@ public final class User implements FileManagerShared {
     private User() {
         LOG.info("Initializing User Data");
         //TODO: get project and sim dirs from user
-        Path projectsDir = FileManager.getUserHome()
-                .resolve("Documents")
-                .resolve("WorkbenchProjects");
-        Path repoDir = projectsDir.resolve("BrainGridRepos");
+        Path projectsDir = FileManager.getUserHome().resolve("WorkbenchProjects");
+        Path repoDir = FileManager.getWorkbenchDirectory().resolve("BrainGridRepo");
         String simulationsDir = "~/WorkbenchSimulations"; // may be remote
         setProjectsDirectory(projectsDir);
         setBrainGridRepoDirectory(repoDir);

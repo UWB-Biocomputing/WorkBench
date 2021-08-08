@@ -109,11 +109,11 @@ public class SimulationTest {
 
     @Test
     public void getSimulationLocationTest() {
-        // New Prj
+        // New Simulation
         Simulation simNew = getSimNameFalseLoad();
         this.getSimulationLocationTestHelper(simNew);
 
-        // Load Prj
+        // Load Simulation
         Simulation simLoad = getSimNameTrueLoadActualSimulation();
         this.getSimulationLocationTestHelper(simLoad);
     }
@@ -129,11 +129,11 @@ public class SimulationTest {
 
     @Test
     public void getProvLocationTest() {
-        // New Prj
+        // New Simulation
         Simulation simNew = getSimNameFalseLoad();
         this.getProvLocationTestHelper(simNew);
 
-        // Load Prj
+        // Load Simulation
         Simulation simLoad = getSimNameTrueLoadActualSimulation();
         this.getProvLocationTestHelper(simLoad);
     }
@@ -149,7 +149,7 @@ public class SimulationTest {
 
     @Test
     public void scriptGenerationAvailableTest() {
-        // New Prj
+        // New Simulation
         Simulation simNew = getSimNameFalseLoad();
         this.addSimulatorToSim(simNew);
         simNew.removeScript();
@@ -207,14 +207,14 @@ public class SimulationTest {
 
     @Test
     public void setAndGetNameTest() {
-        // New Prj
+        // New Simulation
         Simulation simNew = getSimNameFalseLoad();
 
         String newName = "NanananananananaBatman";
         simNew.setName(newName);
         Assertions.assertEquals(newName, simNew.getName());
 
-        // Load Prj
+        // Load Simulation
         Simulation simLoad = getSimNameTrueLoadActualSimulation();
         simLoad.setName(newName);
         Assertions.assertEquals(newName, simLoad.getName());
@@ -222,7 +222,7 @@ public class SimulationTest {
 
     @Test
     public void setAndGetProvenanceEnabledTest() {
-        // New Prj
+        // New Simulation
         Simulation simNew = getSimNameFalseLoad();
 
         simNew.setProvenanceEnabled(false);
@@ -230,7 +230,7 @@ public class SimulationTest {
         simNew.setProvenanceEnabled(true);
         Assertions.assertTrue(simNew.isProvenanceEnabled());
 
-        // Load Prj
+        // Load Simulation
         Simulation simLoad = getSimNameTrueLoadActualSimulation();
         simLoad.setProvenanceEnabled(false);
         Assertions.assertFalse(simLoad.isProvenanceEnabled());
@@ -270,10 +270,6 @@ public class SimulationTest {
         String buildOption = sim.getBuildOption();
         String updating = sim.getSimulatorSourceCodeUpdatingType();
         String version = sim.getSimulatorVersionAnnotation();
-        String executable = null;
-        if (simType != null && !simType.isEmpty()) {
-            executable = SimulationSpecification.getSimFilename(simType);
-        }
 
         SimulationSpecification ss = new SimulationSpecification();
         ss.setSimulationType(simType);
@@ -285,7 +281,6 @@ public class SimulationTest {
         ss.setBuildOption(buildOption);
         ss.setSourceCodeUpdating(updating);
         ss.setVersionAnnotation(version);
-        ss.setSimExecutable(executable);
 
         Assertions.assertTrue(sim.getSimSpec().equals(ss));
     }

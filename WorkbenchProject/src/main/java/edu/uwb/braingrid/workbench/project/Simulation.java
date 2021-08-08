@@ -125,6 +125,7 @@ public class Simulation {
         Element element = doc.createElement(SIM_CONFIG_FILE_TAG_NAME);
         element.setAttribute(RESULT_FILE_NAME_ATTRIBUTE_NAME, resultFileName);
         element.setTextContent(simConfigFile);
+        root.appendChild(element);
 
         // record simulation specification
         Element parent = doc.createElement(SIMULATOR_TAG_NAME);
@@ -433,7 +434,9 @@ public class Simulation {
      * @param scriptFilename  The base-name of the file path
      */
     public void addScript(String scriptFilename) {
+        int version = (scriptHistory != null) ? scriptHistory.getVersion() + 1 : 1;
         scriptHistory = new ScriptHistory(scriptFilename);
+        scriptHistory.setVersion(version);
     }
 
     private void addScript(String filename, String version, String startedAt, String completedAt,
@@ -582,6 +585,15 @@ public class Simulation {
     }
 
     /**
+     * Provides the name of the simulator executable associated with this simulation.
+     *
+     * @return The name of the simulator executable associated with this simulation.
+     */
+    public String getSimulatorExecutable() {
+        return simSpec.getSimExecutable();
+    }
+
+    /**
      * Gets the location of the script file.
      *
      * @return The location of the script file, or null if no file path is set
@@ -608,7 +620,7 @@ public class Simulation {
      *         another script is generated.
      */
     public String getNextScriptVersion() {
-        return (scriptHistory != null) ? String.valueOf(scriptHistory.getVersion() + 1) : "0";
+        return (scriptHistory != null) ? String.valueOf(scriptHistory.getVersion() + 1) : "1";
     }
 
     /**
@@ -730,7 +742,7 @@ public class Simulation {
      * @return The path to the project folder for the current project
      */
     private static Path getProjectLocation() {
-        return FileManager.getProjectsDirectory().resolve("simulations");
+        return FileManager.getDefaultProjectDirectory();
     }
 
     /**

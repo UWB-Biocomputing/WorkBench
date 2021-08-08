@@ -30,7 +30,7 @@ public final class FileManager {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(FileManager.class.getName());
-    private static final String PROJECTS_FOLDER_NAME = "projects";
+    private static final String DEFAULT_PROJECT_NAME = "Default";
     private static final String CONFIG_FILES_FOLDER_NAME = "configfiles";
     private static final String NEURON_LIST_FOLDER_NAME = "NList";
 
@@ -150,21 +150,17 @@ public final class FileManager {
      * Provides the canonical location of the parent directory for all simulation configuration
      * related files.
      *
-     * @param projectName  The name of the project. The project name is used as the parent
-     *                     directory to the sim config directory (project name is used as the main
-     *                     directory name for the project. e.g. if the BrainGrid working directory
-     *                     is folder/BrainGrid and the project name is myProject, then
-     *                     folder/BrainGrid/myProject/ contains the simulation configuration
-     *                     directory, and subsequently, the simulation configuration file).
+     * @param simulationName  The name of the simulation. The simulation name is used as the parent
+     *                        directory to the sim config directory.
      * @param mkdirs  Indicates whether or not to build the parent directories in the case that they
      *                do not yet exist
      * @return The canonical location of the parent directory for all simulation configuration
      *         related files.
      * @throws IOException
      */
-    public static Path getSimConfigDirectoryPath(String projectName, boolean mkdirs)
+    public static Path getSimConfigDirectoryPath(String simulationName, boolean mkdirs)
             throws IOException {
-        Path dir = getProjectDirectory(projectName, mkdirs).resolve(CONFIG_FILES_FOLDER_NAME);
+        Path dir = getSimulationDirectory(simulationName, mkdirs).resolve(CONFIG_FILES_FOLDER_NAME);
         if (mkdirs) {
             Files.createDirectories(dir);
         }
@@ -174,7 +170,7 @@ public final class FileManager {
     /**
      * Provides the canonical location of the project directory with the specified name.
      *
-     * @param projectName  The name of the project. This is used as the main folder within the
+     * @param simulationName  The name of the project. This is used as the main folder within the
      *                     BrainGrid folder for all files related to a given project.
      * @param mkdirs  Indicates whether or not to build the parent directories in the case that they
      *                do not yet exist
@@ -182,12 +178,22 @@ public final class FileManager {
      *         to a given project.
      * @throws IOException
      */
-    public static Path getProjectDirectory(String projectName, boolean mkdirs) throws IOException {
-        Path dir = getProjectsDirectory().resolve(PROJECTS_FOLDER_NAME).resolve(projectName);
+    public static Path getSimulationDirectory(String simulationName, boolean mkdirs)
+            throws IOException {
+        Path dir = getDefaultProjectDirectory().resolve(simulationName);
         if (mkdirs) {
             Files.createDirectories(dir);
         }
         return dir;
+    }
+
+    /**
+     * Provides the path to the default project.
+     *
+     * @return The path to the default project
+     */
+    public static Path getDefaultProjectDirectory() {
+        return getProjectsDirectory().resolve(DEFAULT_PROJECT_NAME);
     }
 
     /**

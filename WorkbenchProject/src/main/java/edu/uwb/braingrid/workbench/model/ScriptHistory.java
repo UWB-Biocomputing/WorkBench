@@ -22,7 +22,7 @@ public class ScriptHistory {
         completedAt = DateTime.ERROR_TIME;
         outputAnalyzed = false;
         ran = false;
-        version = 0;
+        version = 1;
     }
 
     public long getStartedAt() {
