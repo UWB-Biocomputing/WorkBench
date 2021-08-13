@@ -86,7 +86,7 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
         // create a file chooser
         FileChooser chooser = new FileChooser();
         File lastDir = fileSelector.getLastDir();
-        File projectsDir = FileManager.getDefaultProjectDirectory().toFile();
+        File projectsDir = FileManager.getCurrentProjectDirectory().toFile();
         if (lastDir == null && projectsDir.exists()) {
             chooser.setInitialDirectory(projectsDir);
         } else {

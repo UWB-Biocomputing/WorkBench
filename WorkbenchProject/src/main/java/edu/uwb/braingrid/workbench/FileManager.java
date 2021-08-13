@@ -30,7 +30,6 @@ public final class FileManager {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(FileManager.class.getName());
-    private static final String DEFAULT_PROJECT_NAME = "Default";
     private static final String CONFIG_FILES_FOLDER_NAME = "configfiles";
     private static final String NEURON_LIST_FOLDER_NAME = "NList";
 
@@ -180,7 +179,7 @@ public final class FileManager {
      */
     public static Path getSimulationDirectory(String simulationName, boolean mkdirs)
             throws IOException {
-        Path dir = getDefaultProjectDirectory().resolve(simulationName);
+        Path dir = getCurrentProjectDirectory().resolve(simulationName);
         if (mkdirs) {
             Files.createDirectories(dir);
         }
@@ -188,12 +187,12 @@ public final class FileManager {
     }
 
     /**
-     * Provides the path to the default project.
+     * Provides the path to the current project.
      *
-     * @return The path to the default project
+     * @return The path to the current project
      */
-    public static Path getDefaultProjectDirectory() {
-        return getProjectsDirectory().resolve(DEFAULT_PROJECT_NAME);
+    public static Path getCurrentProjectDirectory() {
+        return getProjectsDirectory().resolve(WorkbenchManager.getInstance().getProjectName());
     }
 
     /**

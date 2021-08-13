@@ -413,7 +413,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             // get starting folder
             String simConfigFilesDir;
             if (fileSelector.getLastDir() == null) {
-                simConfigFilesDir = FileManager.getDefaultProjectDirectory().toString();
+                simConfigFilesDir = FileManager.getCurrentProjectDirectory().toString();
             } else {
                 simConfigFilesDir = fileSelector.getLastDir().getAbsolutePath();
             }

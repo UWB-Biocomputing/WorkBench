@@ -35,7 +35,7 @@ public final class FileUtility {
     }
 
     public static String getNodeFileLocalAbsolutePath(Node node) {
-        return FileManager.getDefaultProjectDirectory().resolve(ARTIFACTS_DIR)
+        return FileManager.getCurrentProjectDirectory().resolve(ARTIFACTS_DIR)
                 .resolve(getNodeFileRelativePath(node)).toString();
     }
 

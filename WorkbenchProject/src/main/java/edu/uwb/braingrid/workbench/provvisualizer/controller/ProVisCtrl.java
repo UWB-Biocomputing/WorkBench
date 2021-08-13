@@ -202,7 +202,7 @@ public class ProVisCtrl {
                     new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
 
             // set starting folder
-            File initialDir = FileManager.getDefaultProjectDirectory().toFile();
+            File initialDir = FileManager.getCurrentProjectDirectory().toFile();
             if (initialDir.exists()) {
                 fileChooser.setInitialDirectory(initialDir);
             } else {
@@ -771,7 +771,7 @@ public class ProVisCtrl {
      * Display universalProvenance on ProVis.
      */
     public void openUniversalProvenance() {
-        File universalProvenance = FileManager.getDefaultProjectDirectory()
+        File universalProvenance = FileManager.getCurrentProjectDirectory()
                 .resolve("UniversalProvenance.ttl").toFile();
         if (universalProvenance.exists()) {
             dataProvGraph.clearNodesNEdges();
