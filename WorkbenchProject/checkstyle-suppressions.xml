@@ -20,8 +20,8 @@
   <suppress checks=".*" files="InputConfigClassSelectionDialog.java" lines="34-183"/>
   <suppress checks="MagicNumberCheck" files="LoginCredentialsDialog.java"/>
   <suppress checks=".*" files="LoginCredentialsDialog.java" lines="15-152"/>
-  <suppress checks="MagicNumberCheck" files="NewProjectDialog.java"/>
-  <suppress checks=".*" files="NewProjectDialog.java" lines="23-172"/>
+  <suppress checks="MagicNumberCheck" files="NewSimulationDialog.java"/>
+  <suppress checks=".*" files="NewSimulationDialog.java" lines="23-172"/>
   <suppress checks="MagicNumberCheck" files="ProvenanceQueryDialog.java"/>
   <suppress checks=".*" files="ProvenanceQueryDialog.java" lines="19-201"/>
   <suppress checks="MagicNumberCheck" files="ScriptSpecificationDialog.java"/>

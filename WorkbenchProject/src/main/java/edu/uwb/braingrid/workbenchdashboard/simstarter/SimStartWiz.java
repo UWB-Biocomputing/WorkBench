@@ -21,7 +21,7 @@ public class SimStartWiz {
     private static final long SERIAL_VERSION_UID = 1L;
 
     private TextArea msgText = new TextArea("");
-    private WorkbenchManager workbenchManager = new WorkbenchManager();
+    private WorkbenchManager workbenchManager = WorkbenchManager.getInstance();
     private SimulationRuntimeDialog srd;
     private String commitVersionSelected = null;
 
@@ -32,7 +32,7 @@ public class SimStartWiz {
     public SimStartWiz() {
         LOG.info("new " + getClass().getName());
         boolean cancelButtonClicked = false;
-        if (workbenchManager.newProject()) {
+        if (workbenchManager.newSimulation()) {
             if (configureSimulation()) {
                 if (specifyScript()) {
                     if (generateScript()) {
@@ -46,7 +46,7 @@ public class SimStartWiz {
             }
         }
         if (cancelButtonClicked) {
-            workbenchManager.saveProject();
+            workbenchManager.saveSimulation();
         }
     }
 
@@ -62,7 +62,7 @@ public class SimStartWiz {
             HashMap<Character, String> nListPresets) {
         LOG.info("new " + getClass().getName());
         boolean cancelButtonClicked = false;
-        if (workbenchManager.newProject()) {
+        if (workbenchManager.newSimulation()) {
             if (configureSimulation(simSpecifications, nListPresets)) {
                 if (specifyScript(runtimeSpecifications)) {
                     if (generateScript()) {
@@ -76,7 +76,7 @@ public class SimStartWiz {
             }
         }
         if (cancelButtonClicked) {
-            workbenchManager.saveProject();
+            workbenchManager.saveSimulation();
         }
     }
 

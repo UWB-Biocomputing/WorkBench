@@ -8,13 +8,12 @@ import java.util.logging.Logger;
 import edu.uwb.braingrid.workbench.FileManager;
 
 /**
- * Dialog for specifying a new project. This dialog is only responsible to collect information from
- * the user. All project construction continues within the workbench control frame.
+ * Dialog for specifying a new simulation. This dialog is only responsible to collect information
+ * from the user. All simulation construction continues within the workbench control frame.
  *
  * @author Del Davis
- * @version 0.1
  */
-public class NewProjectDialog extends javax.swing.JDialog {
+public class NewSimulationDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     /**
@@ -25,93 +24,93 @@ public class NewProjectDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        newProjectNameLabel = new javax.swing.JLabel();
-        newProjectNameTextField = new javax.swing.JTextField();
-        newProjectOKButton = new javax.swing.JButton();
-        newProjectCancelButton = new javax.swing.JButton();
-        newProjectSpecificationDirectionsLabel = new javax.swing.JLabel();
-        newProjectValidationMessageLabel = new javax.swing.JLabel();
+        newSimulationNameLabel = new javax.swing.JLabel();
+        newSimulationNameTextField = new javax.swing.JTextField();
+        newSimulationOKButton = new javax.swing.JButton();
+        newSimulationCancelButton = new javax.swing.JButton();
+        newSimulationSpecificationDirectionsLabel = new javax.swing.JLabel();
+        newSimulationValidationMessageLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         provenanceEnabledCheckbox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("New Project Specification");
+        setTitle("New Simulation Specification");
         setLocationByPlatform(true);
         setModal(true);
 
-        newProjectNameLabel.setText("Project Name: ");
+        newSimulationNameLabel.setText("Simulation Name: ");
 
-        newProjectNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+        newSimulationNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                newProjectNameTextFieldKeyReleased(evt);
+                newSimulationNameTextFieldKeyReleased(evt);
             }
         });
 
-        newProjectOKButton.setText("OK");
-        newProjectOKButton.setEnabled(false);
-        newProjectOKButton.addActionListener(new java.awt.event.ActionListener() {
+        newSimulationOKButton.setText("OK");
+        newSimulationOKButton.setEnabled(false);
+        newSimulationOKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newProjectOKButtonActionPerformed(evt);
+                newSimulationOKButtonActionPerformed(evt);
             }
         });
 
-        newProjectCancelButton.setText("Cancel");
-        newProjectCancelButton.addActionListener(new java.awt.event.ActionListener() {
+        newSimulationCancelButton.setText("Cancel");
+        newSimulationCancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newProjectCancelButtonActionPerformed(evt);
+                newSimulationCancelButtonActionPerformed(evt);
             }
         });
 
-        newProjectSpecificationDirectionsLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        newProjectSpecificationDirectionsLabel.setText("Provide a new project name");
+        newSimulationSpecificationDirectionsLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        newSimulationSpecificationDirectionsLabel.setText("Provide a new simulation name");
 
         jLabel1.setText("<html><p style=\"color:orange\">* Using the output file basename is recommended</p></html>");
 
         provenanceEnabledCheckbox.setSelected(true);
         provenanceEnabledCheckbox.setText("Provenance Support Enabled");
         provenanceEnabledCheckbox.setToolTipText(
-                "<html>Warning: Select carefully.<br>This is permanent for the project<br>(i.e. you cannot turn provenance support<br>on and off after a project is specified)</html>");
+                "<html>Warning: Select carefully.<br>This is permanent for the simulation<br>(i.e. you cannot turn provenance support<br>on and off after a simulation is specified)</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
                 .createSequentialGroup().addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(newProjectSpecificationDirectionsLabel, javax.swing.GroupLayout.DEFAULT_SIZE,
+                        .addComponent(newSimulationSpecificationDirectionsLabel, javax.swing.GroupLayout.DEFAULT_SIZE,
                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                                 layout.createSequentialGroup().addComponent(provenanceEnabledCheckbox)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(newProjectOKButton)
+                                        .addComponent(newSimulationOKButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(newProjectCancelButton))
-                        .addGroup(layout.createSequentialGroup().addComponent(newProjectNameLabel)
+                                        .addComponent(newSimulationCancelButton))
+                        .addGroup(layout.createSequentialGroup().addComponent(newSimulationNameLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(newProjectNameTextField))
-                        .addComponent(newProjectValidationMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                .addComponent(newSimulationNameTextField))
+                        .addComponent(newSimulationValidationMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE,
                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE))
                 .addContainerGap()));
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup().addContainerGap()
-                        .addComponent(newProjectSpecificationDirectionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE,
+                        .addComponent(newSimulationSpecificationDirectionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE,
                                 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE,
                                 javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(newProjectNameLabel).addComponent(newProjectNameTextField,
+                                .addComponent(newSimulationNameLabel).addComponent(newSimulationNameTextField,
                                         javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(newProjectOKButton).addComponent(provenanceEnabledCheckbox))
-                                .addComponent(newProjectCancelButton))
+                                        .addComponent(newSimulationOKButton).addComponent(provenanceEnabledCheckbox))
+                                .addComponent(newSimulationCancelButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(newProjectValidationMessageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22,
+                        .addComponent(newSimulationValidationMessageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22,
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap()));
 
@@ -120,55 +119,55 @@ public class NewProjectDialog extends javax.swing.JDialog {
     // </editor-fold>//GEN-END:initComponents
 
     /**
-     * Validates the currently entered text from the project name field
+     * Validates the currently entered text from the simulation name field
      *
-     * Note: In order to be considered valid, the project name must also be a valid filename. This
-     * function relies on a static method of the edu.uwb.braingrid.provenance.ProvMgr class.
+     * Note: In order to be considered valid, the simulation name must also be a valid filename.
+     * This function relies on a static method of the edu.uwb.braingrid.provenance.ProvMgr class.
      *
      * @param evt  The event that triggered this action
      */
-    private void newProjectNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_newProjectNameTextFieldKeyReleased
+    private void newSimulationNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_newSimulationNameTextFieldKeyReleased
         /* Redirect to OK button action if enter key */
-        if (validateNewProjectName()) {
+        if (validateNewSimulationName()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                newProjectOKButtonActionPerformed(null);
+                newSimulationOKButtonActionPerformed(null);
             }
         }
-    }// GEN-LAST:event_newProjectNameTextFieldKeyReleased
+    }// GEN-LAST:event_newSimulationNameTextFieldKeyReleased
 
     /**
-     * Cancel the new project specification operation.
+     * Cancel the new simulation specification operation.
      *
      * @param evt  The event that triggered this action (cancel button clicked)
      */
-    private void newProjectCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newProjectCancelButtonActionPerformed
+    private void newSimulationCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newSimulationCancelButtonActionPerformed
         isRunning = false;
         setVisible(false);
-    }// GEN-LAST:event_newProjectCancelButtonActionPerformed
+    }// GEN-LAST:event_newSimulationCancelButtonActionPerformed
 
     /**
-     * Executes the specification of the new project.
+     * Executes the specification of the new simulation.
      *
      * @param evt  The event that triggered this action
      */
-    private void newProjectOKButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newProjectOKButtonActionPerformed
-        specifyNewProject();
-    }// GEN-LAST:event_newProjectOKButtonActionPerformed
+    private void newSimulationOKButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newSimulationOKButtonActionPerformed
+        specifyNewSimulation();
+    }// GEN-LAST:event_newSimulationOKButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton newProjectCancelButton;
-    private javax.swing.JLabel newProjectNameLabel;
-    private javax.swing.JTextField newProjectNameTextField;
-    private javax.swing.JButton newProjectOKButton;
-    private javax.swing.JLabel newProjectSpecificationDirectionsLabel;
-    private javax.swing.JLabel newProjectValidationMessageLabel;
+    private javax.swing.JButton newSimulationCancelButton;
+    private javax.swing.JLabel newSimulationNameLabel;
+    private javax.swing.JTextField newSimulationNameTextField;
+    private javax.swing.JButton newSimulationOKButton;
+    private javax.swing.JLabel newSimulationSpecificationDirectionsLabel;
+    private javax.swing.JLabel newSimulationValidationMessageLabel;
     private javax.swing.JCheckBox provenanceEnabledCheckbox;
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
-    private static final Logger LOG = Logger.getLogger(NewProjectDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(NewSimulationDialog.class.getName());
     private static final long SERIAL_VERSION_UID = 1L;
     private boolean isRunning;
     private boolean success = false;
@@ -176,13 +175,13 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
-     * Constructs and initializes this new project dialog.
+     * Constructs and initializes this new simulation dialog.
      *
      * @param modal  True if the parent should be disabled while this dialog is open, otherwise
      *               false
      */
-    public NewProjectDialog(boolean modal) {
-        LOG.info("Opening New Project Dialog for Sim Starter");
+    public NewSimulationDialog(boolean modal) {
+        LOG.info("Opening New Simulation Dialog for Sim Starter");
         initComponents();
         setModal(modal);
         isRunning = true;
@@ -210,32 +209,32 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Action Helpers">
     /**
-     * Validates the project name against file system naming requirements.
+     * Validates the simulation name against file system naming requirements.
      *
      * Note: This method relies on a static call to the ProvMgr class within the ../../provenance/
      * package.
      *
-     * @return true if this project name is a valid file basename, otherwise false
+     * @return true if this simulation name is a valid file basename, otherwise false
      */
-    private boolean validateNewProjectName() {
+    private boolean validateNewSimulationName() {
         boolean valid = true;
-        /* Validate the currently specified project name */
-        if (!FileManager.isValidFilename(newProjectNameTextField.getText())) {
+        /* Validate the currently specified simulation name */
+        if (!FileManager.isValidFilename(newSimulationNameTextField.getText())) {
             valid = false;
             // disable the ok button
-            newProjectOKButton.setEnabled(false);
+            newSimulationOKButton.setEnabled(false);
             // set error msg
-            newProjectValidationMessageLabel.setText("<html>" + "<p style=\"color:red\"><b>"
-                    + "Project name specified must be valid filename" + "</b></p></html>");
+            newSimulationValidationMessageLabel.setText("<html>" + "<p style=\"color:red\"><b>"
+                    + "Simulation name specified must be valid filename" + "</b></p></html>");
         } else {
             // enable the ok button
-            newProjectOKButton.setEnabled(true);
-            newProjectValidationMessageLabel.setText(null);
+            newSimulationOKButton.setEnabled(true);
+            newSimulationValidationMessageLabel.setText(null);
         }
         return valid;
     }
 
-    private void specifyNewProject() {
+    private void specifyNewSimulation() {
         success = true;
         isRunning = false;
         setVisible(false);
@@ -244,18 +243,18 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Getters">
     /**
-     * Provides the name of the new project.
+     * Provides the name of the new simulation.
      *
-     * @return The name of the new project
+     * @return The name of the new simulation
      */
-    public String getProjectName() {
-        return newProjectNameTextField.getText().replaceAll("\\s+", "_");
+    public String getSimulationName() {
+        return newSimulationNameTextField.getText().replaceAll("\\s+", "_");
     }
 
     /**
-     * Indicates whether or not provenance support should be enabled for this project.
+     * Indicates whether or not provenance support should be enabled for this simulation.
      *
-     * @return True if provenance support should be enabled for this project, otherwise false
+     * @return True if provenance support should be enabled for this simulation, otherwise false
      */
     public boolean isProvEnabled() {
         return provenanceEnabledCheckbox.isSelected();
@@ -263,7 +262,7 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     /**
      * Indicates whether or not the user closed the dialog by selecting the OK option for creating a
-     * new project, or the Cancel option for canceling the operation.
+     * new simulation, or the Cancel option for canceling the operation.
      *
      * @return True if the user selected OK, otherwise false
      */
@@ -272,9 +271,9 @@ public class NewProjectDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Indicates whether or not the new project dialog window is open.
+     * Indicates whether or not the new simulation dialog window is open.
      *
-     * @return True if the new project dialog window is open, false otherwise
+     * @return True if the new simulation dialog window is open, false otherwise
      */
     public boolean isRunning() {
         return isRunning;
