@@ -1,24 +1,7 @@
 package edu.uwb.braingrid.workbench.project;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.model.ScriptHistory;
@@ -37,30 +20,6 @@ public class Simulation {
     // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(Simulation.class.getName());
 
-    /* XML tag and attribute names */
-    private static final String SIMULATION_TAG_NAME = "simulation";
-    private static final String SIMULATION_NAME_ATTRIBUTE = "name";
-    private static final String PROV_ENABLED_ATTRIBUTE_NAME = "provEnabled";
-    private static final String SIMULATOR_TAG_NAME = "simulator";
-    private static final String SIMULATOR_EXECUTION_MACHINE = "executionMachine";
-    private static final String HOSTNAME_TAG_NAME = "hostname";
-    private static final String SIM_FOLDER_TAG_NAME = "simulatorFolder";
-    private static final String SIMULATION_TYPE_TAG_NAME = "ProcessingType";
-    private static final String BUILD_OPTION_TAG_NAME = "BuildOption";
-    private static final String SIMULATOR_CODE_LOCATION_TAG_NAME = "repository";
-    private static final String SIMULATOR_SOURCE_CODE_UPDATING_TAG_NAME = "sourceCodeUpdating";
-    private static final String SHA1_KEY_TAG_NAME = "SHA1Key";
-    private static final String SIMULATOR_VERSION_ANNOTATION_TAG_NAME = "version";
-    private static final String SCRIPT_TAG_NAME = "script";
-    private static final String SCRIPT_RAN_AT_ATTRIBUTE_NAME = "atMillis";
-    private static final String SCRIPT_COMPLETED_AT_ATTRIBUTE_NAME = "completedAt";
-    private static final String SCRIPT_ANALYZED_ATTRIBUTE_NAME = "outputAnalyzed";
-    private static final String SCRIPT_RAN_RUN_ATTRIBUTE_NAME = "ran";
-    private static final String SCRIPT_FILE_TAG_NAME = "file";
-    private static final String SCRIPT_VERSION_TAG_NAME = "version";
-    private static final String SIM_CONFIG_FILE_TAG_NAME = "simConfigFile";
-    private static final String RESULT_FILE_NAME_ATTRIBUTE_NAME = "resultFileName";
-
     private String name;
     private boolean provEnabled;
     private String simConfigFile;
@@ -75,225 +34,19 @@ public class Simulation {
      * simulation from disk.
      *
      * @param simulationName  Name of the simulation
-     * @param load  True if the simulation should be loaded from disk, false otherwise
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
      */
-    public Simulation(String simulationName, boolean load) throws ParserConfigurationException,
-            SAXException, IOException {
+    public Simulation(String simulationName) {
         LOG.info("New simulation: " + simulationName);
-        this.name = simulationName;
-        if (load) {
-            load();
-        } else {
-            initState();
-        }
+        initState(simulationName);
     }
 
-    private void initState() {
+    private void initState(String simulationName) {
+        name = simulationName;
         provEnabled = false;
         simConfigFile = null;
         resultFileName = null;
         simSpec = null;
         scriptHistory = null;
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Persistence">
-    /**
-     * Writes the document representing this simulation to disk.
-     *
-     * @return The full path to the file that was persisted
-     * @throws ParserConfigurationException
-     * @throws TransformerException
-     * @throws java.io.IOException
-     */
-    public String persist() throws ParserConfigurationException, TransformerException, IOException {
-        // build new XML document
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-
-        // create root node
-        Element root = doc.createElement(SIMULATION_TAG_NAME);
-        doc.appendChild(root);
-
-        // record the simulation name and provenance enabled
-        root.setAttribute(SIMULATION_NAME_ATTRIBUTE, name);
-        root.setAttribute(PROV_ENABLED_ATTRIBUTE_NAME, String.valueOf(provEnabled));
-
-        // record simulation configuration file
-        Element element = doc.createElement(SIM_CONFIG_FILE_TAG_NAME);
-        element.setAttribute(RESULT_FILE_NAME_ATTRIBUTE_NAME, resultFileName);
-        element.setTextContent(simConfigFile);
-        root.appendChild(element);
-
-        // record simulation specification
-        Element parent = doc.createElement(SIMULATOR_TAG_NAME);
-        Element child = doc.createElement(SIMULATOR_EXECUTION_MACHINE);
-        child.setTextContent(simSpec.getSimulationLocale());
-        parent.appendChild(child);
-        child = doc.createElement(HOSTNAME_TAG_NAME);
-        child.setTextContent(simSpec.getHostAddr());
-        parent.appendChild(child);
-        child = doc.createElement(SIM_FOLDER_TAG_NAME);
-        child.setTextContent(simSpec.getSimulatorFolder());
-        parent.appendChild(child);
-        child = doc.createElement(SIMULATION_TYPE_TAG_NAME);
-        child.setTextContent(simSpec.getSimulationType());
-        parent.appendChild(child);
-        child = doc.createElement(SIMULATOR_CODE_LOCATION_TAG_NAME);
-        child.setTextContent(simSpec.getCodeLocation());
-        parent.appendChild(child);
-        child = doc.createElement(SIMULATOR_SOURCE_CODE_UPDATING_TAG_NAME);
-        child.setTextContent(simSpec.getSourceCodeUpdating());
-        parent.appendChild(child);
-        child = doc.createElement(SIMULATOR_VERSION_ANNOTATION_TAG_NAME);
-        child.setTextContent(simSpec.getVersionAnnotation());
-        parent.appendChild(child);
-        child = doc.createElement(SHA1_KEY_TAG_NAME);
-        child.setTextContent(simSpec.getSHA1CheckoutKey());
-        parent.appendChild(child);
-        child = doc.createElement(BUILD_OPTION_TAG_NAME);
-        child.setTextContent(simSpec.getBuildOption());
-        parent.appendChild(child);
-        root.appendChild(parent);
-
-        // record script history
-        parent = doc.createElement(SCRIPT_TAG_NAME);
-        parent.setAttribute(SCRIPT_RAN_AT_ATTRIBUTE_NAME,
-                String.valueOf(scriptHistory.getStartedAt()));
-        parent.setAttribute(SCRIPT_COMPLETED_AT_ATTRIBUTE_NAME,
-                String.valueOf(scriptHistory.getCompletedAt()));
-        parent.setAttribute(SCRIPT_ANALYZED_ATTRIBUTE_NAME,
-                String.valueOf(scriptHistory.wasOutputAnalyzed()));
-        parent.setAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME, String.valueOf(scriptHistory.hasRun()));
-        child = doc.createElement(SCRIPT_FILE_TAG_NAME);
-        child.setTextContent(scriptHistory.getFilename());
-        parent.appendChild(child);
-        child = doc.createElement(SCRIPT_VERSION_TAG_NAME);
-        child.setTextContent(String.valueOf(scriptHistory.getVersion()));
-        parent.appendChild(child);
-        root.appendChild(parent);
-
-        // calculate the full path to the simulation file
-        Path simulationFilePath = getSimulationFilePath();
-
-        // create any necessary non-existent directories
-        Files.createDirectories(simulationFilePath.getParent());
-
-        // write the content into xml file
-        Transformer t = TransformerFactory.newInstance().newTransformer();
-        t.setOutputProperty(OutputKeys.INDENT, "yes");
-        t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-        t.transform(new DOMSource(doc), new StreamResult(simulationFilePath.toFile()));
-
-        return simulationFilePath.toString();
-    }
-
-    /**
-     * Loads a simulation XML from disk.
-     *
-     * @throws javax.xml.parsers.ParserConfigurationException
-     * @throws org.xml.sax.SAXException
-     * @throws java.io.IOException
-     */
-    public void load() throws ParserConfigurationException, SAXException, IOException {
-        // load document
-        File simulationFile = getSimulationFilePath().toFile();
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(simulationFile);
-        doc.getDocumentElement().normalize();
-
-        // retrieve the simulation name and provenance enabled
-        Element root = doc.getDocumentElement();
-        name = root.getAttribute(SIMULATION_NAME_ATTRIBUTE);
-        provEnabled = Boolean.parseBoolean(root.getAttribute(PROV_ENABLED_ATTRIBUTE_NAME));
-
-        // retrieve simulation configuration file
-        Element simConfigFileElement = getChildElement(root, SIM_CONFIG_FILE_TAG_NAME);
-        simConfigFile = simConfigFileElement.getTextContent();
-        resultFileName = simConfigFileElement.getAttribute(RESULT_FILE_NAME_ATTRIBUTE_NAME);
-
-        // retrieve simulation specification
-        Element simulator = getChildElement(root, SIMULATOR_TAG_NAME);
-        String locale = getChildTextContent(simulator, SIMULATOR_EXECUTION_MACHINE);
-        String hostname = getChildTextContent(simulator, HOSTNAME_TAG_NAME);
-        String simFolder = getChildTextContent(simulator, SIM_FOLDER_TAG_NAME);
-        String simType = getChildTextContent(simulator, SIMULATION_TYPE_TAG_NAME);
-        String buildOption = getChildTextContent(simulator, BUILD_OPTION_TAG_NAME);
-        String codeRepository = getChildTextContent(simulator, SIMULATOR_CODE_LOCATION_TAG_NAME);
-        String sourceCodeUpdating = getChildTextContent(simulator,
-                SIMULATOR_SOURCE_CODE_UPDATING_TAG_NAME);
-        String sha1Key = getChildTextContent(simulator, SHA1_KEY_TAG_NAME);
-        String annotation = getChildTextContent(simulator, SIMULATOR_VERSION_ANNOTATION_TAG_NAME);
-        addSimulator(locale, hostname, simFolder, simType, buildOption, codeRepository,
-                sourceCodeUpdating, sha1Key, annotation);
-
-        // retrieve script history
-        Element script = getChildElement(root, SCRIPT_TAG_NAME);
-        String startedAtText = script.getAttribute(SCRIPT_RAN_AT_ATTRIBUTE_NAME);
-        String completedAtText = script.getAttribute(SCRIPT_COMPLETED_AT_ATTRIBUTE_NAME);
-        String analyzedText = script.getAttribute(SCRIPT_ANALYZED_ATTRIBUTE_NAME);
-        String ranText = script.getAttribute(SCRIPT_RAN_RUN_ATTRIBUTE_NAME);
-        String filename = getChildTextContent(script, SCRIPT_FILE_TAG_NAME);
-        String versionText = getChildTextContent(script, SCRIPT_VERSION_TAG_NAME);
-        addScript(filename, versionText, startedAtText, completedAtText, analyzedText, ranText);
-    }
-
-    private Element getChildElement(Element parent, String tagName) {
-        Element child = null;
-        if (parent != null) {
-            NodeList nl = parent.getElementsByTagName(tagName);
-            if (nl.getLength() != 0) {
-                child = (Element) nl.item(0);
-            }
-        }
-        return child;
-    }
-
-    private String getChildTextContent(Element parent, String textElementTagName) {
-        String textContent = null;
-        if (parent != null) {
-            NodeList nl = parent.getElementsByTagName(textElementTagName);
-            if (nl.getLength() > 0) {
-                textContent = nl.item(0).getTextContent();
-            }
-        }
-        return textContent;
-    }
-
-    private boolean setChildTextContent(Element parent, String childTagName,
-            String textContent) {
-        boolean success = true;
-        if (parent != null) {
-            NodeList nl = parent.getElementsByTagName(childTagName);
-            if (nl.getLength() > 0) {
-                Text text = (Text) nl.item(0).getFirstChild();
-                text.setTextContent(textContent);
-            } else {
-                success = false;
-            }
-        } else {
-            success = false;
-        }
-        return success;
-    }
-
-    private boolean createChildWithTextContent(Document doc, Element parent, String childTagName,
-            String textContent) {
-        boolean success = true;
-        if (parent != null) {
-            try {
-                Element child = doc.createElement(childTagName);
-                Text childText = doc.createTextNode(textContent);
-                parent.appendChild(child.appendChild(childText));
-            } catch (DOMException e) {
-                success = false;
-            }
-        } else {
-            success = false;
-        }
-        return success;
     }
     // </editor-fold>
 
@@ -348,7 +101,7 @@ public class Simulation {
      *
      * @param filename  The full path to the newly added configuration file
      */
-    public void addSimConfigFile(String filename) {
+    public void setSimConfigFile(String filename) {
         simConfigFile = filename;
     }
 
@@ -378,6 +131,10 @@ public class Simulation {
             simSpec = new SimulationSpecification();
         }
         return simSpec;
+    }
+
+    public void setSimSpec(SimulationSpecification simSpec) {
+        this.simSpec = simSpec;
     }
 
     /**
@@ -426,6 +183,10 @@ public class Simulation {
 
     public ScriptHistory getScriptHistory() {
         return scriptHistory;
+    }
+
+    public void setScriptHistory(ScriptHistory scriptHistory) {
+        this.scriptHistory = scriptHistory;
     }
 
     /**
@@ -682,7 +443,7 @@ public class Simulation {
      * @return True if the script output has been analyzed, otherwise false
      */
     public boolean wasScriptOutputAnalyzed() {
-        return scriptHistory != null && scriptHistory.wasOutputAnalyzed();
+        return scriptHistory != null && scriptHistory.isOutputAnalyzed();
     }
 
     /**
@@ -703,16 +464,16 @@ public class Simulation {
      * @return True if the script has been executed, otherwise false
      */
     public boolean hasScriptRun() {
-        return scriptHistory != null && scriptHistory.hasRun();
+        return scriptHistory != null && scriptHistory.isRan();
     }
 
     /**
      * Sets the value for the attribute used to determine whether the script has run or not.
      *
-     * @param hasRun  Whether or not the script has been executed
+     * @param isRan  Whether or not the script has been executed
      */
-    public void setScriptRan(boolean hasRun) {
-        scriptHistory.setRan(hasRun);
+    public void setScriptRan(boolean isRan) {
+        scriptHistory.setRan(isRan);
     }
     // </editor-fold>
 
@@ -742,7 +503,7 @@ public class Simulation {
      * @return The path to the project folder for the current project
      */
     private static Path getProjectLocation() {
-        return FileManager.getDefaultProjectDirectory();
+        return FileManager.getCurrentProjectDirectory();
     }
 
     /**

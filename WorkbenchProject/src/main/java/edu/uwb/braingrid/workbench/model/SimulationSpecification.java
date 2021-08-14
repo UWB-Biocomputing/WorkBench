@@ -1,5 +1,6 @@
 package edu.uwb.braingrid.workbench.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
 
 /**
@@ -311,6 +312,7 @@ public class SimulationSpecification {
      *
      * @return The file name for the executable file that will be invoked to start the simulation
      */
+    @JsonIgnore
     public String getSimExecutable() {
         return getSimExecutable(simulatorType);
     }
@@ -388,6 +390,7 @@ public class SimulationSpecification {
      *
      * @return True if the simulation should be executed on a remote machine, otherwise false
      */
+    @JsonIgnore
     public boolean isRemote() {
         boolean remote = false;
         if (simulationLocale != null) {

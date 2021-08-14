@@ -31,17 +31,17 @@ public class ScriptHistoryTest {
     @Test
     public void testGetSetOutputAnalyzed() {
         ScriptHistory sh = factory();
-        Assertions.assertFalse(sh.wasOutputAnalyzed());
+        Assertions.assertFalse(sh.isOutputAnalyzed());
         sh.setOutputAnalyzed(true);
-        Assertions.assertTrue(sh.wasOutputAnalyzed());
+        Assertions.assertTrue(sh.isOutputAnalyzed());
     }
 
     @Test
     public void testGetSetRan() {
         ScriptHistory sh = factory();
-        Assertions.assertFalse(sh.hasRun());
+        Assertions.assertFalse(sh.isRan());
         sh.setRan(true);
-        Assertions.assertTrue(sh.hasRun());
+        Assertions.assertTrue(sh.isRan());
     }
 
     @Test

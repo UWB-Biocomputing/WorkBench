@@ -5,12 +5,8 @@ import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 import java.io.File;
-import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
 /**
  * These tested are based on reading edu/uwb/braingrid/workbench/simulation/Simulation.java and then
@@ -27,95 +23,21 @@ public class SimulationTest {
         //////////////
         // Valid Cases
         //////////////
-        // New Simulation
-        Simulation sim = getSimNameFalseLoad();
-        Assertions.assertNotEquals(null, sim);
-        // Load Simulation
-        sim = getSimNameTrueLoadActualSimulation();
+        Simulation sim = getSimValidName();
         Assertions.assertNotEquals(null, sim);
 
         ////////////////
         // Exceptions
         ////////////////
-        // Load a nonexistant simulation
-        sim = getSimNameTrueLoadNotASimulation();
-        Assertions.assertEquals(null, sim);
-        // Null string as a name, new simulation
-        sim = getSimNullNameFalseLoad();
-        Assertions.assertEquals(null, sim);
-        // Null string as a name, load simulation
-        sim = getSimNullNameTrueLoad();
-        Assertions.assertEquals(null, sim);
-    }
-
-    @Test
-    // Test Load
-    public void loadTest() {
-        //////////////
-        // Valid Cases
-        //////////////
-        // New Simulation
-        Simulation simNew = getSimNameFalseLoad();
-        try {
-            simNew.load();
-            Assertions.fail("An io exception should be thrown. This line should not be reached");
-        } catch (ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-
-        }
-
-        // Load Simulation
-        Simulation simLoad = getSimNameTrueLoadActualSimulation();
-        try {
-            simLoad.load();
-            Assertions.fail("An io exception should be thrown. This line should not be reached");
-        } catch (ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-
-        }
-
-        // TODO: ParserConfigurationExceptin and SAXException not tested
-    }
-
-    @Test
-    public void loadPersistTest() {
-        // New Simulation
-        String newSimulationName = "NewSimulationToSave";
-        Simulation simNew = null;
-        try {
-            simNew = new Simulation(newSimulationName, false);
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            Assertions.assertEquals(simNew.getSimulationFilePath(), simNew.persist());
-        } catch (ParserConfigurationException | TransformerException | IOException e) {
-            Assertions.fail(e.getClass().getSimpleName());
-        }
-
-        // Load Simulation
-        Simulation simLoad = getSimNameTrueLoadActualSimulation();
-        try {
-            Assertions.assertEquals(simLoad.getSimulationFilePath(), simLoad.persist());
-        } catch (ParserConfigurationException | TransformerException | IOException e) {
-            Assertions.fail(e.getClass().getSimpleName());
-        }
-
-        // TODO: ParserConfigurationExceptin and SAXException not tested
+        // null name
+        sim = getSimNullName();
+        Assertions.assertNull(sim);
     }
 
     @Test
     public void getSimulationLocationTest() {
-        // New Simulation
-        Simulation simNew = getSimNameFalseLoad();
+        Simulation simNew = getSimValidName();
         this.getSimulationLocationTestHelper(simNew);
-
-        // Load Simulation
-        Simulation simLoad = getSimNameTrueLoadActualSimulation();
-        this.getSimulationLocationTestHelper(simLoad);
     }
 
     private void getSimulationLocationTestHelper(Simulation sim) {
@@ -130,12 +52,8 @@ public class SimulationTest {
     @Test
     public void getProvLocationTest() {
         // New Simulation
-        Simulation simNew = getSimNameFalseLoad();
+        Simulation simNew = getSimValidName();
         this.getProvLocationTestHelper(simNew);
-
-        // Load Simulation
-        Simulation simLoad = getSimNameTrueLoadActualSimulation();
-        this.getProvLocationTestHelper(simLoad);
     }
 
     private void getProvLocationTestHelper(Simulation sim) {
@@ -150,10 +68,10 @@ public class SimulationTest {
     @Test
     public void scriptGenerationAvailableTest() {
         // New Simulation
-        Simulation simNew = getSimNameFalseLoad();
+        Simulation simNew = getSimValidName();
         this.addSimulatorToSim(simNew);
         simNew.removeScript();
-        simNew.addSimConfigFile("Example");
+        simNew.setSimConfigFile("Example");
         Assertions.assertTrue(simNew.scriptGenerationAvailable());
         //Assertions.fail("Sob violently. Ended here for today.");
     }
@@ -161,7 +79,7 @@ public class SimulationTest {
     @Test
     public void addSimulatorTest() {
         // New simulation
-        Simulation simNew = getSimNameFalseLoad();
+        Simulation simNew = getSimValidName();
         String locale = SimulationSpecification.LOCAL_EXECUTION;
         String hostname = "";
         String simFolder = "C:\\Users\\Max\\Documents\\DOCUMENTS\\Braingrid-WD\\" +
@@ -180,8 +98,7 @@ public class SimulationTest {
 
     @Test
     public void removeAddIsScriptTest() {
-        // New Simulation
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         Assertions.assertFalse(sim.scriptGenerated());
         this.addScriptToSim(sim);
         Assertions.assertTrue(sim.scriptGenerated());
@@ -192,55 +109,34 @@ public class SimulationTest {
     // <editor-fold defaultstate="collapsed" desc="Getters/Setters Tests">
     @Test
     public void getSimulationFileNameTest() {
-        // New Simulation
-        Simulation simNew = getSimNameFalseLoad();
+        Simulation simNew = getSimValidName();
 
         String simulationFile = simNew.getSimulationLocation().resolve(simNew.getName() + ".xml").toString();
         Assertions.assertEquals(simulationFile, simNew.getSimulationFilePath());
-
-        // Load Simulation
-        Simulation simLoad = getSimNameTrueLoadActualSimulation();
-
-        simulationFile = simLoad.getSimulationLocation().resolve(simLoad.getName() + ".xml").toString();
-        Assertions.assertEquals(simulationFile, simLoad.getSimulationFilePath());
     }
 
     @Test
     public void setAndGetNameTest() {
-        // New Simulation
-        Simulation simNew = getSimNameFalseLoad();
+        Simulation simNew = getSimValidName();
 
         String newName = "NanananananananaBatman";
         simNew.setName(newName);
         Assertions.assertEquals(newName, simNew.getName());
-
-        // Load Simulation
-        Simulation simLoad = getSimNameTrueLoadActualSimulation();
-        simLoad.setName(newName);
-        Assertions.assertEquals(newName, simLoad.getName());
     }
 
     @Test
     public void setAndGetProvenanceEnabledTest() {
-        // New Simulation
-        Simulation simNew = getSimNameFalseLoad();
+        Simulation simNew = getSimValidName();
 
         simNew.setProvenanceEnabled(false);
         Assertions.assertFalse(simNew.isProvenanceEnabled());
         simNew.setProvenanceEnabled(true);
         Assertions.assertTrue(simNew.isProvenanceEnabled());
-
-        // Load Simulation
-        Simulation simLoad = getSimNameTrueLoadActualSimulation();
-        simLoad.setProvenanceEnabled(false);
-        Assertions.assertFalse(simLoad.isProvenanceEnabled());
-        simLoad.setProvenanceEnabled(true);
-        Assertions.assertTrue(simLoad.isProvenanceEnabled());
     }
 
     @Test
     public void getSimulationSpecificationTest() {
-        Simulation simNew = getSimNameFalseLoad();
+        Simulation simNew = getSimValidName();
         simNew.addSimulator(
                 SimulationSpecification.LOCAL_EXECUTION,
                 "",
@@ -256,7 +152,7 @@ public class SimulationTest {
         this.getSimulationSpecificationTestHelper(simNew);
 
         // No simulator specified
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.getSimulationSpecificationTestHelper(sim);
     }
 
@@ -287,42 +183,42 @@ public class SimulationTest {
 
     @Test
     public void getSimulatorLocaleTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(locale, sim.getSimulatorLocale());
     }
 
     @Test
     public void getSimulatorVersionAnnotationTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(version, sim.getSimulatorVersionAnnotation());
     }
 
     @Test
     public void getSimulatorCodeLocationTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(simfolder, sim.getSimulatorCodeLocation());
     }
 
     @Test
     public void getSimulatorFolderLocationTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(codeLocation, sim.getSimulatorCodeLocation());
     }
 
     @Test
     public void getSimulatorHostnameTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(hostname, sim.getSimulatorHostname());
     }
 
     @Test
     public void getSetSHA1Key() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(sha1, sim.getSHA1Key());
@@ -333,7 +229,7 @@ public class SimulationTest {
 
     @Test
     public void getSetBuildOptionTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(buildOption, sim.getBuildOption());
@@ -344,21 +240,21 @@ public class SimulationTest {
 
     @Test
     public void getSimulatorSourceCodeUpdatingType() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(sourceCodeOption, sim.getSimulatorSourceCodeUpdatingType());
     }
 
     @Test
     public void getSimulationTypeTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(simulatorType.toString(), sim.getSimulationType());
     }
 
     @Test
     public void getSetScriptVersionTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(Integer.toString(0),sim.getScriptVersion());
         int scriptVersion = 2;
@@ -368,14 +264,14 @@ public class SimulationTest {
 
     @Test
     public void getNextScriptVersionTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         Assertions.assertEquals(Integer.toString(1), sim.getNextScriptVersion());
     }
 
     @Test
     public void setGetScriptRanTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertFalse(sim.hasScriptRun());
@@ -385,7 +281,7 @@ public class SimulationTest {
 
     @Test
     public void setGetScriptRanAtTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(DateTime.ERROR_TIME, sim.getScriptStartedAt());
@@ -395,7 +291,7 @@ public class SimulationTest {
 
     @Test
     public void setGetScriptCompletedAtTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(DateTime.ERROR_TIME, sim.getScriptCompletedAt());
@@ -406,7 +302,7 @@ public class SimulationTest {
 
     @Test
     public void getScriptFilePathTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         this.addScriptToSim(sim);
         String comp = scriptFilename;
@@ -415,18 +311,18 @@ public class SimulationTest {
 
     @Test
     public void getAddSimConfigFilename() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(null, sim.getSimConfigFilename());
         String filename = "Example";
-        sim.addSimConfigFile(filename);
+        sim.setSimConfigFile(filename);
         Assertions.assertEquals(filename, sim.getSimConfigFilename());
     }
 
     @Test
     public void setIsScriptAnalyzedTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         sim.setScriptOutputAnalyzed(true);
         Assertions.assertFalse(sim.wasScriptOutputAnalyzed());
@@ -439,12 +335,12 @@ public class SimulationTest {
 
     @Test
     public void setGetSimResultFileTest() {
-        Simulation sim = getSimNameFalseLoad();
+        Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertNull(sim.getSimResultFile());
         String simResultFile = "TheResultFileToRuleThemAll.txt";
-        sim.addSimConfigFile("Example");
+        sim.setSimConfigFile("Example");
         sim.setSimResultFile(simResultFile);
         Assertions.assertEquals(simResultFile, sim.getSimResultFile());
     }
@@ -482,61 +378,17 @@ public class SimulationTest {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Factories">
-    // name, true, invalid simulation
-    private Simulation getSimNameTrueLoadActualSimulation() {
-        Simulation sim = null;
-        try {
-            sim = new Simulation("Example", true);
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
-        return sim;
+    // valid name
+    private Simulation getSimValidName() {
+        return new Simulation("NewSimulation");
     }
 
-    private Simulation getSimNameTrueLoadNotASimulation() {
+    // null name
+    private Simulation getSimNullName() {
         Simulation sim = null;
         try {
-            sim = new Simulation("NotARealSimulation", true);
-            Assertions.fail("IO Exception expected to be thrown. This line should not have been reached.");
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
-        return sim;
-    }
-
-    // name, false
-    private Simulation getSimNameFalseLoad() {
-        Simulation sim = null;
-        try {
-            sim = new Simulation("NewSimulation", false);
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
-        return sim;
-    }
-
-    // null name, true
-    private Simulation getSimNullNameTrueLoad() {
-        Simulation sim = null;
-        try {
-            sim = new Simulation(null, true);
+            sim = new Simulation(null);
             Assertions.fail("NullPointerException expected to be thrown. This line should not have been reached.");
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-
-        }
-        return sim;
-    }
-
-    // null name, false
-    private Simulation getSimNullNameFalseLoad() {
-        Simulation sim = null;
-        try {
-            sim = new Simulation(null, false);
-            Assertions.fail("NullPointerException expected to be thrown. This line should not have been reached.");
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
         } catch (NullPointerException e) {
 
         }

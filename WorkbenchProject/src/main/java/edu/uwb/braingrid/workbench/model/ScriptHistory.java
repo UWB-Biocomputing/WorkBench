@@ -25,6 +25,14 @@ public class ScriptHistory {
         version = 1;
     }
 
+    /**
+     * Constructs a new ScriptHistory. Note, this no argument constructor is required for JSON
+     * deserialization.
+     */
+    public ScriptHistory() {
+        this("None");
+    }
+
     public long getStartedAt() {
         return startedAt;
     }
@@ -41,7 +49,7 @@ public class ScriptHistory {
         this.completedAt = completedAt;
     }
 
-    public boolean wasOutputAnalyzed() {
+    public boolean isOutputAnalyzed() {
         return outputAnalyzed;
     }
 
@@ -49,7 +57,7 @@ public class ScriptHistory {
         this.outputAnalyzed = outputAnalyzed;
     }
 
-    public boolean hasRun() {
+    public boolean isRan() {
         return ran;
     }
 
