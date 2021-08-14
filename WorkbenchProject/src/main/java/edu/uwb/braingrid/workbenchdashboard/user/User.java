@@ -11,6 +11,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.FileManagerShared;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 
 /**
  * <p>Represents the active user profile. Provides user-specified information including paths to
@@ -30,6 +31,7 @@ public final class User implements FileManagerShared {
     private Path projectsDirectory;
     private Path brainGridRepoDirectory;
     private String simulationsDirectory;
+    private String lastProject;
 
     /**
      * Creates a User object with the specified user-information. This private constructor can only
@@ -44,6 +46,7 @@ public final class User implements FileManagerShared {
         setProjectsDirectory(projectsDir);
         setBrainGridRepoDirectory(repoDir);
         setSimulationsDirectory(simulationsDir);
+        setLastProject(WorkbenchManager.DEFAULT_PROJECT_NAME);
     }
 
     /**
@@ -100,7 +103,7 @@ public final class User implements FileManagerShared {
 
         try {
             Files.createDirectories(userDataPath.getParent());
-            mapper.writeValue(userDataPath.toFile(), user);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(userDataPath.toFile(), user);
         } catch (IOException e) {
             LOG.severe(e.getMessage());
             return false;
@@ -172,6 +175,25 @@ public final class User implements FileManagerShared {
         String simsDir = FilenameUtils.separatorsToUnix(simulationsDirectory);
         LOG.info("Workbench Simulations Path: " + simsDir);
         this.simulationsDirectory = simsDir;
+    }
+
+    /**
+     * Provides the name of the last project accessed by the current user.
+     *
+     * @return The name of the last project accessed by the current user
+     */
+    public String getLastProject() {
+        return lastProject;
+    }
+
+    /**
+     * Sets the name of the last project accessed by the current user.
+     *
+     * @param lastProject  The name of the last project accessed by the current user
+     */
+    public void setLastProject(String lastProject) {
+        this.lastProject = lastProject;
+        save();
     }
 
     /**

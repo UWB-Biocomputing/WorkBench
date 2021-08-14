@@ -86,7 +86,7 @@ public class NLEdit extends WorkbenchApp {
     public NLEdit(Tab tab) {
         super(tab);
         LOG.info("new " + getClass().getName());
-        workbenchMgr = new WorkbenchManager();
+        workbenchMgr = WorkbenchManager.getInstance();
         initSettingsPanel();
         initToolbar();
         initEditBar();

@@ -72,7 +72,7 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
     }
 
     private void initCustomMembers() {
-        workbenchMgr = new WorkbenchManager();
+        workbenchMgr = WorkbenchManager.getInstance();
 
         transferProgressBar.setVisible(false);
     }
