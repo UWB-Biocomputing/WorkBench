@@ -18,7 +18,7 @@ import edu.uwb.braingrid.workbench.model.SimulationSpecification;
  *
  * @author Del Davis
  */
-public class ScriptSpecificationDialog extends javax.swing.JDialog {
+public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     /**
@@ -60,7 +60,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         BuildOptionLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Script Specification");
+        setTitle("Simulation Specification");
 
         codeRepositoryLocationLabel.setText("BrainGrid Code Repository:");
         codeRepositoryLocationLabel.setToolTipText(
@@ -355,7 +355,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_cancelButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
-        specifySimulator();
+        specifySimulation();
     }// GEN-LAST:event_okButtonActionPerformed
 
     private void testConnectionButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_testConnectionButtonActionPerformed
@@ -396,7 +396,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
         validateSimulatorLocation();
         if (runButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                specifySimulator();
+                specifySimulation();
             }
         }
     }// GEN-LAST:event_simulatorLocationTextFieldKeyReleased
@@ -404,7 +404,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     private void codeRepositoryLocationTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_codeRepositoryLocationTextFieldKeyReleased
         if (runButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                specifySimulator();
+                specifySimulation();
             }
         }
     }// GEN-LAST:event_codeRepositoryLocationTextFieldKeyReleased
@@ -412,7 +412,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     private void versionAnnotationTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_versionAnnotationTextFieldKeyReleased
         if (runButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                specifySimulator();
+                specifySimulation();
             }
         }
     }// GEN-LAST:event_versionAnnotationTextFieldKeyReleased
@@ -454,7 +454,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
-    private static final Logger LOG = Logger.getLogger(ScriptSpecificationDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(SimulationSpecificationDialog.class.getName());
     private static final long SERIAL_VERSION_UID = 1L;
     private static final String LINUX_HOSTNAME_PATTERN
             = "^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\\.([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*$";
@@ -474,8 +474,8 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
      * @param modal  True if this dialog should prevent focus from shifting to it's parent,
      *               False if the focus can shift to the parent while this dialog is visible
      */
-    public ScriptSpecificationDialog(boolean modal) {
-        LOG.info("New ScriptSpecificationDialog");
+    public SimulationSpecificationDialog(boolean modal) {
+        LOG.info("New SimulationSpecificationDialog");
         setModal(modal);
         initComponents();
         simulatorLocationTextField.setText(DEFAULT_SIM_FOLDER);
@@ -494,8 +494,8 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
      *               False if the focus can shift to the parent while this dialog is visible
      * @param simSpec  A simulation specification containing parameters to be used in the dialog
      */
-    public ScriptSpecificationDialog(boolean modal, SimulationSpecification simSpec) {
-        LOG.info("New ScriptSpecificationDialog with SimulationSpecification");
+    public SimulationSpecificationDialog(boolean modal, SimulationSpecification simSpec) {
+        LOG.info("New SimulationSpecificationDialog with SimulationSpecification");
         setModal(modal);
         initComponents();
 
@@ -632,12 +632,12 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Provides a simulator specification with values set to their respective equivalents from this
+     * Provides a simulation specification with values set to their respective equivalents from this
      * dialog.
      *
      * @return A simulation specification populated from the state of this dialog
      */
-    public SimulationSpecification toSimulatorSpecification() {
+    public SimulationSpecification toSimulationSpecification() {
         SimulationSpecification simSpec = new SimulationSpecification();
         simSpec.setSimulatorFolder(simulatorLocationTextField.getText());
         simSpec.setCodeLocation(codeRepositoryLocationTextField.getText());
@@ -692,7 +692,7 @@ public class ScriptSpecificationDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Action Helpers">
-    private void specifySimulator() {
+    private void specifySimulation() {
         String simFilePath = simulatorLocationTextField.getText();
         if (simFilePath.endsWith("/") || simFilePath.endsWith("\\")) {
             simFilePath = simFilePath.substring(0, simFilePath.length() - 1);

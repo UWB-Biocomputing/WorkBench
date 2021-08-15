@@ -25,7 +25,7 @@ import edu.uwb.braingrid.workbench.ui.DynamicInputConfigurationDialog;
 import edu.uwb.braingrid.workbench.ui.InputConfigClassSelectionDialog;
 import edu.uwb.braingrid.workbench.ui.NewSimulationDialog;
 import edu.uwb.braingrid.workbench.ui.ProvenanceQueryDialog;
-import edu.uwb.braingrid.workbench.ui.ScriptSpecificationDialog;
+import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchStatusBar;
 import edu.uwb.braingrid.workbenchdashboard.user.User;
@@ -54,7 +54,6 @@ public final class WorkbenchManager {
     private Project project;
     private Simulation simulation;
     private ProvMgr prov;
-    private SimulationSpecification simulatorSpecification;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -66,7 +65,6 @@ public final class WorkbenchManager {
         project = null;
         simulation = null;
         prov = null;
-        simulatorSpecification = null;
         initFileOutput();
         if (!openLastProject()) {
             initProject(DEFAULT_PROJECT_NAME);
@@ -246,7 +244,6 @@ public final class WorkbenchManager {
         User.getUser().setLastProject(project.getName());
         simulation = null;
         prov = null;
-        simulatorSpecification = null;
     }
     // </editor-fold>
 
@@ -442,38 +439,16 @@ public final class WorkbenchManager {
      * @return True if the user clicked the OkButton in the SimulationSpecificationDialog (which
      *         validates required input in order for the action to be performed)
      */
-    public boolean specifyScript() {
-        LOG.info("Specifying Script");
-        String hostAddr;
-        ScriptSpecificationDialog spd;
-        if (simulatorSpecification != null) {
-            spd = new ScriptSpecificationDialog(true, simulatorSpecification);
-        } else {
-            spd = new ScriptSpecificationDialog(true);
-        }
+    public boolean specifySimulation() {
+        LOG.info("Specifying Simulation");
+        SimulationSpecificationDialog spd = new SimulationSpecificationDialog(true);
         boolean success = spd.getSuccess();
         if (success) {
-            simulatorSpecification = spd.toSimulatorSpecification();
-            String locale = simulatorSpecification.getSimulationLocale();
-            String remote = SimulationSpecification.REMOTE_EXECUTION;
-            if (locale.equals(remote)) {
-                hostAddr = simulatorSpecification.getHostAddr();
-            } else {
-                hostAddr = "";
-            }
-            simulation.addSimulator(locale, hostAddr,
-                    simulatorSpecification.getSimulatorFolder(),
-                    simulatorSpecification.getSimulationType(),
-                    simulatorSpecification.getBuildOption(),
-                    simulatorSpecification.getCodeLocation(),
-                    simulatorSpecification.getSourceCodeUpdating(),
-                    simulatorSpecification.getSHA1CheckoutKey(),
-                    simulatorSpecification.getVersionAnnotation());
-            updateSimSpec();
+            simulation.setSimSpec(spd.toSimulationSpecification());
             messageAccumulator += "\n" + "New simulation specified\n";
         } else {
             messageAccumulator += "\n"
-                    + "New simulator specification canceled\n";
+                    + "New simulation specification canceled\n";
         }
         return success;
     }
@@ -485,42 +460,26 @@ public final class WorkbenchManager {
      * @return True if the user clicked the OkButton in the SimulationSpecificationDialog (which
      *         validates required input in order for the action to be performed)
      */
-    public boolean specifyScript(String commitVersion) {
-        LOG.info("Specifying Script");
-        String hostAddr;
-        ScriptSpecificationDialog spd;
+    public boolean specifySimulation(String commitVersion) {
+        LOG.info("Specifying Simulation");
+        SimulationSpecificationDialog spd;
+        SimulationSpecification simSpec;
         if (commitVersion != null) {
-            simulatorSpecification = new SimulationSpecification();
-            simulatorSpecification.setSHA1CheckoutKey(commitVersion);
-            simulatorSpecification.setSourceCodeUpdating("Pull");
-            simulatorSpecification.setBuildOption("Build");
-            simulatorSpecification.setSimulatorFolder("BrainGrid");
-            spd = new ScriptSpecificationDialog(true, simulatorSpecification);
+            simSpec = new SimulationSpecification();
+            simSpec.setSHA1CheckoutKey(commitVersion);
+            simSpec.setSourceCodeUpdating("Pull");
+            simSpec.setBuildOption("Build");
+            simSpec.setSimulatorFolder("BrainGrid");
+            spd = new SimulationSpecificationDialog(true, simSpec);
         } else {
-            spd = new ScriptSpecificationDialog(true);
+            spd = new SimulationSpecificationDialog(true);
         }
         boolean success = spd.getSuccess();
         if (success) {
-            simulatorSpecification = spd.toSimulatorSpecification();
-            String locale = simulatorSpecification.getSimulationLocale();
-            String remote = SimulationSpecification.REMOTE_EXECUTION;
-            if (locale.equals(remote)) {
-                hostAddr = simulatorSpecification.getHostAddr();
-            } else {
-                hostAddr = "";
-            }
-            simulation.addSimulator(locale, hostAddr,
-                    simulatorSpecification.getSimulatorFolder(),
-                    simulatorSpecification.getSimulationType(),
-                    simulatorSpecification.getBuildOption(),
-                    simulatorSpecification.getCodeLocation(),
-                    simulatorSpecification.getSourceCodeUpdating(),
-                    simulatorSpecification.getSHA1CheckoutKey(),
-                    simulatorSpecification.getVersionAnnotation());
-            updateSimSpec();
+            simulation.setSimSpec(spd.toSimulationSpecification());
             messageAccumulator += "\n" + "New simulation specified\n";
         } else {
-            messageAccumulator += "\n" + "New simulator specification canceled\n";
+            messageAccumulator += "\n" + "New simulation specification canceled\n";
         }
         return success;
     }
@@ -534,7 +493,7 @@ public final class WorkbenchManager {
         LOG.info("Generate Script for " + simulation.getName());
         boolean success = false;
         Script script = ScriptManager.generateScript(simulation.getName(),
-                simulation.getNextScriptVersion(), simulatorSpecification,
+                simulation.getNextScriptVersion(), simulation.getSimSpec(),
                 simulation.getSimConfigFilename());
         if (script != null) {
             try {
@@ -575,7 +534,7 @@ public final class WorkbenchManager {
             String simulationName = simulation.getName();
             String scriptPath = simulation.getScriptFilePath();
             String[] neuronLists = FileManager.getNeuronListFilenames(simulationName);
-            success = sm.runScript(prov, simulatorSpecification, simulationName, scriptPath,
+            success = sm.runScript(prov, simulation.getSimSpec(), simulationName, scriptPath,
                     simulation.getScriptVersion(), neuronLists, simulation.getSimConfigFilename());
             simulation.setScriptRan(success);
             simulation.setScriptStartedAt();
@@ -607,7 +566,7 @@ public final class WorkbenchManager {
                             + "Gathering simulation provenance...\n";
                     Path targetFolder = ScriptManager.getScriptFolder(
                             simulation.getSimulationLocation());
-                    timeCompleted = scriptMgr.analyzeScriptOutput(simulatorSpecification,
+                    timeCompleted = scriptMgr.analyzeScriptOutput(simulation.getSimSpec(),
                             simulation, prov, targetFolder);
                     if (timeCompleted != DateTime.ERROR_TIME) {
                         simulation.setScriptCompletedAt(timeCompleted);
@@ -626,7 +585,7 @@ public final class WorkbenchManager {
             } else {
                 messageAccumulator += "\n"
                         + "Script output has already been analyzed for this simulation run"
-                        + "\nTo analyze another run, please respecify script or input and run again"
+                        + "\nTo analyze another run, respecify simulation or input and run again"
                         + "\n";
             }
         } else {
@@ -734,67 +693,6 @@ public final class WorkbenchManager {
                     simulation.getNextScriptVersion());
         }
         return name;
-    }
-
-    private void updateSimSpec() {
-        simulatorSpecification = simulation.getSimSpec();
-    }
-
-    /**
-     * Provides a textual representation of the inputs specified in the currently open project.
-     *
-     * @return An overview of the input files for the project
-     */
-    public String getSimConfigFileOverview() {
-        String labelText = "None";
-        if (simulation != null) {
-            String input = simulation.getSimConfigFilename();
-            if (input != null) {
-                labelText = input;
-            }
-        }
-        return labelText;
-    }
-
-    /**
-     * Provides overview text describing the last simulation specified.
-     *
-     * @return Overview text describing the last simulation specified
-     */
-    public String getSimulationOverview() {
-        String overview = "<html>None";
-        if (simulatorSpecification != null) {
-            overview = "<html>";
-            String simFolder = simulatorSpecification.getSimulatorFolder();
-            String simVersionAnnotation = simulatorSpecification.getVersionAnnotation();
-            String simCodeLocation = simulatorSpecification.getCodeLocation();
-            boolean simAttributeAddedToText = false;
-            if (simFolder != null) {
-                String home;
-                if (simulatorSpecification.isRemote()) {
-                    home = "~/";
-                } else {
-                    home = FileManager.getUserDir().toString();
-                }
-                overview += "location: " + home + simFolder;
-                simAttributeAddedToText = true;
-            }
-            if (simVersionAnnotation != null) {
-                if (simAttributeAddedToText) {
-                    overview += "<br>";
-                }
-                overview += "version: " + simVersionAnnotation;
-                simAttributeAddedToText = true;
-            }
-            if (simCodeLocation != null) {
-                if (simAttributeAddedToText) {
-                    overview += "<br>";
-                }
-                overview += "compiled from: " + simCodeLocation;
-            }
-            overview += "</html>";
-        }
-        return overview;
     }
 
     /**

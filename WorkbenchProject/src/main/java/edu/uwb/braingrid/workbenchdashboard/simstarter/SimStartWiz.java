@@ -34,7 +34,7 @@ public class SimStartWiz {
         boolean cancelButtonClicked = false;
         if (workbenchManager.newSimulation()) {
             if (configureSimulation()) {
-                if (specifyScript()) {
+                if (specifySimulation()) {
                     if (generateScript()) {
                         if (runScript()) {
                             srd = new SimulationRuntimeDialog(workbenchManager, msgText);
@@ -64,7 +64,7 @@ public class SimStartWiz {
         boolean cancelButtonClicked = false;
         if (workbenchManager.newSimulation()) {
             if (configureSimulation(simSpecifications, nListPresets)) {
-                if (specifyScript(runtimeSpecifications)) {
+                if (specifySimulation(runtimeSpecifications)) {
                     if (generateScript()) {
                         if (runScript()) {
                             srd = new SimulationRuntimeDialog(workbenchManager, msgText);
@@ -129,14 +129,14 @@ public class SimStartWiz {
     }
 
     /**
-     * Prompts the user to specify the simulator used. This should be the file that was invoked,
+     * Prompts the user to specify the simulation context. This should be the file that was invoked,
      * which used the input files specified, in order to write the output file that was specified.
      *
-     * @return True if the script specification was successful, false otherwise
+     * @return True if the simulation specification was successful, false otherwise
      */
-    private boolean specifyScript() {
+    private boolean specifySimulation() {
         boolean wasSuccessful = false;
-        if (workbenchManager.specifyScript()) {
+        if (workbenchManager.specifySimulation()) {
             workbenchManager.invalidateScriptGenerated();
             wasSuccessful = true;
         }
@@ -145,18 +145,18 @@ public class SimStartWiz {
     }
 
     /**
-     * Prompts the user to specify the simulator used. This should be the file that was invoked,
+     * Prompts the user to specify the simulation context. This should be the file that was invoked,
      * which used the input files specified, in order to write the output file that was specified.
      *
      * @param runtimeSpecifications  Git commit version to be pulled
-     * @return True if the script specification was successful, false otherwise
+     * @return True if the simulation specification was successful, false otherwise
      */
-    private boolean specifyScript(String runtimeSpecifications) {
+    private boolean specifySimulation(String runtimeSpecifications) {
         if (runtimeSpecifications == null) {
-            return specifyScript();
+            return specifySimulation();
         }
         boolean wasSuccessful = false;
-        if (workbenchManager.specifyScript(runtimeSpecifications)) {
+        if (workbenchManager.specifySimulation(runtimeSpecifications)) {
         workbenchManager.invalidateScriptGenerated();
         wasSuccessful = true;
         }

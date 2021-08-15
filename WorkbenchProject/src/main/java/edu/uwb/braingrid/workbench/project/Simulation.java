@@ -252,15 +252,15 @@ public class Simulation {
 
     // <editor-fold defaultstate="collapsed" desc="Data Manipulation">
     /**
-     * Provides the locale for the simulator. In other words the relationship between where a
-     * simulation should take place and the machine running the workbench. Since the simulator
+     * Provides the locale for the simulation. In other words the relationship between where a
+     * simulation should take place and the machine running the workbench. Since the simulation
      * locale is set based on values from SimulationSpecification, the return value is indirectly
      * dependent upon the definitions provided by the SimulationSpecification class.
      *
-     * @return The locale for the simulator
+     * @return The locale for the simulation
      * @see edu.uwb.braingrid.workbench.model.SimulationSpecification
      */
-    public String getSimulatorLocale() {
+    public String getSimulationLocale() {
         return simSpec.getSimulationLocale();
     }
 

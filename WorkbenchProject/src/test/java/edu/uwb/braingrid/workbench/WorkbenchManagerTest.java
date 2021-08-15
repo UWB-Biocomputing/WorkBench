@@ -50,7 +50,7 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void specifyScriptTest() {
+    public void specifySimulationTest() {
         // UI launch, nothing to test
     }
 

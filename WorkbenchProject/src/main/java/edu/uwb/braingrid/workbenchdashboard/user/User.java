@@ -97,6 +97,10 @@ public final class User implements FileManagerShared {
      * @return True if the user profile was saved successfully, otherwise false
      */
     public static boolean save() {
+        if (user == null) {
+            return false;
+        }
+
         LOG.info("Saving User Data");
         ObjectMapper mapper = new ObjectMapper();
         Path userDataPath = getUserDataPath();

@@ -151,7 +151,7 @@ public class SimulationTest {
                 SimulationSpecification.PRE_BUILT_BUILD_OPTION);
         this.getSimulationSpecificationTestHelper(simNew);
 
-        // No simulator specified
+        // No simulation specified
         Simulation sim = getSimValidName();
         this.getSimulationSpecificationTestHelper(sim);
     }
@@ -159,7 +159,7 @@ public class SimulationTest {
     private void getSimulationSpecificationTestHelper(Simulation sim) {
         String simType = sim.getSimulationType();
         String codeLocation = sim.getSimulatorCodeLocation();
-        String locale = sim.getSimulatorLocale();
+        String locale = sim.getSimulationLocale();
         String folder = sim.getSimulatorFolderLocation();
         String hostname = sim.getSimulatorHostname();
         String sha1 = sim.getSHA1Key();
@@ -182,10 +182,10 @@ public class SimulationTest {
     }
 
     @Test
-    public void getSimulatorLocaleTest() {
+    public void getSimulationLocaleTest() {
         Simulation sim = getSimValidName();
         this.addSimulatorToSim(sim);
-        Assertions.assertEquals(locale, sim.getSimulatorLocale());
+        Assertions.assertEquals(locale, sim.getSimulationLocale());
     }
 
     @Test

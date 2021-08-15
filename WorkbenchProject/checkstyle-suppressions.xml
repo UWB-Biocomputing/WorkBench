@@ -24,8 +24,8 @@
   <suppress checks=".*" files="NewSimulationDialog.java" lines="23-172"/>
   <suppress checks="MagicNumberCheck" files="ProvenanceQueryDialog.java"/>
   <suppress checks=".*" files="ProvenanceQueryDialog.java" lines="19-201"/>
-  <suppress checks="MagicNumberCheck" files="ScriptSpecificationDialog.java"/>
-  <suppress checks=".*" files="ScriptSpecificationDialog.java" lines="27-458"/>
+  <suppress checks="MagicNumberCheck" files="SimulationSpecificationDialog.java"/>
+  <suppress checks=".*" files="SimulationSpecificationDialog.java" lines="27-458"/>
   <suppress checks="MagicNumberCheck" files="WorkbenchControlFrame.java"/>
   <suppress checks=".*" files="WorkbenchControlFrame.java" lines="19-58"/>
   <!-- End swing UI with auto-generated code -->
