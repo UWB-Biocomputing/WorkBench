@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.workbench.FileManager;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
 
 /**
@@ -67,7 +68,7 @@ public class WorkbenchDashboard extends Application {
         LOG.setLevel(LoggerHelper.MIN_LOG_LEVEL);
         initFileOutput();
 
-        // Get System Properties
+        // Initialize System Properties
         SystemProperties.getInstance();
 
         // Start Application
@@ -127,5 +128,8 @@ public class WorkbenchDashboard extends Application {
             Platform.exit();
             System.exit(0);
         });
+
+        // Initialize Workbench Manager
+        WorkbenchManager.getInstance();
     }
 }

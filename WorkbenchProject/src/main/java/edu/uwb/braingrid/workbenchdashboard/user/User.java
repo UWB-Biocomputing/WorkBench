@@ -46,7 +46,7 @@ public final class User implements FileManagerShared {
         setProjectsDirectory(projectsDir);
         setBrainGridRepoDirectory(repoDir);
         setSimulationsDirectory(simulationsDir);
-        setLastProject(WorkbenchManager.DEFAULT_PROJECT_NAME);
+        lastProject = WorkbenchManager.DEFAULT_PROJECT_NAME;
     }
 
     /**
