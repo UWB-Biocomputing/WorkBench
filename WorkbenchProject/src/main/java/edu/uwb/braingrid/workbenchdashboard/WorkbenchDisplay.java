@@ -70,7 +70,7 @@ public class WorkbenchDisplay extends BorderPane {
     private Menu generateMenuFile() {
         Menu fileMenu = new Menu("_File");
         fileMenu.getItems().add(generateMenuNew());
-        fileMenu.getItems().add(generateMenuItemOpen());
+        fileMenu.getItems().add(generateMenuOpenProject());
         fileMenu.getItems().add(generateMenuRecentProjects());
         return fileMenu;
     }
@@ -80,39 +80,35 @@ public class WorkbenchDisplay extends BorderPane {
         return recentProjectMenu;
     }
 
-    private MenuItem generateMenuItemOpen() {
-        // Generate menu item
-        MenuItem openMenu = new MenuItem("Open");
-        // Define functionality
-        openMenu.setOnAction(event -> pushSimOpen());
+    private MenuItem generateMenuOpenProject() {
+        // generate menu item
+        MenuItem openMenu = new MenuItem("Open Project");
+        // define functionality
+        openMenu.setOnAction(event -> pushOpenProject());
         return openMenu;
     }
 
     private Menu generateMenuNew() {
         Menu newMenu = new Menu("_New");
 
-        // Generate Items
-        MenuItem gsle = new MenuItem("_Growth Simulation Layout Editor");
+        // define menu items
+        MenuItem project = new MenuItem("_Project");
+        project.setOnAction(event -> pushNewProject());
 
-        // Define Functionality
+        MenuItem gsle = new MenuItem("_Growth Simulation Layout Editor");
         gsle.setOnAction(event -> pushGSLEPane());
 
-        // Generate Items
-        MenuItem simstarter = new MenuItem("_Simulation Starter");
+        MenuItem simStarter = new MenuItem("_Simulation Starter");
+        simStarter.setOnAction(event -> pushSimWizPop());
 
-        // Define Functionality
-        simstarter.setOnAction(event -> pushSimWizPop());
+        MenuItem proVis = new MenuItem("_ProVis");
+        proVis.setOnAction(event -> pushProVisStarterPage());
 
-        // Generate Items
-        MenuItem provis = new MenuItem("_ProVis");
-
-        // Define Functionality
-        provis.setOnAction(event -> pushProVisStarterPage());
-
-        // Add
+        // add items to menu
+        newMenu.getItems().add(project);
         newMenu.getItems().add(gsle);
-        newMenu.getItems().add(simstarter);
-        newMenu.getItems().add(provis);
+        newMenu.getItems().add(simStarter);
+        newMenu.getItems().add(proVis);
         return newMenu;
     }
 
@@ -140,15 +136,21 @@ public class WorkbenchDisplay extends BorderPane {
     }
 
     /**
-     * Initializes SimManager and allows the opening of project specification.
+     * Opens new project dialog via {@link WorkbenchManager}.
      */
-    public void pushSimOpen() {
-        WorkbenchManager wbm = new WorkbenchManager();
-        wbm.openProject();
+    public void pushNewProject() {
+        WorkbenchManager.getInstance().newProject();
     }
 
     /**
-     Creates a new Simulation Starter Pop-up.
+     * Opens project specification dialog via {@link WorkbenchManager}.
+     */
+    public void pushOpenProject() {
+        WorkbenchManager.getInstance().openProject();
+    }
+
+    /**
+     * Creates a new Simulation Starter Pop-up.
      */
     public void pushSimWizPop() {
         new SimStartWiz();
