@@ -11,7 +11,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.model.DynamicInputConfiguration;
 
 /**
  * Manages the construction of input configuration files.

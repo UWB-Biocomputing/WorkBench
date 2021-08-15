@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbench.data;
+package edu.uwb.braingrid.workbench.script;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,8 +10,6 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.model.ExecutedCommand;
-import edu.uwb.braingrid.workbench.script.Script;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**

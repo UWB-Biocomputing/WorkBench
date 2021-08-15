@@ -45,11 +45,6 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void addInputsTest() {
-        // Dependent on JFileChooser
-    }
-
-    @Test
     public void specifySimulationTest() {
         // UI launch, nothing to test
     }

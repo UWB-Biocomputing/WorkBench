@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.provenance.workbenchprov;
+package edu.uwb.braingrid.provenance;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

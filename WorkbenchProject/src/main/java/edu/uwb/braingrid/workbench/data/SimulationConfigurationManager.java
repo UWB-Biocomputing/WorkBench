@@ -6,7 +6,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
-import edu.uwb.braingrid.simconfig.model.SimulationConfiguration;
 import edu.uwb.braingrid.workbench.FileManager;
 
 /**

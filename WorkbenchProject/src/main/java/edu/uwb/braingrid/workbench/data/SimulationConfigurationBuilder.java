@@ -15,8 +15,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import edu.uwb.braingrid.simconfig.model.SimulationConfiguration;
-
 /**
  * Handles all interaction between the XML document used as input to a simulation and the model
  * storing the information in-memory for the Workbench, SimulationConfiguration. This includes

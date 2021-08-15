@@ -1,9 +1,9 @@
 package edu.uwb.braingrid.workbench.model;
 
+import edu.uwb.braingrid.workbench.utils.DateTime;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import edu.uwb.braingrid.workbench.utils.DateTime;
 
 public class ScriptHistoryTest {
 

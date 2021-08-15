@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbench.project;
+package edu.uwb.braingrid.workbench.model;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,9 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Iterator;
-
-import edu.uwb.braingrid.workbench.model.ScriptHistory;
-import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 
 /**
  * Custom deserializer for the Project class.

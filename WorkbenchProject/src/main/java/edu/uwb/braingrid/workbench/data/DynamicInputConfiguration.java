@@ -1,11 +1,9 @@
-package edu.uwb.braingrid.workbench.model;
+package edu.uwb.braingrid.workbench.data;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import edu.uwb.braingrid.workbench.SystemConfig;
 
 /**
  * Dynamically maintains data for an input configuration.

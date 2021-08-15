@@ -33,10 +33,10 @@ import org.xml.sax.SAXException;
 
 import edu.uwb.braingrid.general.FileSelectorDirMgr;
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.SystemConfig;
 import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer.InputType;
+import edu.uwb.braingrid.workbench.data.SystemConfig;
 
 /**
  * Dynamic Input Configuration Dialog The GUI is built dynamically according to the input

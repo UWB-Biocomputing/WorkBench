@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.simconfig.model;
+package edu.uwb.braingrid.workbench.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.uwb.braingrid.simconfig.model.ConfigDatum.DatumType;
+import edu.uwb.braingrid.workbench.data.ConfigDatum.DatumType;
 
 /**
  * Maintains the collection of parameters to be used in a simulation once persisted. In practical

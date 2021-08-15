@@ -35,7 +35,7 @@ import org.apache.jena.riot.RiotNotFoundException;
 
 import edu.uwb.braingrid.provenance.model.ProvOntology;
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.project.Simulation;
+import edu.uwb.braingrid.workbench.model.Simulation;
 
 /**
  * <p>Manages provenance for simulations specified within the BrainGrid Workbench.</p>

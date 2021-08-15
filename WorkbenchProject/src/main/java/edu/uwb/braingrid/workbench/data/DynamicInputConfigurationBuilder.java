@@ -14,8 +14,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import edu.uwb.braingrid.workbench.model.DynamicInputConfiguration;
-
 /**
  * Builds the XML document used as input to a simulation.
  *

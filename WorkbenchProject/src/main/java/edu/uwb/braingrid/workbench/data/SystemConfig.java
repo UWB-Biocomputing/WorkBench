@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbench;
+package edu.uwb.braingrid.workbench.data;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,8 +8,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-
-import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 
 /**
  * This class defines the constants and functions related to system configuration.

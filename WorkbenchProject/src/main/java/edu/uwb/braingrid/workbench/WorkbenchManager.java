@@ -3,6 +3,7 @@ package edu.uwb.braingrid.workbench;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,14 +12,14 @@ import java.util.Optional;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import javafx.scene.control.TextInputDialog;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.provenance.ProvMgr;
+import edu.uwb.braingrid.workbench.model.Project;
+import edu.uwb.braingrid.workbench.model.Simulation;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
-import edu.uwb.braingrid.workbench.project.Project;
-import edu.uwb.braingrid.workbench.project.Simulation;
 import edu.uwb.braingrid.workbench.script.Script;
 import edu.uwb.braingrid.workbench.script.ScriptManager;
 import edu.uwb.braingrid.workbench.ui.DynamicInputConfigurationDialog;
@@ -27,6 +28,7 @@ import edu.uwb.braingrid.workbench.ui.NewSimulationDialog;
 import edu.uwb.braingrid.workbench.ui.ProvenanceQueryDialog;
 import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
 import edu.uwb.braingrid.workbench.utils.DateTime;
+import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchStatusBar;
 import edu.uwb.braingrid.workbenchdashboard.user.User;
 
@@ -157,30 +159,20 @@ public final class WorkbenchManager {
      */
     public boolean openProject() {
         boolean success = false;
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Select a Project Specification...");
-        chooser.setCurrentDirectory(FileManager.getProjectsDirectory().toFile());
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON file (*.json)", "json");
-        chooser.addChoosableFileFilter(filter);
-        chooser.setFileFilter(filter);
-        int choice = chooser.showOpenDialog(null);
-        switch (choice) {
-        case JFileChooser.APPROVE_OPTION:
-            Path selectedFile = chooser.getSelectedFile().toPath();
-            String projectName = FileManager.getBaseFilename(selectedFile);
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Select a Project Specification...");
+        chooser.setInitialDirectory(FileManager.getProjectsDirectory().toFile());
+        ExtensionFilter filter = new ExtensionFilter("JSON file (*.json)", "*.json");
+        chooser.getExtensionFilters().add(filter);
+
+        File chosenFile = chooser.showOpenDialog(WorkbenchDisplay.getPrimaryStage());
+        if (chosenFile != null) {
+            String projectName = FileManager.getBaseFilename(chosenFile.getName());
             success = openProject(projectName);
-            break;
-        // cancel was chosen (can't load project)
-        case JFileChooser.CANCEL_OPTION:
+        } else {
             LOG.info("Open Project Operation Cancelled");
-            break;
-        // a file system error occurred within the dialog
-        case JFileChooser.ERROR_OPTION:
-            LOG.info("Open Project Operation Failed");
-            break;
-        default:
-            // unknown option
         }
+
         return success;
     }
 

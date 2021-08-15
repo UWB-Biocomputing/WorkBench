@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbench.project;
+package edu.uwb.braingrid.workbench.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

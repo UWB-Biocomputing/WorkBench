@@ -1,11 +1,9 @@
-package edu.uwb.braingrid.workbench.project;
+package edu.uwb.braingrid.workbench.model;
 
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.model.ScriptHistory;
-import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
@@ -149,17 +147,17 @@ public class Simulation {
      *                   the parent folder of the local copy of the simulator source code.
      * @param simulationType  Indicates which version of the simulator will be executed (e.g.
      *                        growth, or growth_CUDA)
-     * @param buildOption
+     * @param buildOption  The option for building the simulator prior to execution
      * @param codeLocation  The location of the repository that contains the code for the simulator
      * @param sourceCodeUpdating  Whether the source code should be updated prior to execution (e.g.
      *                            Pull, or None). If sourceCodeUpdating is set to first do a pull on
      *                            the repository, a clone will be attempted first in case the
      *                            repository has yet to be cloned.
-     * @param sha1Key
+     * @param sha1Key  The SHA1 key used to checkout a specific version of the simulator
      * @param versionAnnotation  A human interpretable note regarding the version of the simulator
      *                           that will be executed
      */
-    public void addSimulator(String simulationLocale, String hostname, String simFolder,
+    public void addSpecification(String simulationLocale, String hostname, String simFolder,
             String simulationType, String buildOption, String codeLocation,
             String sourceCodeUpdating, String sha1Key, String versionAnnotation) {
         simSpec = new SimulationSpecification();
@@ -175,9 +173,9 @@ public class Simulation {
     }
 
     /**
-     * Removes the currently specified simulator from the simulation.
+     * Removes the current simulation specification.
      */
-    public void removeSimulator() {
+    public void removeSpecification() {
         simSpec = null;
     }
 
@@ -198,30 +196,6 @@ public class Simulation {
         int version = (scriptHistory != null) ? scriptHistory.getVersion() + 1 : 1;
         scriptHistory = new ScriptHistory(scriptFilename);
         scriptHistory.setVersion(version);
-    }
-
-    private void addScript(String filename, String version, String startedAt, String completedAt,
-            String analyzed, String ran) {
-        scriptHistory = new ScriptHistory(filename);
-
-        // add details, if available
-        try {
-            scriptHistory.setVersion(Integer.parseInt(version));
-        } catch (NumberFormatException ignored) {
-        }
-        try {
-            scriptHistory.setStartedAt(Long.parseLong(startedAt));
-            scriptHistory.setCompletedAt(Long.parseLong(completedAt));
-        } catch (NumberFormatException ignored) {
-        }
-        try {
-            scriptHistory.setOutputAnalyzed(Boolean.parseBoolean(analyzed));
-        } catch (NumberFormatException ignored) {
-        }
-        try {
-            scriptHistory.setRan(Boolean.parseBoolean(ran));
-        } catch (NumberFormatException ignored) {
-        }
     }
 
     /**

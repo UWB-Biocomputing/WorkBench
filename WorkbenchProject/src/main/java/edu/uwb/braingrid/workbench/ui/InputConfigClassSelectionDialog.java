@@ -18,8 +18,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.uwb.braingrid.workbench.SystemConfig;
 import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
+import edu.uwb.braingrid.workbench.data.SystemConfig;
 
 /**
  * Dialog to select the parameter classes before going to the parameter config screen.

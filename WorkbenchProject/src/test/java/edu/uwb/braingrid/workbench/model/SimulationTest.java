@@ -1,7 +1,6 @@
-package edu.uwb.braingrid.workbench.project;
+package edu.uwb.braingrid.workbench.model;
 
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 import java.io.File;
@@ -69,7 +68,7 @@ public class SimulationTest {
     public void scriptGenerationAvailableTest() {
         // New Simulation
         Simulation simNew = getSimValidName();
-        this.addSimulatorToSim(simNew);
+        this.addSpecificationToSim(simNew);
         simNew.removeScript();
         simNew.setSimConfigFile("Example");
         Assertions.assertTrue(simNew.scriptGenerationAvailable());
@@ -92,7 +91,7 @@ public class SimulationTest {
         String sha1Key = "";
         String version = "1.0.0";
 
-        simNew.addSimulator(locale, hostname, simFolder, simType, buildOption, codeLocation,
+        simNew.addSpecification(locale, hostname, simFolder, simType, buildOption, codeLocation,
                 sourceCodeUpdating, sha1Key, version);
     }
 
@@ -137,7 +136,7 @@ public class SimulationTest {
     @Test
     public void getSimulationSpecificationTest() {
         Simulation simNew = getSimValidName();
-        simNew.addSimulator(
+        simNew.addSpecification(
                 SimulationSpecification.LOCAL_EXECUTION,
                 "",
                 "C:\\Users\\Max\\Documents\\DOCUMENTS\\Braingrid-WD\\" +
@@ -184,42 +183,42 @@ public class SimulationTest {
     @Test
     public void getSimulationLocaleTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(locale, sim.getSimulationLocale());
     }
 
     @Test
     public void getSimulatorVersionAnnotationTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(version, sim.getSimulatorVersionAnnotation());
     }
 
     @Test
     public void getSimulatorCodeLocationTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(simfolder, sim.getSimulatorCodeLocation());
     }
 
     @Test
     public void getSimulatorFolderLocationTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(codeLocation, sim.getSimulatorCodeLocation());
     }
 
     @Test
     public void getSimulatorHostnameTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(hostname, sim.getSimulatorHostname());
     }
 
     @Test
     public void getSetSHA1Key() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(sha1, sim.getSHA1Key());
         String sha1key = "qwerty";
@@ -230,7 +229,7 @@ public class SimulationTest {
     @Test
     public void getSetBuildOptionTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(buildOption, sim.getBuildOption());
         String build = SimulationSpecification.BUILD_BUILD_OPTION;
@@ -241,21 +240,21 @@ public class SimulationTest {
     @Test
     public void getSimulatorSourceCodeUpdatingType() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(sourceCodeOption, sim.getSimulatorSourceCodeUpdatingType());
     }
 
     @Test
     public void getSimulationTypeTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(simulatorType.toString(), sim.getSimulationType());
     }
 
     @Test
     public void getSetScriptVersionTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(Integer.toString(0),sim.getScriptVersion());
         int scriptVersion = 2;
         sim.setScriptVersion(scriptVersion);
@@ -265,14 +264,14 @@ public class SimulationTest {
     @Test
     public void getNextScriptVersionTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         Assertions.assertEquals(Integer.toString(1), sim.getNextScriptVersion());
     }
 
     @Test
     public void setGetScriptRanTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertFalse(sim.hasScriptRun());
         sim.setScriptRan(true);
@@ -282,7 +281,7 @@ public class SimulationTest {
     @Test
     public void setGetScriptRanAtTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(DateTime.ERROR_TIME, sim.getScriptStartedAt());
         sim.getScriptStartedAt();
@@ -292,7 +291,7 @@ public class SimulationTest {
     @Test
     public void setGetScriptCompletedAtTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(DateTime.ERROR_TIME, sim.getScriptCompletedAt());
         long time = 10000;
@@ -303,7 +302,7 @@ public class SimulationTest {
     @Test
     public void getScriptFilePathTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
         String comp = scriptFilename;
         Assertions.assertEquals(comp, sim.getScriptFilePath());
@@ -312,7 +311,7 @@ public class SimulationTest {
     @Test
     public void getAddSimConfigFilename() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertEquals(null, sim.getSimConfigFilename());
         String filename = "Example";
@@ -323,7 +322,7 @@ public class SimulationTest {
     @Test
     public void setIsScriptAnalyzedTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         sim.setScriptOutputAnalyzed(true);
         Assertions.assertFalse(sim.wasScriptOutputAnalyzed());
         this.addScriptToSim(sim);
@@ -336,7 +335,7 @@ public class SimulationTest {
     @Test
     public void setGetSimResultFileTest() {
         Simulation sim = getSimValidName();
-        this.addSimulatorToSim(sim);
+        this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
         Assertions.assertNull(sim.getSimResultFile());
         String simResultFile = "TheResultFileToRuleThemAll.txt";
@@ -359,8 +358,8 @@ public class SimulationTest {
     private String sha1 = "";
     private String buildOption = SimulationSpecification.PRE_BUILT_BUILD_OPTION;
 
-    private void addSimulatorToSim(Simulation sim) {
-        sim.addSimulator(
+    private void addSpecificationToSim(Simulation sim) {
+        sim.addSpecification(
                 locale,
                 hostname,
                 simfolder,
@@ -371,7 +370,8 @@ public class SimulationTest {
                 buildOption);
     }
 
-    String scriptFilename = "Hello.sh";
+    private String scriptFilename = "Hello.sh";
+
     private void addScriptToSim(Simulation sim) {
         sim.addScript(scriptFilename);
     }

@@ -1,9 +1,8 @@
 package edu.uwb.braingrid.general;
 
+import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
 
 public class FileSelectorDirMgrTest {
 

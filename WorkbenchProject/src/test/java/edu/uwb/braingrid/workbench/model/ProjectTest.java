@@ -1,9 +1,9 @@
-package edu.uwb.braingrid.simconfig.model;
+package edu.uwb.braingrid.workbench.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class SimulationConfigurationTest {
+public class ProjectTest {
     @Test
     public void test() {
         Assertions.fail("Need to test still");

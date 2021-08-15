@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.workbench.model;
+package edu.uwb.braingrid.workbench.script;
 
 import java.util.Date;
 

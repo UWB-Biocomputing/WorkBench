@@ -1,17 +1,13 @@
-package edu.uwb.braingrid.workbench.model;
+package edu.uwb.braingrid.workbench.data;
 
-import edu.uwb.braingrid.workbench.SystemConfig;
-import org.junit.jupiter.api.Assertions;
+import java.io.IOException;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
 
 public class DynamicInputConfigurationTest {
 

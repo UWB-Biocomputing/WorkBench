@@ -20,14 +20,12 @@ import org.apache.jena.rdf.model.Resource;
 import org.xml.sax.SAXException;
 
 import edu.uwb.braingrid.provenance.ProvMgr;
-import edu.uwb.braingrid.provenance.workbenchprov.WorkbenchOperationRecorder;
+import edu.uwb.braingrid.provenance.WorkbenchOperationRecorder;
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
-import edu.uwb.braingrid.workbench.data.OutputAnalyzer;
-import edu.uwb.braingrid.workbench.model.ExecutedCommand;
+import edu.uwb.braingrid.workbench.model.Simulation;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
-import edu.uwb.braingrid.workbench.project.Simulation;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;

@@ -1,9 +1,7 @@
-package edu.uwb.braingrid.provenance.workbenchprov;
+package edu.uwb.braingrid.provenance;
 
 import java.util.Date;
 import org.apache.jena.rdf.model.Resource;
-
-import edu.uwb.braingrid.provenance.ProvMgr;
 
 /**
  * This class provides provenance recording operations specific to the BrainGridWorkbench.

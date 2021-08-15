@@ -1,4 +1,4 @@
-package edu.uwb.braingrid.simconfig.model;
+package edu.uwb.braingrid.workbench.data;
 
 import java.util.HashMap;
 import java.util.Set;
