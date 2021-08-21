@@ -114,6 +114,14 @@ public class Simulation {
         return resultFileName;
     }
 
+    /**
+     * Sets the full path to the simulation result file.
+     *
+     * TODO: this currently only sets the relative path, i.e., results/sim-name-out.xml.
+     *   Consider updating to an absolute path. -Steven
+     *
+     * @param filename  The filename of the simulation result file, including the full path
+     */
     public void setSimResultFile(String filename) {
         this.resultFileName = filename;
     }
@@ -131,13 +139,18 @@ public class Simulation {
         return simSpec;
     }
 
+    /**
+     * Sets the simulation specification, replacing the existing specification if one is present.
+     *
+     * @param simSpec  The new simulation specification
+     */
     public void setSimSpec(SimulationSpecification simSpec) {
         this.simSpec = simSpec;
     }
 
     /**
-     * Add a specification for the simulator used in this simulation to the model. The elements of a
-     * specification are used to determine the content of an execution script as well as where it
+     * Adds a specification for the simulator used in this simulation to the model. The elements of
+     * a specification are used to determine the content of an execution script as well as where it
      * will be executed.
      *
      * @param simulationLocale  Indicates where the simulator will be executed (e.g.
@@ -179,10 +192,20 @@ public class Simulation {
         simSpec = null;
     }
 
+    /**
+     * Provides the script history for the script associated with this simulation.
+     *
+     * @return The script history for the script associated with this simulation
+     */
     public ScriptHistory getScriptHistory() {
         return scriptHistory;
     }
 
+    /**
+     * Sets the script history for the script associated with this simulation.
+     *
+     * @param scriptHistory  The script history for the script associated with this simulation
+     */
     public void setScriptHistory(ScriptHistory scriptHistory) {
         this.scriptHistory = scriptHistory;
     }
@@ -277,6 +300,12 @@ public class Simulation {
         return simSpec.getSimulationType();
     }
 
+    /**
+     * Provides the build option for the simulator. This value is used to determine whether the
+     * simulator should be built prior to running the simulation.
+     *
+     * @return The build option for the script
+     */
     public String getBuildOption() {
         return simSpec.getBuildOption();
     }
@@ -305,6 +334,11 @@ public class Simulation {
         return simSpec.getSourceCodeUpdating();
     }
 
+    /**
+     * Provides the SHA1 key used to checkout a specific version of the simulator.
+     *
+     * @return The SHA1 key for git checkout
+     */
     public String getSHA1Key() {
         return simSpec.getSHA1CheckoutKey();
     }
