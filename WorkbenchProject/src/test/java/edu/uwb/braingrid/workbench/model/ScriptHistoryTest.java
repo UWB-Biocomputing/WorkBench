@@ -53,26 +53,6 @@ public class ScriptHistoryTest {
         Assertions.assertEquals(filename, sh.getFilename());
     }
 
-    @Test
-    public void testGetSetVersion() {
-        ScriptHistory sh = factory();
-        Assertions.assertEquals(0, sh.getVersion());
-        int version = 10;
-        sh.setVersion(version);
-        Assertions.assertEquals(version, sh.getVersion());
-
-    }
-
-    @Test
-    public void testIncrementVersion() {
-        ScriptHistory sh = factory();
-        sh.incrementVersion();
-        int version = 2;
-        sh.setVersion(version);
-        sh.incrementVersion();
-        Assertions.assertEquals(version + 1, sh.getVersion());
-    }
-
     private ScriptHistory factory() {
         return new ScriptHistory("None");
     }

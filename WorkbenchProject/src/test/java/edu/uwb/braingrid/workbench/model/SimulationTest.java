@@ -252,23 +252,6 @@ public class SimulationTest {
     }
 
     @Test
-    public void getSetScriptVersionTest() {
-        Simulation sim = getSimValidName();
-        this.addSpecificationToSim(sim);
-        Assertions.assertEquals(Integer.toString(0),sim.getScriptVersion());
-        int scriptVersion = 2;
-        sim.setScriptVersion(scriptVersion);
-        Assertions.assertEquals(Integer.toString(scriptVersion),sim.getScriptVersion());
-    }
-
-    @Test
-    public void getNextScriptVersionTest() {
-        Simulation sim = getSimValidName();
-        this.addSpecificationToSim(sim);
-        Assertions.assertEquals(Integer.toString(1), sim.getNextScriptVersion());
-    }
-
-    @Test
     public void setGetScriptRanTest() {
         Simulation sim = getSimValidName();
         this.addSpecificationToSim(sim);

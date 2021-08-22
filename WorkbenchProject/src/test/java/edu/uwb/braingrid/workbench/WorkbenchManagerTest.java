@@ -150,11 +150,6 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void getNextScriptNameTest() {
-        test();
-    }
-
-    @Test
     public void getSimConfigFileOverviewTest() {
         test();
     }

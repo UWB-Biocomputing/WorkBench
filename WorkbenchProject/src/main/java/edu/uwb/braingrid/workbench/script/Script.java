@@ -34,8 +34,6 @@ public class Script {
     public static final String COMPLETED_TIME_TEXT = "time completed";
     /** Prefix text for the exit status of an executed command. */
     public static final String EXIT_STATUS_TEXT = "exit status";
-    /** Prefix text for the version of the executed script. */
-    public static final String VERSION_TEXT = "version";
     /** Redirect file for std-err/std-out on printf statements. */
     public static final String SCRIPT_STATUS_FILENAME = "scriptStatus.txt";
     /** Redirect file for std-err and std-out of executed commands. */

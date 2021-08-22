@@ -53,8 +53,6 @@ public class ScriptManager {
      * Generates a constructed (but not persisted) Script.
      *
      * @param simulationName  Name of the simulation that generated the script
-     * @param version  The version of the script (used in tracing output back to the script that
-     *                 printed the output)
      * @param simSpec  The specification for the simulator to execute in the script
      * @param simConfigFilename  Name of configuration file used as simulation input (XML file that
      *                           specifies simulation parameters, environment constants, and
@@ -64,8 +62,8 @@ public class ScriptManager {
      * @return A constructed script or null in the case that the script could not be constructed
      *         properly
      */
-    public static Script generateScript(String simulationName, String version,
-            SimulationSpecification simSpec, String simConfigFilename) {
+    public static Script generateScript(String simulationName, SimulationSpecification simSpec,
+            String simConfigFilename) {
         boolean success;
         String scriptOutputDir = FileManager.getSimulationsDirectory() + "/" + simulationName;
         // make path safe for variable interpolation
@@ -75,18 +73,9 @@ public class ScriptManager {
         // create a new script
         Script script = new Script();
         script.setScriptOutputDirectory(scriptOutputDir);
-        script.setCmdOutputFilename(simulationName
-                + "_v"
-                + version
-                + "_"
-                + Script.COMMAND_OUTPUT_FILENAME);
-        script.setScriptStatusOutputFilename(simulationName
-                + "_v"
-                + version
-                + "_"
-                + Script.SCRIPT_STATUS_FILENAME);
+        script.setCmdOutputFilename(simulationName + "_" + Script.COMMAND_OUTPUT_FILENAME);
+        script.setScriptStatusOutputFilename(simulationName + "_" + Script.SCRIPT_STATUS_FILENAME);
         /* Print Header Data */
-        script.printf(Script.VERSION_TEXT, version, false);
         // determine which simulator file to execute
         String simExecutableToInvoke = simSpec.getSimExecutable();
         script.printf(SimulationSpecification.SIM_EXEC_TEXT, simExecutableToInvoke, true);
@@ -132,13 +121,8 @@ public class ScriptManager {
             script.executeProgram("cd", cdArg);
         }
         // record the latest commit key information
-        script.addVerbatimStatement("git log --pretty=format:'%H' -n 1",
-                scriptOutputDir + "/"
-                + simulationName
-                + "_v"
-                + version
-                + "_"
-                + Script.SHA1_KEY_FILENAME, false);
+        script.addVerbatimStatement("git log --pretty=format:'%H' -n 1", scriptOutputDir + "/"
+                + simulationName + "_" + Script.SHA1_KEY_FILENAME, false);
         /* Make the Simulator */
         // clean previous build
         if (simSpec.buildFirst()) {
@@ -155,15 +139,9 @@ public class ScriptManager {
         String[] mkResultsDirArgs = {"results"};
         script.executeProgram("mkdir", mkResultsDirArgs);
         /* Run the Simulator */
-        script.addVerbatimStatement(simFolder + "/"
-                + simExecutableToInvoke
-                + " -t "
+        script.addVerbatimStatement(simFolder + "/" + simExecutableToInvoke + " -t "
                 + "configfiles/" + configFilename,
-                simulationName
-                + "_v"
-                + version
-                + "_"
-                + Script.SIM_STATUS_FILENAME, true);
+                simulationName + "_" + Script.SIM_STATUS_FILENAME, true);
         /* Put Script Together and Save */
         if (simExecutableToInvoke == null || !script.construct()) {
             script = null; // or indicate unsuccessful operation
@@ -191,7 +169,6 @@ public class ScriptManager {
      * @param simulationName
      * @param scriptPath  Indicates where the constructed script to execute resides on the file
      *                    system.
-     * @param scriptVersion
      * @param nListFilenames  Neuron lists indicated in simulation configuration file
      * @param simConfigFilename  Name of file containing simulation constants and filenames. File,
      *                           itself, is used to specify all input for a simulation.
@@ -202,7 +179,7 @@ public class ScriptManager {
      * @throws java.io.IOException
      */
     public boolean runScript(ProvMgr provMgr, SimulationSpecification simSpec,
-            String simulationName, String scriptPath, String scriptVersion, String[] nListFilenames,
+            String simulationName, String scriptPath, String[] nListFilenames,
             String simConfigFilename) throws JSchException, SftpException, IOException {
         boolean success;
         String executionMachine = simSpec.getSimulationLocale();
@@ -211,18 +188,18 @@ public class ScriptManager {
         if (executionMachine.equals(remoteExecution)) {
             LOG.info("Running Remote Script: " + scriptPath);
             success = runRemoteScript(provMgr, simSpec.getHostAddr(), simulationName, scriptPath,
-                    scriptVersion, nListFilenames, simConfigFilename);
+                    nListFilenames, simConfigFilename);
         } else { // or run it locally
             LOG.info("Running Local Script " + scriptPath);
-            success = runLocalScript(provMgr, simulationName, scriptPath, scriptVersion,
-                    nListFilenames, simConfigFilename);
+            success = runLocalScript(provMgr, simulationName, scriptPath, nListFilenames,
+                    simConfigFilename);
         }
         return success;
     }
 
     private boolean runRemoteScript(ProvMgr provMgr, String hostname, String simulationName,
-            String scriptPath, String scriptVersion, String[] nListFilenames,
-            String simConfigFilename) throws JSchException, FileNotFoundException, SftpException {
+            String scriptPath, String[] nListFilenames, String simConfigFilename)
+            throws JSchException, FileNotFoundException, SftpException {
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
         char[] password = null;
@@ -247,8 +224,7 @@ public class ScriptManager {
                 if (provMgr != null) {
                     Long startTime = System.currentTimeMillis();
                     WorkbenchOperationRecorder.uploadFile(provMgr, scriptPath, remoteScriptPath,
-                            "script", hostname, "uploadScript_v" + scriptVersion, uploadStartTime,
-                            new Date());
+                            "script", hostname, "uploadScript", uploadStartTime, new Date());
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                 }
                 outstandingMessages += "\n" + scriptPath + "\nuploaded to " + hostname + "\n";
@@ -282,8 +258,7 @@ public class ScriptManager {
                                 }
                                 WorkbenchOperationRecorder.uploadFile(provMgr, nListFilename,
                                         nListDir + FileManager.getSimpleFilename(nListFilename),
-                                        "nlist", hostname, "upload_" + nlType + "_NList_"
-                                                + "for_Script_v" + scriptVersion,
+                                        "nlist", hostname, "upload_" + nlType + "_NList",
                                         uploadStartTime, new Date());
                                 accumulatedTime = DateTime.sumProvTiming(startTime,
                                         accumulatedTime);
@@ -301,8 +276,7 @@ public class ScriptManager {
                             Long startTime = System.currentTimeMillis();
                             WorkbenchOperationRecorder.uploadFile(provMgr, simConfigFilename,
                                     configDir + FileManager.getSimpleFilename(simConfigFilename),
-                                    "simulationConfigurationFile", hostname,
-                                    "upload_SimConfig_for_Script_v" + scriptVersion,
+                                    "simulationConfigurationFile", hostname, "upload_SimConfig",
                                     uploadStartTime, new Date());
                             accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                         }
@@ -345,8 +319,7 @@ public class ScriptManager {
     }
 
     private boolean runLocalScript(ProvMgr provMgr, String simulationName, String scriptLocation,
-            String scriptVersion, String[] inputFilenames, String simConfigFilename)
-            throws IOException {
+            String[] inputFilenames, String simConfigFilename) throws IOException {
         LOG.info("Running Local Script");
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
@@ -384,8 +357,8 @@ public class ScriptManager {
             if (provMgr != null) {
                 Long startTime = System.currentTimeMillis();
                 WorkbenchOperationRecorder.copyFile(provMgr, scriptSourcePath.toString(),
-                        scriptTargetPath.toString(), "script", "copy_Script_v" + scriptVersion,
-                        copyStartTime, new Date());
+                        scriptTargetPath.toString(), "script", "copy_Script", copyStartTime,
+                        new Date());
                 accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
             }
             outstandingMessages += "\nFile copied..."
@@ -408,7 +381,7 @@ public class ScriptManager {
                     Long startTime = System.currentTimeMillis();
                     WorkbenchOperationRecorder.copyFile(provMgr, simConfigSourcePath.toString(),
                             simConfigTargetPath.toString(), "simulationConfigurationFile",
-                            "copy_SimConfig_forScript_v", copyStartTime, new Date());
+                            "copy_SimConfig", copyStartTime, new Date());
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                 }
                 outstandingMessages += "\nFile copied..."
@@ -431,11 +404,9 @@ public class ScriptManager {
                     FileManager.copyFile(nListSourcePaths[i], nListTargetPaths[i]);
                     if (provMgr != null) {
                         Long startTime = System.currentTimeMillis();
-                        WorkbenchOperationRecorder.copyFile(provMgr,
-                                nListSourcePaths[i].toString(),
-                                nListTargetPaths[i].toString(), "nlist",
-                                "copy_NList_" + i + "forScript_v"
-                                + scriptVersion, copyStartTime, new Date());
+                        WorkbenchOperationRecorder.copyFile(provMgr, nListSourcePaths[i].toString(),
+                                nListTargetPaths[i].toString(), "nlist", "copy_NList_" + i,
+                                copyStartTime, new Date());
                         accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                     }
                     outstandingMessages += "\nFile copied..."
@@ -592,11 +563,7 @@ public class ScriptManager {
                         provMgr.used(simActivity, movedNLFileEntity);
                     }
                     // get the sha1key from the file if possible
-                    String sha1KeyFilename = simulation.getName()
-                            + "_v"
-                            + simulation.getScriptVersion()
-                            + "_"
-                            + Script.SHA1_KEY_FILENAME;
+                    String sha1KeyFilename = simulation.getName() + "_" + Script.SHA1_KEY_FILENAME;
                     Path sha1KeyFilePath = outputTargetFolder.resolve(sha1KeyFilename);
                     if (Files.exists(sha1KeyFilePath)) {
                         // open the file
@@ -621,22 +588,6 @@ public class ScriptManager {
                         }
                     }
                 }
-        //LEAVE THIS COMMENTED CODE (BELOW): THIS IS AUTOMATED PROV COLLECTION//
-//                String scriptName = Script.getFilename(
-//                        analyzer.getScriptVersion());
-//                SimulationSpecification spec = analyzer.getSimSpec();
-//                List<ExecutedCommand> allCommandsList = null;
-//                Collection<ExecutedCommand> allCommands
-//                        = analyzer.getAllCommands();
-//                if (allCommands != null) {
-//                    allCommandsList = new ArrayList(allCommands);
-//                }
-//                if (allCommandsList != null) {
-//                    for (ExecutedCommand ec : allCommandsList) {
-//                        //System.err.println(ec);
-//                    }
-//                }
-                ///////////////////LEAVE COMMENTED CODE (ABOVE)/////////////////
                 // collect output file and standard output redirect file
                 accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
             }
@@ -656,27 +607,10 @@ public class ScriptManager {
         char[] password = null;
         // determine script output filenames
         String simulationName = simulation.getName();
-        String version = simulation.getScriptVersion();
-        String scriptStatusFilename = simulationName
-                + "_v"
-                + version
-                + "_"
-                + Script.SCRIPT_STATUS_FILENAME;
-        String simStatusFilename = simulationName
-                + "_v"
-                + simulation.getScriptVersion()
-                + "_"
-                + Script.SIM_STATUS_FILENAME;
-        String sha1KeyFilename = simulationName
-                + "_v"
-                + version
-                + "_"
-                + Script.SHA1_KEY_FILENAME;
-        String cmdFilename = simulationName
-                + "_v"
-                + version
-                + "_"
-                + Script.COMMAND_OUTPUT_FILENAME;
+        String scriptStatusFilename = simulationName + "_" + Script.SCRIPT_STATUS_FILENAME;
+        String simStatusFilename = simulationName + "_" + Script.SIM_STATUS_FILENAME;
+        String sha1KeyFilename = simulationName + "_" + Script.SHA1_KEY_FILENAME;
+        String cmdFilename = simulationName + "_" + Script.COMMAND_OUTPUT_FILENAME;
         // determine script output file target paths
         Path scriptStatusFileTarget = scriptOutputFolder.resolve(scriptStatusFilename);
         Path simStatusFileTarget = scriptOutputFolder.resolve(simStatusFilename);
@@ -839,10 +773,6 @@ public class ScriptManager {
         String msg = outstandingMessages;
         outstandingMessages = "";
         return msg;
-    }
-
-    public static String getScriptName(String simulationName, String version) {
-        return simulationName + "_script" + version;
     }
 
     public static String getLastLine(Path filePath) {

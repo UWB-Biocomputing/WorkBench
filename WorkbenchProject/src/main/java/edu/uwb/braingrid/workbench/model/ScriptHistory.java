@@ -15,7 +15,6 @@ public class ScriptHistory {
     private boolean outputAnalyzed;
     private boolean ran;
     private String filename;
-    private int version;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -31,7 +30,6 @@ public class ScriptHistory {
         completedAt = DateTime.ERROR_TIME;
         outputAnalyzed = false;
         ran = false;
-        version = 1;
     }
 
     /**
@@ -143,31 +141,6 @@ public class ScriptHistory {
      */
     public void setFilename(String filename) {
         this.filename = filename;
-    }
-
-    /**
-     * Provides the script version number.
-     *
-     * @return The version number for the script
-     */
-    public int getVersion() {
-        return version;
-    }
-
-    /**
-     * Sets the script version number.
-     *
-     * @param version  The script version number
-     */
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    /**
-     * Increments the script version.
-     */
-    public void incrementVersion() {
-        version++;
     }
     // </editor-fold>
 }

@@ -484,15 +484,14 @@ public final class WorkbenchManager {
     public boolean generateScript() {
         LOG.info("Generate Script for " + simulation.getName());
         boolean success = false;
-        Script script = ScriptManager.generateScript(simulation.getName(),
-                simulation.getNextScriptVersion(), simulation.getSimSpec(),
+        Script script = ScriptManager.generateScript(simulation.getName(), simulation.getSimSpec(),
                 simulation.getSimConfigFilename());
         if (script != null) {
             try {
                 Path simulationFolder = simulation.getSimulationLocation();
                 Path scriptsFolder = simulationFolder.resolve("scripts");
                 Files.createDirectories(scriptsFolder);
-                String scriptName = getNextScriptName();
+                String scriptName = simulation.getName() + "_script";
                 String scriptFilename = scriptsFolder.resolve(scriptName + ".sh").toString();
                 script.persist(scriptFilename);
                 simulation.addScript(scriptFilename);
@@ -527,7 +526,7 @@ public final class WorkbenchManager {
             String scriptPath = simulation.getScriptFilePath();
             String[] neuronLists = FileManager.getNeuronListFilenames(simulationName);
             success = sm.runScript(prov, simulation.getSimSpec(), simulationName, scriptPath,
-                    simulation.getScriptVersion(), neuronLists, simulation.getSimConfigFilename());
+                    neuronLists, simulation.getSimConfigFilename());
             simulation.setScriptRan(success);
             simulation.setScriptStartedAt();
             messageAccumulator += sm.getOutstandingMessages();
@@ -590,8 +589,7 @@ public final class WorkbenchManager {
     /**
      * Removes the script from the project. Invalidation should occur whenever the script
      * specification or simulation specification changes. This is a safety measure meant to protect
-     * against utilizing an expired script (i.e. the version doesn't match, but the script gets used
-     * anyway).
+     * against utilizing an expired script.
      */
     public void invalidateScriptGenerated() {
         simulation.removeScript();
@@ -676,15 +674,6 @@ public final class WorkbenchManager {
         }
 
         return isEnabled;
-    }
-
-    private String getNextScriptName() {
-        String name = null;
-        if (simulation != null) {
-            name = ScriptManager.getScriptName(simulation.getName(),
-                    simulation.getNextScriptVersion());
-        }
-        return name;
     }
 
     /**

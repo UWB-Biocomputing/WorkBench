@@ -216,9 +216,7 @@ public class Simulation {
      * @param scriptFilename  The base-name of the file path
      */
     public void addScript(String scriptFilename) {
-        int version = (scriptHistory != null) ? scriptHistory.getVersion() + 1 : 1;
         scriptHistory = new ScriptHistory(scriptFilename);
-        scriptHistory.setVersion(version);
     }
 
     /**
@@ -372,36 +370,6 @@ public class Simulation {
     }
 
     /**
-     * Provides the version of the script currently associated with the simulation. This value can
-     * be used to determine the base name of the script file name.
-     *
-     * @return The version of the script currently associated with the simulation
-     */
-    public String getScriptVersion() {
-        return (scriptHistory != null) ? String.valueOf(scriptHistory.getVersion()) : null;
-    }
-
-    /**
-     * Provides the version number of the next script that will be added to the simulation. This is
-     * a convenience function, the version number is determined based on the current script version.
-     *
-     * @return The version number of the next script that will be added to the simulation when
-     *         another script is generated.
-     */
-    public String getNextScriptVersion() {
-        return (scriptHistory != null) ? String.valueOf(scriptHistory.getVersion() + 1) : "1";
-    }
-
-    /**
-     * Sets the script version for the simulation.
-     *
-     * @param version  The version number of the current script for the simulation
-     */
-    public void setScriptVersion(int version) {
-        scriptHistory.setVersion(version);
-    }
-
-    /**
      * Provides the number of milliseconds since January 1, 1970, 00:00:00 GMT when the execution
      * started for the script associated with this simulation.
      *
@@ -446,7 +414,7 @@ public class Simulation {
     }
 
     /**
-     * Indicates wither the output of the current script version has been analyzed yet.
+     * Indicates wither the output of the current script has been analyzed yet.
      *
      * @return True if the script output has been analyzed, otherwise false
      */
@@ -455,8 +423,8 @@ public class Simulation {
     }
 
     /**
-     * Sets a string representation of whether or not the output of the current script version has
-     * been analyzed.
+     * Sets a string representation of whether or not the output of the current script has been
+     * analyzed.
      *
      * @param analyzed  Indication of whether or not the analysis has been completed
      */
