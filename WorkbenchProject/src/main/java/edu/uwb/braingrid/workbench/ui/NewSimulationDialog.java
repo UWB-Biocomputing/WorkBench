@@ -168,7 +168,6 @@ public class NewSimulationDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
     private static final Logger LOG = Logger.getLogger(NewSimulationDialog.class.getName());
-    private static final long SERIAL_VERSION_UID = 1L;
     private boolean isRunning;
     private boolean success = false;
     // </editor-fold>

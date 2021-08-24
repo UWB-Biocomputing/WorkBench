@@ -26,7 +26,7 @@ public class SimulationSpecification {
     }
 
     // <editor-fold defaultstate="collapsed" desc="Members">
-    //@cs-: JavadocVariable influence 18
+    //@cs-: JavadocVariable influence 16
     public static final String REMOTE_EXECUTION = "Remote";
     public static final String LOCAL_EXECUTION = "Local";
     public static final int REMOTE_EXECUTION_INDEX = 1;
@@ -42,8 +42,6 @@ public class SimulationSpecification {
     public static final int GIT_PULL_AND_CLONE_INDEX = 1;
     public static final int GIT_NONE_INDEX = 0;
     public static final String SIM_EXEC_TEXT = "simExecutable";
-//    public static final String SIM_INPUTS_TEXT = "simInputs";
-//    public static final String SIM_OUTPUTS_TEXT = "simOutputs";
 
     private String simulationLocale;
     private String hostname;
@@ -55,8 +53,6 @@ public class SimulationSpecification {
     private String sourceCodeUpdating;
     private String sha1Key;
     private String versionAnnotation;
-//    private List<String> simInputs;
-//    private List<String> simOutputs;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -74,8 +70,6 @@ public class SimulationSpecification {
         sourceCodeUpdating = null;
         sha1Key = null;
         versionAnnotation = null;
-//        simInputs = new ArrayList<>();
-//        simOutputs = new ArrayList<>();
     }
     // </editor-fold>
 
@@ -333,56 +327,6 @@ public class SimulationSpecification {
         return executable;
     }
 
-//    /**
-//     * Provides a list of the simulation inputs. At the time when this function was written this
-//     * can only contain a single file path. It is maintained in a list for extensibility purposes.
-//     *
-//     * @return The list containing simulation input file locations
-//     */
-//    public List<String> getSimInputs() {
-//        return simInputs;
-//    }
-//
-//    /**
-//     * Provides a list of the simulation outputs. At the time when this function was written this
-//     * list will only contain a single file path. It is maintained in a list for extensibility
-//     * purposes.
-//     *
-//     * @return The list containing simulation output file locations
-//     */
-//    public List<String> getSimOutputs() {
-//        return simOutputs;
-//    }
-//
-//    /**
-//     * Adds an input file path to the list of input files for this simulation. This path is based
-//     * on where the simulation was executed, not where the original input file was copied from.
-//     *
-//     * Note: When this function was written, all executable simulators are limited to a single
-//     * input file. However, input file locations are maintained in a list for extensibility.
-//     *
-//     * @param input  An input file path (relative to the simulation folder) to add to the list of
-//     *               input files for this simulation.
-//     */
-//    public void addInput(String input) {
-//        simInputs.add(input);
-//    }
-//
-//    /**
-//     * Adds an output file path to the list of output files for this simulation. This path is
-//     * based on where the simulation was executed, not where the output file was copied to for
-//     * workbench use.
-//     *
-//     * Note: When this function was written, all executable simulators are limited to a single
-//     * output file. However, output file locations are maintained in a list for extensibility.
-//     *
-//     * @param output An output file path (relative to the simulation folder) to add to the list
-//     *               of output files for this simulation.
-//     */
-//    public void addOutput(String output) {
-//        simOutputs.add(output);
-//    }
-
     /**
      * Indicates whether or not this simulation should be executed on a remote machine or locally.
      * The default for this operation is an indication that the simulation should be executed
@@ -445,15 +389,12 @@ public class SimulationSpecification {
                 && Objects.equals(sourceCodeUpdating, that.sourceCodeUpdating)
                 && Objects.equals(sha1Key, that.sha1Key)
                 && Objects.equals(versionAnnotation, that.versionAnnotation);
-//                && Objects.equals(getSimInputs(), that.getSimInputs())
-//                && Objects.equals(getSimOutputs(), that.getSimOutputs());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(simulationLocale, hostname, username, simulatorFolder, simulatorType,
                 buildOption, codeRepository, sourceCodeUpdating, sha1Key, versionAnnotation);
-//                getSimInputs(), getSimOutputs());
     }
     // </editor-fold>
 }

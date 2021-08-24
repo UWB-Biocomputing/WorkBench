@@ -107,14 +107,6 @@ public class SimulationTest {
 
     // <editor-fold defaultstate="collapsed" desc="Getters/Setters Tests">
     @Test
-    public void getSimulationFileNameTest() {
-        Simulation simNew = getSimValidName();
-
-        String simulationFile = simNew.getSimulationLocation().resolve(simNew.getName() + ".xml").toString();
-        Assertions.assertEquals(simulationFile, simNew.getSimulationFilePath());
-    }
-
-    @Test
     public void setAndGetNameTest() {
         Simulation simNew = getSimValidName();
 

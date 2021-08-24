@@ -56,7 +56,6 @@ public class WorkbenchControlFrame extends javax.swing.JFrame {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
-    private static final long SERIAL_VERSION_UID = 1L;
     private WorkbenchManager workbenchMgr;
     // </editor-fold>
 

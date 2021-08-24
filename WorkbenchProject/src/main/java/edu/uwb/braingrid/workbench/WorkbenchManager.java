@@ -488,11 +488,10 @@ public final class WorkbenchManager {
                 simulation.getSimConfigFilename());
         if (script != null) {
             try {
-                Path simulationFolder = simulation.getSimulationLocation();
-                Path scriptsFolder = simulationFolder.resolve("scripts");
-                Files.createDirectories(scriptsFolder);
+                Path scriptFolder = simulation.getScriptLocation();
+                Files.createDirectories(scriptFolder);
                 String scriptName = simulation.getName() + "_script";
-                String scriptFilename = scriptsFolder.resolve(scriptName + ".sh").toString();
+                String scriptFilename = scriptFolder.resolve(scriptName + ".sh").toString();
                 script.persist(scriptFilename);
                 simulation.addScript(scriptFilename);
                 messageAccumulator += "\n" + "Script generated at: " + scriptFilename + "\n";
@@ -555,8 +554,7 @@ public final class WorkbenchManager {
                 try {
                     messageAccumulator += "\n"
                             + "Gathering simulation provenance...\n";
-                    Path targetFolder = ScriptManager.getScriptFolder(
-                            simulation.getSimulationLocation());
+                    Path targetFolder = simulation.getScriptLocation();
                     timeCompleted = scriptMgr.analyzeScriptOutput(simulation.getSimSpec(),
                             simulation, prov, targetFolder);
                     if (timeCompleted != DateTime.ERROR_TIME) {

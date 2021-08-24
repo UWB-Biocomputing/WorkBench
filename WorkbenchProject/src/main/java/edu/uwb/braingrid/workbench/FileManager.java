@@ -30,8 +30,15 @@ public final class FileManager {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(FileManager.class.getName());
-    private static final String CONFIG_FILES_FOLDER_NAME = "configfiles";
-    private static final String NEURON_LIST_FOLDER_NAME = "NList";
+
+    /** Name of the folder containing configuration files. */
+    public static final String CONFIG_FILES_FOLDER_NAME = "configfiles";
+    /** Name of the folder containing neuron layout files. */
+    public static final String NEURON_LIST_FOLDER_NAME = "NList";
+    /** Name of the folder containing script related files. */
+    public static final String SCRIPT_FOLDER_NAME = "script";
+    /** Name of the folder containing provenance file. */
+    public static final String PROV_FOLDER_NAME = "provenance";
 
     private static User user = User.getUser();
     private static Pattern filenamePattern = null;
@@ -45,15 +52,14 @@ public final class FileManager {
 
     // <editor-fold defaultstate="collapsed" desc="Getters/Setters">
     /**
-     * Provides the filenames for all neurons list files for a given project.
+     * Provides the filenames for all neuron list files for a given simulation.
      *
-     * @param projectName  The project containing the neuron list files
-     * @return The filenames for all neurons list files in the project directory
+     * @param simulationName  The simulation containing the neuron list files
+     * @return The filenames for all neuron list files in the simulation directory
      * @throws IOException
      */
-    public static String[] getNeuronListFilenames(String projectName) throws IOException {
-        Path folder = getSimConfigDirectoryPath(projectName, false)
-                .resolve(NEURON_LIST_FOLDER_NAME);
+    public static String[] getNeuronListFilenames(String simulationName) throws IOException {
+        Path folder = getSimConfigDirectory(simulationName).resolve(NEURON_LIST_FOLDER_NAME);
         return Files.list(folder)
                 .filter(Files::isRegularFile)
                 .map(Path::toString)
@@ -89,7 +95,7 @@ public final class FileManager {
 
     /**
      * Provides the path to the simulations directory for the current user. This path is relative to
-     * the simulation machine which may be remote.
+     * the simulation machine (which may be remote).
      *
      * @return A string representation of the simulations directory (may be a remote path)
      */
@@ -98,47 +104,19 @@ public final class FileManager {
     }
 
     /**
-     * Provides the canonical location of a simulation configuration file with the specified
-     * filename.
+     * Provides the path to the simulation configuration file with the specified filename.
      *
-     * @param projectName  The name of the project containing the simulation configuration file
-     *                     (project name is used as the main directory name for the project. e.g. if
-     *                     the BrainGrid working directory is folder/BrainGrid and the project name
-     *                     is myProject, then folder/BrainGrid/myProject/ contains the simulation
-     *                     configuration directory, and subsequently, the simulation configuration
-     *                     file)
+     * @param simulationName  The name of the simulation
      * @param filename  The simple name of the configuration file (e.g. mySimConfigFile.xml, not
      *                  folder/mySimConfigFile.xml)
      * @param mkdirs  Indicates whether or not to build the parent directories in the case that they
      *                do not yet exist
-     * @return The canonical location of the specified simulation configuration file.
+     * @return The path to the specified simulation configuration file
      * @throws IOException
      */
-    public static Path getSimConfigFilePath(String projectName, String filename, boolean mkdirs)
+    public static Path getSimConfigFilePath(String simulationName, String filename, boolean mkdirs)
             throws IOException {
-        return getSimConfigDirectoryPath(projectName, mkdirs).resolve(filename);
-    }
-
-    /**
-     * Provides the canonical location of a neuron list configuration file with the specified
-     * filename.
-     *
-     * @param projectName  The name of the project containing the neuron list file (project name
-     *                     is used as the main directory name for the project. e.g. if the BrainGrid
-     *                     working directory is folder/BrainGrid and the project name is myProject,
-     *                     then folder/BrainGrid/myProject/ contains the simulation configuration
-     *                     directory, and subsequently, the simulation configuration file)
-     * @param filename  The simple name of the configuration file (e.g. myActiveNeuronList.xml, not
-     *                  folder/myActiveNeuronList.xml)
-     * @param mkdirs  Indicates whether or not to build the parent directories in the case that they
-     *                do not yet exist
-     * @return The canonical location of the specified simulation configuration file
-     * @throws IOException
-     */
-    public static Path getNeuronListFilePath(String projectName, String filename, boolean mkdirs)
-            throws IOException {
-        Path folder = getSimConfigDirectoryPath(projectName, false)
-                .resolve(NEURON_LIST_FOLDER_NAME);
+        Path folder = getSimConfigDirectory(simulationName);
         if (mkdirs) {
             Files.createDirectories(folder);
         }
@@ -146,44 +124,46 @@ public final class FileManager {
     }
 
     /**
-     * Provides the canonical location of the parent directory for all simulation configuration
-     * related files.
+     * Provides the path to the neuron list configuration file with the specified filename.
      *
-     * @param simulationName  The name of the simulation. The simulation name is used as the parent
-     *                        directory to the sim config directory.
+     * @param simulationName  The name of the simulation
+     * @param filename  The simple name of the configuration file (e.g. myActiveNeuronList.xml, not
+     *                  folder/myActiveNeuronList.xml)
      * @param mkdirs  Indicates whether or not to build the parent directories in the case that they
      *                do not yet exist
-     * @return The canonical location of the parent directory for all simulation configuration
-     *         related files.
+     * @return The path to the specified neuron list configuration file
      * @throws IOException
      */
-    public static Path getSimConfigDirectoryPath(String simulationName, boolean mkdirs)
+    public static Path getNeuronListFilePath(String simulationName, String filename, boolean mkdirs)
             throws IOException {
-        Path dir = getSimulationDirectory(simulationName, mkdirs).resolve(CONFIG_FILES_FOLDER_NAME);
+        Path folder = getSimConfigDirectory(simulationName).resolve(NEURON_LIST_FOLDER_NAME);
         if (mkdirs) {
-            Files.createDirectories(dir);
+            Files.createDirectories(folder);
         }
-        return dir;
+        return folder.resolve(filename);
     }
 
     /**
-     * Provides the canonical location of the project directory with the specified name.
+     * Provides the path to the parent directory for all simulation configuration related files.
      *
-     * @param simulationName  The name of the project. This is used as the main folder within the
-     *                     BrainGrid folder for all files related to a given project.
-     * @param mkdirs  Indicates whether or not to build the parent directories in the case that they
-     *                do not yet exist
-     * @return The canonical location for the parent directory of all files and directories related
-     *         to a given project.
-     * @throws IOException
+     * @param simulationName  The name of the simulation. The simulation name is used as the parent
+     *                        directory to the sim config directory.
+     * @return The path to the parent directory for all simulation configuration related files
      */
-    public static Path getSimulationDirectory(String simulationName, boolean mkdirs)
-            throws IOException {
-        Path dir = getCurrentProjectDirectory().resolve(simulationName);
-        if (mkdirs) {
-            Files.createDirectories(dir);
-        }
-        return dir;
+    public static Path getSimConfigDirectory(String simulationName) {
+        return getSimulationDirectory(simulationName).resolve(CONFIG_FILES_FOLDER_NAME);
+    }
+
+    /**
+     * Provides the path to the simulation directory with the specified name.
+     *
+     * @param simulationName  The name of the simulation. The simulation name is used as the parent
+     *                        directory for all files related to a given simulation.
+     * @return The path to the parent directory of all files and directories related to a given
+     *         simulation.
+     */
+    public static Path getSimulationDirectory(String simulationName) {
+        return getCurrentProjectDirectory().resolve(simulationName);
     }
 
     /**

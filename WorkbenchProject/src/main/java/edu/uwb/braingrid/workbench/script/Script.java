@@ -37,7 +37,7 @@ public class Script {
     /** Redirect file for std-err/std-out on printf statements. */
     public static final String SCRIPT_STATUS_FILENAME = "scriptStatus.txt";
     /** Redirect file for std-err and std-out of executed commands. */
-    public static final String COMMAND_OUTPUT_FILENAME = "output.txt";
+    public static final String COMMAND_OUTPUT_FILENAME = "cmdOutput.txt";
     /** Redirect file for git commit key. */
     public static final String SHA1_KEY_FILENAME = "SHA1Key.txt";
     /** Redirect file for simulation status. */

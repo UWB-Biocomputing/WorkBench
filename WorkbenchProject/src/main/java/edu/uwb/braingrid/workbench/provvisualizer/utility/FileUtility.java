@@ -17,7 +17,7 @@ public final class FileUtility {
     public static final String PREFIX_LOCAL = "local:";
     public static final String FILE_PATH_PREFIX_REGEX = "^(.*/)";
     public static final String FILE_PROTOCOL_REGEX = "^(.*://)";
-    public static final String ARTIFACTS_DIR = "artifacts";
+    public static final String ARTIFACTS_DIR = ".artifacts";
 
     private FileUtility() {
         // utility class cannot be instantiated

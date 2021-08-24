@@ -455,7 +455,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
     private static final Logger LOG = Logger.getLogger(SimulationSpecificationDialog.class.getName());
-    private static final long SERIAL_VERSION_UID = 1L;
     private static final String LINUX_HOSTNAME_PATTERN
             = "^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\\.([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*$";
     private static final String LINUX_USERNAME_PATTERN = "^[a-z][a-z0-9\\-]*$";

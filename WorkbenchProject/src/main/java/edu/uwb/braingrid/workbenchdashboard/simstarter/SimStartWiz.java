@@ -18,7 +18,6 @@ import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 public class SimStartWiz {
 
     private static final Logger LOG = Logger.getLogger(SimStartWiz.class.getName());
-    private static final long SERIAL_VERSION_UID = 1L;
 
     private TextArea msgText = new TextArea("");
     private WorkbenchManager workbenchManager = WorkbenchManager.getInstance();
@@ -37,7 +36,7 @@ public class SimStartWiz {
                 if (specifySimulation()) {
                     if (generateScript()) {
                         if (runScript()) {
-                            srd = new SimulationRuntimeDialog(workbenchManager, msgText);
+                            srd = new SimulationRuntimeDialog(msgText);
                         }
                     }
                 } else {
@@ -67,7 +66,7 @@ public class SimStartWiz {
                 if (specifySimulation(runtimeSpecifications)) {
                     if (generateScript()) {
                         if (runScript()) {
-                            srd = new SimulationRuntimeDialog(workbenchManager, msgText);
+                            srd = new SimulationRuntimeDialog(msgText);
                         }
                     }
                 } else {

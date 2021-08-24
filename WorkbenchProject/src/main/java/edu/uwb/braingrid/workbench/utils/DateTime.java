@@ -17,8 +17,6 @@ import edu.uwb.braingrid.workbench.FileManager;
  */
 public final class DateTime {
 
-    //TODO: Consider refactoring to remove ERROR_TIME. This doesn't appear to be a meaningful
-    // constant and should likely be replaced with either null or a boolean wherever it is used.
     /** Represents an invalid time. */
     public static final long ERROR_TIME = -1L;
     private static final String TIME_PATTERN = "HH:mm:ss";

@@ -2,7 +2,6 @@ package edu.uwb.braingrid.workbench.script;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -28,7 +27,6 @@ import edu.uwb.braingrid.workbench.model.Simulation;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbench.utils.DateTime;
-import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
 
 /**
  * Manages script creation, script execution, and script output analysis.
@@ -75,11 +73,9 @@ public class ScriptManager {
         script.setScriptOutputDirectory(scriptOutputDir);
         script.setCmdOutputFilename(simulationName + "_" + Script.COMMAND_OUTPUT_FILENAME);
         script.setScriptStatusOutputFilename(simulationName + "_" + Script.SCRIPT_STATUS_FILENAME);
-        /* Print Header Data */
+        /* Prep From Simulation Data */
         // determine which simulator file to execute
         String simExecutableToInvoke = simSpec.getSimExecutable();
-        script.printf(SimulationSpecification.SIM_EXEC_TEXT, simExecutableToInvoke, true);
-        /* Prep From Simulation Data */
         // simulator build and execute location
         String simFolder = simSpec.getSimulatorFolder();
         // make path safe for variable interpolation
@@ -147,18 +143,6 @@ public class ScriptManager {
             script = null; // or indicate unsuccessful operation
         }
         return script;
-    }
-
-    /**
-     * Provides the path to the folder where script related files are stored.
-     *
-     * @param simulationFolder  The path to the folder where simulations are stored on the workbench
-     *                          system
-     * @return The path to the folder where script related files are stored. Depending on the form
-     *         of the simulation folder provided, this may represent a relative path.
-     */
-    public static Path getScriptFolder(Path simulationFolder) {
-        return simulationFolder.resolve("scripts");
     }
 
     /**
@@ -426,19 +410,11 @@ public class ScriptManager {
             }
             outstandingMessages += "\nfrom being copied to: " + nListDir.toString();
         }
-//        String oldWrkDir = System.getProperty("user.dir");
-//        System.setProperty("user.dir", System.getProperty("user.home"));
         String cmd = "sh " + scriptTargetPath.toString();
         // run the script
         try {
-            if (Desktop.isDesktopSupported() && SystemProperties.isWindowsSystem()) {
-                Desktop dt = Desktop.getDesktop();
-               //  dt.open(scriptTargetPath.toFile());
-                Runtime.getRuntime().exec("cmd.exe /c start " + cmd); // Windows
-            } else {
-                LOG.info("Running in Console: " + cmd);
-                Runtime.getRuntime().exec(cmd); // Unix
-            }
+            LOG.info("Running in Console: " + cmd);
+            Runtime.getRuntime().exec(cmd);
         } catch (SecurityException e) {
             success = false;
             outstandingMessages += "\n"
@@ -454,8 +430,6 @@ public class ScriptManager {
                     + "\n";
             e.printStackTrace();
             LOG.info(e.getMessage());
-//        } finally {
-//            System.setProperty("user.dir", oldWrkDir);
         }
         DateTime.recordFunctionExecutionTime("ScriptManager", "runLocalScript",
                 System.currentTimeMillis() - functionStartTime, provMgr != null);
@@ -481,7 +455,7 @@ public class ScriptManager {
      *
      * @param simSpec  Specification used to indicate the context in which the simulation was
      *                 specified when the script was generated
-     * @param simulation
+     * @param simulation  The simulation to be analyzed
      * @param provMgr  Provenance manager used to create provenance based on analysis of the printf
      *                 output
      * @param outputTargetFolder  Location to store the redirected printf output

@@ -198,7 +198,6 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
     private static final Logger LOG
             = Logger.getLogger(DynamicInputConfigurationDialog.class.getName());
-    private static final long SERIAL_VERSION_UID = 1L;
     private DynamicInputConfigurationManager icm;
     private Document xmlDoc = null;
     private ArrayList<JTextField> paramsTextFields = new ArrayList<>();

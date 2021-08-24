@@ -460,26 +460,7 @@ public class Simulation {
      * @return The path to the simulation folder for this simulation
      */
     public Path getSimulationLocation() {
-        return getProjectLocation().resolve(name);
-    }
-
-    /**
-     * Provides the assumed folder location for a simulation of a given name.
-     *
-     * @param simulationName  Name of the simulation
-     * @return The path to the simulation folder for the specified simulation
-     */
-    public static Path getSimulationLocation(String simulationName) {
-        return getProjectLocation().resolve(simulationName);
-    }
-
-    /**
-     * Provides the folder location for the current project.
-     *
-     * @return The path to the project folder for the current project
-     */
-    private static Path getProjectLocation() {
-        return FileManager.getCurrentProjectDirectory();
+        return FileManager.getSimulationDirectory(name);
     }
 
     /**
@@ -488,17 +469,16 @@ public class Simulation {
      * @return The path to the provenance folder for this simulation
      */
     public Path getProvLocation() {
-        return getSimulationLocation().resolve("provenance");
+        return getSimulationLocation().resolve(FileManager.PROV_FOLDER_NAME);
     }
 
     /**
-     * Provides the full path, including the filename, containing the XML for this simulation.
+     * Provides the folder location for storing script related files for this simulation.
      *
-     * @return The full path, including the filename, for the file containing the XML for this
-     *         simulation
+     * @return The path to the script folder for this simulation
      */
-    public Path getSimulationFilePath() {
-        return getSimulationLocation().resolve(name + ".xml");
+    public Path getScriptLocation() {
+        return getSimulationLocation().resolve(FileManager.SCRIPT_FOLDER_NAME);
     }
     // </editor-fold>
 }
