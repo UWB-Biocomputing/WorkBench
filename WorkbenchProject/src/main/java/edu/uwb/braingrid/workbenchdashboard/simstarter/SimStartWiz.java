@@ -30,7 +30,6 @@ public class SimStartWiz {
      */
     public SimStartWiz() {
         LOG.info("new " + getClass().getName());
-        boolean cancelButtonClicked = false;
         if (workbenchManager.newSimulation()) {
             if (configureSimulation()) {
                 if (specifySimulation()) {
@@ -39,13 +38,8 @@ public class SimStartWiz {
                             srd = new SimulationRuntimeDialog(msgText);
                         }
                     }
-                } else {
-                    cancelButtonClicked = true;
                 }
             }
-        }
-        if (cancelButtonClicked) {
-            workbenchManager.saveSimulation();
         }
     }
 
@@ -60,7 +54,6 @@ public class SimStartWiz {
     public SimStartWiz(String simSpecifications, String runtimeSpecifications,
             HashMap<Character, String> nListPresets) {
         LOG.info("new " + getClass().getName());
-        boolean cancelButtonClicked = false;
         if (workbenchManager.newSimulation()) {
             if (configureSimulation(simSpecifications, nListPresets)) {
                 if (specifySimulation(runtimeSpecifications)) {
@@ -69,13 +62,8 @@ public class SimStartWiz {
                             srd = new SimulationRuntimeDialog(msgText);
                         }
                     }
-                } else {
-                    cancelButtonClicked = true;
                 }
             }
-        }
-        if (cancelButtonClicked) {
-            workbenchManager.saveSimulation();
         }
     }
 
