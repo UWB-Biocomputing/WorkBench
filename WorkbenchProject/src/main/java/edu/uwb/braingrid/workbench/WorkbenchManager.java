@@ -250,6 +250,7 @@ public final class WorkbenchManager {
     public boolean newSimulation() {
         LOG.info("Making New Simulation");
         boolean success;
+        clearMessages();
         // Ask the user for a new simulation name (validation in dialogue)
         NewSimulationDialog nsd = new NewSimulationDialog(true);
 
@@ -270,14 +271,13 @@ public final class WorkbenchManager {
      * @return
      */
     public boolean initSimulation(String name, boolean provEnabled) {
-        LOG.info("Adding Simulation: " + name);
+        LOG.info("Initializing Simulation: " + name);
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
         boolean success = true;
         try {
             // create a new simulation
             simulation = new Simulation(name);
-            messageAccumulator += "\n" + "New simulation specified\n";
 
             // set provenance
             simulation.setProvenanceEnabled(provEnabled);
@@ -437,7 +437,7 @@ public final class WorkbenchManager {
         boolean success = spd.getSuccess();
         if (success) {
             simulation.setSimSpec(spd.toSimulationSpecification());
-            messageAccumulator += "\n" + "New simulation specified\n";
+            messageAccumulator += "\n" + "New simulation specified: " + simulation.getName() + "\n";
         } else {
             messageAccumulator += "\n"
                     + "New simulation specification canceled\n";
@@ -726,12 +726,21 @@ public final class WorkbenchManager {
     }
 
     /**
-     * Provides all of the messages that have accumulated since the construction of this manager.
+     * Provides all of the messages that have accumulated since the construction of this manager or
+     * since the messages were last cleared.
      *
-     * @return The messages that have accumulated since the construction of this manager
+     * @return The messages that have accumulated since the construction of this manager or since
+     *         the messages were last cleared
      */
     public String getMessages() {
         return messageAccumulator;
+    }
+
+    /**
+     * Clears the accumulated messages for this manager.
+     */
+    private void clearMessages() {
+        messageAccumulator = "";
     }
     // </editor-fold>
 
