@@ -35,6 +35,7 @@ import org.apache.jena.riot.RiotNotFoundException;
 
 import edu.uwb.braingrid.provenance.model.ProvOntology;
 import edu.uwb.braingrid.workbench.FileManager;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.model.Simulation;
 
 /**
@@ -829,7 +830,7 @@ public class ProvMgr {
 
     /**
      * Writes the model to the file with the output filename specified during construction or
-     * initialization. Also writes provenance of completed simulations to UniversalProvenance.ttl.
+     * initialization. Also writes provenance of completed simulations to project-level provenance.
      *
      * @param simulation  The simulation that this provenance is recorded for (the simulation
      *                    maintains its name, which is used as the base name for the provenance
@@ -840,10 +841,11 @@ public class ProvMgr {
         Files.createDirectories(directory);
         String provLocation = directory.resolve(simulation.getName() + ".ttl").toString();
         model.write(new FileOutputStream(provLocation, false), "TURTLE");
-        // add provenance to UniversalProvenance.ttl
-        String universalProvLocation = FileManager.getCurrentProjectDirectory()
-                .resolve("UniversalProvenance.ttl").toString();
-        model.write(new FileOutputStream(universalProvLocation, true), "TURTLE");
+        // add to project-level provenance
+        String projectName = WorkbenchManager.getInstance().getProjectName();
+        String projectProvLocation = FileManager.getCurrentProjectDirectory()
+                .resolve(projectName + "Provenance.ttl").toString();
+        model.write(new FileOutputStream(projectProvLocation, true), "TURTLE");
     }
 
     /**

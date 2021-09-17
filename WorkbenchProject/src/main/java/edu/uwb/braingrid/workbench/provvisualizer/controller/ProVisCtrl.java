@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 
 import edu.uwb.braingrid.workbench.FileManager;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ConnectionUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.FileUtility;
@@ -225,7 +226,7 @@ public class ProVisCtrl {
             dataProvGraph.clearNodesNEdges();
             showNodeIds.setSelected(false);
             showRelationships.setSelected(false);
-            openUniversalProvenance();
+            openProjectProvenance();
         });
 
         clearPresetsButton.setOnAction(event -> {
@@ -767,16 +768,17 @@ public class ProVisCtrl {
     }
 
     /**
-     * Open universalProvenance.ttl in projects dir if exists.
-     * Display universalProvenance on ProVis.
+     * Open ProjectNameProvenance.ttl in project dir if exists.
+     * Display project-level provenance on ProVis.
      */
-    public void openUniversalProvenance() {
-        File universalProvenance = FileManager.getCurrentProjectDirectory()
-                .resolve("UniversalProvenance.ttl").toFile();
-        if (universalProvenance.exists()) {
+    public void openProjectProvenance() {
+        String projectName = WorkbenchManager.getInstance().getProjectName();
+        File projectProvenance = FileManager.getCurrentProjectDirectory()
+                .resolve(projectName + "Provenance.ttl").toFile();
+        if (projectProvenance.exists()) {
             dataProvGraph.clearNodesNEdges();
-            initNodeEdge(universalProvenance.getAbsolutePath());
-            proVis.setTitle(universalProvenance.getName());
+            initNodeEdge(projectProvenance.getAbsolutePath());
+            proVis.setTitle(projectProvenance.getName());
         }
     }
 }
