@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import edu.uwb.braingrid.general.FileSelectorDirMgr;
+import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 
 /**
@@ -32,7 +33,6 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
     public static final int IDX_ACT_LIST = 1;
     /** Field index of probed neurons list file. */
     public static final int IDX_PRB_LIST = 2;
-//    private static String nListDir = "."; // directory for neurons list file
 
     /** The labels for this Pane. */
     private Label[] labels = new Label[NUM_FIELDS];
@@ -41,16 +41,17 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
     /** The text fields for this Pane. */
     TextField[] tFields = new TextField[NUM_FIELDS];
 
-    private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
+    private FileSelectorDirMgr fileSelector;
 
     /**
      * A class constructor, which creates UI components, and registers action listener.
      *
-     * @param dir  directory for neurons list file
+     * @param fileSelector  The shared file selector for all NLEdit file choosers
      */
-    public ExportPanel(String dir) {
+    public ExportPanel(FileSelectorDirMgr fileSelector) {
+        this.fileSelector = fileSelector;
+
         GridPane gp = new GridPane();
-//        nListDir = dir;
 
         labels[IDX_INH_LIST] = new Label("Inhibitory neurons list:");
         labels[IDX_ACT_LIST] = new Label("Active neurons list:");
@@ -73,8 +74,7 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
         getChildren().add(gp);
     }
 
-    @Override
-    public void handle(ActionEvent event) {
+    private void exportFiles(ActionEvent event) {
         int iSource = 0;
         for (int i = 0; i < NUM_FIELDS; i++) {
             if (event.getSource() == buttons[i]) {
@@ -82,38 +82,47 @@ public class ExportPanel extends Pane implements EventHandler<ActionEvent> {
                 break;
             }
         }
+
         // create a file chooser
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(fileMgr.getLastDir());
-        chooser.setTitle("Save File");
+        File lastDir = fileSelector.getLastDir();
+        File projectsDir = FileManager.getCurrentProjectDirectory().toFile();
+        if (lastDir == null && projectsDir.exists()) {
+            chooser.setInitialDirectory(projectsDir);
+        } else {
+            chooser.setInitialDirectory(lastDir);
+        }
 
-        ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "xml");
-        chooser.setSelectedExtensionFilter(filter);
+        ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "*.xml");
+        chooser.getExtensionFilters().add(filter);
 
-//        String dialogTitle = "";
         switch (iSource) {
         case IDX_INH_LIST:
             chooser.setInitialFileName("inh.xml");
-//            dialogTitle = "Inhibitory neurons list";
+            chooser.setTitle("Save Inhibitory Neurons List");
             break;
         case IDX_ACT_LIST:
             chooser.setInitialFileName("act.xml");
-//            dialogTitle = "Active neurons list";
+            chooser.setTitle("Save Active Neurons List");
             break;
         case IDX_PRB_LIST:
             chooser.setInitialFileName("prb.xml");
-//            dialogTitle = "Probed neurons list";
+            chooser.setTitle("Save Probed Neurons List");
             break;
         default:
-            // do nothing
+            chooser.setTitle("Save File");
+            break;
         }
 
         File option = chooser.showSaveDialog(WorkbenchDisplay.getPrimaryStage());
-
         if (option != null) {
             tFields[iSource].setText(option.getAbsolutePath());
-//            nListDir = option.getParent();
-            fileMgr.add(option.getParentFile());
+            fileSelector.addDir(option.getParentFile());
         }
+    }
+
+    @Override
+    public void handle(ActionEvent event) {
+        exportFiles(event);
     }
 }

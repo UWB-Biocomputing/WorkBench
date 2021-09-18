@@ -1,7 +1,6 @@
 package edu.uwb.braingrid.provenance;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +10,8 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -34,10 +35,11 @@ import org.apache.jena.riot.RiotNotFoundException;
 
 import edu.uwb.braingrid.provenance.model.ProvOntology;
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.project.ProjectMgr;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
+import edu.uwb.braingrid.workbench.model.Simulation;
 
 /**
- * <h2>Manages provenance for projects specified within the Brain Grid Toolbox Workbench.</h2>
+ * <p>Manages provenance for simulations specified within the BrainGrid Workbench.</p>
  *
  * <p>Basic construction requires input files, simulator process, and an output file.</p>
  *
@@ -62,8 +64,8 @@ public class ProvMgr {
 
     /* URIs used to describe the provenance */
     private String provOutputFileURI;
-    private static String localNameSpaceURI;
-    private static String remoteNameSpaceURI;
+    private String localNameSpaceURI;
+    private String remoteNameSpaceURI;
 
     /* RDF in-memory representation of the provenance */
     private Model model;
@@ -73,29 +75,30 @@ public class ProvMgr {
     /**
      * Constructs the Provenance Constructor object from a previously recorded provenance file.
      *
-     * @param project  Used as the base-name for the provenance file
+     * @param simulation  Used as the base-name for the provenance file
      * @param load  True if the provenance should be loaded from an existing file, otherwise false,
      *              in which case a new provenance model will be created which has not yet been
      *              persisted to file storage anywhere
      */
-    public ProvMgr(ProjectMgr project, boolean load) throws IOException, RiotNotFoundException {
-        LOG.info("New Provenance Manager for " + project.getName());
+    public ProvMgr(Simulation simulation, boolean load) throws IOException, RiotNotFoundException {
+        LOG.info("New Provenance Manager for " + simulation.getName());
         if (load) {
-            load(project);
+            load(simulation);
         } else {
-            init(project);
+            init(simulation);
         }
     }
 
     /**
      * Empty initialization. Sets safety values for members.
      *
-     * @param project  Used as the base-name for the provenance file
+     * @param simulation  Used as the base-name for the provenance file
      */
-    private void init(ProjectMgr project) throws IOException {
+    private void init(Simulation simulation) {
         // create RDF model
         model = ModelFactory.createDefaultModel();
-        provOutputFileURI = project.determineProvOutputLocation() + project.getName() + ".ttl";
+        provOutputFileURI = simulation.getProvLocation()
+                .resolve(simulation.getName() + ".ttl").toString();
         // set prefixes for...
         // RDF syntax
         model.setNsPrefix("rdf", ProvOntology.getRDFNameSpaceURI());
@@ -113,11 +116,11 @@ public class ProvMgr {
     /**
      * Loads a model from a previously saved turtle file.
      *
-     * @param project  The base name of the file containing the provenance
+     * @param simulation  The base name of the file containing the provenance
      */
-    private void load(ProjectMgr project) throws RiotNotFoundException, IOException {
-        String name = project.getName();
-        provOutputFileURI = project.determineProvOutputLocation() + name + ".ttl";
+    private void load(Simulation simulation) throws RiotNotFoundException {
+        String name = simulation.getName();
+        provOutputFileURI = simulation.getProvLocation().resolve(name + ".ttl").toString();
         model = RDFDataMgr.loadModel(provOutputFileURI);
         localNameSpaceURI = getLocalNameSpaceURI();
         model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceURI);
@@ -175,7 +178,6 @@ public class ProvMgr {
     public Model getModel() {
         return model;
     }
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Model Manipulation">
@@ -204,8 +206,7 @@ public class ProvMgr {
         String updatedUri = uri.replaceAll("\\\\", "/");
         String fullUri;
         if (protocol != null && !protocol.isEmpty()) {
-//            fullUri = remote ? getProjectFullRemoteURI(updatedUri)
-//                    : getProjectFullLocalURI(updatedUri);
+//            fullUri = remote ? getFullRemoteURI(updatedUri) : getFullLocalURI(updatedUri);
             if (remoteHostAddress != null && !remoteHostAddress.isEmpty()) {
                 if (username != null && !username.isEmpty()) {
                     fullUri = protocol + "://" + username + "@" + remoteHostAddress + "/"
@@ -217,7 +218,7 @@ public class ProvMgr {
                 fullUri = protocol + "://" + updatedUri;
             }
         } else {
-            fullUri = getProjectFullLocalURI(updatedUri);
+            fullUri = getFullLocalURI(updatedUri);
         }
 
         if (replace) {
@@ -266,8 +267,7 @@ public class ProvMgr {
      */
     public Resource addActivity(String uri, String label, boolean remote, boolean replace) {
         String updatedUri = uri.replaceAll("\\\\", "/");
-        String fullUri = remote ? getProjectFullRemoteURI(updatedUri)
-                : getProjectFullLocalURI(updatedUri);
+        String fullUri = remote ? getFullRemoteURI(updatedUri) : getFullLocalURI(updatedUri);
         if (replace) {
             removeResource(updatedUri);
         }
@@ -301,8 +301,7 @@ public class ProvMgr {
      */
     public Resource addSoftwareAgent(String uri, String label, boolean remote, boolean replace) {
         String updatedUri = uri.replaceAll("\\\\", "/");
-        String fullUri = remote ? getProjectFullRemoteURI(updatedUri)
-                : getProjectFullLocalURI(updatedUri);
+        String fullUri = remote ? getFullRemoteURI(updatedUri) : getFullLocalURI(updatedUri);
         if (replace) {
             removeResource(updatedUri);
         }
@@ -335,8 +334,7 @@ public class ProvMgr {
         String updatedUri = uri.replaceAll("\\\\", "/");
         String fullUri = updatedUri;
         if (!http) {
-            fullUri = remote ? getProjectFullRemoteURI(updatedUri)
-                    : getProjectFullLocalURI(updatedUri);
+            fullUri = remote ? getFullRemoteURI(updatedUri) : getFullLocalURI(updatedUri);
         }
 
         if (replace) {
@@ -782,7 +780,7 @@ public class ProvMgr {
      * @param uri  The URI to be converted
      * @return The full form of the URI, which includes the associated namespace URI
      */
-    private String getProjectFullLocalURI(String uri) {
+    private String getFullLocalURI(String uri) {
         return LOCAL_NS_PREFIX + ":" + uri;
     }
 
@@ -792,7 +790,7 @@ public class ProvMgr {
      * @param uri  The URI to be converted
      * @return The full form of the URI, which includes the associated namespace URI
      */
-    private String getProjectFullRemoteURI(String uri) {
+    private String getFullRemoteURI(String uri) {
         return REMOTE_NS_PREFIX + ":" + uri;
     }
 
@@ -813,8 +811,7 @@ public class ProvMgr {
             InputStream is = connection.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader reader = new BufferedReader(isr);
-            String str = null;
-            str = reader.readLine();
+            String str = reader.readLine();
             if (null == str) {
                 str = "127.0.0.1";
             }
@@ -833,20 +830,22 @@ public class ProvMgr {
 
     /**
      * Writes the model to the file with the output filename specified during construction or
-     * initialization. Also writes provenance of completed projects to UniversalProvenance.ttl.
+     * initialization. Also writes provenance of completed simulations to project-level provenance.
      *
-     * @param project  The project that this provenance is recorded for (the project maintains its
-     *                 name, which is used as the base name for the provenance file)
+     * @param simulation  The simulation that this provenance is recorded for (the simulation
+     *                    maintains its name, which is used as the base name for the provenance
+     *                    file)
      */
-    public void persist(ProjectMgr project) throws IOException {
-        String directory = project.determineProvOutputLocation();
-        new File(directory).mkdirs();
-        model.write(new FileOutputStream(directory + project.getName() + ".ttl", false), "TURTLE");
-        //add provenance to UniversalProvenance.ttl
-        directory = project.determineUniversalProvOutputLocation();
-        new File(directory).mkdirs();
-        model.write(new FileOutputStream(directory + "UniversalProvenance" + ".ttl", true),
-                "TURTLE");
+    public void persist(Simulation simulation) throws IOException {
+        Path directory = simulation.getProvLocation();
+        Files.createDirectories(directory);
+        String provLocation = directory.resolve(simulation.getName() + ".ttl").toString();
+        model.write(new FileOutputStream(provLocation, false), "TURTLE");
+        // add to project-level provenance
+        String projectName = WorkbenchManager.getInstance().getProjectName();
+        String projectProvLocation = FileManager.getCurrentProjectDirectory()
+                .resolve(projectName + "Provenance.ttl").toString();
+        model.write(new FileOutputStream(projectProvLocation, true), "TURTLE");
     }
 
     /**

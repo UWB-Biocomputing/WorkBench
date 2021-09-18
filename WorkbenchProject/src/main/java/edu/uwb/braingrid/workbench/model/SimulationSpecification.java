@@ -1,10 +1,7 @@
 package edu.uwb.braingrid.workbench.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
-
-import edu.uwb.braingrid.workbench.project.ProjectMgr;
 
 /**
  * Data model for a simulation. Contains parameters recorded at the beginning of a script and used
@@ -28,137 +25,55 @@ public class SimulationSpecification {
         UNKNOWN_SIMULATOR_TYPE
     }
 
-    //@cs-: JavadocVariable influence 18
-    public static final String GIT_PULL_AND_CLONE = "Pull";
-    public static final int GIT_PULL_AND_CLONE_INDEX = 1;
-    public static final String GIT_NONE = "None";
-    public static final int GIT_NONE_INDEX = 0;
-    public static final String REMOTE_EXECUTION = ProjectMgr.REMOTE_EXECUTION;
-    public static final String LOCAL_EXECUTION = ProjectMgr.LOCAL_EXECUTION;
-    public static final String SEQUENTIAL_SIMULATION = "Sequential";
-    public static final String BUILD_BUILD_OPTION = "Build";
-    public static final String PRE_BUILT_BUILD_OPTION = "Pre-built";
-    public static final int SEQUENTIAL_SIMULATION_INDEX = 0;
-    public static final String PARALLEL_SIMULATION = "Parallel";
-    public static final int PARALLEL_SIMULATION_INDEX = 1;
-    public static final String END_SIM_SPEC_TEXT = "endSimSpec";
-    public static final String SIM_EXEC_TEXT = "simExecutable";
-    public static final String SIM_INPUTS_TEXT = "simInputs";
-    public static final String SIM_OUTPUTS_TEXT = "simOutputs";
+    // <editor-fold defaultstate="collapsed" desc="Members">
+    //@cs-: JavadocVariable influence 16
+    public static final String REMOTE_EXECUTION = "Remote";
+    public static final String LOCAL_EXECUTION = "Local";
     public static final int REMOTE_EXECUTION_INDEX = 1;
     public static final int LOCAL_EXECUTION_INDEX = 0;
+    public static final String SEQUENTIAL_SIMULATION = "Sequential";
+    public static final String PARALLEL_SIMULATION = "Parallel";
+    public static final int SEQUENTIAL_SIMULATION_INDEX = 0;
+    public static final int PARALLEL_SIMULATION_INDEX = 1;
+    public static final String BUILD_BUILD_OPTION = "Build";
+    public static final String PRE_BUILT_BUILD_OPTION = "Pre-built";
+    public static final String GIT_PULL_AND_CLONE = "Pull";
+    public static final String GIT_NONE = "None";
+    public static final int GIT_PULL_AND_CLONE_INDEX = 1;
+    public static final int GIT_NONE_INDEX = 0;
+    public static final String SIM_EXEC_TEXT = "simExecutable";
 
-    private String username;
-    private String hostAddress;
-    private String sha1Key;
-    private String buildOption;
-    private String sourceCodeUpdating;
-    private String simulationType;
     private String simulationLocale;
-    private String simulationFolder;
+    private String hostname;
+    private String username;
+    private String simulatorFolder;
+    private String simulatorType;
+    private String buildOption;
+    private String codeRepository;
+    private String sourceCodeUpdating;
+    private String sha1Key;
     private String versionAnnotation;
-    private String codeRepositoryLocation;
-    private String simExecutable;
-    private List<String> simInputs;
-    private List<String> simOutputs;
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
      * Responsible for allocating the specification and instantiating members.
      */
     public SimulationSpecification() {
-        simInputs = new ArrayList<>();
-        simOutputs = new ArrayList<>();
-        username = null;
-        hostAddress = null;
-        sha1Key = null;
-        buildOption = null;
-        sourceCodeUpdating = null;
-        simulationType = null;
         simulationLocale = null;
-        simulationFolder = null;
+        hostname = null;
+        username = null;
+        simulatorFolder = null;
+        simulatorType = null;
+        buildOption = null;
+        codeRepository = null;
+        sourceCodeUpdating = null;
+        sha1Key = null;
         versionAnnotation = null;
-        codeRepositoryLocation = null;
-        simExecutable = null;
     }
+    // </editor-fold>
 
-    /**
-     * Provides the executable file name for a simulation based on the execution model provided.
-     *
-     * @param simulationType  Text to match against known simulation models and their respective
-     *                        executable file names
-     * @return The executable file name related to the specified simulation type
-     */
-    public static String getSimFilename(String simulationType) {
-        String simExecutableToInvoke = null;
-        if (simulationType != null) {
-            simExecutableToInvoke = simulationType.equals(
-                    SimulationSpecification.SEQUENTIAL_SIMULATION) ? "growth" : "growth_cuda";
-        }
-        return simExecutableToInvoke;
-    }
-
-    /**
-     * Provides the file name for the executable file that will be invoked to start the simulation.
-     *
-     * @return The file name for the executable file that will be invoked to start the simulation
-     */
-    public String getSimExecutable() {
-        return simExecutable;
-    }
-
-    /**
-     * Provides a list of the simulation inputs. At the time when this function was written this can
-     * only contain a single file path. It is maintained in a list for extensibility purposes.
-     *
-     * @return The list containing simulation input file locations
-     */
-    public List<String> getSimInputs() {
-        return simInputs;
-    }
-
-    /**
-     * Provides a list of the simulation outputs. At the time when this function was written this
-     * list will only contain a single file path. It is maintained in a list for extensibility
-     * purposes.
-     *
-     * @return The list containing simulation output file locations
-     */
-    public List<String> getSimOutputs() {
-        return simOutputs;
-    }
-
-    /**
-     * Provides the location of the folder where the simulator is downloaded, built, and executed.
-     * If the simulator execution is specified to take place on a remote machine, this is relative
-     * to the home directory for the user.
-     *
-     * @return The location of the simulator folder
-     */
-    public String getSimulatorFolder() {
-        return simulationFolder;
-    }
-
-    /**
-     * Provides the location for the simulator code. If source code updating is turned on, then the
-     * location is a source code repository, otherwise it is simply the folder where the source code
-     * resides.
-     *
-     * @return The location of the source code for the simulation
-     */
-    public String getCodeLocation() {
-        return codeRepositoryLocation;
-    }
-
-    /**
-     * Provides the annotation text (a note) entered by the user to describe the version of the
-     * simulator that will be executed.
-     *
-     * @return The version annotation for this simulation
-     */
-    public String getVersionAnnotation() {
-        return versionAnnotation;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="Getters/Setters">
     /**
      * Provides the locale where the simulation will take place with respect to the machine where
      * the workbench is running. This value corresponds to the static members REMOTE_EXECUTION or
@@ -172,28 +87,17 @@ public class SimulationSpecification {
     }
 
     /**
-     * Provides the execution model for the simulation. This value should correspond to the toString
-     * return of one of the values from the SimulatorType enumeration.
+     * Sets the locale where the simulation will take place with respect to the machine where the
+     * workbench is running. This value corresponds to the static members REMOTE_EXECUTION or
+     * LOCAL_EXECUTION.
      *
-     * @return A description of the execution model for the simulation
-     * @see edu.uwb.braingrid.workbench.model.SimulationSpecification.SimulatorType
+     * TODO: Make this an enum? -Max
+     *
+     * @param locale  The locale where the simulation will take place with respect to the machine
+     *                where the workbench is running
      */
-    public String getSimulationType() {
-        return simulationType;
-    }
-
-    /**
-     * Provides a description of the source code updating type selected by the user. Possible values
-     * include GIT_PULL_AND_CLONE and GIT_NONE. GIT_PULL_AND_CLONE means that the source code should
-     * be pulled from the repository and should be built prior to execution. Whereas none, means
-     * that there is no need to update the source code prior to executing the simulator file.
-     *
-     * TODO: Move GIT_PULL_CLONE to enum
-     *
-     * @return A description of the source code updating type
-     */
-    public String getSourceCodeUpdating() {
-        return sourceCodeUpdating;
+    public void setSimulationLocale(String locale) {
+        simulationLocale = locale;
     }
 
     /**
@@ -204,16 +108,88 @@ public class SimulationSpecification {
      *         or an empty string if the respective field is null
      */
     public String getHostAddr() {
-        return hostAddress == null ? "" : hostAddress;
+        return hostname == null ? "" : hostname;
     }
 
     /**
-     * Provides the SHA1 key used to checkout a specific version of the simulator.
+     * Sets the host name or address of the remote machine where the simulation will take place.
      *
-     * @return The SHA1 key for git checkout
+     * @param hostAddr  The host name or address of the remote machine where the simulation will
+     *                  take place
      */
-    public String getSHA1CheckoutKey() {
-        return sha1Key == null ? "" : sha1Key;
+    public void setHostAddr(String hostAddr) {
+        hostname = hostAddr;
+    }
+
+    /**
+     * Provides the username provided during a specification. This is not necessarily the login used
+     * to actually stage files and execute the script or simulation on the remote machine.
+     *
+     * @return The username provided during simulation specification
+     */
+    public String getUsername() {
+        return username == null ? "" : username;
+    }
+
+    /**
+     * Sets the username specified for this simulation. This should only be used to indicate the
+     * username, if any, that was provided during specification. When a remote connection is
+     * requested, a new username is requested as well. That username should be used to indicate
+     * connection information, not this one.
+     *
+     * @param name  The username specified at specification of the simulation
+     */
+    public void setUsername(String name) {
+        username = name;
+    }
+
+    /**
+     * Provides the location of the folder where the simulator is downloaded, built, and executed.
+     * If the simulator execution is specified to take place on a remote machine, this is relative
+     * to the home directory for the user.
+     *
+     * @return The location of the simulator folder
+     */
+    public String getSimulatorFolder() {
+        return simulatorFolder;
+    }
+
+    /**
+     * Sets the location of the folder where the simulator is downloaded, built, and executed. If
+     * the simulator execution is specified to take place on a remote machine, this is relative to
+     * the home directory for the user.
+     *
+     * @param simFolder  The location of the simulator folder
+     */
+    public void setSimulatorFolder(String simFolder) {
+        // convert to absolute path
+        String fullPath = simFolder;
+        if (!simFolder.startsWith("~") && !simFolder.startsWith("/")) {
+            fullPath = "~/" + simFolder;
+        }
+        simulatorFolder = fullPath;
+    }
+
+    /**
+     * Provides the execution model for the simulation. This value should correspond to the toString
+     * return of one of the values from the SimulatorType enumeration.
+     *
+     * @return A description of the execution model for the simulation
+     * @see edu.uwb.braingrid.workbench.model.SimulationSpecification.SimulatorType
+     */
+    public String getSimulationType() {
+        return simulatorType;
+    }
+
+    /**
+     * Sets the execution model for the simulation. This value should correspond to the toString
+     * return of one of the values from the SimulatorType enumeration.
+     *
+     * @param type  A description of the execution model for the simulation
+     * @see edu.uwb.braingrid.workbench.model.SimulationSpecification.SimulatorType
+     */
+    public void setSimulationType(String type) {
+        simulatorType = type;
     }
 
     /**
@@ -231,24 +207,24 @@ public class SimulationSpecification {
     }
 
     /**
-     * Provides the username provided during a specification. This is not necessarily the login used
-     * to actually stage files and execute the script or simulation on the remote machine.
+     * Sets the option for building the simulator prior to execution.
      *
-     * @return The username provided during simulation specification
+     * @param buildOpt  The build directive. One of the following values: BUILD_BUILD_OPTION,
+     *                  PRE_BUILT_BUILD_OPTION
      */
-    public String getUsername() {
-        return username == null ? "" : username;
+    public void setBuildOption(String buildOpt) {
+        buildOption = buildOpt;
     }
 
     /**
-     * Sets the location of the folder where the simulator is downloaded, built, and executed. If
-     * the simulator execution is specified to take place on a remote machine, this is relative to
-     * the home directory for the user.
+     * Provides the location for the simulator code. If source code updating is turned on, then the
+     * location is a source code repository, otherwise it is simply the folder where the source code
+     * resides.
      *
-     * @param simFolder  The location of the simulator folder
+     * @return The location of the source code for the simulation
      */
-    public void setSimulatorFolder(String simFolder) {
-        simulationFolder = simFolder;
+    public String getCodeLocation() {
+        return codeRepository;
     }
 
     /**
@@ -259,43 +235,21 @@ public class SimulationSpecification {
      * @param url  The location of the source code for the simulation
      */
     public void setCodeLocation(String url) {
-        codeRepositoryLocation = url;
+        codeRepository = url;
     }
 
     /**
-     * Sets the annotation text (a note) entered by the user to describe the version of the
-     * simulator that will be executed.
+     * Provides a description of the source code updating type selected by the user. Possible values
+     * include GIT_PULL_AND_CLONE and GIT_NONE. GIT_PULL_AND_CLONE means that the source code should
+     * be pulled from the repository and should be built prior to execution. Whereas none, means
+     * that there is no need to update the source code prior to executing the simulator file.
      *
-     * @param annotation  The version annotation for this simulation
+     * TODO: Move GIT_PULL_CLONE to enum
+     *
+     * @return A description of the source code updating type
      */
-    public void setVersionAnnotation(String annotation) {
-        versionAnnotation = annotation;
-    }
-
-    /**
-     * Sets the locale where the simulation will take place with respect to the machine where the
-     * workbench is running. This value corresponds to the static members REMOTE_EXECUTION or
-     * LOCAL_EXECUTION.
-     *
-     * TODO: Make this an enum? -Max, or atleast move the values of REMOTE_EXECUTION and
-     *       LOCAL_EXECUTION to ProjectMgr
-     *
-     * @param locale  The locale where the simulation will take place with respect to the machine
-     *                where the workbench is running
-     */
-    public void setSimulationLocale(String locale) {
-        simulationLocale = locale;
-    }
-
-    /**
-     * Sets the execution model for the simulation. This value should correspond to the toString
-     * return of one of the values from the SimulatorType enumeration.
-     *
-     * @param type  A description of the execution model for the simulation
-     * @see edu.uwb.braingrid.workbench.model.SimulationSpecification.SimulatorType
-     */
-    public void setSimulationType(String type) {
-        simulationType = type;
+    public String getSourceCodeUpdating() {
+        return sourceCodeUpdating;
     }
 
     /**
@@ -310,13 +264,12 @@ public class SimulationSpecification {
     }
 
     /**
-     * Sets the host name or address of the remote machine where the simulation will take place.
+     * Provides the SHA1 key used to checkout a specific version of the simulator.
      *
-     * @param hostAddr  The host name or address of the remote machine where the simulation will
-     *                  take place
+     * @return The SHA1 key for git checkout
      */
-    public void setHostAddr(String hostAddr) {
-        hostAddress = hostAddr;
+    public String getSHA1CheckoutKey() {
+        return sha1Key == null ? "" : sha1Key;
     }
 
     /**
@@ -329,63 +282,49 @@ public class SimulationSpecification {
     }
 
     /**
-     * Sets the option for building the simulator prior to execution.
+     * Provides the annotation text (a note) entered by the user to describe the version of the
+     * simulator that will be executed.
      *
-     * @param buildOpt  The build directive. One of the following values: BUILD_BUILD_OPTION,
-     *                  PRE_BUILT_BUILD_OPTION
+     * @return The version annotation for this simulation
      */
-    public void setBuildOption(String buildOpt) {
-        buildOption = buildOpt;
+    public String getVersionAnnotation() {
+        return versionAnnotation;
     }
 
     /**
-     * Sets the username specified for this simulation. This should only be used to indicate the
-     * username, if any, that was provided during specification. When a remote connection is
-     * requested, a new username is requested as well. That username should be used to indicate
-     * connection information, not this one.
+     * Sets the annotation text (a note) entered by the user to describe the version of the
+     * simulator that will be executed.
      *
-     * @param name  The username specified at specification of the simulation
+     * @param annotation  The version annotation for this simulation
      */
-    public void setUsername(String name) {
-        username = name;
+    public void setVersionAnnotation(String annotation) {
+        versionAnnotation = annotation;
     }
 
     /**
-     * Sets the executable filename to invoke for this simulation.
+     * Provides the file name for the executable file that will be invoked to start the simulation.
      *
-     * @param executableFilename  The executable filename to invoke for this simulation
+     * @return The file name for the executable file that will be invoked to start the simulation
      */
-    public void setSimExecutable(String executableFilename) {
-        simExecutable = executableFilename;
+    @JsonIgnore
+    public String getSimExecutable() {
+        return getSimExecutable(simulatorType);
     }
 
     /**
-     * Adds an input file path to the list of input files for this simulation. This path is based on
-     * where the simulation was executed, not where the original input file was copied from.
+     * Provides the executable file name for a simulation based on the execution model provided.
      *
-     * Note: When this function was written, all executable simulators are limited to a single input
-     * file. However, input file locations are maintained in a list for extensibility.
-     *
-     * @param input  An input file path (relative to the simulation folder) to add to the list of
-     *               input files for this simulation.
+     * @param simulatorType  Text to match against known simulation models and their respective
+     *                       executable file names
+     * @return The executable file name related to the specified simulation type
      */
-    public void addInput(String input) {
-        simInputs.add(input);
-    }
-
-    /**
-     * Adds an output file path to the list of output files for this simulation. This path is based
-     * on where the simulation was executed, not where the output file was copied to for workbench
-     * use.
-     *
-     * Note: When this function was written, all executable simulators are limited to a single
-     * output file. However, output file locations are maintained in a list for extensibility.
-     *
-     * @param output An output file path (relative to the simulation folder) to add to the list of
-     *               output files for this simulation.
-     */
-    public void addOutput(String output) {
-        simOutputs.add(output);
+    public static String getSimExecutable(String simulatorType) {
+        String executable = null;
+        if (simulatorType != null) {
+            executable = simulatorType.equals(SimulationSpecification.SEQUENTIAL_SIMULATION)
+                    ? "growth" : "growth_cuda";
+        }
+        return executable;
     }
 
     /**
@@ -395,6 +334,7 @@ public class SimulationSpecification {
      *
      * @return True if the simulation should be executed on a remote machine, otherwise false
      */
+    @JsonIgnore
     public boolean isRemote() {
         boolean remote = false;
         if (simulationLocale != null) {
@@ -427,7 +367,9 @@ public class SimulationSpecification {
     public boolean hasCommitCheckout() {
         return sha1Key != null && !sha1Key.isEmpty();
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Overrides">
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -437,26 +379,22 @@ public class SimulationSpecification {
             return false;
         }
         SimulationSpecification that = (SimulationSpecification) o;
-        return Objects.equals(getUsername(), that.getUsername())
-                && Objects.equals(hostAddress, that.hostAddress)
+        return Objects.equals(simulationLocale, that.simulationLocale)
+                && Objects.equals(hostname, that.hostname)
+                && Objects.equals(username, that.username)
+                && Objects.equals(simulatorFolder, that.simulatorFolder)
+                && Objects.equals(simulatorType, that.simulatorType)
+                && Objects.equals(buildOption, that.buildOption)
+                && Objects.equals(codeRepository, that.codeRepository)
+                && Objects.equals(sourceCodeUpdating, that.sourceCodeUpdating)
                 && Objects.equals(sha1Key, that.sha1Key)
-                && Objects.equals(getBuildOption(), that.getBuildOption())
-                && Objects.equals(getSourceCodeUpdating(), that.getSourceCodeUpdating())
-                && Objects.equals(getSimulationType(), that.getSimulationType())
-                && Objects.equals(getSimulationLocale(), that.getSimulationLocale())
-                && Objects.equals(simulationFolder, that.simulationFolder)
-                && Objects.equals(getVersionAnnotation(), that.getVersionAnnotation())
-                && Objects.equals(codeRepositoryLocation, that.codeRepositoryLocation)
-                && Objects.equals(getSimExecutable(), that.getSimExecutable())
-                && Objects.equals(getSimInputs(), that.getSimInputs())
-                && Objects.equals(getSimOutputs(), that.getSimOutputs());
+                && Objects.equals(versionAnnotation, that.versionAnnotation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), hostAddress, sha1Key, getBuildOption(),
-                getSourceCodeUpdating(), getSimulationType(), getSimulationLocale(),
-                simulationFolder, getVersionAnnotation(), codeRepositoryLocation,
-                getSimExecutable(), getSimInputs(), getSimOutputs());
+        return Objects.hash(simulationLocale, hostname, username, simulatorFolder, simulatorType,
+                buildOption, codeRepository, sourceCodeUpdating, sha1Key, versionAnnotation);
     }
+    // </editor-fold>
 }

@@ -11,7 +11,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.model.DynamicInputConfiguration;
 
 /**
  * Manages the construction of input configuration files.
@@ -88,12 +87,8 @@ public class DynamicInputConfigurationManager {
      */
     public String buildAndPersist(String projectName, String filename) throws TransformerException,
             TransformerConfigurationException, IOException {
-        String fullPath = null;
-
-        FileManager fm = FileManager.getFileManager();
-        fullPath = fm.getSimConfigFilePath(projectName, filename, true);
+        String fullPath = FileManager.getSimConfigFilePath(projectName, filename, true).toString();
         inputConfigBuilder.persist(inputConfig.getDocument(), fullPath);
-
         return fullPath;
     }
 }

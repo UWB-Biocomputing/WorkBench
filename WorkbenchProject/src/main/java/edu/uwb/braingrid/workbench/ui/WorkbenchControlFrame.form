@@ -165,11 +165,11 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="configureSimulationButton" linkSize="5" pref="77" max="32767" attributes="0"/>
-                                  <Component id="specifyScriptButton" linkSize="5" max="32767" attributes="0"/>
+                                  <Component id="specifySimulationButton" linkSize="5" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="scriptSpecifiedLabel" linkSize="8" max="32767" attributes="0"/>
+                                  <Component id="simulationSpecifiedLabel" linkSize="8" max="32767" attributes="0"/>
                                   <Component id="simulationLabel" linkSize="8" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -186,7 +186,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="scriptStatusMsgLabel" alignment="0" pref="432" max="32767" attributes="0"/>
                           <Component id="generatedScriptFilenameLabel" alignment="0" max="32767" attributes="0"/>
-                          <Component id="scriptSpecificationLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="simulationSpecificationLabel" alignment="0" max="32767" attributes="0"/>
                           <Component id="outputFilenameLabel" alignment="1" max="32767" attributes="0"/>
                           <Component id="simulationConfigurationLabel" max="32767" attributes="0"/>
                       </Group>
@@ -223,10 +223,10 @@
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scriptSpecificationLabel" linkSize="11" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="simulationSpecificationLabel" linkSize="11" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="scriptSpecifiedLabel" linkSize="11" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="specifyScriptButton" linkSize="11" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="simulationSpecifiedLabel" linkSize="11" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="specifySimulationButton" linkSize="11" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -279,7 +279,7 @@
         <Property name="text" type="java.lang.String" value="Execution:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="scriptSpecifiedLabel">
+    <Component class="javax.swing.JLabel" name="simulationSpecifiedLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Script:"/>
       </Properties>
@@ -293,13 +293,13 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="configureSimulationButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="specifyScriptButton">
+    <Component class="javax.swing.JButton" name="specifySimulationButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Specify"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="specifyScriptButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="specifySimulationButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="analyzeOutputButton">
@@ -322,7 +322,7 @@
         <Property name="verticalTextPosition" type="int" value="1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="scriptSpecificationLabel">
+    <Component class="javax.swing.JLabel" name="simulationSpecificationLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="None"/>
         <Property name="verticalTextPosition" type="int" value="1"/>

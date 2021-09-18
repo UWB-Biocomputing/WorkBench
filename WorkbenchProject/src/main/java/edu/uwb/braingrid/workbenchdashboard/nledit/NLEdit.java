@@ -38,6 +38,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import edu.uwb.braingrid.general.FileSelectorDirMgr;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
@@ -80,11 +81,12 @@ public class NLEdit extends WorkbenchApp {
     private LayoutPanel layoutPanel; // reference to the layout panel
     private NeuronsLayout neuronsLayout;
     private NLSimUtil nlSimUtil;
+    private FileSelectorDirMgr fileSelector = new FileSelectorDirMgr();
 
     public NLEdit(Tab tab) {
         super(tab);
         LOG.info("new " + getClass().getName());
-        workbenchMgr = new WorkbenchManager();
+        workbenchMgr = WorkbenchManager.getInstance();
         initSettingsPanel();
         initToolbar();
         initEditBar();
@@ -204,7 +206,7 @@ public class NLEdit extends WorkbenchApp {
     private void setButtonImage(Button button, String path) {
         button.getStyleClass().add("toolbar-button");
         try {
-            Image image = new Image(this.getClass().getResourceAsStream(path));
+            Image image = new Image(getClass().getResourceAsStream(path));
             button.setGraphic(new ImageView(image));
         } catch (NullPointerException e) {
             System.out.println(e.toString());
@@ -310,7 +312,7 @@ public class NLEdit extends WorkbenchApp {
     }
 
     public void importPopup() {
-        ImportPanel myPanel = new ImportPanel();
+        ImportPanel myPanel = new ImportPanel(fileSelector);
 
         final Stage dialog = new Stage();
         dialog.setTitle("Select Input Files");
@@ -394,7 +396,7 @@ public class NLEdit extends WorkbenchApp {
     }
 
     public void exportPopup() {
-        ExportPanel myPanel = new ExportPanel(ImportPanel.getNListDir());
+        ExportPanel myPanel = new ExportPanel(fileSelector);
 
         final Stage dialog = new Stage();
         dialog.setTitle("Export");

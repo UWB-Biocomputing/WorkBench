@@ -1,6 +1,12 @@
 package edu.uwb.braingrid.workbench;
 
+import java.nio.file.Path;
+
 public interface FileManagerShared {
 
-    String getBrainGridRepoDirectory();
+    Path getProjectsDirectory();
+
+    Path getBrainGridRepoDirectory();
+
+    String getSimulationsDirectory();
 }

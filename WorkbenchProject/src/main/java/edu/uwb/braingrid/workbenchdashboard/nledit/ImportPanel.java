@@ -11,13 +11,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import edu.uwb.braingrid.general.FileSelectorDirMgr;
+import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
 
 public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
@@ -33,11 +33,6 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
     /** Field index of probed neurons list file. */
     public static final int IDX_PRB_LIST = 3;
 
-    /** Directory for configuration file. */
-    private static String configDir = ".";
-    /** Directory for neurons list file. */
-    private static String nListDir = ".";
-
     /** The labels for this Pane. */
     private Label[] labels = new Label[NUM_FIELDS];
     /** The buttons for this Pane. */
@@ -45,21 +40,30 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
     /** The text fields for this Pane. */
     TextField[] tFields = new TextField[NUM_FIELDS];
 
-    private FileSelectorDirMgr fileMgr = new FileSelectorDirMgr();
+    private FileSelectorDirMgr fileSelector;
 
-    public ImportPanel() {
+    /**
+     * A class constructor, which creates UI components, and registers action listener.
+     *
+     * @param fileSelector  The shared file selector for all NLEdit file choosers
+     */
+    public ImportPanel(FileSelectorDirMgr fileSelector) {
+        this.fileSelector = fileSelector;
+
         GridPane gp = new GridPane();
 
         labels[IDX_CONFIG_FILE] = new Label("Configuration file:");
         labels[IDX_INH_LIST] = new Label("Inhibitory neurons list:");
         labels[IDX_ACT_LIST] = new Label("Active neurons list:");
         labels[IDX_PRB_LIST] = new Label("Probed neurons list:");
+
         gp.getChildren().addAll(labels[IDX_CONFIG_FILE], labels[IDX_INH_LIST], labels[IDX_ACT_LIST],
                 labels[IDX_PRB_LIST]);
         GridPane.setConstraints(labels[IDX_CONFIG_FILE], 0, IDX_CONFIG_FILE);
         GridPane.setConstraints(labels[IDX_INH_LIST], 0, IDX_INH_LIST);
         GridPane.setConstraints(labels[IDX_ACT_LIST], 0, IDX_ACT_LIST);
         GridPane.setConstraints(labels[IDX_PRB_LIST], 0, IDX_PRB_LIST);
+
         for (int i = 0; i < NUM_FIELDS; i++) {
             tFields[i] = new TextField();
             tFields[i].setEditable(true);
@@ -81,75 +85,72 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
                 break;
             }
         }
+
         // create a file chooser
-        // String curDir;
-        // if (iSource == IDX_CONFIG_FILE) {
-        // curDir = configDir;
-        // } else {
-        // curDir = nListDir;
-        // }
-
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(fileMgr.getLastDir());
+        File lastDir = fileSelector.getLastDir();
+        File projectsDir = FileManager.getCurrentProjectDirectory().toFile();
+        if (lastDir == null && projectsDir.exists()) {
+            chooser.setInitialDirectory(projectsDir);
+        } else {
+            chooser.setInitialDirectory(lastDir);
+        }
 
-        chooser.setTitle("Open File");
-        // fileChooser.showOpenDialog(stage);
-        ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "xml");
-        chooser.setSelectedExtensionFilter(filter);
-        String dialogTitle = "";
+        ExtensionFilter filter = new ExtensionFilter("XML file (*.xml)", "*.xml");
+        chooser.getExtensionFilters().add(filter);
+
         switch (iSource) {
         case IDX_CONFIG_FILE:
-            chooser.setInitialFileName("config");
-            dialogTitle = "Configuration file";
+            chooser.setTitle("Open Configuration File");
             break;
         case IDX_INH_LIST:
-            chooser.setInitialFileName("inh");
-            dialogTitle = "Inhibitory neurons list";
+            chooser.setTitle("Open Inhibitory Neurons List");
             break;
         case IDX_ACT_LIST:
-            chooser.setInitialFileName("act");
-            dialogTitle = "Active neurons list";
+            chooser.setTitle("Open Active Neurons List");
             break;
         case IDX_PRB_LIST:
-            chooser.setInitialFileName("prb");
-            dialogTitle = "Probed neurons list";
+            chooser.setTitle("Open Probed Neurons List");
             break;
         default:
-            // do nothing
+            chooser.setTitle("Open File");
+            break;
         }
-        chooser.setTitle(dialogTitle);
 
         File option = chooser.showOpenDialog(WorkbenchDisplay.getPrimaryStage());
         if (option != null) {
             tFields[iSource].setText(option.getAbsolutePath());
-            fileMgr.add(option.getParentFile());
+            fileSelector.addDir(option.getParentFile());
             if (iSource == IDX_CONFIG_FILE) { // configuration files is specified.
                 // parse config file, extract names of neurons list files, and
                 // show them in the corresponding fields
                 String configFile = option.getAbsolutePath();
-                configDir = option.getParent();
-                nListDir = configDir;
+                String configDir = option.getParent();
+                String fs = File.separator;
+                String filename;
                 try {
                     Document doc = new SAXBuilder().build(new File(configFile));
                     Element root = doc.getRootElement();
-                    Element layout = root.getChild("FixedLayout").getChild("LayoutFiles");
-                    Attribute attr = layout.getAttribute("activeNListFileName");
-                    if (attr != null) {
-                        tFields[IDX_ACT_LIST].setText(configDir + "/" + attr.getValue());
+                    Element layout = root.getChild("ModelParams").getChild("LayoutParams")
+                            .getChild("LayoutFiles");
+                    Element elem = layout.getChild("activeNListFileName");
+                    if (elem != null) {
+                        filename = FileManager.getSimpleFilename(elem.getText());
+                        tFields[IDX_ACT_LIST].setText(configDir + fs + "NList" + fs + filename);
                     }
-                    attr = layout.getAttribute("inhNListFileName");
-                    if (attr != null) {
-                        tFields[IDX_INH_LIST].setText(configDir + "/" + attr.getValue());
+                    elem = layout.getChild("inhNListFileName");
+                    if (elem != null) {
+                        filename = FileManager.getSimpleFilename(elem.getText());
+                        tFields[IDX_INH_LIST].setText(configDir + fs + "NList" + fs + filename);
                     }
-                    attr = layout.getAttribute("probedNListFileName");
-                    if (attr != null) {
-                        tFields[IDX_PRB_LIST].setText(configDir + "/" + attr.getValue());
+                    elem = layout.getChild("probedNListFileName");
+                    if (elem != null) {
+                        filename = FileManager.getSimpleFilename(elem.getText());
+                        tFields[IDX_PRB_LIST].setText(configDir + fs + "NList" + fs + filename);
                     }
                 } catch (JDOMException | IOException e) {
-                    // System.err.println(e);
+                    e.printStackTrace();
                 }
-            } else {
-                nListDir = option.getParent();
             }
         }
     }
@@ -157,9 +158,5 @@ public class ImportPanel extends Pane implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
         importFiles(event);
-    }
-
-    public static String getNListDir() {
-        return nListDir;
     }
 }

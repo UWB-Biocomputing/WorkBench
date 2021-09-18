@@ -58,17 +58,18 @@ public final class InputAnalyzer {
         Element root = doc.getDocumentElement();
         String type = root.getTagName();
         switch (type) {
-            case "A":
-                inputType = InputType.ACTIVE;
-                break;
-            case "I":
-                inputType = InputType.INHIBITORY;
-                break;
-            case "P":
-                inputType = InputType.PROBED;
-                break;
-            default:
-                inputType = InputType.INVALID;
+        case "A":
+            inputType = InputType.ACTIVE;
+            break;
+        case "I":
+            inputType = InputType.INHIBITORY;
+            break;
+        case "P":
+            inputType = InputType.PROBED;
+            break;
+        default:
+            inputType = InputType.INVALID;
+            break;
         }
         return inputType;
     }

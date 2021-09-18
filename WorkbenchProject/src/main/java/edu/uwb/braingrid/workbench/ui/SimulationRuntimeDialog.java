@@ -35,12 +35,11 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
     /**
      * Constructs and initializes this simulation runtime dialog.
      *
-     * @param wbmng
      * @param simStatusOutput
      */
-    public SimulationRuntimeDialog(WorkbenchManager wbmng, TextArea simStatusOutput) {
+    public SimulationRuntimeDialog(TextArea simStatusOutput) {
         LOG.info("new " + getClass().getName());
-        workbenchManager = wbmng;
+        workbenchManager = WorkbenchManager.getInstance();
         outputtextArea = simStatusOutput;
         initComponents();
         show();
@@ -95,7 +94,7 @@ public class SimulationRuntimeDialog extends javafx.scene.control.Dialog {
         if (timeCompleted != DateTime.ERROR_TIME) {
             outputtextArea.appendText("\nCompleted at: " + DateTime.getTime(timeCompleted));
             setMsg();
-            workbenchManager.saveProject();
+            workbenchManager.saveSimulation();
         } else {
             outputtextArea.appendText("\nScript execution incomplete, try again later.");
             setMsg();

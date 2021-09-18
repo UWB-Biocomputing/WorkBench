@@ -46,10 +46,9 @@ public final class ConnectionUtility {
             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
             channelSftp.connect();
 
-            String localFileDirectory = localFilePath.substring(0, localFilePath.lastIndexOf("/"));
-            Path path = Paths.get(localFileDirectory);
-            if (!Files.exists(path)) {
-                Files.createDirectories(path);
+            Path dir = Paths.get(localFilePath).getParent();
+            if (!Files.exists(dir)) {
+                Files.createDirectories(dir);
             }
             channelSftp.get(remoteFilePath, localFilePath);
             channelSftp.disconnect();

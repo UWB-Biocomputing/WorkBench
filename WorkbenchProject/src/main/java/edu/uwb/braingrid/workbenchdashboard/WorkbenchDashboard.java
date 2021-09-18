@@ -1,9 +1,10 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -12,8 +13,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import edu.uwb.braingrid.general.LoggerHelper;
-import edu.uwb.braingrid.workbenchdashboard.threads.RunInit;
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
+import edu.uwb.braingrid.workbench.FileManager;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
 
 /**
@@ -45,9 +46,12 @@ public class WorkbenchDashboard extends Application {
     }
 
     private void initFileOutput() {
+        Path logsDir = FileManager.getWorkbenchDirectory().resolve("logs");
+        String logFile = logsDir.resolve("WD-log.%u").toString();
         FileHandler handler = null;
         try {
-            handler = new FileHandler("WD-log.%u");
+            Files.createDirectories(logsDir);
+            handler = new FileHandler(logFile);
         } catch (SecurityException | IOException e) {
             LOG.severe("");
             e.printStackTrace();
@@ -64,11 +68,8 @@ public class WorkbenchDashboard extends Application {
         LOG.setLevel(LoggerHelper.MIN_LOG_LEVEL);
         initFileOutput();
 
-        // Get system
+        // Initialize System Properties
         SystemProperties.getInstance();
-
-        //Load User
-        User.load();
 
         // Start Application
         LOG.info("Starting Application");
@@ -128,8 +129,7 @@ public class WorkbenchDashboard extends Application {
             System.exit(0);
         });
 
-        // Init
-        RunInit runInit = new RunInit();
-        runInit.start();
+        // Initialize Workbench Manager
+        WorkbenchManager.getInstance();
     }
 }

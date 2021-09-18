@@ -34,16 +34,22 @@ public class Script {
     public static final String COMPLETED_TIME_TEXT = "time completed";
     /** Prefix text for the exit status of an executed command. */
     public static final String EXIT_STATUS_TEXT = "exit status";
-    /** Prefix text for the version of the executed script. */
-    public static final String VERSION_TEXT = "version";
     /** Redirect file for std-err/std-out on printf statements. */
-    public static final String DEFAULT_SCRIPT_STATUS_FILENAME = "scriptStatus.txt";
+    public static final String SCRIPT_STATUS_FILENAME = "scriptStatus.txt";
     /** Redirect file for std-err and std-out of executed commands. */
-    public static final String COMMAND_OUTPUT_FILENAME = "output.txt";
+    public static final String COMMAND_OUTPUT_FILENAME = "cmdOutput.txt";
     /** Redirect file for git commit key. */
     public static final String SHA1_KEY_FILENAME = "SHA1Key.txt";
     /** Redirect file for simulation status. */
     public static final String SIM_STATUS_FILENAME = "simStatus.txt";
+    /** Default directory for script output files. */
+    public static final String DEFAULT_SCRIPT_OUTPUT_DIRECTORY = "$HOME";
+
+    /* script variable names and reference strings */
+    private static final String SCRIPT_STATUS_VAR = "scriptStatus";
+    private static final String SCRIPT_STATUS_REF = "\"$scriptStatus\"";
+    private static final String CMD_OUTPUT_VAR = "cmdOutput";
+    private static final String CMD_OUTPUT_REF = "\"$cmdOutput\"";
 
     /* model data */
     private String bashScript;
@@ -59,6 +65,8 @@ public class Script {
     private String cmdOutputFilename;
     /* redirect stdout/stderr of printf statements to this file */
     private String scriptStatusOutputFilename;
+    /* create all script output files in this directory */
+    private String scriptOutputDirectory;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -73,7 +81,8 @@ public class Script {
         usageStatements = new ArrayList<>();
         bashScriptConstructed = false;
         cmdOutputFilename = COMMAND_OUTPUT_FILENAME;
-        scriptStatusOutputFilename = DEFAULT_SCRIPT_STATUS_FILENAME;
+        scriptStatusOutputFilename = SCRIPT_STATUS_FILENAME;
+        scriptOutputDirectory = DEFAULT_SCRIPT_OUTPUT_DIRECTORY;
     }
     // </editor-fold>
 
@@ -196,15 +205,14 @@ public class Script {
             if (!bashStatements.isEmpty()) {
                 sb.append('>');
             }
-            sb.append(" ~/").append(cmdOutputFilename);
+            sb.append(" ").append(CMD_OUTPUT_REF);
             sb.append(" 2>");
             if (!bashStatements.isEmpty()) {
                 sb.append(">");
             }
-            sb.append(" ~/").append(cmdOutputFilename);
+            sb.append(" ").append(CMD_OUTPUT_REF);
             bashStatements.add(sb.toString());
             postCommandOutput(!bashStatements.isEmpty());
-            // Does this ever execute the bash statements? -Max
         } else {
             success = false;
         }
@@ -223,10 +231,9 @@ public class Script {
      */
     public void printf(String prefix, String statement, boolean append) {
         String escapedStatement = printfEscape(statement);
-        String outputFile = scriptStatusOutputFilename;
         String outToken = append ? ">>" : ">";
-        String s = "printf \"" + prefix + ": " + escapedStatement + "\\n\" " + outToken + " ~/"
-                + outputFile + " 2" + outToken + " ~/" + outputFile;
+        String s = "printf \"" + prefix + ": " + escapedStatement + "\\n\" " + outToken + " "
+                + SCRIPT_STATUS_REF + " 2" + outToken + " " + SCRIPT_STATUS_REF;
         bashStatements.add(s);
     }
 
@@ -259,8 +266,7 @@ public class Script {
      * @see #addVerbatimStatement(String, String, boolean)
      */
     public void addVerbatimStatement(String stmt, boolean append) {
-        String outputFile = "~/" + cmdOutputFilename;
-        addVerbatimStatement(stmt, outputFile, append);
+        addVerbatimStatement(stmt, CMD_OUTPUT_REF, append);
     }
 
     /**
@@ -303,9 +309,9 @@ public class Script {
         s.append("printf \"command: ").append(escapedWhatStarted.replaceAll("\"", ""))
                 .append("\\ntime started: `date +%s`\\n\" ")
                 .append(outToken)
-                .append(" ~/").append(scriptStatusOutputFilename).append(" 2")
-                .append(outToken)
-                .append(" ~/").append(scriptStatusOutputFilename);
+                .append(" ").append(SCRIPT_STATUS_REF)
+                .append(" 2").append(outToken)
+                .append(" ").append(SCRIPT_STATUS_REF);
         bashStatements.add(s.toString());
     }
 
@@ -324,10 +330,30 @@ public class Script {
         outToken = append ? ">>" : ">";
         s.append("printf \"exit status: $?\\ntime completed: `date +%s`\\n\" ")
                 .append(outToken)
-                .append(" ~/").append(scriptStatusOutputFilename).append(" 2")
-                .append(outToken)
-                .append(" ~/").append(scriptStatusOutputFilename);
+                .append(" ").append(SCRIPT_STATUS_REF)
+                .append(" 2").append(outToken)
+                .append(" ").append(SCRIPT_STATUS_REF);
         bashStatements.add(s.toString());
+    }
+
+    /**
+     * Specifies the directory where redirected console output is saved by default. This includes
+     * both the scriptStatus and cmdOutput files. This does not apply to statements created using
+     * addVerbatimStatement where an outputFile is specified.
+     *
+     * @param directory  The directory where redirected console output is saved by default
+     */
+    public void setScriptOutputDirectory(String directory) {
+        scriptOutputDirectory = ScriptManager.replaceTildeWithHome(directory);
+    }
+
+    /**
+     * Provides the directory where redirected console output is saved by default.
+     *
+     * @return  The directory where redirected console output is saved by default
+     */
+    public String getScriptOutputDirectory() {
+        return scriptOutputDirectory;
     }
 
     /**
@@ -419,6 +445,11 @@ public class Script {
         builder.append("exit 1\n")
                 // end if
                 .append("fi\n").append("\n");
+        // assign script variables
+        builder.append(SCRIPT_STATUS_VAR).append("=\"").append(scriptOutputDirectory).append("/")
+                .append(scriptStatusOutputFilename).append("\"\n");
+        builder.append(CMD_OUTPUT_VAR).append("=\"").append(scriptOutputDirectory).append("/")
+                .append(cmdOutputFilename).append("\"\n");
         // run the programs with the given arguments
         for (String bashStatement : bashStatements) {
             builder.append(bashStatement).append('\n');
@@ -434,15 +465,15 @@ public class Script {
     /**
      * Writes the script to disk. The script must be constructed prior to being persisted.
      *
-     * @param filePathWithBaseName  The relative, absolute, or canonical path to the file that will
-     *                              contain the script data, without the file extension
+     * @param scriptFilename  The relative, absolute, or canonical path to the file that will
+     *                        contain the script data
      * @return True if both the bash script and batch script were persisted successfully, otherwise
      *         false
      */
-    public boolean persist(String filePathWithBaseName) {
+    public boolean persist(String scriptFilename) {
         boolean bashScriptPersisted = false;
         if (bashScriptConstructed) {
-            bashScriptPersisted = persistBashScript(filePathWithBaseName + ".sh");
+            bashScriptPersisted = persistBashScript(scriptFilename);
         }
         return bashScriptPersisted;
     }
@@ -451,13 +482,13 @@ public class Script {
      * Writes the script to disk as a bash script. The script must be constructed by calling the
      * construct function prior to being persisted.
      *
-     * @param filePath  The relative, absolute, or canonical path to the file that will contain the
-     *                  script data
+     * @param scriptFilename  The relative, absolute, or canonical path to the file that will
+     *                        contain the script data
      * @return True if the bash script was persisted successfully, otherwise false
      */
-    public boolean persistBashScript(String filePath) {
+    public boolean persistBashScript(String scriptFilename) {
         boolean success = true;
-        File scriptFile = new File(filePath);
+        File scriptFile = new File(scriptFilename);
         try (FileWriter scriptWriter = new FileWriter(scriptFile, false)) {
             scriptWriter.write(bashScript);
         } catch (IOException e) {
@@ -467,7 +498,7 @@ public class Script {
     }
 
     /**
-     * Determines the last name of a script persisted with a given version number.
+     * Provides the last name of a script persisted with a given version number.
      *
      * @param version  The version of the script persisted
      * @return The last name of the script without any directories

@@ -33,10 +33,10 @@ import org.xml.sax.SAXException;
 
 import edu.uwb.braingrid.general.FileSelectorDirMgr;
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.SystemConfig;
 import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer.InputType;
+import edu.uwb.braingrid.workbench.data.SystemConfig;
 
 /**
  * Dynamic Input Configuration Dialog The GUI is built dynamically according to the input
@@ -61,8 +61,8 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         buildButton = new javax.swing.JButton();
-        configFilename_textField = new javax.swing.JTextField();
-        configFilename_label = new javax.swing.JLabel();
+        configFilenameTextField = new javax.swing.JTextField();
+        configFilenameLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         messageLabel = new javax.swing.JLabel();
         messageLabelText = new javax.swing.JLabel();
@@ -94,7 +94,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             }
         });
 
-        configFilename_label.setText("Config Filename:");
+        configFilenameLabel.setText("Config Filename:");
 
         messageLabel.setText("Message:");
 
@@ -107,9 +107,9 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                 .addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout
                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(buildButton).addGap(18, 18, 18).addComponent(configFilename_label)
+                                .addComponent(buildButton).addGap(18, 18, 18).addComponent(configFilenameLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(configFilename_textField).addGap(18, 18, 18).addComponent(nextButton)
+                                .addComponent(configFilenameTextField).addGap(18, 18, 18).addComponent(nextButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cancelButton))
                         .addGroup(layout.createSequentialGroup().addComponent(messageLabel)
@@ -131,9 +131,9 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(cancelButton).addComponent(nextButton).addComponent(buildButton)
-                                .addComponent(configFilename_textField, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                .addComponent(configFilenameTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(configFilename_label))
+                                .addComponent(configFilenameLabel))
                         .addContainerGap()));
 
         pack();
@@ -152,7 +152,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         icm.updateParamValues(paramStrs);
 
         try {
-            String fileName = configFilename_textField.getText();
+            String fileName = configFilenameTextField.getText();
             if (fileName != null && !fileName.isEmpty()) {
                 fileName = icm.buildAndPersist(projectName, fileName);
                 if (fileName != null) {
@@ -185,8 +185,8 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buildButton;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JLabel configFilename_label;
-    private javax.swing.JTextField configFilename_textField;
+    private javax.swing.JLabel configFilenameLabel;
+    private javax.swing.JTextField configFilenameTextField;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel messageLabel;
     private javax.swing.JLabel messageLabelText;
@@ -198,7 +198,6 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
     private static final Logger LOG
             = Logger.getLogger(DynamicInputConfigurationDialog.class.getName());
-    private static final long SERIAL_VERSION_UID = 1L;
     private DynamicInputConfigurationManager icm;
     private Document xmlDoc = null;
     private ArrayList<JTextField> paramsTextFields = new ArrayList<>();
@@ -250,10 +249,10 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             setInitValues();
             if (configFilename != null && !configFilename.equals("")) {
                 File configFile = new File(configFilename);
-                configFilename_textField.setText(projectName + ".xml");
+                configFilenameTextField.setText(projectName + ".xml");
             } else {
                 File configFile = new File(projectName + ".xml");
-                configFilename_textField.setText(configFile.getName());
+                configFilenameTextField.setText(configFile.getName());
             }
             setPreferredSize(new Dimension(700, 365));
             nextButton.setEnabled(false);
@@ -290,8 +289,11 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             tabs.add(((Element) tab).getAttribute(SystemConfig.NAME_ATTRIBUTE_NAME),
                     new JScrollPane(contentPanel));
 
-            // go to next node if current node doesn't have child.
-            if (!tab.hasChildNodes()) {
+            // go to next node if current node is empty
+            if (!tab.hasChildNodes() || (tab.getChildNodes().getLength() == 1
+                    && tab.getFirstChild().getNodeType() == Node.TEXT_NODE
+                    && tab.getFirstChild().getNodeValue().trim().isEmpty())) {
+                contentPanel.add(new JLabel("No parameters to configure"));
                 continue;
             }
 
@@ -389,7 +391,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         icm.setInputParamElements(inputElements);
     }
 
-    private FileSelectorDirMgr dirMgr = new FileSelectorDirMgr();
+    private FileSelectorDirMgr fileSelector = new FileSelectorDirMgr();
     // File Button Listener used to handle the copy of the file and set the path
     private class ImportFileButtonListener implements ActionListener {
         private InputType type;
@@ -407,22 +409,15 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         }
 
         private void importNeuronList(InputType aType, JTextField aField) {
-            FileManager fm = FileManager.getFileManager();
             // get starting folder
-            String simConfFilesDir;
-            try {
-                if (dirMgr.getLastDir() == dirMgr.getDefault()) {
-                    simConfFilesDir = fm.getSimConfigDirectoryPath(projectName, true);
-                } else {
-                    simConfFilesDir = dirMgr.getLastDir().getAbsolutePath();
-                }
-            } catch (IOException e) {
-                messageLabelText.setText("<html><span style=\"color:red\">" + e.getClass()
-                        + "occurred, import failed...</span></html>");
-                return;
+            String simConfigFilesDir;
+            if (fileSelector.getLastDir() == null) {
+                simConfigFilesDir = FileManager.getCurrentProjectDirectory().toString();
+            } else {
+                simConfigFilesDir = fileSelector.getLastDir().getAbsolutePath();
             }
 
-            JFileChooser dlg = new JFileChooser(simConfFilesDir);
+            JFileChooser dlg = new JFileChooser(simConfigFilesDir);
             FileNameExtensionFilter filter = new FileNameExtensionFilter("XML file (*.xml)", "xml");
             dlg.addChoosableFileFilter(filter);
             dlg.setFileFilter(filter);
@@ -431,17 +426,14 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
             dlg.setDialogTitle(dialogTitle);
             if (dlg.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 try {
-                    File file = dlg.getSelectedFile();
+                    File sourceFile = dlg.getSelectedFile();
                     // if type is correct
-                    if (InputAnalyzer.getInputType(file) == aType) {
-                        Path sourceFilePath = file.toPath();
-                        String destPathText = fm.getNeuronListFilePath(projectName,
-                                file.getName(), true);
-                        Path destFilePath = new File(destPathText).toPath();
-                        if (FileManager.copyFile(sourceFilePath, destFilePath)) {
-                            aField.setText("workbenchconfigfiles/NList/"
-                                    + fm.getSimpleFilename(destFilePath.toString()));
-                            dirMgr.add(file.getParentFile());
+                    if (InputAnalyzer.getInputType(sourceFile) == aType) {
+                        Path destFilePath = FileManager.getNeuronListFilePath(projectName,
+                                sourceFile.getName(), true);
+                        if (FileManager.copyFile(sourceFile.toPath(), destFilePath)) {
+                            aField.setText("configfiles/NList/" + sourceFile.getName());
+                            fileSelector.addDir(sourceFile.getParentFile());
                         }
                         messageLabelText.setText("<html><span style=\"color:green\">"
                                 + "Good!</span></html>");
@@ -525,33 +517,16 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
         return "results/" + projectName + "-out.xml";
     }
 
-    private void importNeuronList(InputType aType, JTextField aField, String path) {
-        FileManager fm = FileManager.getFileManager();
-        // get starting folder
-        String simConfFilesDir;
+    private void importNeuronList(InputType aType, JTextField aField, String filename) {
         try {
-            if (dirMgr.getLastDir() == dirMgr.getDefault()) {
-                simConfFilesDir = fm.getSimConfigDirectoryPath(projectName, true);
-            } else {
-                simConfFilesDir = dirMgr.getLastDir().getAbsolutePath();
-            }
-        } catch (IOException e) {
-            messageLabelText.setText("<html><span style=\"color:red\">" + e.getClass()
-                    + "occurred, import failed...</span></html>");
-            return;
-        }
-
-        try {
-            File file = new File(path);
+            File sourceFile = new File(filename);
             // if type is correct
-            if (InputAnalyzer.getInputType(file) == aType) {
-                Path sourceFilePath = file.toPath();
-                String destPathText = fm.getNeuronListFilePath(projectName, file.getName(), true);
-                Path destFilePath = new File(destPathText).toPath();
-                if (FileManager.copyFile(sourceFilePath, destFilePath)) {
-                    aField.setText("workbenchconfigfiles/NList/"
-                            + fm.getSimpleFilename(destFilePath.toString()));
-                    dirMgr.add(file.getParentFile());
+            if (InputAnalyzer.getInputType(sourceFile) == aType) {
+                Path destFilePath = FileManager.getNeuronListFilePath(projectName,
+                        sourceFile.getName(), true);
+                if (FileManager.copyFile(sourceFile.toPath(), destFilePath)) {
+                    aField.setText("configfiles/NList/" + sourceFile.getName());
+                    fileSelector.addDir(sourceFile.getParentFile());
                 }
                 messageLabelText.setText("<html><span style=\"color:green\">"
                         + "Good!</span></html>");

@@ -2,7 +2,6 @@ package edu.uwb.braingrid.workbench.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -19,8 +18,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.uwb.braingrid.workbench.SystemConfig;
 import edu.uwb.braingrid.workbench.data.DynamicInputConfigurationManager;
+import edu.uwb.braingrid.workbench.data.SystemConfig;
 
 /**
  * Dialog to select the parameter classes before going to the parameter config screen.
@@ -183,7 +182,6 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
     private static final Logger LOG
             = Logger.getLogger(InputConfigClassSelectionDialog.class.getName());
-    private static final long SERIAL_VERSION_UID = 1L;
     private DynamicInputConfigurationManager icm;
     private Document baseTemplateInfoDoc = null;
     private Document xmlDoc = null;
@@ -220,8 +218,7 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
 
             icm = new DynamicInputConfigurationManager(configFilename);
             xmlDoc = icm.getInputConfigDoc();
-            loadParamsClassCBoxes(((Element) baseTemplateInfoNode)
-                    .getAttribute(SystemConfig.ALL_PARAMS_CLASSES_PATH_ATTRIBUTE_NAME));
+            loadParamsClassCBoxes();
         } catch (Exception e) {
             System.err.println(e.toString());
         }
@@ -246,18 +243,18 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
     /**
      * setup Parameter classes combo boxes. This is the first part of the popup you see.
      *
-     * @param aXMLFilePath
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws XPathExpressionException
      */
-    private void loadParamsClassCBoxes(String aXMLFilePath) throws IOException,
-            ParserConfigurationException, SAXException, XPathExpressionException {
-        Document allParamsClassesDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(System.getProperty("user.dir") + File.separator + aXMLFilePath);
+    private void loadParamsClassCBoxes() throws IOException, ParserConfigurationException,
+            SAXException, XPathExpressionException {
+        Document allParamsClassesDoc = SystemConfig.getAllParamsClassesDoc();
         NodeList roots = allParamsClassesDoc.getChildNodes();
 
+        // build list of template paths for each params class while adding each class name to the
+        // appropriate combo box
         for (int i = 0; i < roots.getLength(); i++) {
             Node root = roots.item(i);
             if (root.getNodeType() == Node.ELEMENT_NODE) {
@@ -273,7 +270,7 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                             if (paramsClass.getNodeType() == Node.ELEMENT_NODE) {
                                 String className = ((Element) paramsClass)
                                         .getAttribute(SystemConfig.NAME_ATTRIBUTE_NAME);
-                                String templatePath = templateDirectory + File.separator
+                                String templatePath = templateDirectory
                                         + ((Element) paramsClass).getAttribute(
                                                 SystemConfig.TEMPLATE_FILE_NAME_ATTRIBUTE_NAME);
                                 String paramsClassesTypeName = paramsClassesType.getNodeName();
@@ -304,7 +301,7 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
             }
         }
 
-        // Get Node paths for each param class
+        // get Node paths for each param class
         Node baseTemplateInfoNode = baseTemplateInfoDoc.getFirstChild();
         NodeList paramsClassesNodes = baseTemplateInfoNode.getChildNodes();
         for (int i = 0; i < paramsClassesNodes.getLength(); i++) {
@@ -333,7 +330,7 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
             }
         }
 
-        // get the Classes from XML file and match with the Combo Box options.
+        // set combo box options according to params classes from sim config XML file
         XPathExpression xpath = XPathFactory.newInstance().newXPath()
                 .compile(neuronsParamsNodePath);
         NodeList nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
@@ -370,11 +367,11 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                 .compile(neuronsParamsNodePath);
         NodeList nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
         Node node = nodeList.item(0);
-        if (!neuronsParamsClass.equals(neuronsParamsClassCBox.getSelectedItem().toString())) {
+        if (!neuronsParamsClass.equals(neuronsParamsClassCBox.getSelectedItem())) {
             String templateFileURL = neuronsParamsTemplatePaths.get(
                     neuronsParamsClassCBox.getSelectedIndex());
             Document templateNode = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(System.getProperty("user.dir") + File.separator + templateFileURL);
+                    .parse(getClass().getResourceAsStream("/templates/" + templateFileURL));
             Node parentNode = node.getParentNode();
             Node newNode = xmlDoc.importNode(templateNode.getFirstChild(), true);
             parentNode.replaceChild(newNode, node);
@@ -384,11 +381,11 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
         xpath = XPathFactory.newInstance().newXPath().compile(synapsesParamsNodePath);
         nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
         node = nodeList.item(0);
-        if (!synapsesParamsClass.equals(synapsesParamsClassCBox.getSelectedItem().toString())) {
+        if (!synapsesParamsClass.equals(synapsesParamsClassCBox.getSelectedItem())) {
             String templateFileURL = synapsesParamsTemplatePaths.get(
                     synapsesParamsClassCBox.getSelectedIndex());
             Document templateNode = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(System.getProperty("user.dir") + File.separator + templateFileURL);
+                    .parse(getClass().getResourceAsStream("/templates/" + templateFileURL));
             Node parentNode = node.getParentNode();
             Node newNode = xmlDoc.importNode(templateNode.getFirstChild(), true);
             parentNode.replaceChild(newNode, node);
@@ -399,11 +396,11 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
         nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
         node = nodeList.item(0);
         if (!connectionsParamsClass.equals(
-                connectionsParamsClassCBox.getSelectedItem().toString())) {
+                connectionsParamsClassCBox.getSelectedItem())) {
             String templateFileURL = connectionsParamsTemplatePaths.get(
                     connectionsParamsClassCBox.getSelectedIndex());
             Document templateNode = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(System.getProperty("user.dir") + File.separator + templateFileURL);
+                    .parse(getClass().getResourceAsStream("/templates/" + templateFileURL));
             Node parentNode = node.getParentNode();
             Node newNode = xmlDoc.importNode(templateNode.getFirstChild(), true);
             parentNode.replaceChild(newNode, node);
@@ -413,11 +410,11 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
         xpath = XPathFactory.newInstance().newXPath().compile(layoutParamsNodePath);
         nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
         node = nodeList.item(0);
-        if (!layoutParamsClass.equals(layoutParamsClassCBox.getSelectedItem().toString())) {
+        if (!layoutParamsClass.equals(layoutParamsClassCBox.getSelectedItem())) {
             String templateFileURL = layoutParamsTemplatePaths.get(
                     layoutParamsClassCBox.getSelectedIndex());
             Document templateNode = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(System.getProperty("user.dir") + File.separator + templateFileURL);
+                    .parse(getClass().getResourceAsStream("/templates/" + templateFileURL));
             Node parentNode = node.getParentNode();
             Node newNode = xmlDoc.importNode(templateNode.getFirstChild(), true);
             parentNode.replaceChild(newNode, node);

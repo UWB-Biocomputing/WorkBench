@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import edu.uwb.braingrid.workbench.FileManager;
 
 /**
  * Collection of static helper functions centered around temporal operations.
@@ -14,14 +17,21 @@ import java.text.SimpleDateFormat;
  */
 public final class DateTime {
 
-    //TODO: Consider refactoring to remove ERROR_TIME. This doesn't appear to be a meaningful
-    // constant and should likely be replaced with either null or a boolean wherever it is used.
     /** Represents an invalid time. */
     public static final long ERROR_TIME = -1L;
     private static final String TIME_PATTERN = "HH:mm:ss";
 
     private DateTime() {
         // utility class cannot be instantiated
+    }
+
+    /**
+     * Provides the current time as the number of milliseconds since January 1, 1970, 00:00:00 GMT.
+     *
+     * @return The current time as the number of milliseconds since January 1, 1970, 00:00:00 GMT
+     */
+    public static long now() {
+        return new Date().getTime();
     }
 
     /**
@@ -60,9 +70,11 @@ public final class DateTime {
 
     public static void recordFunctionExecutionTime(String className, String functionName,
             Long totalTime, boolean provEnabled) {
+        String filename = FileManager.getWorkbenchDirectory().resolve("logs")
+                .resolve("provOverhead.txt").toString();
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new FileWriter("provOverhead.txt", true)));
+                    new FileWriter(filename, true)));
             out.println(className + "." + functionName + ";provEnabled=" + provEnabled
                     + ";total milliseconds:" + totalTime);
             out.close();
@@ -74,9 +86,11 @@ public final class DateTime {
 
     public static void recordAccumulatedProvTiming(String className, String functionName,
             Long totalProvTime) {
+        String filename = FileManager.getWorkbenchDirectory().resolve("logs")
+                .resolve("provOverhead.txt").toString();
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new FileWriter("provOverhead.txt", true)));
+                    new FileWriter(filename, true)));
             out.println(className + "." + functionName + ";total prov overhead:" + totalProvTime);
             out.close();
         } catch (IOException e) {

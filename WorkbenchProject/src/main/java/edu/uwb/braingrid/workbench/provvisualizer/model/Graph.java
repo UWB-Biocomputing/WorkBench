@@ -1,9 +1,8 @@
 package edu.uwb.braingrid.workbench.provvisualizer.model;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -138,21 +137,20 @@ public class Graph {
     }
 
     public void generateCommitRelationships(double canvasWidth, double canvasHeight) {
-        String bgReposPath = FileManager.getBrainGridRepoDirectory();
-        if (!Files.exists(Paths.get(bgReposPath))) {
+        Path bgReposPath = FileManager.getBrainGridRepoDirectory();
+        if (!Files.exists(bgReposPath)) {
             try {
                 System.out.println("Repo manager: " + RepoManager.getMasterBranchDirectory());
                 git = Git.cloneRepository()
                         .setURI("https://github.com/UWB-Biocomputing/BrainGrid.git")
-                        .setDirectory(new File(bgReposPath))
+                        .setDirectory(bgReposPath.toFile())
                         .call();
-                //SHOULD THIS BE BRAINGRID OR WORKBENCH? WAS RepoManager.getMasterBranchDirectory()
             } catch (GitAPIException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                git = Git.open(new File(bgReposPath));
+                git = Git.open(bgReposPath.toFile());
                 git.pull().call();
             } catch (IOException | GitAPIException e) {
                 e.printStackTrace();

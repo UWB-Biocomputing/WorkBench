@@ -1,6 +1,5 @@
 package edu.uwb.braingrid.workbenchdashboard.simstarter;
 
-import java.util.Date;
 import java.util.logging.Logger;
 import java.util.HashMap;
 import javafx.scene.control.TextArea;
@@ -19,11 +18,9 @@ import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 public class SimStartWiz {
 
     private static final Logger LOG = Logger.getLogger(SimStartWiz.class.getName());
-    private static final long SERIAL_VERSION_UID = 1L;
 
     private TextArea msgText = new TextArea("");
-    private WorkbenchManager workbenchManager = new WorkbenchManager();
-    private SimManager simManager;
+    private WorkbenchManager workbenchManager = WorkbenchManager.getInstance();
     private SimulationRuntimeDialog srd;
     private String commitVersionSelected = null;
 
@@ -33,23 +30,16 @@ public class SimStartWiz {
      */
     public SimStartWiz() {
         LOG.info("new " + getClass().getName());
-        boolean cancelButtonClicked = false;
-        if (workbenchManager.newProject()) {
+        if (workbenchManager.newSimulation()) {
             if (configureSimulation()) {
-                if (specifyScript()) {
+                if (specifySimulation()) {
                     if (generateScript()) {
                         if (runScript()) {
-                            srd = new SimulationRuntimeDialog(workbenchManager, msgText);
+                            srd = new SimulationRuntimeDialog(msgText);
                         }
                     }
-                } else {
-                    cancelButtonClicked = true;
                 }
             }
-        }
-        simManager = new SimManager(workbenchManager);
-        if (cancelButtonClicked) {
-            simManager.saveProject();
         }
     }
 
@@ -64,23 +54,16 @@ public class SimStartWiz {
     public SimStartWiz(String simSpecifications, String runtimeSpecifications,
             HashMap<Character, String> nListPresets) {
         LOG.info("new " + getClass().getName());
-        boolean cancelButtonClicked = false;
-        if (workbenchManager.newProject()) {
+        if (workbenchManager.newSimulation()) {
             if (configureSimulation(simSpecifications, nListPresets)) {
-                if (specifyScript(runtimeSpecifications)) {
+                if (specifySimulation(runtimeSpecifications)) {
                     if (generateScript()) {
                         if (runScript()) {
-                            srd = new SimulationRuntimeDialog(workbenchManager, msgText);
+                            srd = new SimulationRuntimeDialog(msgText);
                         }
                     }
-                } else {
-                    cancelButtonClicked = true;
                 }
             }
-        }
-        simManager = new SimManager(workbenchManager);
-        if (cancelButtonClicked) {
-            simManager.saveProject();
         }
     }
 
@@ -103,8 +86,6 @@ public class SimStartWiz {
         boolean wasSuccessful = false;
         if (workbenchManager.configureSimulation()) {
             workbenchManager.invalidateScriptGenerated();
-            workbenchManager.invalidateScriptRan();
-            workbenchManager.invalidateScriptAnalyzed();
             wasSuccessful = true;
         }
         setMsg();
@@ -128,8 +109,6 @@ public class SimStartWiz {
         boolean wasSuccessful = false;
         if (workbenchManager.configureSimulation(simInputPresets, nListPresets)) {
             workbenchManager.invalidateScriptGenerated();
-            workbenchManager.invalidateScriptRan();
-            workbenchManager.invalidateScriptAnalyzed();
             wasSuccessful = true;
         }
         setMsg();
@@ -137,17 +116,15 @@ public class SimStartWiz {
     }
 
     /**
-     * Prompts the user to specify the simulator used. This should be the file that was invoked,
+     * Prompts the user to specify the simulation context. This should be the file that was invoked,
      * which used the input files specified, in order to write the output file that was specified.
      *
-     * @return True if the script specification was successful, false otherwise
+     * @return True if the simulation specification was successful, false otherwise
      */
-    private boolean specifyScript() {
+    private boolean specifySimulation() {
         boolean wasSuccessful = false;
-        if (workbenchManager.specifyScript()) {
+        if (workbenchManager.specifySimulation()) {
             workbenchManager.invalidateScriptGenerated();
-            workbenchManager.invalidateScriptRan();
-            workbenchManager.invalidateScriptAnalyzed();
             wasSuccessful = true;
         }
         setMsg();
@@ -155,21 +132,19 @@ public class SimStartWiz {
     }
 
     /**
-     * Prompts the user to specify the simulator used. This should be the file that was invoked,
+     * Prompts the user to specify the simulation context. This should be the file that was invoked,
      * which used the input files specified, in order to write the output file that was specified.
      *
      * @param runtimeSpecifications  Git commit version to be pulled
-     * @return True if the script specification was successful, false otherwise
+     * @return True if the simulation specification was successful, false otherwise
      */
-    private boolean specifyScript(String runtimeSpecifications) {
+    private boolean specifySimulation(String runtimeSpecifications) {
         if (runtimeSpecifications == null) {
-            return specifyScript();
+            return specifySimulation();
         }
         boolean wasSuccessful = false;
-        if (workbenchManager.specifyScript(runtimeSpecifications)) {
+        if (workbenchManager.specifySimulation(runtimeSpecifications)) {
         workbenchManager.invalidateScriptGenerated();
-        workbenchManager.invalidateScriptRan();
-        workbenchManager.invalidateScriptAnalyzed();
         wasSuccessful = true;
         }
         setMsg();
@@ -194,7 +169,7 @@ public class SimStartWiz {
     private boolean runScript() {
         boolean wasSuccessful = false;
         if (workbenchManager.runScript()) {
-            String time = DateTime.getTime(new Date().getTime());
+            String time = DateTime.getTime(DateTime.now());
             String msg = "Script execution started at: " + time;
             wasSuccessful = true;
         }

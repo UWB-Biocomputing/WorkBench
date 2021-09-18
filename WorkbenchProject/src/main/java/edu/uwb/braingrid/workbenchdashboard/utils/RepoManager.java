@@ -1,9 +1,8 @@
 package edu.uwb.braingrid.workbenchdashboard.utils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,14 +14,16 @@ import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Ref;
 
-import edu.uwb.braingrid.workbench.provvisualizer.ProVisGlobal;
+import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbenchdashboard.threads.RunUpdateRepo;
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
 
 public final class RepoManager {
 
     private static final Logger LOG = Logger.getLogger(RepoManager.class.getName());
 
+    /** Remote repository location. */
+    public static final String BG_REPOSITORY_URI
+            = "git://github.com/UWB-Biocomputing/BrainGrid.git";
     /** Name of the master branch. */
     public static final String MASTER_BRANCH_NAME = "master";
     private static boolean updatingBranch = false;
@@ -35,16 +36,16 @@ public final class RepoManager {
         LOG.info("Updating Master Branch");
         updatingBranch = true;
         Git git;
-        String masterBranchPath = RepoManager.getMasterBranchDirectory();
-        if (Files.exists(Paths.get(masterBranchPath))) {
-            LOG.info("Pulling Fresh Repo");
-            git = Git.open(new File(masterBranchPath));
+        Path masterBranchPath = RepoManager.getMasterBranchDirectory();
+        if (Files.exists(masterBranchPath)) {
+            LOG.info("Updating Repo");
+            git = Git.open(masterBranchPath.toFile());
             git.pull().call();
         } else {
-            LOG.info("Updating Repo");
+            LOG.info("Cloning Repo");
             git = Git.cloneRepository()
-                    .setURI(ProVisGlobal.BG_REPOSITORY_URI)
-                    .setDirectory(new File(masterBranchPath))
+                    .setURI(BG_REPOSITORY_URI)
+                    .setDirectory(masterBranchPath.toFile())
                     .call();
         }
         updatingBranch = false;
@@ -59,8 +60,8 @@ public final class RepoManager {
         updateRepo.start();
     }
 
-    public static String getMasterBranchDirectory() {
-        return User.getInstance().getBrainGridRepoDirectory() + File.separator + MASTER_BRANCH_NAME;
+    public static Path getMasterBranchDirectory() {
+        return FileManager.getBrainGridRepoDirectory().resolve(MASTER_BRANCH_NAME);
     }
 
     public static List<String> fetchGitBranches() {
@@ -69,7 +70,7 @@ public final class RepoManager {
         try {
             refs = Git.lsRemoteRepository()
                     .setHeads(true)
-                    .setRemote(ProVisGlobal.BG_REPOSITORY_URI)
+                    .setRemote(BG_REPOSITORY_URI)
                     .call();
             for (Ref ref : refs) {
                 branches.add(ref.getName().substring(ref.getName().lastIndexOf("/") + 1));

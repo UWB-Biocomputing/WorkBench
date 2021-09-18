@@ -1,89 +1,146 @@
 package edu.uwb.braingrid.workbench.model;
-// NOT CLEANED
+
+import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
- * FIX THIS!!! (Needs JavaDocs) ALL CLASSES NEED A HEADER TOO
+ * Represents the history for a script associated with a simulation.
  *
- * @author Aaron
+ * @author Aaron Conrad
  */
 public class ScriptHistory {
 
-    private String startedAt;
-    private String completedAt;
+    // <editor-fold defaultstate="collapsed" desc="Members">
+    private long startedAt;
+    private long completedAt;
     private boolean outputAnalyzed;
     private boolean ran;
     private String filename;
-    private int version;
+    // </editor-fold>
 
-    public ScriptHistory() {
-        startedAt = null;
-        completedAt = null;
+    // <editor-fold defaultstate="collapsed" desc="Construction">
+    /**
+     * Creates a ScriptHistory object with the given script filename and default values for the
+     * remaining instance variables.
+     *
+     * @param filename  The filename of the script, including the full path
+     */
+    public ScriptHistory(String filename) {
+        this.filename = filename;
+        startedAt = DateTime.ERROR_TIME;
+        completedAt = DateTime.ERROR_TIME;
         outputAnalyzed = false;
         ran = false;
-        filename = null;
-        version = 0;
     }
 
-    public String getStartedAt() {
+    /**
+     * Creates a ScriptHistory object with all default values. Note, this no argument constructor is
+     * required for JSON deserialization.
+     */
+    public ScriptHistory() {
+        this("None");
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Getters/Setters">
+    /**
+     * Provides the time at which the script started, in milliseconds since January 1, 1970,
+     * 00:00:00 GMT. DateTime.ERROR_TIME is used to indicate that the script was not executed.
+     *
+     * @return The time at which the script started, in milliseconds since January 1, 1970,
+     *         00:00:00 GMT or DateTime.ERROR_TIME if the script was not executed.
+     */
+    public long getStartedAt() {
         return startedAt;
     }
 
-    public String getCompletedAt() {
-        return completedAt;
-    }
-
-    public boolean getOutputAnalyzed() {
-        return outputAnalyzed;
-    }
-
-    public boolean getRan() {
-        return ran;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setStartedAt(String startedAt) {
+    /**
+     * Sets the time at which the script started, in milliseconds since January 1, 1970,
+     * 00:00:00 GMT.
+     *
+     * @param startedAt  The time at which the script started, in milliseconds since January 1,
+     *                   1970, 00:00:00 GMT
+     */
+    public void setStartedAt(long startedAt) {
         this.startedAt = startedAt;
     }
 
-    public void setCompletedAt(String completedAt) {
+    /**
+     * Provides the time at which the script completed, in milliseconds since January 1, 1970,
+     * 00:00:00 GMT. DateTime.ERROR_TIME is used to indicate that the script was not executed.
+     *
+     * @return The time at which the script completed, in milliseconds since January 1, 1970,
+     *         00:00:00 GMT or DateTime.ERROR_TIME if the script was not executed.
+     */
+    public long getCompletedAt() {
+        return completedAt;
+    }
+
+    /**
+     * Sets the time at which the script completed, in milliseconds since January 1, 1970,
+     * 00:00:00 GMT.
+     *
+     * @param completedAt  The time at which the script completed, in milliseconds since January 1,
+     *                     1970, 00:00:00 GMT
+     */
+    public void setCompletedAt(long completedAt) {
         this.completedAt = completedAt;
     }
 
+    /**
+     * Indicates whether or not the script output has been analyzed.
+     *
+     * @return True if the script output has been analyzed, false if not
+     */
+    public boolean isOutputAnalyzed() {
+        return outputAnalyzed;
+    }
+
+    /**
+     * Sets the value used to determine whether or not the script output has been analyzed.
+     *
+     * @param outputAnalyzed  boolean value indicating whether or not the script output has been
+     *                        analyzed
+     */
     public void setOutputAnalyzed(boolean outputAnalyzed) {
         this.outputAnalyzed = outputAnalyzed;
     }
 
+    /**
+     * Indicates whether or not the script ran.
+     *
+     * @return True if the script ran, false if not
+     */
+    public boolean isRan() {
+        return ran;
+    }
+
+    /**
+     * Sets the value used to determine whether or not the script ran.
+     *
+     * @param ran  boolean value indicating whether or not the script ran
+     */
     public void setRan(boolean ran) {
         this.ran = ran;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    public void incrementVersion() {
-        version++;
+    /**
+     * Provides the full path to the script. Note, this is the local copy of the script relative to
+     * workbench application.
+     *
+     * @return The filename of the script, including the full path
+     */
+    public String getFilename() {
+        return filename;
     }
 
     /**
-     * Provides the version number of the next script that will be added to the project. This is a
-     * convenience function, the version number is determined based on the current script version.
+     * Sets the filename of the script, including the full path. Note, this is the local copy of the
+     * script relative to workbench application.
      *
-     * @return The version number of the next script that will be added to the project when another
-     *         script is generated.
+     * @param filename  The filename of the script, including the full path
      */
-    public String getNextScriptVersion() {
-        return String.valueOf(version + 1);
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
+    // </editor-fold>
 }

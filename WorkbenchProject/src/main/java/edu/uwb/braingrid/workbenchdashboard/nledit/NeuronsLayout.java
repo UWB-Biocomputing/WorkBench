@@ -51,18 +51,18 @@ public class NeuronsLayout {
 
     public static String getNeuronTypeName(int index) {
         switch (index) {
-            case NeuronsLayout.OTR: /* neuron type index for other neurons */
-                return "other neuron";
-            case NeuronsLayout.INH: /* neuron type index for inhibitory neurons */
-                return "inhibitory neuron";
-            case NeuronsLayout.ACT: /* neuron type index for active neurons */
-                return "active neuron";
-            case NeuronsLayout.PRB: /* neuron type index for probed neurons */
-                return "probed neuron";
-            case NeuronsLayout.OVP: /* neuron type index for overlapping INH and ACT neurons */
-                return "overlapping IHH and ACT neuron";
-            default:
-                return "unknown neuron";
+        case NeuronsLayout.OTR: /* neuron type index for other neurons */
+            return "other neuron";
+        case NeuronsLayout.INH: /* neuron type index for inhibitory neurons */
+            return "inhibitory neuron";
+        case NeuronsLayout.ACT: /* neuron type index for active neurons */
+            return "active neuron";
+        case NeuronsLayout.PRB: /* neuron type index for probed neurons */
+            return "probed neuron";
+        case NeuronsLayout.OVP: /* neuron type index for overlapping INH and ACT neurons */
+            return "overlapping IHH and ACT neuron";
+        default:
+            return "unknown neuron";
         }
     }
 

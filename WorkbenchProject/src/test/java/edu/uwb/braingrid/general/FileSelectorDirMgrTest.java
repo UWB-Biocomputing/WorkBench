@@ -1,12 +1,8 @@
 package edu.uwb.braingrid.general;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import edu.uwb.braingrid.workbenchdashboard.userModel.User;
+import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.util.ArrayList;
 
 public class FileSelectorDirMgrTest {
 
@@ -14,9 +10,9 @@ public class FileSelectorDirMgrTest {
         FileSelectorDirMgr fs = new FileSelectorDirMgr();
 
         File main = new File("./main");
-        fs.add(main);
+        fs.addDir(main);
         File resources = new File("./resources");
-        fs.add(resources);
+        fs.addDir(resources);
         Assertions.assertEquals(resources, fs.getLastDir());
 
         return fs;
@@ -26,24 +22,14 @@ public class FileSelectorDirMgrTest {
     public void getLastDirTestAndAddTestAndDefault() {
 
         FileSelectorDirMgr fs = new FileSelectorDirMgr();
-        Assertions.assertEquals(fs.getDefault(), fs.getLastDir());
+        Assertions.assertNull(fs.getLastDir());
 
         File main = new File("./main");
-        fs.add(main);
+        fs.addDir(main);
         Assertions.assertEquals(main, fs.getLastDir());
 
         File resources = new File("./resources");
-        fs.add(resources);
+        fs.addDir(resources);
         Assertions.assertEquals(resources, fs.getLastDir());
-    }
-
-    @Test
-    public void getDirTest() {
-        FileSelectorDirMgr fs = new FileSelectorDirMgr();
-        Assertions.assertEquals(fs.getDefault(), fs.getDir(3));
-
-        fs = fileSelectorDirMgrFactory();
-        Assertions.assertEquals(fs.getDefault(), fs.getDir(3));
-        Assertions.assertEquals(new File("./resources"), fs.getDir(1));
     }
 }

@@ -28,6 +28,8 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 
+import edu.uwb.braingrid.workbench.FileManager;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.provvisualizer.ProVis;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.ConnectionUtility;
 import edu.uwb.braingrid.workbench.provvisualizer.utility.FileUtility;
@@ -208,13 +210,19 @@ public class ProVisCtrl {
 
         chooseFileBtn.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select provenance file");
+            fileChooser.setTitle("Select Provenance File");
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Turtle Files", "*.ttl"));
-            fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+
+            // set starting folder
+            File initialDir = FileManager.getCurrentProjectDirectory().toFile();
+            if (initialDir.exists()) {
+                fileChooser.setInitialDirectory(initialDir);
+            } else {
+                fileChooser.setInitialDirectory(null);
+            }
 
             File selectedFile = fileChooser.showOpenDialog(canvasPane.getScene().getWindow());
-
             if (selectedFile != null) {
                 dataProvGraph.clearAllIdsRelationships();
                 dataProvGraph.clearNodesNEdges();
@@ -230,7 +238,7 @@ public class ProVisCtrl {
             dataProvGraph.clearNodesNEdges();
             showNodeIds.setSelected(false);
             showRelationships.setSelected(false);
-            openUniversalProvenance();
+            openProjectProvenance();
         });
 
         clearPresetsButton.setOnAction(event -> {
@@ -416,8 +424,8 @@ public class ProVisCtrl {
         String hostname = null;
         String nodeFileRemoteFullPath = node.getId();
         String[] splitStrs = null;
-        String nodeFileLclPath = FileUtility.getNodeFileLocalAbsolutePath(node);
-        String nodeFileRemoteRelPath = FileUtility.getNodeFileRemoteRelativePath(node);
+        String nodeFileLocalPath = FileUtility.getNodeFileLocalAbsolutePath(node);
+        String nodeFileRemotePath = FileUtility.getNodeFileRemoteRelativePath(node);
         boolean downloadSuccess = false;
         authenticationInfo = null;
 
@@ -446,13 +454,13 @@ public class ProVisCtrl {
 
         if (authenticationInfo != null) {
             do {
-                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath,
-                        nodeFileLclPath, authenticationInfo);
+                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemotePath,
+                        nodeFileLocalPath, authenticationInfo);
             } while (!downloadSuccess && requestAuthenticationInfo(hostname, username));
         } else {
             while (!downloadSuccess && requestAuthenticationInfo(hostname, username)) {
-                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemoteRelPath,
-                        nodeFileLclPath, authenticationInfo);
+                downloadSuccess = ConnectionUtility.downloadFileViaSftp(nodeFileRemotePath,
+                        nodeFileLocalPath, authenticationInfo);
             }
         }
 
@@ -718,15 +726,15 @@ public class ProVisCtrl {
         } else if (typeOfNode == 'I') {
             inhibitoryTextField.clear();
             inhibitoryTextField.appendText(aSelectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, aSelectedNode);
+            setNLEditForBuild(typeOfNode, aSelectedNode);
         } else if (typeOfNode == 'A') {
             activeTextField.clear();
             activeTextField.appendText(aSelectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, aSelectedNode);
+            setNLEditForBuild(typeOfNode, aSelectedNode);
         } else if (typeOfNode == 'P') {
             probedTextField.clear();
             probedTextField.appendText(aSelectedNode.getDisplayId());
-            setNLEditforBuild(typeOfNode, aSelectedNode);
+            setNLEditForBuild(typeOfNode, aSelectedNode);
         }
         buildFromPrevButton.setDisable(false);
         return true;
@@ -736,7 +744,7 @@ public class ProVisCtrl {
      * Returns char N for failure, A = Active, I = inhibitory, P = probed, S = Sim Input.
      */
     private char loadFile(String filePath) {
-        Scanner in = null;
+        Scanner in;
         try {
             in = new Scanner(new File(filePath));
         } catch (FileNotFoundException e) {
@@ -749,17 +757,17 @@ public class ProVisCtrl {
         String inputFromSelected = in.nextLine();
         String determineType = inputFromSelected.substring(0, 3);
         switch (determineType) {
-            case "<A>":
-                return 'A';
-            case "<I>":
-                return 'I';
-            case "<P>":
-                return 'P';
-            case "<!-":
-                // do nothing, this is an output file
-                break;
-            default:  // simulation input file
-                return 'S';
+        case "<A>":
+            return 'A';
+        case "<I>":
+            return 'I';
+        case "<P>":
+            return 'P';
+        case "<!-":
+            // do nothing, this is an output file
+            break;
+        default:  // simulation input file
+            return 'S';
         }
         return 'N';
     }
@@ -767,21 +775,22 @@ public class ProVisCtrl {
     /**
      * Adds NList inputs selected by user to simStartWiz called by buildFromPrevButton.
      */
-    private void setNLEditforBuild(char inputType, Node inputNode) {
+    private void setNLEditForBuild(char inputType, Node inputNode) {
         nListPresets.put(inputType, FileUtility.getNodeFileLocalAbsolutePath(inputNode));
     }
 
     /**
-     * Open universalProvenance.ttl in projects dir if exists.
-     * Display universalProvenance on ProVis.
+     * Open ProjectNameProvenance.ttl in project dir if exists.
+     * Display project-level provenance on ProVis.
      */
-    public void openUniversalProvenance() {
-        File universalProvenance = new File(System.getProperty("user.dir") + File.separator
-                + "projects" + File.separator + "UniversalProvenance.ttl");
-        if (universalProvenance.exists()) {
+    public void openProjectProvenance() {
+        String projectName = WorkbenchManager.getInstance().getProjectName();
+        File projectProvenance = FileManager.getCurrentProjectDirectory()
+                .resolve(projectName + "Provenance.ttl").toFile();
+        if (projectProvenance.exists()) {
             dataProvGraph.clearNodesNEdges();
-            initNodeEdge(universalProvenance.getAbsolutePath());
-            proVis.setTitle(universalProvenance.getName());
+            initNodeEdge(projectProvenance.getAbsolutePath());
+            proVis.setTitle(projectProvenance.getName());
         }
     }
 }

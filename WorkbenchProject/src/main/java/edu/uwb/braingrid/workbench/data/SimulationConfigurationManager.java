@@ -6,7 +6,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
-import edu.uwb.braingrid.simconfig.model.SimulationConfiguration;
 import edu.uwb.braingrid.workbench.FileManager;
 
 /**
@@ -63,8 +62,7 @@ public class SimulationConfigurationManager {
         boolean success = true;
         if (success) {
             simConfigBuilder.build(simConfig);
-            FileManager fm = FileManager.getFileManager();
-            fullPath = fm.getSimConfigFilePath(projectName, filename, true);
+            fullPath = FileManager.getSimConfigFilePath(projectName, filename, true).toString();
             simConfigBuilder.persist(fullPath);
         }
         return fullPath;

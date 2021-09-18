@@ -1,21 +1,21 @@
 package edu.uwb.braingrid.workbench;
 
 import edu.uwb.braingrid.workbench.utils.DateTime;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-
 public class WorkbenchManagerTest {
 
+    private final WorkbenchManager wbm = WorkbenchManager.getInstance();
+
+    @Test
     public void test() {
         //Assertions.fail("Need to test still");
     }
 
     @Test
-    public void newProjectTest() {
+    public void newSimulationTest() {
         // UI Dialog, nothing to test
     }
 
@@ -45,12 +45,7 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void addInputsTest() {
-        // Dependent on JFileChooser
-    }
-
-    @Test
-    public void specifyScriptTest() {
+    public void specifySimulationTest() {
         // UI launch, nothing to test
     }
 
@@ -64,34 +59,38 @@ public class WorkbenchManagerTest {
         analyzeScriptOutputTest6();
     }
 
+    @Test
     // Project Manager is null
     private void analyzeScriptOutputTest1() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        Assertions.assertEquals(DateTime.ERROR_TIME, wm.analyzeScriptOutput());
+        Assertions.assertEquals(DateTime.ERROR_TIME, wbm.analyzeScriptOutput());
     }
 
+    @Test
     // ProjectManager is not null, and script has been analyzed
     private void analyzeScriptOutputTest2() {
-        WorkbenchManager wm = initProjectWorkbenchManagerFactory(true);
+        WorkbenchManager wm = initSimulationWorkbenchManagerFactory(true);
         test();
     }
 
-
+    @Test
     // ProjectManager is not null, script has not been analyzed
     private void analyzeScriptOutputTest3() {
         test();
     }
 
+    @Test
     // ProjectManager is not null, script has not been analyzed - IOException
     private void analyzeScriptOutputTest4() {
         test();
     }
 
+    @Test
     // ProjectManager is not null, script has not been analyzed- JSchException
     private void analyzeScriptOutputTest5() {
         test();
     }
 
+    @Test
     // ProjectManager is not null, script has not been analyzed - SftpException
     private void analyzeScriptOutputTest6() {
         test();
@@ -107,115 +106,42 @@ public class WorkbenchManagerTest {
         test();
     }
 
-    private String correctFileName = "correct";
-    private String incorrectFileName = "incorrect.?$%^&Y";
+    private final String correctFileName = "correct";
+    private final String incorrectFileName = "incorrect.?$%^&Y";
 
     @Test
     // Correct file name, provenance is enabled
-    public void initProjectTest1() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        boolean result = wm.initProject(correctFileName, true);
+    public void initSimulationTest1() {
+        boolean result = wbm.initSimulation(correctFileName, true);
         Assertions.assertTrue(result);
     }
 
     @Test
-    // Correct file name, provenenance is not enabled
-    public void initProjectTest2() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        boolean result = wm.initProject(correctFileName, false);
+    // Correct file name, provenance is not enabled
+    public void initSimulationTest2() {
+        boolean result = wbm.initSimulation(correctFileName, false);
         Assertions.assertTrue(result);
     }
 
     @Test
     // Incorrect file name, provenance is enabled
-    public void initProjectTest3() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        boolean result = wm.initProject(incorrectFileName, true);
+    public void initSimulationTest3() {
+        boolean result = wbm.initSimulation(incorrectFileName, true);
         Assertions.assertTrue(result);
     }
 
     @Test
-    // Incorrect file name, provenenance is not enabled
-    public void initProjectTest4() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        boolean result = wm.initProject(incorrectFileName, false);
+    // Incorrect file name, provenance is not enabled
+    public void initSimulationTest4() {
+        boolean result = wbm.initSimulation(incorrectFileName, false);
         Assertions.assertTrue(result);
     }
 
     @Test
-    // IOException
-    public void initProjectTest5() {
-
-    }
-
-    @Test
-    // ParserConfigurationException
-    public void initProjectTest6() {
-
-    }
-
-    @Test
-    // SAXException
-    public void initProjectTest7() {
-
-    }
-
-    @Test
-    public void addInputFileTest() {
-        // Dead code, no test
-    }
-
-    @Test
-    public void getWorkingDirectoryTest() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        boolean result = wm.initProject(correctFileName, true);
-
-        String rootDir = ".";
-        String root;
-        try {
-            root = new File(rootDir).getCanonicalPath();
-        } catch (IOException e) {
-            root = rootDir;
-        }
-
-        Assertions.assertEquals(root, wm.getWorkingDirectory());
-    }
-
-    @Test
-    public void getProjectDirectoryPathTest() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        boolean result = wm.initProject(correctFileName, true);
-        boolean windowsOS = System.getProperty("os.name").
-                toLowerCase().startsWith("windows");
-        String folderDelimiter = windowsOS ? "\\" : "/";
-        String projectsDir = folderDelimiter + "projects" + folderDelimiter;
-
-        Assertions.assertEquals(Paths.get(wm.getWorkingDirectory() + projectsDir), wm.getProjectsDirectoryPath());
-
-    }
-
-    @Test
-    public void getProjectNameTest() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        Assertions.assertEquals("None", wm.getProjectName());
-        boolean result = wm.initProject(correctFileName, true);
-        Assertions.assertEquals(correctFileName, wm.getProjectName());
-    }
-
-    @Test
-    public void scriptGeneratedTest() {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        Assertions.assertFalse(wm.scriptGenerated());
-        boolean result = wm.initProject(correctFileName, true);
-        Assertions.assertFalse(wm.scriptGenerated());
-        wm.generateScript();
-        Assertions.assertTrue(wm.scriptGenerated());
-        test();
-    }
-
-    @Test
-    public void isSimExecutionRemoteTest() {
-        test();
+    public void getSimulationNameTest() {
+        Assertions.assertEquals("None", wbm.getSimulationName());
+        boolean result = wbm.initSimulation(correctFileName, true);
+        Assertions.assertEquals(correctFileName, wbm.getSimulationName());
     }
 
     @Test
@@ -224,37 +150,7 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void getMextScriptNameTest() {
-        test();
-    }
-
-    @Test
     public void getSimConfigFileOverviewTest() {
-        test();
-    }
-
-    @Test
-    public void getSimulationSpecificationTest() {
-        test();
-    }
-
-    @Test
-    public void getScriptPathTest() {
-        test();
-    }
-
-    @Test
-    public void scriptGenerationAvailableTest() {
-        test();
-    }
-
-    @Test
-    public void scriptRamTest() {
-        test();
-    }
-
-    @Test
-    public void scriptAnalyzedTest() {
         test();
     }
 
@@ -269,7 +165,7 @@ public class WorkbenchManagerTest {
     }
 
     @Test
-    public void getScriptAnaylsisOverviewTest() {
+    public void getScriptAnalysisOverviewTest() {
         test();
     }
 
@@ -288,14 +184,8 @@ public class WorkbenchManagerTest {
         test();
     }
 
-    private WorkbenchManager blankWorkbenchManagerFactory() {
-        return new WorkbenchManager();
+    private WorkbenchManager initSimulationWorkbenchManagerFactory(boolean provEnabled) {
+        wbm.initSimulation(correctFileName, provEnabled);
+        return wbm;
     }
-
-    private WorkbenchManager initProjectWorkbenchManagerFactory(boolean provEnabled) {
-        WorkbenchManager wm = blankWorkbenchManagerFactory();
-        wm.initProject(correctFileName, provEnabled);
-        return wm;
-    }
-
 }
