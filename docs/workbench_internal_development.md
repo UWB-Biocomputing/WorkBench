@@ -28,3 +28,36 @@ Below is a summary of the Java style guide. For full details, see the Checkstyle
 
 #### 4.2.2. Checkstyle
 
+
+### 4.3. Implementation Details
+
+#### 4.3.1. ProVis Node Spacing
+
+##### 4.3.1.1. Current Behavior
+
+Currently, when you load a provenance file in a ProVis tab the nodes space out but they don't stop automatically. Rather, you need to manually stop them using the "Stop Vertices" switch. There are a couple issues that stem from this.
+
+If you have detached nodes or detached groups of nodes, and you don't press "Stop Vertices" once they've spaced out, they will drift away from each other (explained later) and out of sight, requiring you to chase after them. Even a single node or a connected graph will drift.
+ * This is because of the constants used in the implementation of the force directed graph. Specifically, the ones used in calculating the attractive and repelling forces between nodes. You would expect the net force of a node to gradually approach 0 as things space out, however, with the current set of constants, it doesn't approach 0, thus they drift. With the right set of constants, the net force upon a node should gradually go down to 0.
+ * As for the unconnected nodes or groups of nodes, this is because there is only a repelling force calculated between them and the nodes they're not connected to. No attractive force to counter it, resulting in drifting. Still, with the right set of constants, it should gradually go down to 0.
+
+This setup also makes it confusing to open a diff between two nodes, which requires dragging one node to another. If you don't select "Stop Vertices" before dragging, the node you're dragging towards runs away (trying to space itself out). If you select "Stop Vertices" you can drag one on top of another, but once you've closed the diff, they're left sitting on top of each other, and to space them back out, you must unselect "Stop Vertices", selecting it again once they've spaced out.
+
+##### 4.3.1.2. Expected Behavior
+
+Upon loading a provenance file, the force directed graph algorithm will run until everything is spaced out. It must determine by itself when the nodes are spaced out and stop.
+ * According to [this](https://cs.brown.edu/people/rtamassi/gdhandbook/chapters/force-directed.pdf) paper, (specifically section 12.2 from page 3 to 4, which covers the force directed graph implementation ProVis uses) it mentions that the criteria for an "aesthetically pleasing graph" is that (1) the lengths of the edges ought to be the same, and (2) the layout should display as much symmetry as possible. I discuss this further in the Jupyter Notebook linked towards the end of this page.
+
+From then on, whenever the user interacts with the nodes (by dragging them) the algorithm should be stopped so they don't have to chase other nodes, and when they're done (once the node being dragged is released), the algorithm should run again to space everything back out, stopping automatically.
+
+Of course, all of this means the "Stop Vertices" toggle will be removed.
+
+##### 4.3.1.3. Jupyter Notebook
+
+I made a Jupyter Notebook [here](https://github.com/king-shak/ForceDirectedGraphSim) containing a force directed graph implementation just like the one used by ProVis. It sets up a bunch of nodes in random locations, creating edges to form multiple groups of them and links the groups together. It then runs the force directed graph algorithm to space everything out (the simulation portion). Doing this allowed me to
+ * Visualize data (e.g., net forces of the nodes throughout the simulation), so I could get a better understanding of how this algorithm works.
+ * Understand why the current set of constants used in calculating the attractive and repelling forces don't work as expected and have a way to find a proper set of constants.
+
+At the end of the notebook is a Discussion covering most of the things mentioned here and my discoveries in finding a method to automatically detect when the nodes have been spaced out - that bit in partiuclar you should look at if you are trying to solve this issue. It also goes over how to find the right set of constants.
+
+**Please update the documentation when this issue is resolved!**
