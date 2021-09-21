@@ -59,3 +59,13 @@ The idea behind the BrainGrid Workbench is to develop an application to ease cre
        4.2.1. Apache Maven
 
        4.2.2. Checkstyle
+
+    4.3. Implementation Details
+
+        4.3.1. ProVis Node Spacing
+
+            4.3.1.1. Current Behavior
+
+            4.3.1.2. Expected Behavior
+
+            4.3.1.3. Jupyter Notebook
