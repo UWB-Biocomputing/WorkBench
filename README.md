@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/153203160.svg)](https://zenodo.org/badge/latestdoi/153203160)
+
 # WorkBench
 To start using WorkBench, clone the repository and use 'mvn install' to compile the pom.xml builder file in  \WorkBench\WorkbenchProject\
 
