@@ -1,4 +1,7 @@
+[![DOI](https://zenodo.org/badge/153203160.svg)](https://zenodo.org/badge/latestdoi/153203160)
+
 # Workbench
+
 To start using WorkBench, clone the repository and use 'mvn install' to compile the pom.xml builder file in  \WorkBench\WorkbenchProject\
 
 The current release of BrainGrid requires particular releases of JDK 8 to work correctly. Java 1.8.0_111 and 1.8.0_144 are known to work.
