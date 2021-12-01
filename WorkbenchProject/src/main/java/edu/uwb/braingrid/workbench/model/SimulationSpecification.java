@@ -193,30 +193,6 @@ public class SimulationSpecification {
     }
 
     /**
-     * Provides the build option for the script. If this value is BUILD_BUILD_OPTION, then the
-     * script should build the simulator executable prior to starting the simulation. If this value
-     * is PRE_BUILT_BUILD_OPTION, then the script should simply start the simulation without first
-     * building the simulator.
-     *
-     * TODO: Move to enum -Max
-     *
-     * @return The build option for the script
-     */
-    public String getBuildOption() {
-        return buildOption;
-    }
-
-    /**
-     * Sets the option for building the simulator prior to execution.
-     *
-     * @param buildOpt  The build directive. One of the following values: BUILD_BUILD_OPTION,
-     *                  PRE_BUILT_BUILD_OPTION
-     */
-    public void setBuildOption(String buildOpt) {
-        buildOption = buildOpt;
-    }
-
-    /**
      * Provides the location for the simulator code. If source code updating is turned on, then the
      * location is a source code repository, otherwise it is simply the folder where the source code
      * resides.
