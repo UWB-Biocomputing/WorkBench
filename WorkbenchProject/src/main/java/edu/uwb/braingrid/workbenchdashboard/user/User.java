@@ -29,7 +29,7 @@ public final class User implements FileManagerShared {
     private static User user = null;
 
     private Path projectsDirectory;
-    private Path brainGridRepoDirectory;
+    private Path graphittiRepoDirectory;
     private String simulationsDirectory;
     private String lastProject;
 
@@ -41,10 +41,10 @@ public final class User implements FileManagerShared {
         LOG.info("Initializing User Data");
         //TODO: get project and sim dirs from user
         Path projectsDir = FileManager.getUserHome().resolve("WorkbenchProjects");
-        Path repoDir = FileManager.getWorkbenchDirectory().resolve("BrainGridRepo");
+        Path repoDir = FileManager.getWorkbenchDirectory().resolve("GraphittiRepo");
         String simulationsDir = "~/WorkbenchSimulations"; // may be remote
         setProjectsDirectory(projectsDir);
-        setBrainGridRepoDirectory(repoDir);
+        setGraphittiRepoDirectory(repoDir);
         setSimulationsDirectory(simulationsDir);
         lastProject = WorkbenchManager.DEFAULT_PROJECT_NAME;
     }
@@ -139,18 +139,18 @@ public final class User implements FileManagerShared {
      *
      * @return The path to the user's local simulator repository
      */
-    public Path getBrainGridRepoDirectory() {
-        return brainGridRepoDirectory;
+    public Path getGraphittiRepoDirectory() {
+        return graphittiRepoDirectory;
     }
 
     /**
      * Sets the user's local simulator repository path.
      *
-     * @param brainGridRepoDirectory  The new path to the local simulator repository
+     * @param graphittiRepoDirectory  The new path to the local simulator repository
      */
-    public void setBrainGridRepoDirectory(Path brainGridRepoDirectory) {
-        LOG.info("BrainGrid Repo Path: " + brainGridRepoDirectory);
-        this.brainGridRepoDirectory = brainGridRepoDirectory;
+    public void setGraphittiRepoDirectory(Path graphittiRepoDirectory) {
+        LOG.info("Graphitti Repo Path: " + graphittiRepoDirectory);
+        this.graphittiRepoDirectory = graphittiRepoDirectory;
     }
 
     /**

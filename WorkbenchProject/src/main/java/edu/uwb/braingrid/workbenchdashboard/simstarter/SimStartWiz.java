@@ -167,8 +167,10 @@ public class SimStartWiz {
      * @return True if the script ran successfully, false otherwise
      */
     private boolean runScript() {
+        LOG.info("SimStartWiz: runScript");
         boolean wasSuccessful = false;
         if (workbenchManager.runScript()) {
+            LOG.info("WorkbenchManager ran script!");
             String time = DateTime.getTime(DateTime.now());
             String msg = "Script execution started at: " + time;
             wasSuccessful = true;

@@ -38,7 +38,7 @@ public final class InputAnalyzer {
     }
 
     /**
-     * Parses a BrainGrid simulation input XML to determine the input type. The input type is
+     * Parses a Graphitti simulation input XML to determine the input type. The input type is
      * encoded as the root element's tag name: A for active neuron list, I for inhibitory neuron
      * list, P for probed neuron list. If the root node's tag name does not match one of these
      * values the error code INVALID is returned.

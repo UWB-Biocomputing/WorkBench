@@ -11,10 +11,11 @@ and open the template in the editor.
     <xs:element name="AllParamsClasses">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name = "NeuronsParamsClasses" type = "ParamsClasses"/>
-                <xs:element name = "SynapsesParamsClasses" type = "ParamsClasses"/>    
+                <xs:element name = "VerticesParamsClasses" type = "ParamsClasses"/>
+                <xs:element name = "EdgesParamsClasses" type = "ParamsClasses"/>
                 <xs:element name = "ConnectionsParamsClasses" type = "ParamsClasses"/>    
-                <xs:element name = "LayoutParamsClasses" type = "ParamsClasses"/> 
+                <xs:element name = "LayoutParamsClasses" type = "ParamsClasses"/>
+                <xs:element name = "RecorderParamsClasses" type = "ParamsClasses"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

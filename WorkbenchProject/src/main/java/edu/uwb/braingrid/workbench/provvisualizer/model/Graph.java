@@ -137,7 +137,7 @@ public class Graph {
     }
 
     public void generateCommitRelationships(double canvasWidth, double canvasHeight) {
-        Path bgReposPath = FileManager.getBrainGridRepoDirectory();
+        Path bgReposPath = FileManager.getGraphittiRepoDirectory();
         if (!Files.exists(bgReposPath)) {
             try {
                 System.out.println("Repo manager: " + RepoManager.getMasterBranchDirectory());

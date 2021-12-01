@@ -7,7 +7,7 @@ import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
- * Represents a BrainGrid simulation as part of a Workbench project.
+ * Represents a Graphitti simulation as part of a Workbench project.
  *
  * <p>Note: Provenance support is dealt with after the simulation is constructed</p>
  *

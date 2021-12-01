@@ -461,7 +461,7 @@ public final class WorkbenchManager {
             simSpec.setSHA1CheckoutKey(commitVersion);
             simSpec.setSourceCodeUpdating("Pull");
             simSpec.setBuildOption("Build");
-            simSpec.setSimulatorFolder("BrainGrid");
+            simSpec.setSimulatorFolder("Graphitti");
             spd = new SimulationSpecificationDialog(true, simSpec);
         } else {
             spd = new SimulationSpecificationDialog(true);

@@ -62,7 +62,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Simulation Specification");
 
-        codeRepositoryLocationLabel.setText("BrainGrid Code Repository:");
+        codeRepositoryLocationLabel.setText("Graphitti Code Repository:");
         codeRepositoryLocationLabel.setToolTipText(
                 "<html>Repository to pull from.<br>This URI must go to a local folder,<br>or to a valid network address</html>");
 
@@ -132,7 +132,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
         simulatorLocationLabel.setText("Simulator Location: ");
         simulatorLocationLabel
-                .setToolTipText("<html>Will you run BrainGrid on a remote<br>machine or on this machine?</html>");
+                .setToolTipText("<html>Will you run Graphitti on a remote<br>machine or on this machine?</html>");
 
         sourceCodeUpdatingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Pull" }));
 
@@ -459,8 +459,8 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             = "^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\\.([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*$";
     private static final String LINUX_USERNAME_PATTERN = "^[a-z][a-z0-9\\-]*$";
     private static final String DEFAULT_REPO_URI
-            = "https://github.com/UWB-Biocomputing/BrainGrid.git";
-    private static final String DEFAULT_SIM_FOLDER = "BrainGrid";
+            = "https://github.com/UWB-Biocomputing/Graphitti.git";
+    private static final String DEFAULT_SIM_FOLDER = "Graphitti";
     private boolean okButtonClicked = false;
     private boolean connectionTestSuccessful = false;
     // </editor-fold>

@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
@@ -73,15 +74,11 @@ public class ScriptManager {
         script.setScriptOutputDirectory(scriptOutputDir);
         script.setCmdOutputFilename(simulationName + "_" + Script.COMMAND_OUTPUT_FILENAME);
         script.setScriptStatusOutputFilename(simulationName + "_" + Script.SCRIPT_STATUS_FILENAME);
+
         /* Prep From Simulation Data */
-        // determine which simulator file to execute
-        String simExecutableToInvoke = simSpec.getSimExecutable();
-        // simulator build and execute location
-        String simFolder = simSpec.getSimulatorFolder();
-        // make path safe for variable interpolation
-        simFolder = replaceTildeWithHome(simFolder);
         // central repository location
         String repoURI = simSpec.getCodeLocation();
+
         // git pull or do we assume it exists as is?
         String simulatorSourceCodeUpdatingType = simSpec.getSourceCodeUpdating();
         boolean updateRepo = false;
@@ -89,57 +86,131 @@ public class ScriptManager {
             updateRepo = simulatorSourceCodeUpdatingType.equals(
                     SimulationSpecification.GIT_PULL_AND_CLONE);
         }
+
         /* Create Script */
-        // add a mkdir that will create intermediate directories
-        String[] argsForMkdir = {"-p", simFolder};
+        String workFolder = replaceTildeWithHome(FileManager.getSimulationsDirectory() + "/work");
+        String binFolder = replaceTildeWithHome(scriptOutputDir + "/bin");
+        simSpec.setSimulatorFolder(binFolder);
+        String executableName = "cgraphitti";
+
+        // create the work directory.
+        String[] argsForMkdir = {"-p", workFolder};
         script.executeProgram("mkdir", argsForMkdir);
-        // do a pull?
+
+        // create the bin directory.
+        argsForMkdir = new String[]{"-p", binFolder};
+        script.executeProgram("mkdir", argsForMkdir);
+
+        // change directories to the work folder.
+        String[] argsForCd = {workFolder};
+        script.executeProgram("cd", argsForCd);
+
         if (updateRepo) {
-            // first do a clone and maybe fail
-            String[] gitCloneArgs = {"clone", repoURI, simFolder};
+            /* if statement */
+            script.addVerbatimStatement("if git status; then", false);
+
+            // restore any unstaged changes.
+            String[] gitCheckoutArgs = new String[]{"checkout", "."};
+            script.executeProgram("git", gitCheckoutArgs);
+
+            // pull.
+            String[] gitPullArgs = new String[]{"pull", "origin", "master"};
+            script.executeProgram("git", gitPullArgs);
+
+            /* else statement */
+            script.addVerbatimStatement("else", false);
+
+            String[] rmArgs = new String[]{"-rf", "*"};
+            script.executeProgram("rm", rmArgs);
+
+            String[] gitCloneArgs = new String[]{"clone", repoURI, workFolder};
             script.executeProgram("git", gitCloneArgs);
 
-            // change directory to do a pull
-            // note: unnecessary with git 1.85 or higher, but git hasn't been
-            // updated in quite some time on the UWB linux binaries :(
-            String[] cdArg = {simFolder};
-            script.executeProgram("cd", cdArg);
+            script.addVerbatimStatement("fi", false);
 
-            // then do a pull and maybe fail (one of the two will work)
-            String[] gitPullArgs = {"pull"};
-            script.executeProgram("git", gitPullArgs);
-            if (simSpec.hasCommitCheckout()) {
-                String[] gitCheckoutSHA1Key = {"checkout", simSpec.getSHA1CheckoutKey()};
-                script.executeProgram("git", gitCheckoutSHA1Key);
+            /* Checkout a particular commit if necessary */
+            String sha1CheckoutKey = simSpec.getSHA1CheckoutKey().trim();
+            if (sha1CheckoutKey == null || sha1CheckoutKey.length() == 0) {
+                sha1CheckoutKey = "master";
             }
-        } else {
-            String[] cdArg = {simFolder};
-            script.executeProgram("cd", cdArg);
-        }
-        // record the latest commit key information
-        script.addVerbatimStatement("git log --pretty=format:'%H' -n 1", scriptOutputDir + "/"
-                + simulationName + "_" + Script.SHA1_KEY_FILENAME, false);
-        /* Make the Simulator */
-        // clean previous build
-        if (simSpec.buildFirst()) {
-            String[] cleanMakeArgs = {"-s", "clean"};
-            script.executeProgram("make", cleanMakeArgs);
-            // compile without hdf5
-            String[] makeArgs = {"-s", simExecutableToInvoke, "CUSEHDF5='no'"};
+
+            gitCheckoutArgs = new String[]{"checkout", sha1CheckoutKey};
+            script.executeProgram("git", gitCheckoutArgs);
+
+            /* Make the Simulator */
+            // first, determine which version of the sim we are using (sequential or parallel) and
+            // update CMakeLists.txt accordingly.
+            String simType = simSpec.getSimulationType();
+            String cudaOpt;
+            if (simType.equals(SimulationSpecification.SimulatorType.CUDA)) {
+                cudaOpt = "\"/^set(ENABLE_CUDA NO)/ s/NO/YES/\"";
+            } else {
+                // If the sim is sequential or unidentifiable we will attempt to build it as
+                // sequential.
+                cudaOpt = "\"/^set(ENABLE_CUDA YES)/ s/YES/NO/\"";
+            }
+            script.addVerbatimStatement("sed -i " + cudaOpt + " CMakeLists.txt", false);
+
+            // now we can build, cd into the build folder.
+            String[] cdArgs = {"build"};
+            script.executeProgram("cd", cdArgs);
+
+            // run cmake
+            String[] cMakeArgs = {".."};
+            script.executeProgram("cmake", cMakeArgs);
+            if (simType.equals(SimulationSpecification.SimulatorType.CUDA)) {
+                // If we're building the parallel (CUDA) version, run cmake again.
+                script.executeProgram("cmake", cMakeArgs);
+            }
+
+            // run make
+            String[] makeArgs = {};
             script.executeProgram("make", makeArgs);
         }
-        // change directory to script output location
-        String[] cdArg = {scriptOutputDir};
-        script.executeProgram("cd", cdArg);
+
+        if (!updateRepo) {
+            // We need to CD into the build folder if we are not cloning.
+            String[] cdArgs = new String[]{"build"};
+            script.executeProgram("cd", cdArgs);
+        }
+
+        /* Copy the results from the build. */
+        // copy the executable to the bin folder
+        String[] cpArgs = {executableName, binFolder};
+        script.executeProgram("cp", cpArgs);
+
+        // copy over the runtime files
+        cpArgs = new String[]{"-r",
+                "../RuntimeFiles/",
+                replaceTildeWithHome(FileManager.getSimulationsDirectory()) + "/"};
+        script.executeProgram("cp", cpArgs);
+
+        // copy over the output files
+        cpArgs = new String[]{"-r",
+                "../Output/",
+                replaceTildeWithHome(FileManager.getSimulationsDirectory()) + "/"};
+        script.executeProgram("cp", cpArgs);
+
+        // Get commit info.
+        script.addVerbatimStatement("git log --pretty=format:'%H' -n 1", scriptOutputDir + "/"
+                + simulationName + "_" + Script.SHA1_KEY_FILENAME, false);
+
         /* Make Results Folder */
-        String[] mkResultsDirArgs = {"results"};
+        // change directory to script output location
+        String[] cdArgs = {scriptOutputDir};
+        script.executeProgram("cd", cdArgs);
+
+        String[] mkResultsDirArgs = {"-p", "results/"};
         script.executeProgram("mkdir", mkResultsDirArgs);
+
         /* Run the Simulator */
-        script.addVerbatimStatement(simFolder + "/" + simExecutableToInvoke + " -t "
-                + "configfiles/" + configFilename,
-                simulationName + "_" + Script.SIM_STATUS_FILENAME, true);
+        script.addVerbatimStatement(binFolder + "/" + executableName + " -c "
+                                        + "configfiles/" + configFilename,
+                        scriptOutputDir + "/" + simulationName + "_" + Script.SIM_STATUS_FILENAME,
+                            true);
+
         /* Put Script Together and Save */
-        if (simExecutableToInvoke == null || !script.construct()) {
+        if (!script.construct()) {
             script = null; // or indicate unsuccessful operation
         }
         return script;

@@ -7,33 +7,33 @@
          <z name="z">1</z>
       </PoolSize>
       <SimParams name="SimParams">
-         <Tsim name="Tsim">100.0</Tsim>
-         <numSims name="numSims">1</numSims>
+          <epochDuration name="epochDuration">1.0</epochDuration>
+          <numEpochs name="numEpochs">1</numEpochs>
       </SimParams>
       <SimConfig name="SimConfig">
          <maxFiringRate name="maxFiringRate">200</maxFiringRate>
-         <maxSynapsesPerNeuron name="maxSynapsesPerNeuron">200</maxSynapsesPerNeuron>
+         <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
       </SimConfig>
-      <Seed name="Seed">
-         <value name="value">1</value>
-      </Seed>
-      <OutputParams name="OutputParams">
-         <!-- rename tag to resultFileName for Graphitti simulator -->
-         <stateOutputFileName name="stateOutputFileName"/>
-      </OutputParams>
+      <RNGConfig name="RNGConfig">
+         <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
+         <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">1</NoiseRNGSeed>
+      </RNGConfig>
    </SimInfoParams>
 
     <ModelParams>
-        <NeuronsParams>
-        </NeuronsParams>
+        <VerticesParams>
+        </VerticesParams>
 
-        <SynapsesParams>
-        </SynapsesParams>
+        <EdgesParams>
+        </EdgesParams>
 
         <ConnectionsParams>
         </ConnectionsParams>
 
         <LayoutParams>
         </LayoutParams>
+
+       <RecorderParams>
+       </RecorderParams>
     </ModelParams>
 </BGSimParams>

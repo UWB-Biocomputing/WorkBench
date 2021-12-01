@@ -30,11 +30,13 @@ public final class SystemConfig {
     public static final String NODE_PATH_ATTRIBUTE_NAME = "nodePath";
 
     // Tag names
-    public static final String NEURONS_PARAMS_CLASSES_TAG_NAME = "NeuronsParamsClasses";
-    public static final String SYNAPSES_PARAMS_CLASSES_TAG_NAME = "SynapsesParamsClasses";
+    public static final String VERTICES_PARAMS_CLASSES_TAG_NAME = "VerticesParamsClasses";
+    public static final String EDGES_PARAMS_CLASSES_TAG_NAME = "EdgesParamsClasses";
     public static final String CONNECTIONS_PARAMS_CLASSES_TAG_NAME = "ConnectionsParamsClasses";
     public static final String LAYOUT_PARAMS_CLASSES_TAG_NAME = "LayoutParamsClasses";
-    public static final String RESULT_FILE_NAME_TAG_NAME = "stateOutputFileName";
+    public static final String RECORDER_PARAMS_CLASSES_TAG_NAME = "RecorderParamsClasses";
+//    public static final String RESULT_FILE_NAME_TAG_NAME = "stateOutputFileName";
+    public static final String RESULT_FILE_NAME_TAG_NAME = "resultFileName";
     //TODO: update RESULT_FILE_NAME_TAG_NAME to "resultFileName" for Graphitti
 
     private SystemConfig() {

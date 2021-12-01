@@ -324,6 +324,7 @@ public class SimulationSpecification {
             executable = simulatorType.equals(SimulationSpecification.SEQUENTIAL_SIMULATION)
                     ? "growth" : "growth_cuda";
         }
+        executable = "cgraphitti";
         return executable;
     }
 

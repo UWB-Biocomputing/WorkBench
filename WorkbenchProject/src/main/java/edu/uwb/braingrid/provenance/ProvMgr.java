@@ -39,7 +39,7 @@ import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.model.Simulation;
 
 /**
- * <p>Manages provenance for simulations specified within the BrainGrid Workbench.</p>
+ * <p>Manages provenance for simulations specified within the Graphitti Workbench.</p>
  *
  * <p>Basic construction requires input files, simulator process, and an output file.</p>
  *
@@ -109,7 +109,7 @@ public class ProvMgr {
         // XML schema
         model.setNsPrefix("xsd", ProvOntology.getXSDNameSpaceURI());
         localNameSpaceURI = getLocalNameSpaceURI();
-        // BrainGrid Prov
+        // Graphitti Prov
         model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceURI);
     }
 

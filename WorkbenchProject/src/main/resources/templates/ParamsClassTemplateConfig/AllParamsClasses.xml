@@ -2,16 +2,16 @@
 <AllParamsClasses
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xsi:noNamespaceSchemaLocation='AllParamsClasses.xsd'>
-    <NeuronsParamsClasses name="NeuronsParamsClasses" templateDirectory="ParamsClassTemplateConfig/NeuronsParamsClass/">
+    <VerticesParamsClasses name="VerticesParamsClasses" templateDirectory="ParamsClassTemplateConfig/VerticesParamsClass/">
         <ParamsClass name="ALLLIFNeurons" templateFileName="AllLIFNeurons.xml"/>
         <ParamsClass name="AllIZHNeurons" templateFileName="AllIZHNeurons.xml"/>
-    </NeuronsParamsClasses>
-    <SynapsesParamsClasses name="SynapsesParamsClasses" templateDirectory="ParamsClassTemplateConfig/SynapsesParamsClass/">
+    </VerticesParamsClasses>
+    <EdgesParamsClasses name="EdgesParamsClasses" templateDirectory="ParamsClassTemplateConfig/EdgesParamsClass/">
         <ParamsClass name="AllSpikingSynapses" templateFileName="AllSpikingSynapses.xml"/>
         <ParamsClass name="AllDSSynapses" templateFileName="AllDSSynapses.xml"/>
         <ParamsClass name="AllSTDPSynapses" templateFileName="AllSTDPSynapses.xml"/>
         <ParamsClass name="AllDynamicSTDPSynapses" templateFileName="AllDynamicSTDPSynapses.xml"/>
-    </SynapsesParamsClasses>
+    </EdgesParamsClasses>
     <ConnectionsParamsClasses name="ConnectionsParamsClasses" templateDirectory="ParamsClassTemplateConfig/ConnectionsParamsClass/">
         <ParamsClass name="ConnGrowth" templateFileName="ConnGrowth.xml"/>
         <ParamsClass name="ConnStatic" templateFileName="ConnStatic.xml"/>
@@ -20,4 +20,7 @@
         <ParamsClass name="FixedLayout" templateFileName="FixedLayout.xml"/>
         <ParamsClass name="DynamicLayout" templateFileName="DynamicLayout.xml"/>
     </LayoutParamsClasses>
+    <RecorderParamsClasses name="RecorderParamsClasses" templateDirectory="ParamsClassTemplateConfig/RecorderParamsClass/">
+        <ParamsClass name="XmlGrowthRecorder" templateFileName="XmlGrowthRecorder.xml"/>
+    </RecorderParamsClasses>
 </AllParamsClasses>

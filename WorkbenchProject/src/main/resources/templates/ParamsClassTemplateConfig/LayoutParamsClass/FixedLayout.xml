@@ -3,6 +3,5 @@
     <LayoutFiles name="LayoutFiles">
         <activeNListFileName name="activeNListFileName" type="InputFile">configfiles/NList/ActiveNList.xml</activeNListFileName>
         <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/InhibitoryNList.xml</inhNListFileName>
-        <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/ProbedNList.xml</probedNListFileName>
     </LayoutFiles>
 </LayoutParams>

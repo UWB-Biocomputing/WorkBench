@@ -505,7 +505,7 @@ public class DynamicInputConfigurationDialog extends javax.swing.JDialog {
     private String ensureValidResultFileName(String resultFileName) {
         String validResultFileName = resultFileName;
         if (!resultFileName.startsWith("results/")) {
-            validResultFileName = "results/" + resultFileName;
+            validResultFileName = "result/" + resultFileName;
         }
         if (!resultFileName.endsWith(".xml")) {
             validResultFileName += ".xml";

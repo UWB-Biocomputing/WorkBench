@@ -41,14 +41,16 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         messageLabelText = new javax.swing.JLabel();
-        neuronsParamsClassLbl = new javax.swing.JLabel();
-        synapsesParamsClassLbl = new javax.swing.JLabel();
+        verticesParamsClassLbl = new javax.swing.JLabel();
+        edgesParamsClassLbl = new javax.swing.JLabel();
         connectionsParamsClassLbl = new javax.swing.JLabel();
         layoutParamsClassLbl = new javax.swing.JLabel();
-        neuronsParamsClassCBox = new javax.swing.JComboBox<>();
+        recorderParamsClassLbl = new javax.swing.JLabel();
+        verticesParamsClassCBox = new javax.swing.JComboBox<>();
         connectionsParamsClassCBox = new javax.swing.JComboBox<>();
-        synapsesParamsClassCBox = new javax.swing.JComboBox<>();
+        edgesParamsClassCBox = new javax.swing.JComboBox<>();
         layoutParamsClassCBox = new javax.swing.JComboBox<>();
+        recorderParamsClassCBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Simulator Configuration");
@@ -70,13 +72,15 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
 
         messageLabelText.setText("None");
 
-        neuronsParamsClassLbl.setText("NeuronsParams Class:");
+        verticesParamsClassLbl.setText("VerticesParams Class:");
 
-        synapsesParamsClassLbl.setText("SynapsesParams Class:");
+        edgesParamsClassLbl.setText("EdgesParams Class:");
 
         connectionsParamsClassLbl.setText("ConnectionsParams Class:");
 
         layoutParamsClassLbl.setText("LayoutParams Class:");
+
+        recorderParamsClassLbl.setText("RecorderParams Class:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -94,21 +98,25 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(connectionsParamsClassLbl)
                                 .addComponent(layoutParamsClassLbl, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(synapsesParamsClassLbl, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(neuronsParamsClassLbl, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(edgesParamsClassLbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(verticesParamsClassLbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(recorderParamsClassLbl, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(neuronsParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(verticesParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(connectionsParamsClassCBox,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(synapsesParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(edgesParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(layoutParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(recorderParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 131, Short.MAX_VALUE)))
@@ -117,13 +125,13 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                 javax.swing.GroupLayout.Alignment.TRAILING,
                 layout.createSequentialGroup().addContainerGap(17, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(neuronsParamsClassLbl)
-                                .addComponent(neuronsParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                .addComponent(verticesParamsClassLbl)
+                                .addComponent(verticesParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(synapsesParamsClassLbl)
-                                .addComponent(synapsesParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                .addComponent(edgesParamsClassLbl)
+                                .addComponent(edgesParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -134,6 +142,11 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(layoutParamsClassLbl)
                                 .addComponent(layoutParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(recorderParamsClassLbl)
+                                .addComponent(recorderParamsClassCBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -171,11 +184,14 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> layoutParamsClassCBox;
     private javax.swing.JLabel layoutParamsClassLbl;
     private javax.swing.JLabel messageLabelText;
-    private javax.swing.JComboBox<String> neuronsParamsClassCBox;
-    private javax.swing.JLabel neuronsParamsClassLbl;
+    private javax.swing.JComboBox<String> verticesParamsClassCBox;
+    private javax.swing.JLabel verticesParamsClassLbl;
     private javax.swing.JButton okButton;
-    private javax.swing.JComboBox<String> synapsesParamsClassCBox;
-    private javax.swing.JLabel synapsesParamsClassLbl;
+    private javax.swing.JComboBox<String> edgesParamsClassCBox;
+    private javax.swing.JLabel edgesParamsClassLbl;
+
+    private javax.swing.JComboBox<String> recorderParamsClassCBox;
+    private javax.swing.JLabel recorderParamsClassLbl;
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
 
@@ -186,18 +202,21 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
     private Document baseTemplateInfoDoc = null;
     private Document xmlDoc = null;
     private boolean okClicked = false;
-    private ArrayList<String> neuronsParamsTemplatePaths = new ArrayList<>();
-    private ArrayList<String> synapsesParamsTemplatePaths = new ArrayList<>();
+    private ArrayList<String> verticesParamsTemplatePaths = new ArrayList<>();
+    private ArrayList<String> edgesParamsTemplatePaths = new ArrayList<>();
     private ArrayList<String> connectionsParamsTemplatePaths = new ArrayList<>();
     private ArrayList<String> layoutParamsTemplatePaths = new ArrayList<>();
-    private String neuronsParamsNodePath = null;
-    private String synapsesParamsNodePath = null;
+    private ArrayList<String> recorderParamsTemplatePaths = new ArrayList<>();
+    private String verticesParamsNodePath = null;
+    private String edgesParamsNodePath = null;
     private String connectionsParamsNodePath = null;
     private String layoutParamsNodePath = null;
-    private String neuronsParamsClass = null;
-    private String synapsesParamsClass = null;
+    private String recorderParamsNodePath = null;
+    private String verticesParamsClass = null;
+    private String edgesParamsClass = null;
     private String connectionsParamsClass = null;
     private String layoutParamsClass = null;
+    private String recorderParamsClass = null;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -275,13 +294,13 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                                                 SystemConfig.TEMPLATE_FILE_NAME_ATTRIBUTE_NAME);
                                 String paramsClassesTypeName = paramsClassesType.getNodeName();
                                 switch (paramsClassesTypeName) {
-                                case SystemConfig.NEURONS_PARAMS_CLASSES_TAG_NAME:
-                                    neuronsParamsClassCBox.addItem(className);
-                                    neuronsParamsTemplatePaths.add(templatePath);
+                                case SystemConfig.VERTICES_PARAMS_CLASSES_TAG_NAME:
+                                    verticesParamsClassCBox.addItem(className);
+                                    verticesParamsTemplatePaths.add(templatePath);
                                     break;
-                                case SystemConfig.SYNAPSES_PARAMS_CLASSES_TAG_NAME:
-                                    synapsesParamsClassCBox.addItem(className);
-                                    synapsesParamsTemplatePaths.add(templatePath);
+                                case SystemConfig.EDGES_PARAMS_CLASSES_TAG_NAME:
+                                    edgesParamsClassCBox.addItem(className);
+                                    edgesParamsTemplatePaths.add(templatePath);
                                     break;
                                 case SystemConfig.CONNECTIONS_PARAMS_CLASSES_TAG_NAME:
                                     connectionsParamsClassCBox.addItem(className);
@@ -290,6 +309,10 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                                 case SystemConfig.LAYOUT_PARAMS_CLASSES_TAG_NAME:
                                     layoutParamsClassCBox.addItem(className);
                                     layoutParamsTemplatePaths.add(templatePath);
+                                    break;
+                                case SystemConfig.RECORDER_PARAMS_CLASSES_TAG_NAME:
+                                    recorderParamsClassCBox.addItem(className);
+                                    recorderParamsTemplatePaths.add(templatePath);
                                     break;
                                 default:
                                     // unknown param class type
@@ -312,17 +335,20 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
                 String paramsClassesNodePath = ((Element) paramsClassesNode)
                         .getAttribute(SystemConfig.NODE_PATH_ATTRIBUTE_NAME);
                 switch (paramsClassesType) {
-                case SystemConfig.NEURONS_PARAMS_CLASSES_TAG_NAME:
-                    neuronsParamsNodePath = paramsClassesNodePath;
+                case SystemConfig.VERTICES_PARAMS_CLASSES_TAG_NAME:
+                    verticesParamsNodePath = paramsClassesNodePath;
                     break;
-                case SystemConfig.SYNAPSES_PARAMS_CLASSES_TAG_NAME:
-                    synapsesParamsNodePath = paramsClassesNodePath;
+                case SystemConfig.EDGES_PARAMS_CLASSES_TAG_NAME:
+                    edgesParamsNodePath = paramsClassesNodePath;
                     break;
                 case SystemConfig.CONNECTIONS_PARAMS_CLASSES_TAG_NAME:
                     connectionsParamsNodePath = paramsClassesNodePath;
                     break;
                 case SystemConfig.LAYOUT_PARAMS_CLASSES_TAG_NAME:
                     layoutParamsNodePath = paramsClassesNodePath;
+                    break;
+                case SystemConfig.RECORDER_PARAMS_CLASSES_TAG_NAME:
+                    recorderParamsNodePath = paramsClassesNodePath;
                     break;
                 default:
                     // unknown param class type
@@ -332,17 +358,17 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
 
         // set combo box options according to params classes from sim config XML file
         XPathExpression xpath = XPathFactory.newInstance().newXPath()
-                .compile(neuronsParamsNodePath);
+                .compile(verticesParamsNodePath);
         NodeList nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
         Node node = nodeList.item(0);
-        neuronsParamsClass = ((Element) node).getAttribute(SystemConfig.CLASS_ATTRIBUTE_NAME);
-        neuronsParamsClassCBox.setSelectedItem(neuronsParamsClass);
+        verticesParamsClass = ((Element) node).getAttribute(SystemConfig.CLASS_ATTRIBUTE_NAME);
+        verticesParamsClassCBox.setSelectedItem(verticesParamsClass);
 
-        xpath = XPathFactory.newInstance().newXPath().compile(synapsesParamsNodePath);
+        xpath = XPathFactory.newInstance().newXPath().compile(edgesParamsNodePath);
         nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
         node = nodeList.item(0);
-        synapsesParamsClass = ((Element) node).getAttribute(SystemConfig.CLASS_ATTRIBUTE_NAME);
-        synapsesParamsClassCBox.setSelectedItem(synapsesParamsClass);
+        edgesParamsClass = ((Element) node).getAttribute(SystemConfig.CLASS_ATTRIBUTE_NAME);
+        edgesParamsClassCBox.setSelectedItem(edgesParamsClass);
 
         xpath = XPathFactory.newInstance().newXPath().compile(connectionsParamsNodePath);
         nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
@@ -355,6 +381,12 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
         node = nodeList.item(0);
         layoutParamsClass = ((Element) node).getAttribute(SystemConfig.CLASS_ATTRIBUTE_NAME);
         layoutParamsClassCBox.setSelectedItem(layoutParamsClass);
+
+        xpath = XPathFactory.newInstance().newXPath().compile(recorderParamsNodePath);
+        nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
+        node = nodeList.item(0);
+        recorderParamsClass = ((Element) node).getAttribute(SystemConfig.CLASS_ATTRIBUTE_NAME);
+        recorderParamsClassCBox.setSelectedItem(recorderParamsClass);
     }
 
     /**
@@ -362,14 +394,14 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
      */
     private void setConfigXMLDoc() throws Exception {
         LOG.info("Start setConfigXMLDoc");
-        // get neurons Params Node from the path
+        // get vertices Params Node from the path
         XPathExpression xpath = XPathFactory.newInstance().newXPath()
-                .compile(neuronsParamsNodePath);
+                .compile(verticesParamsNodePath);
         NodeList nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
         Node node = nodeList.item(0);
-        if (!neuronsParamsClass.equals(neuronsParamsClassCBox.getSelectedItem())) {
-            String templateFileURL = neuronsParamsTemplatePaths.get(
-                    neuronsParamsClassCBox.getSelectedIndex());
+        if (!verticesParamsClass.equals(verticesParamsClassCBox.getSelectedItem())) {
+            String templateFileURL = verticesParamsTemplatePaths.get(
+                    verticesParamsClassCBox.getSelectedIndex());
             Document templateNode = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(getClass().getResourceAsStream("/templates/" + templateFileURL));
             Node parentNode = node.getParentNode();
@@ -377,13 +409,13 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
             parentNode.replaceChild(newNode, node);
         }
 
-        // get synapses Params Node from the path
-        xpath = XPathFactory.newInstance().newXPath().compile(synapsesParamsNodePath);
+        // get edges Params Node from the path
+        xpath = XPathFactory.newInstance().newXPath().compile(edgesParamsNodePath);
         nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
         node = nodeList.item(0);
-        if (!synapsesParamsClass.equals(synapsesParamsClassCBox.getSelectedItem())) {
-            String templateFileURL = synapsesParamsTemplatePaths.get(
-                    synapsesParamsClassCBox.getSelectedIndex());
+        if (!edgesParamsClass.equals(edgesParamsClassCBox.getSelectedItem())) {
+            String templateFileURL = edgesParamsTemplatePaths.get(
+                    edgesParamsClassCBox.getSelectedIndex());
             Document templateNode = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(getClass().getResourceAsStream("/templates/" + templateFileURL));
             Node parentNode = node.getParentNode();
@@ -419,6 +451,21 @@ public class InputConfigClassSelectionDialog extends javax.swing.JDialog {
             Node newNode = xmlDoc.importNode(templateNode.getFirstChild(), true);
             parentNode.replaceChild(newNode, node);
         }
+
+        // get recorder Params Node from the path
+        xpath = XPathFactory.newInstance().newXPath().compile(recorderParamsNodePath);
+        nodeList = (NodeList) xpath.evaluate(xmlDoc, XPathConstants.NODESET);
+        node = nodeList.item(0);
+        if (!recorderParamsClass.equals(recorderParamsClassCBox.getSelectedItem())) {
+            String templateFileURL = recorderParamsTemplatePaths.get(
+                    recorderParamsClassCBox.getSelectedIndex());
+            Document templateNode = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                    .parse(getClass().getResourceAsStream("/templates/" + templateFileURL));
+            Node parentNode = node.getParentNode();
+            Node newNode = xmlDoc.importNode(templateNode.getFirstChild(), true);
+            parentNode.replaceChild(newNode, node);
+        }
+
         LOG.info("End setConfigXMLDoc");
     }
     // </editor-fold>
