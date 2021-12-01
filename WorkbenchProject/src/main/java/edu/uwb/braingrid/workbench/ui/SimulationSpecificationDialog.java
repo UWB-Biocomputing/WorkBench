@@ -39,9 +39,9 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         versionAnnotationLabel = new javax.swing.JLabel();
         versionAnnotationTextField = new javax.swing.JTextField();
         simulatorLocationComboBox = new javax.swing.JComboBox();
-        sourceCodeUpdatingLabel = new javax.swing.JLabel();
+        cloneOptionLabel = new javax.swing.JLabel();
         simulatorLocationLabel = new javax.swing.JLabel();
-        sourceCodeUpdatingComboBox = new javax.swing.JComboBox();
+        cloneOptionComboBox = new javax.swing.JComboBox();
         testConnectionButton = new javax.swing.JButton();
         remoteSpecMessageContentLabel = new javax.swing.JLabel();
         hostAddressLabel = new javax.swing.JLabel();
@@ -112,15 +112,16 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             }
         });
 
-        sourceCodeUpdatingLabel.setText("Source Code Updating:");
-        sourceCodeUpdatingLabel
+        cloneOptionLabel.setText("Clone Option:");
+        cloneOptionLabel
                 .setToolTipText("<html>Directions for updating source code<br>prior to running the simulation</html>");
 
         simulatorLocationLabel.setText("Simulator Location: ");
         simulatorLocationLabel
                 .setToolTipText("<html>Will you run Graphitti on a remote<br>machine or on this machine?</html>");
 
-        sourceCodeUpdatingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Pull" }));
+        cloneOptionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clone New",
+                                                                                                "Use Existing" }));
 
         testConnectionButton.setText("Test Connection");
         testConnectionButton.setEnabled(false);
@@ -188,12 +189,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(simulatorLocationComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup().addComponent(sourceCodeUpdatingLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(sourceCodeUpdatingComboBox,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addComponent(hostAddressLabel)
@@ -244,6 +239,12 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup().addComponent(cloneOptionLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cloneOptionComboBox,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                         .addContainerGap()));
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,6 +282,9 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(simulationTypeLabel)
                                 .addComponent(simulationTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cloneOptionLabel)// FOOOOOOBAAAAAAR
+                                .addComponent(cloneOptionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(codeRepositoryLocationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14,
@@ -298,10 +302,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                                 .addComponent(SHA1CheckoutKeyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 28,
                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(sourceCodeUpdatingLabel)
-                                .addComponent(sourceCodeUpdatingComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
@@ -392,8 +392,8 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox simulatorLocationComboBox;
     private javax.swing.JLabel simulatorLocationLabel;
     private javax.swing.JTextField simulatorLocationTextField;
-    private javax.swing.JComboBox sourceCodeUpdatingComboBox;
-    private javax.swing.JLabel sourceCodeUpdatingLabel;
+    private javax.swing.JComboBox cloneOptionComboBox;
+    private javax.swing.JLabel cloneOptionLabel;
     private javax.swing.JButton testConnectionButton;
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JTextField usernameTextField;
@@ -486,10 +486,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
         if (gitPull != null) {
             if (gitPull.equals(SimulationSpecification.CLONE_NEW)) {
-                sourceCodeUpdatingComboBox.setSelectedIndex(
+                cloneOptionComboBox.setSelectedIndex(
                         SimulationSpecification.GIT_PULL_AND_CLONE_INDEX);
             } else {
-                sourceCodeUpdatingComboBox.setSelectedIndex(SimulationSpecification.GIT_NONE_INDEX);
+                cloneOptionComboBox.setSelectedIndex(SimulationSpecification.GIT_NONE_INDEX);
             }
         }
         codeRepositoryLocationTextField.setText(codeLocation);
@@ -570,7 +570,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         simSpec.setSimulationLocale(locale);
         String type = simulationTypeComboBox.getSelectedItem().toString();
         simSpec.setSimulationType(type);
-        String update = sourceCodeUpdatingComboBox.getSelectedItem().toString();
+        String update = cloneOptionComboBox.getSelectedItem().toString();
         simSpec.setSourceCodeUpdating(update);
         simSpec.setHostAddr(hostAddressTextField.getText());
         simSpec.setUsername(usernameTextField.getText());
