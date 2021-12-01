@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
@@ -84,7 +83,7 @@ public class ScriptManager {
         boolean updateRepo = false;
         if (simulatorSourceCodeUpdatingType != null) {
             updateRepo = simulatorSourceCodeUpdatingType.equals(
-                    SimulationSpecification.GIT_PULL_AND_CLONE);
+                    SimulationSpecification.CLONE_NEW);
         }
 
         /* Create Script */

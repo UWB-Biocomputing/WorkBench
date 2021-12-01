@@ -35,10 +35,8 @@ public class SimulationSpecification {
     public static final String PARALLEL_SIMULATION = "Parallel";
     public static final int SEQUENTIAL_SIMULATION_INDEX = 0;
     public static final int PARALLEL_SIMULATION_INDEX = 1;
-    public static final String BUILD_BUILD_OPTION = "Build";
-    public static final String PRE_BUILT_BUILD_OPTION = "Pre-built";
-    public static final String GIT_PULL_AND_CLONE = "Pull";
-    public static final String GIT_NONE = "None";
+    public static final String CLONE_NEW = "Clone New";
+    public static final String USE_EXISTING = "Use Existing";
     public static final int GIT_PULL_AND_CLONE_INDEX = 1;
     public static final int GIT_NONE_INDEX = 0;
     public static final String SIM_EXEC_TEXT = "simExecutable";
@@ -48,7 +46,6 @@ public class SimulationSpecification {
     private String username;
     private String simulatorFolder;
     private String simulatorType;
-    private String buildOption;
     private String codeRepository;
     private String sourceCodeUpdating;
     private String sha1Key;
@@ -65,7 +62,6 @@ public class SimulationSpecification {
         username = null;
         simulatorFolder = null;
         simulatorType = null;
-        buildOption = null;
         codeRepository = null;
         sourceCodeUpdating = null;
         sha1Key = null;
@@ -321,20 +317,6 @@ public class SimulationSpecification {
     }
 
     /**
-     * Indicates whether or not the simulator should be build prior to execution. The default for
-     * this operation is an indication that the simulator should be built first.
-     *
-     * @return True if the simulator should be built prior to executing the simulation
-     */
-    public boolean buildFirst() {
-        boolean buildFirst = false;
-        if (buildOption != null) {
-            buildFirst = buildOption.equals(BUILD_BUILD_OPTION);
-        }
-        return buildFirst;
-    }
-
-    /**
      * Indicates whether or not the simulator for this simulation should be built from code that is
      * checked out based a particular commit.
      *
@@ -361,7 +343,6 @@ public class SimulationSpecification {
                 && Objects.equals(username, that.username)
                 && Objects.equals(simulatorFolder, that.simulatorFolder)
                 && Objects.equals(simulatorType, that.simulatorType)
-                && Objects.equals(buildOption, that.buildOption)
                 && Objects.equals(codeRepository, that.codeRepository)
                 && Objects.equals(sourceCodeUpdating, that.sourceCodeUpdating)
                 && Objects.equals(sha1Key, that.sha1Key)
@@ -371,7 +352,7 @@ public class SimulationSpecification {
     @Override
     public int hashCode() {
         return Objects.hash(simulationLocale, hostname, username, simulatorFolder, simulatorType,
-                buildOption, codeRepository, sourceCodeUpdating, sha1Key, versionAnnotation);
+                codeRepository, sourceCodeUpdating, sha1Key, versionAnnotation);
     }
     // </editor-fold>
 }

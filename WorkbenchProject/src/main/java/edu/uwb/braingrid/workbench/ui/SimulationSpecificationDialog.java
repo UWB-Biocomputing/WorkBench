@@ -485,7 +485,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
 
         if (gitPull != null) {
-            if (gitPull.equals(SimulationSpecification.GIT_PULL_AND_CLONE)) {
+            if (gitPull.equals(SimulationSpecification.CLONE_NEW)) {
                 sourceCodeUpdatingComboBox.setSelectedIndex(
                         SimulationSpecification.GIT_PULL_AND_CLONE_INDEX);
             } else {
