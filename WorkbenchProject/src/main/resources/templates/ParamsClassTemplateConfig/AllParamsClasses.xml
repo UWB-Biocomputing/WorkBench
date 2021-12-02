@@ -22,5 +22,7 @@
     </LayoutParamsClasses>
     <RecorderParamsClasses name="RecorderParamsClasses" templateDirectory="ParamsClassTemplateConfig/RecorderParamsClass/">
         <ParamsClass name="XmlGrowthRecorder" templateFileName="XmlGrowthRecorder.xml"/>
+        <ParamsClass name="XmlSTDPRecorder" templateFileName="XmlSTDPRecorder.xml"/>
+        <ParamsClass name="Hdf5GrowthRecorder" templateFileName="Hdf5GrowthRecorder.xml"/>
     </RecorderParamsClasses>
 </AllParamsClasses>
