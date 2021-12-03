@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BGSimParams>
-   <SimInfoParams name="SimInfoParams">
-      <PoolSize name="PoolSize">
-         <x name="x">10</x>
-         <y name="y">10</y>
-         <z name="z">1</z>
+   <SimInfoParams name="Simulation Parameters">
+      <PoolSize name="Pool Size">
+         <x name="X">10</x>
+         <y name="Y">10</y>
+         <z name="Z">1</z>
       </PoolSize>
-      <SimParams name="SimParams">
-          <epochDuration name="epochDuration">1.0</epochDuration>
-          <numEpochs name="numEpochs">1</numEpochs>
+      <SimParams name="Epoch Parameters">
+          <epochDuration name="Epoch Duration">1.0</epochDuration>
+          <numEpochs name="Number of Epochs">1</numEpochs>
       </SimParams>
-      <SimConfig name="SimConfig">
-         <maxFiringRate name="maxFiringRate">200</maxFiringRate>
-         <maxEdgesPerVertex name="maxEdgesPerVertex">200</maxEdgesPerVertex>
+      <SimConfig name="Simulation Configuration">
+         <maxFiringRate name="Max Firing Rate">200</maxFiringRate>
+         <maxEdgesPerVertex name="Maximum Edges Per Vertex">200</maxEdgesPerVertex>
       </SimConfig>
-      <RNGConfig name="RNGConfig">
-         <InitRNGSeed name="InitRNGSeed">1</InitRNGSeed>
-         <NoiseRNGSeed class="Norm" name="NoiseRNGSeed">1</NoiseRNGSeed>
+      <RNGConfig name="RNG Configuration">
+         <InitRNGSeed name="Seed for RNG Initialization">1</InitRNGSeed>
+         <NoiseRNGSeed class="Norm" name="Seed for RNG Noise">1</NoiseRNGSeed>
       </RNGConfig>
    </SimInfoParams>
 
