@@ -142,7 +142,7 @@ public class Graph {
             try {
                 System.out.println("Repo manager: " + RepoManager.getMasterBranchDirectory());
                 git = Git.cloneRepository()
-                        .setURI("https://github.com/UWB-Biocomputing/BrainGrid.git")
+                        .setURI("https://https://github.com/UWB-Biocomputing/Graphitti")
                         .setDirectory(bgReposPath.toFile())
                         .call();
             } catch (GitAPIException e) {

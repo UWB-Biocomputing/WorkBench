@@ -115,7 +115,7 @@ public class WorkbenchDashboard extends Application {
             }
         });
 
-        Image logo = new Image(getClass().getResourceAsStream("/braingrid/color-logo.png"));
+        Image logo = new Image(getClass().getResourceAsStream("/graphitti/color-logo.png"));
         primaryStage.setTitle("Graphitti Workbench");
         primaryStage.getIcons().add(logo);
 
