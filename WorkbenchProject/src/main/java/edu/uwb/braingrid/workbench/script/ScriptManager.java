@@ -180,14 +180,14 @@ public class ScriptManager {
 
         // copy over the runtime files
         cpArgs = new String[]{"-r",
-                "../RuntimeFiles/",
-                replaceTildeWithHome(FileManager.getSimulationsDirectory()) + "/"};
+                "RuntimeFiles/",
+                replaceTildeWithHome(scriptOutputDir) + "/"};
         script.executeProgram("cp", cpArgs);
 
         // copy over the output files
         cpArgs = new String[]{"-r",
-                "../Output/",
-                replaceTildeWithHome(FileManager.getSimulationsDirectory()) + "/"};
+                "Output/",
+                replaceTildeWithHome(scriptOutputDir) + "/"};
         script.executeProgram("cp", cpArgs);
 
         // Get commit info.
