@@ -34,16 +34,14 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         codeRepositoryLocationTextField = new javax.swing.JTextField();
         runButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        simulatorLocationTextField = new javax.swing.JTextField();
-        simulatorFolderLocationLabel = new javax.swing.JLabel();
         simulationTypeLabel = new javax.swing.JLabel();
         simulationTypeComboBox = new javax.swing.JComboBox();
         versionAnnotationLabel = new javax.swing.JLabel();
         versionAnnotationTextField = new javax.swing.JTextField();
         simulatorLocationComboBox = new javax.swing.JComboBox();
-        sourceCodeUpdatingLabel = new javax.swing.JLabel();
+        cloneOptionLabel = new javax.swing.JLabel();
         simulatorLocationLabel = new javax.swing.JLabel();
-        sourceCodeUpdatingComboBox = new javax.swing.JComboBox();
+        cloneOptionComboBox = new javax.swing.JComboBox();
         testConnectionButton = new javax.swing.JButton();
         remoteSpecMessageContentLabel = new javax.swing.JLabel();
         hostAddressLabel = new javax.swing.JLabel();
@@ -56,13 +54,11 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         messageContentLabel = new javax.swing.JLabel();
         SHA1CheckoutKeyTextField = new javax.swing.JTextField();
         SHA1CheckoutKeyLabel = new javax.swing.JLabel();
-        buildOptionComboBox = new javax.swing.JComboBox();
-        BuildOptionLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Simulation Specification");
 
-        codeRepositoryLocationLabel.setText("BrainGrid Code Repository:");
+        codeRepositoryLocationLabel.setText("Graphitti Code Repository:");
         codeRepositoryLocationLabel.setToolTipText(
                 "<html>Repository to pull from.<br>This URI must go to a local folder,<br>or to a valid network address</html>");
 
@@ -90,16 +86,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             }
         });
 
-        simulatorLocationTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                simulatorLocationTextFieldKeyReleased(evt);
-            }
-        });
-
-        simulatorFolderLocationLabel.setText("* Simulator Folder Location:");
-        simulatorFolderLocationLabel
-                .setToolTipText("<html>The top folder for your local code-base<br>(not a repository address)</html>");
-
         simulationTypeLabel.setText("Simulator Execution Type: ");
         simulationTypeLabel.setToolTipText(
                 "<html>If you wish to run growth, choose sequential<br>If you wish to run growth_gpu, choose parallel</html>");
@@ -126,15 +112,16 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             }
         });
 
-        sourceCodeUpdatingLabel.setText("Source Code Updating:");
-        sourceCodeUpdatingLabel
+        cloneOptionLabel.setText("Clone Option:");
+        cloneOptionLabel
                 .setToolTipText("<html>Directions for updating source code<br>prior to running the simulation</html>");
 
         simulatorLocationLabel.setText("Simulator Location: ");
         simulatorLocationLabel
-                .setToolTipText("<html>Will you run BrainGrid on a remote<br>machine or on this machine?</html>");
+                .setToolTipText("<html>Will you run Graphitti on a remote<br>machine or on this machine?</html>");
 
-        sourceCodeUpdatingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Pull" }));
+        cloneOptionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clone New",
+                                                                                                "Use Existing" }));
 
         testConnectionButton.setText("Test Connection");
         testConnectionButton.setEnabled(false);
@@ -187,15 +174,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         SHA1CheckoutKeyLabel.setToolTipText(
                 "<html>A meaningful annotation to pair with<br>your source code version information<br>such as the repository branch</html>");
 
-        buildOptionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Build", "Pre-built" }));
-        buildOptionComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                buildOptionComboBoxItemStateChanged(evt);
-            }
-        });
-
-        BuildOptionLabel.setText("Build Option:");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,12 +189,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(simulatorLocationComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup().addComponent(sourceCodeUpdatingLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(sourceCodeUpdatingComboBox,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addComponent(hostAddressLabel)
@@ -231,15 +203,11 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                                                         javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(passwordField,
                                                         javax.swing.GroupLayout.Alignment.LEADING)))
-                                .addComponent(simulatorLocationTextField)
                                 .addComponent(codeRepositoryLocationTextField, javax.swing.GroupLayout.DEFAULT_SIZE,
                                         506, Short.MAX_VALUE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                                         layout.createSequentialGroup().addComponent(remoteSpecMessageContentLabel)
                                                 .addGap(18, 18, 18).addComponent(testConnectionButton))
-                                .addComponent(
-                                        simulatorFolderLocationLabel, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createSequentialGroup().addGroup(layout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(versionAnnotationLabel, javax.swing.GroupLayout.Alignment.LEADING,
@@ -271,11 +239,13 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(BuildOptionLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(buildOptionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createSequentialGroup().addComponent(cloneOptionLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cloneOptionComboBox,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                         .addContainerGap()));
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup().addGap(12, 12, 12)
@@ -307,18 +277,15 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2,
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(simulatorFolderLocationLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(simulatorLocationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 28,
-                                javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(simulationTypeLabel)
                                 .addComponent(simulationTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(buildOptionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(BuildOptionLabel))
+                                .addComponent(cloneOptionLabel)// FOOOOOOBAAAAAAR
+                                .addComponent(cloneOptionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(codeRepositoryLocationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14,
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -335,10 +302,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                                 .addComponent(SHA1CheckoutKeyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 28,
                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(sourceCodeUpdatingLabel)
-                                .addComponent(sourceCodeUpdatingComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
@@ -392,15 +355,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }// GEN-LAST:event_passwordFieldKeyReleased
 
-    private void simulatorLocationTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_simulatorLocationTextFieldKeyReleased
-        validateSimulatorLocation();
-        if (runButton.isEnabled()) {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                specifySimulation();
-            }
-        }
-    }// GEN-LAST:event_simulatorLocationTextFieldKeyReleased
-
     private void codeRepositoryLocationTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_codeRepositoryLocationTextFieldKeyReleased
         if (runButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -416,10 +370,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             }
         }
     }// GEN-LAST:event_versionAnnotationTextFieldKeyReleased
-
-    private void buildOptionComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_buildOptionComboBoxItemStateChanged
-        updateStateOnBuildOptionChange();
-    }// GEN-LAST:event_buildOptionComboBoxItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BuildOptionLabel;
@@ -439,12 +389,11 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     private javax.swing.JLabel remoteSpecMessageContentLabel;
     private javax.swing.JComboBox simulationTypeComboBox;
     private javax.swing.JLabel simulationTypeLabel;
-    private javax.swing.JLabel simulatorFolderLocationLabel;
     private javax.swing.JComboBox simulatorLocationComboBox;
     private javax.swing.JLabel simulatorLocationLabel;
     private javax.swing.JTextField simulatorLocationTextField;
-    private javax.swing.JComboBox sourceCodeUpdatingComboBox;
-    private javax.swing.JLabel sourceCodeUpdatingLabel;
+    private javax.swing.JComboBox cloneOptionComboBox;
+    private javax.swing.JLabel cloneOptionLabel;
     private javax.swing.JButton testConnectionButton;
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JTextField usernameTextField;
@@ -459,8 +408,8 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             = "^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\\.([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*$";
     private static final String LINUX_USERNAME_PATTERN = "^[a-z][a-z0-9\\-]*$";
     private static final String DEFAULT_REPO_URI
-            = "https://github.com/UWB-Biocomputing/BrainGrid.git";
-    private static final String DEFAULT_SIM_FOLDER = "BrainGrid";
+            = "https://github.com/UWB-Biocomputing/Graphitti.git";
+    private static final String DEFAULT_SIM_FOLDER = "Graphitti";
     private boolean okButtonClicked = false;
     private boolean connectionTestSuccessful = false;
     // </editor-fold>
@@ -477,7 +426,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         LOG.info("New SimulationSpecificationDialog");
         setModal(modal);
         initComponents();
-        simulatorLocationTextField.setText(DEFAULT_SIM_FOLDER);
         enableOkButton();
         center();
         pack();
@@ -510,7 +458,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             codeLocation = DEFAULT_REPO_URI;
         }
         String sha1Key = simSpec.hasCommitCheckout() ? simSpec.getSHA1CheckoutKey() : "";
-        String buildOption = simSpec.getBuildOption();
         String version = simSpec.getVersionAnnotation();
 
         if (remote) {
@@ -537,28 +484,18 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             }
         }
 
-        if (buildOption != null) {
-            if (buildOption.equals(SimulationSpecification.BUILD_BUILD_OPTION)) {
-                buildOptionComboBox.setSelectedItem(SimulationSpecification.BUILD_BUILD_OPTION);
-            } else {
-                buildOptionComboBox.setSelectedItem(SimulationSpecification.PRE_BUILT_BUILD_OPTION);
-            }
-        }
-
         if (gitPull != null) {
-            if (gitPull.equals(SimulationSpecification.GIT_PULL_AND_CLONE)) {
-                sourceCodeUpdatingComboBox.setSelectedIndex(
+            if (gitPull.equals(SimulationSpecification.CLONE_NEW)) {
+                cloneOptionComboBox.setSelectedIndex(
                         SimulationSpecification.GIT_PULL_AND_CLONE_INDEX);
             } else {
-                sourceCodeUpdatingComboBox.setSelectedIndex(SimulationSpecification.GIT_NONE_INDEX);
+                cloneOptionComboBox.setSelectedIndex(SimulationSpecification.GIT_NONE_INDEX);
             }
         }
-        simulatorLocationTextField.setText(folder);
         codeRepositoryLocationTextField.setText(codeLocation);
         versionAnnotationTextField.setText(version);
         SHA1CheckoutKeyTextField.setText(sha1Key);
 
-        updateStateOnBuildOptionChange();
         enableOkButton();
 
         center();
@@ -597,25 +534,14 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         connectionTestSuccessful = false;
     }
 
-    private void updateStateOnBuildOptionChange() {
-        String buildOption = buildOptionComboBox.getSelectedItem().toString();
-        if (buildOption.equals(SimulationSpecification.PRE_BUILT_BUILD_OPTION)) {
-            sourceCodeUpdatingComboBox.setSelectedItem(SimulationSpecification.GIT_NONE);
-            sourceCodeUpdatingComboBox.setEnabled(false);
-        } else {
-            sourceCodeUpdatingComboBox.setEnabled(true);
-        }
-    }
-
     private void enableOkButton() {
         // determine if any requirements are null or invalid
-        boolean validSimLocation = isValidSimLocation(simulatorLocationTextField.getText());
         boolean validHostAddress = isValidHostname(hostAddressTextField.getText());
         // set ok enabled based on state of required fields
         if (isRemoteExecution()) {
-            runButton.setEnabled(validSimLocation && validHostAddress);
+            runButton.setEnabled(validHostAddress);
         } else {
-            runButton.setEnabled(validSimLocation);
+            runButton.setEnabled(true);
         }
     }
     // </editor-fold>
@@ -638,20 +564,17 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
      */
     public SimulationSpecification toSimulationSpecification() {
         SimulationSpecification simSpec = new SimulationSpecification();
-        simSpec.setSimulatorFolder(simulatorLocationTextField.getText());
         simSpec.setCodeLocation(codeRepositoryLocationTextField.getText());
         simSpec.setVersionAnnotation(versionAnnotationTextField.getText());
         String locale = simulatorLocationComboBox.getSelectedItem().toString();
         simSpec.setSimulationLocale(locale);
         String type = simulationTypeComboBox.getSelectedItem().toString();
         simSpec.setSimulationType(type);
-        String update = sourceCodeUpdatingComboBox.getSelectedItem().toString();
+        String update = cloneOptionComboBox.getSelectedItem().toString();
         simSpec.setSourceCodeUpdating(update);
         simSpec.setHostAddr(hostAddressTextField.getText());
         simSpec.setUsername(usernameTextField.getText());
         simSpec.setSHA1CheckoutKey(SHA1CheckoutKeyTextField.getText());
-        String buildOption = buildOptionComboBox.getSelectedItem().toString();
-        simSpec.setBuildOption(buildOption);
 
         return simSpec;
     }
@@ -664,11 +587,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
     private boolean isValidUsername(String text) {
         return text != null && text.matches(LINUX_USERNAME_PATTERN);
-    }
-
-    private boolean isValidSimLocation(String text) {
-        return simulatorLocationTextField.getText() != null
-                && !simulatorLocationTextField.getText().isEmpty();
     }
 
     private boolean isRemoteExecution() {
@@ -692,12 +610,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Action Helpers">
     private void specifySimulation() {
-        String simFilePath = simulatorLocationTextField.getText();
-        if (simFilePath.endsWith("/") || simFilePath.endsWith("\\")) {
-            simFilePath = simFilePath.substring(0, simFilePath.length() - 1);
-            simulatorLocationTextField.setText(simFilePath);
-        }
-
         okButtonClicked = true;
         passwordField.setText(null);
         setVisible(false);
@@ -759,15 +671,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         Arrays.fill(password, '0');
         // reset button
         testConnectionButton.setEnabled(true);
-    }
-
-    private void validateSimulatorLocation() {
-        enableOkButton();
-        if (simulatorLocationTextField.getText().isEmpty()) {
-            setPathValidationMsg("Invalid Simulator Location", "red");
-        } else {
-            setPathValidationMsg("", "black");
-        }
     }
     // </editor-fold>
 }

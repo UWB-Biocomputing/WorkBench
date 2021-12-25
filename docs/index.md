@@ -69,3 +69,21 @@ The idea behind the BrainGrid Workbench is to develop an application to ease cre
             4.3.1.2. Expected Behavior
 
             4.3.1.3. Jupyter Notebook
+        
+        4.3.2. Programmer Workflow for Adding/Modifying Template Classes for Graphitti
+
+            4.3.2.1. Description of all the Template Files
+
+            4.3.2.2. How to Add/Remove a New Class Template
+
+            4.3.2.3. How to Modify an Existing Class Template
+
+        4.3.3. Workbench Directory Structure
+
+            4.3.3.1. Install Directory (Local)
+
+            4.3.3.2. Workbench Directory (Local)
+
+            4.3.3.3. Projects Directory (Local)
+			
+			4.3.3.4. Simulations Directory (Local OR Remote)

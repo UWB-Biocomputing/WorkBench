@@ -42,14 +42,14 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="connectionsParamsClassLbl" min="-2" max="-2" attributes="0"/>
                           <Component id="layoutParamsClassLbl" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="synapsesParamsClassLbl" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="neuronsParamsClassLbl" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="edgesParamsClassLbl" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="verticesParamsClassLbl" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="neuronsParamsClassCBox" min="-2" max="-2" attributes="0"/>
+                          <Component id="verticesParamsClassCBox" min="-2" max="-2" attributes="0"/>
                           <Component id="connectionsParamsClassCBox" min="-2" max="-2" attributes="0"/>
-                          <Component id="synapsesParamsClassCBox" min="-2" max="-2" attributes="0"/>
+                          <Component id="edgesParamsClassCBox" min="-2" max="-2" attributes="0"/>
                           <Component id="layoutParamsClassCBox" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="131" max="32767" attributes="0"/>
@@ -64,13 +64,13 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace pref="17" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="neuronsParamsClassLbl" min="-2" max="-2" attributes="0"/>
-                  <Component id="neuronsParamsClassCBox" min="-2" max="-2" attributes="0"/>
+                  <Component id="verticesParamsClassLbl" min="-2" max="-2" attributes="0"/>
+                  <Component id="verticesParamsClassCBox" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="synapsesParamsClassLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="synapsesParamsClassCBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="edgesParamsClassLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="edgesParamsClassCBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -119,14 +119,14 @@
         <Property name="text" type="java.lang.String" value="None"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="neuronsParamsClassLbl">
+    <Component class="javax.swing.JLabel" name="verticesParamsClassLbl">
       <Properties>
-        <Property name="text" type="java.lang.String" value="NeuronsParams Class:"/>
+        <Property name="text" type="java.lang.String" value="VerticesParams Class:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="synapsesParamsClassLbl">
+    <Component class="javax.swing.JLabel" name="edgesParamsClassLbl">
       <Properties>
-        <Property name="text" type="java.lang.String" value="SynapsesParams Class:"/>
+        <Property name="text" type="java.lang.String" value="EdgesParams Class:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="connectionsParamsClassLbl">
@@ -139,7 +139,7 @@
         <Property name="text" type="java.lang.String" value="LayoutParams Class:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="neuronsParamsClassCBox">
+    <Component class="javax.swing.JComboBox" name="verticesParamsClassCBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
@@ -159,7 +159,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="synapsesParamsClassCBox">
+    <Component class="javax.swing.JComboBox" name="edgesParamsClassCBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>

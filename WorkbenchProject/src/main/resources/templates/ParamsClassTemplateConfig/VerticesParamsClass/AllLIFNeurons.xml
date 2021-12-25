@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VerticesParams name="Vertices Parameters" class="AllLIFNeurons">
+    <Iinject name="IInject">
+        <min name="Min">13.5e-09</min>
+        <max name="Max">13.5e-09</max>
+    </Iinject>
+    <Inoise name="INoise">
+        <min name="Min">1.0e-09</min>
+        <max name="Max">1.5e-09</max>
+    </Inoise>
+    <Vthresh name="VThresh">
+        <min name="Min">15.0e-03</min>
+        <max name="Max">15.0e-03</max>
+    </Vthresh>
+    <Vresting name="VResting">
+        <min name="Min">0.0</min>
+        <max name="Max">0.0</max>
+    </Vresting>
+    <Vreset name="VReset">
+        <min name="Min">13.5e-03</min>
+        <max name="Max">13.5e-03</max>
+    </Vreset>
+    <Vinit name="VInit">
+        <min name="Min">13.0e-03</min>
+        <max name="Max">13.0e-03</max>
+    </Vinit>
+    <starter_vthresh name="Starter VThresh">
+        <min name="Min">13.565e-3</min>
+        <max name="Max">13.655e-3</max>
+    </starter_vthresh>
+    <starter_vreset name="Starter VReset">
+        <min name="Min">13.0e-3</min>
+        <max name="Max">13.0e-3</max>
+    </starter_vreset>
+</VerticesParams>
+

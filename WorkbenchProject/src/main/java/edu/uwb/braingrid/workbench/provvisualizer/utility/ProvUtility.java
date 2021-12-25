@@ -21,7 +21,7 @@ public final class ProvUtility {
 
     public static final String LABEL_COMMIT = "commit";
     public static final String COMMIT_URI_PREFIX
-            = "https://github.com/UWB-Biocomputing/BrainGrid/commit/";
+            = "https://github.com/UWB-Biocomputing/Graphitti/commit/";
 
     private ProvUtility() {
         // utility class cannot be instantiated

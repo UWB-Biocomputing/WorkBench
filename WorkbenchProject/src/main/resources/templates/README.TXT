@@ -44,4 +44,4 @@ AllParamsClasses.xml
 
 1. templateDirectory: the directory to store all of the param class template files for a params class type
 2. ParamsClass:name: the name of the param class
-3. ParamsClass:templateFileName: name of the file in the templateDirecotory to store the param class template.
+3. ParamsClass:templateFileName: name of the file in the templateDirectory to store the param class template.

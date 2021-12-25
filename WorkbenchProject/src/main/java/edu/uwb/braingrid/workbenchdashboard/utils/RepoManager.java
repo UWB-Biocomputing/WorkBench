@@ -23,7 +23,7 @@ public final class RepoManager {
 
     /** Remote repository location. */
     public static final String BG_REPOSITORY_URI
-            = "git://github.com/UWB-Biocomputing/BrainGrid.git";
+            = "git://github.com/UWB-Biocomputing/Graphitti.git";
     /** Name of the master branch. */
     public static final String MASTER_BRANCH_NAME = "master";
     private static boolean updatingBranch = false;
@@ -61,7 +61,7 @@ public final class RepoManager {
     }
 
     public static Path getMasterBranchDirectory() {
-        return FileManager.getBrainGridRepoDirectory().resolve(MASTER_BRANCH_NAME);
+        return FileManager.getGraphittiRepoDirectory().resolve(MASTER_BRANCH_NAME);
     }
 
     public static List<String> fetchGitBranches() {

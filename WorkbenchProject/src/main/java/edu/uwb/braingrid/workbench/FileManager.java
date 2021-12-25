@@ -89,8 +89,8 @@ public final class FileManager {
      *
      * @return The path to the local simulator repository
      */
-    public static Path getBrainGridRepoDirectory() {
-        return user.getBrainGridRepoDirectory();
+    public static Path getGraphittiRepoDirectory() {
+        return user.getGraphittiRepoDirectory();
     }
 
     /**

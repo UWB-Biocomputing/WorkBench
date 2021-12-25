@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BGSimParams>
-   <SimInfoParams name="SimInfoParams">
-      <PoolSize name="PoolSize">
-         <x name="x">10</x>
-         <y name="y">10</y>
-         <z name="z">1</z>
+   <SimInfoParams name="Simulation Parameters">
+      <PoolSize name="Pool Size">
+         <x name="X">10</x>
+         <y name="Y">10</y>
+         <z name="Z">1</z>
       </PoolSize>
-      <SimParams name="SimParams">
-         <Tsim name="Tsim">100.0</Tsim>
-         <numSims name="numSims">1</numSims>
+      <SimParams name="Epoch Parameters">
+          <epochDuration name="Epoch Duration">1.0</epochDuration>
+          <numEpochs name="Number of Epochs">1</numEpochs>
       </SimParams>
-      <SimConfig name="SimConfig">
-         <maxFiringRate name="maxFiringRate">200</maxFiringRate>
-         <maxSynapsesPerNeuron name="maxSynapsesPerNeuron">200</maxSynapsesPerNeuron>
+      <SimConfig name="Simulation Configuration">
+         <maxFiringRate name="Max Firing Rate">200</maxFiringRate>
+         <maxEdgesPerVertex name="Maximum Edges Per Vertex">200</maxEdgesPerVertex>
       </SimConfig>
-      <Seed name="Seed">
-         <value name="value">1</value>
-      </Seed>
-      <OutputParams name="OutputParams">
-         <!-- rename tag to resultFileName for Graphitti simulator -->
-         <stateOutputFileName name="stateOutputFileName"/>
-      </OutputParams>
+      <RNGConfig name="RNG Configuration">
+         <InitRNGSeed name="Seed for RNG Initialization">1</InitRNGSeed>
+         <NoiseRNGSeed class="Norm" name="Seed for RNG Noise">1</NoiseRNGSeed>
+      </RNGConfig>
    </SimInfoParams>
 
     <ModelParams>
-        <NeuronsParams>
-        </NeuronsParams>
+        <VerticesParams>
+        </VerticesParams>
 
-        <SynapsesParams>
-        </SynapsesParams>
+        <EdgesParams>
+        </EdgesParams>
 
         <ConnectionsParams>
         </ConnectionsParams>
 
         <LayoutParams>
         </LayoutParams>
+
+       <RecorderParams>
+       </RecorderParams>
     </ModelParams>
 </BGSimParams>

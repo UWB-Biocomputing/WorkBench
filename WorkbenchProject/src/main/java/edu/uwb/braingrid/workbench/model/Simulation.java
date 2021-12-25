@@ -7,7 +7,7 @@ import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
- * Represents a BrainGrid simulation as part of a Workbench project.
+ * Represents a Graphitti simulation as part of a Workbench project.
  *
  * <p>Note: Provenance support is dealt with after the simulation is constructed</p>
  *
@@ -160,7 +160,6 @@ public class Simulation {
      *                   the parent folder of the local copy of the simulator source code.
      * @param simulationType  Indicates which version of the simulator will be executed (e.g.
      *                        growth, or growth_CUDA)
-     * @param buildOption  The option for building the simulator prior to execution
      * @param codeLocation  The location of the repository that contains the code for the simulator
      * @param sourceCodeUpdating  Whether the source code should be updated prior to execution (e.g.
      *                            Pull, or None). If sourceCodeUpdating is set to first do a pull on
@@ -171,14 +170,13 @@ public class Simulation {
      *                           that will be executed
      */
     public void addSpecification(String simulationLocale, String hostname, String simFolder,
-            String simulationType, String buildOption, String codeLocation,
+            String simulationType, String codeLocation,
             String sourceCodeUpdating, String sha1Key, String versionAnnotation) {
         simSpec = new SimulationSpecification();
         simSpec.setSimulationLocale(simulationLocale);
         simSpec.setHostAddr(hostname);
         simSpec.setSimulatorFolder(simFolder);
         simSpec.setSimulationType(simulationType);
-        simSpec.setBuildOption(buildOption);
         simSpec.setCodeLocation(codeLocation);
         simSpec.setSourceCodeUpdating(sourceCodeUpdating);
         simSpec.setSHA1CheckoutKey(sha1Key);
@@ -296,16 +294,6 @@ public class Simulation {
      */
     public String getSimulationType() {
         return simSpec.getSimulationType();
-    }
-
-    /**
-     * Provides the build option for the simulator. This value is used to determine whether the
-     * simulator should be built prior to running the simulation.
-     *
-     * @return The build option for the script
-     */
-    public String getBuildOption() {
-        return simSpec.getBuildOption();
     }
 
     /**

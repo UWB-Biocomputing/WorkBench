@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BaseTemplateConfig templatePath="BaseTemplates/BaseTemplateDefault.xml" allParamsClassesConfigFilePath="ParamsClassTemplateConfig/AllParamsClasses.xml">
     <ParamsClassesType name = "SimInfoParamsClasses" nodePath="/BGSimParams/SimInfoParams"/>
-    <ParamsClassesType name = "NeuronsParamsClasses" nodePath="/BGSimParams/ModelParams/NeuronsParams"/>
-    <ParamsClassesType name = "SynapsesParamsClasses" nodePath="/BGSimParams/ModelParams/SynapsesParams"/>
+    <ParamsClassesType name = "VerticesParamsClasses" nodePath="/BGSimParams/ModelParams/VerticesParams"/>
+    <ParamsClassesType name = "EdgesParamsClasses" nodePath="/BGSimParams/ModelParams/EdgesParams"/>
     <ParamsClassesType name = "ConnectionsParamsClasses" nodePath="/BGSimParams/ModelParams/ConnectionsParams"/>
     <ParamsClassesType name = "LayoutParamsClasses" nodePath="/BGSimParams/ModelParams/LayoutParams"/>
+    <ParamsClassesType name = "RecorderParamsClasses" nodePath="BGSimParams/ModelParams/RecorderParams"/>
 </BaseTemplateConfig>

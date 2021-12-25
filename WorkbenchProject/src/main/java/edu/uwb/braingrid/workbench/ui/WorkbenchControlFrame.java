@@ -6,7 +6,7 @@ import java.awt.Toolkit;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 
 /**
- * The workbench control frame is responsible for specifying BrainGrid simulation files. It is the
+ * The workbench control frame is responsible for specifying Graphitti simulation files. It is the
  * center of all input specification and provenance recording.
  *
  * @author Del Davis, Edited and Updated by Joseph Conquest

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecorderParams name="RecorderParams" class="XmlSTDPRecorder">
+    <RecorderFiles name="Recorder Parameters">
+        <resultFileName name="Result File Name">results/test-tiny-out.xml</resultFileName>
+    </RecorderFiles>
+</RecorderParams>

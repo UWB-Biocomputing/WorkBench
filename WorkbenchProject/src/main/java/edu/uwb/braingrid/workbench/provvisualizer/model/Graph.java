@@ -137,12 +137,12 @@ public class Graph {
     }
 
     public void generateCommitRelationships(double canvasWidth, double canvasHeight) {
-        Path bgReposPath = FileManager.getBrainGridRepoDirectory();
+        Path bgReposPath = FileManager.getGraphittiRepoDirectory();
         if (!Files.exists(bgReposPath)) {
             try {
                 System.out.println("Repo manager: " + RepoManager.getMasterBranchDirectory());
                 git = Git.cloneRepository()
-                        .setURI("https://github.com/UWB-Biocomputing/BrainGrid.git")
+                        .setURI("https://https://github.com/UWB-Biocomputing/Graphitti")
                         .setDirectory(bgReposPath.toFile())
                         .call();
             } catch (GitAPIException e) {

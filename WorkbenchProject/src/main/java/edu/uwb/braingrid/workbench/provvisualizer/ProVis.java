@@ -50,7 +50,7 @@ public class ProVis extends WorkbenchApp {
     private Label selectedProbedLabel = new Label("Probed: ");
     private Label selectedActiveLabel = new Label("Active: ");
     private Label selectedInhibitoryLabel = new Label("Inhibitory: ");
-    private Label selectedBGVersionLabel = new Label("BrainGrid Version: ");
+    private Label selectedBGVersionLabel = new Label("Graphitti Version: ");
     private TextField inputTextField = new TextField();
     private TextField probedTextField = new TextField();
     private TextField activeTextField = new TextField();

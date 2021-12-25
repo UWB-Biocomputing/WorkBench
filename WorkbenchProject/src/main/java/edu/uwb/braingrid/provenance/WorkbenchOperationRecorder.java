@@ -4,7 +4,7 @@ import java.util.Date;
 import org.apache.jena.rdf.model.Resource;
 
 /**
- * This class provides provenance recording operations specific to the BrainGridWorkbench.
+ * This class provides provenance recording operations specific to the GraphittiWorkbench.
  * Operations of the workbench are recorded within an existing RDF model, which is not maintained
  * by this class. All functions require that the manager of an existing record of workbench related
  * provenance be specified in order to decouple this class from the maintenance and interaction of

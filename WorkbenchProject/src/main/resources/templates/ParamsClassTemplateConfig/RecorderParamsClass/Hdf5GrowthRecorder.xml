@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecorderParams name="Recorder Parameters" class="Hdf5GrowthRecorder">
+   <RecorderFiles name="Recorder Files">
+      <resultFileName name="Result File Name">results/test-tiny-out.h5</resultFileName>
+   </RecorderFiles>
+</RecorderParams>

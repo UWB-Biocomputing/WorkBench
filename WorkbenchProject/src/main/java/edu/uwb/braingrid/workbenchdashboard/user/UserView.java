@@ -18,9 +18,9 @@ public class UserView extends WorkbenchApp {
     private TextField projectsDirField
             = new TextField(user.getProjectsDirectory().toString());
 
-    private Label bgRepoDirLabel = new Label("BrainGrid Repo Directory: ");
-    private TextField bgRepoDirField
-            = new TextField(user.getBrainGridRepoDirectory().toString());
+    private Label graphittiRepoDirLabel = new Label("Graphitti Repo Directory: ");
+    private TextField graphittiRepoDirField
+            = new TextField(user.getGraphittiRepoDirectory().toString());
 
     private Label simulationsDirLabel = new Label("Simulations Directory: ");
     private TextField simulationsDirField
@@ -37,12 +37,12 @@ public class UserView extends WorkbenchApp {
     }
 
     private void initAttributes() {
-        display.getChildren().addAll(projectsDirLabel, projectsDirField, bgRepoDirLabel,
-                bgRepoDirField, simulationsDirLabel, simulationsDirField, saveButton);
+        display.getChildren().addAll(projectsDirLabel, projectsDirField, graphittiRepoDirLabel,
+                graphittiRepoDirField, simulationsDirLabel, simulationsDirField, saveButton);
 
         saveButton.setOnAction(actionEvent -> {
             user.setProjectsDirectory(Paths.get(projectsDirField.getText()));
-            user.setBrainGridRepoDirectory(Paths.get(bgRepoDirField.getText()));
+            user.setGraphittiRepoDirectory(Paths.get(graphittiRepoDirField.getText()));
             user.setSimulationsDirectory(simulationsDirField.getText());
             User.save();
         });

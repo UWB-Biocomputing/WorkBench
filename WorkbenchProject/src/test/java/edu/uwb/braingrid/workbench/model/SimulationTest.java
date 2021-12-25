@@ -84,14 +84,13 @@ public class SimulationTest {
         String simFolder = "C:\\Users\\Max\\Documents\\DOCUMENTS\\Braingrid-WD\\" +
                 "BrainGrid\\Tools\\Workbench\\WorkbenchProject\\BrainGridRepos";
         String simType = SimulationSpecification.SimulatorType.SEQUENTIAL.toString();
-        String buildOption = SimulationSpecification.PRE_BUILT_BUILD_OPTION;
         String codeLocation = "C:\\Users\\Max\\Documents\\DOCUMENTS\\Braingrid-WD\\" +
                 "BrainGrid\\Tools\\Workbench\\WorkbenchProject\\BrainGridRepos";
-        String sourceCodeUpdating = SimulationSpecification.GIT_NONE;
+        String sourceCodeUpdating = SimulationSpecification.USE_EXISTING;
         String sha1Key = "";
         String version = "1.0.0";
 
-        simNew.addSpecification(locale, hostname, simFolder, simType, buildOption, codeLocation,
+        simNew.addSpecification(locale, hostname, simFolder, simType, codeLocation,
                 sourceCodeUpdating, sha1Key, version);
     }
 
@@ -137,9 +136,8 @@ public class SimulationTest {
                 "C:\\Users\\Max\\Documents\\DOCUMENTS\\Braingrid-WD\\" +
                         "BrainGrid\\Tools\\Workbench\\WorkbenchProject\\BrainGridRepos",
                 "1.0.0",
-                SimulationSpecification.GIT_NONE,
-                "",
-                SimulationSpecification.PRE_BUILT_BUILD_OPTION);
+                SimulationSpecification.USE_EXISTING,
+                "");
         this.getSimulationSpecificationTestHelper(simNew);
 
         // No simulation specified
@@ -154,7 +152,6 @@ public class SimulationTest {
         String folder = sim.getSimulatorFolderLocation();
         String hostname = sim.getSimulatorHostname();
         String sha1 = sim.getSHA1Key();
-        String buildOption = sim.getBuildOption();
         String updating = sim.getSimulatorSourceCodeUpdatingType();
         String version = sim.getSimulatorVersionAnnotation();
 
@@ -165,7 +162,6 @@ public class SimulationTest {
         ss.setSimulatorFolder(folder);
         ss.setHostAddr(hostname);
         ss.setSHA1CheckoutKey(sha1);
-        ss.setBuildOption(buildOption);
         ss.setSourceCodeUpdating(updating);
         ss.setVersionAnnotation(version);
 
@@ -223,10 +219,6 @@ public class SimulationTest {
         Simulation sim = getSimValidName();
         this.addSpecificationToSim(sim);
         this.addScriptToSim(sim);
-        Assertions.assertEquals(buildOption, sim.getBuildOption());
-        String build = SimulationSpecification.BUILD_BUILD_OPTION;
-        sim.getSimSpec().setBuildOption(build);
-        Assertions.assertEquals(build, sim.getBuildOption());
     }
 
     @Test
@@ -329,9 +321,8 @@ public class SimulationTest {
             "BrainGrid\\Tools\\Workbench\\WorkbenchProject\\BrainGridRepos";
     private SimulationSpecification.SimulatorType simulatorType = SimulationSpecification.SimulatorType.SEQUENTIAL;
     private String version = "1.0.0";
-    private String sourceCodeOption = SimulationSpecification.GIT_NONE;
+    private String sourceCodeOption = SimulationSpecification.USE_EXISTING;
     private String sha1 = "";
-    private String buildOption = SimulationSpecification.PRE_BUILT_BUILD_OPTION;
 
     private void addSpecificationToSim(Simulation sim) {
         sim.addSpecification(
@@ -341,8 +332,7 @@ public class SimulationTest {
                 simulatorType.toString(),
                 codeLocation, version,
                 sourceCodeOption,
-                sha1,
-                buildOption);
+                sha1);
     }
 
     private String scriptFilename = "Hello.sh";

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecorderParams name="Recorder Parameters" class="XmlGrowthRecorder">
+   <RecorderFiles name="Recorder Files">
+      <probedNListFileName name="Probed Neurons" type="InputFile">configfiles/NList/probedNList.xml</probedNListFileName>
+      <resultFileName name="Result File Name">results/test-tiny-out.xml</resultFileName>
+   </RecorderFiles>
+</RecorderParams>

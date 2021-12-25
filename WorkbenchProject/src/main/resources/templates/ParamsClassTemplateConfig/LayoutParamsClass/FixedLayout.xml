@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LayoutParams name="LayoutParams" class="FixedLayout">
-    <LayoutFiles name="LayoutFiles">
-        <activeNListFileName name="activeNListFileName" type="InputFile">configfiles/NList/ActiveNList.xml</activeNListFileName>
-        <inhNListFileName name="inhNListFileName" type="InputFile">configfiles/NList/InhibitoryNList.xml</inhNListFileName>
-        <probedNListFileName name="prbNListFileName" type="InputFile">configfiles/NList/ProbedNList.xml</probedNListFileName>
+<LayoutParams name="Layout Parameters" class="FixedLayout">
+    <LayoutFiles name="Layout Files">
+        <activeNListFileName name="Active Neurons" type="InputFile">configfiles/NList/ActiveNList.xml</activeNListFileName>
+        <inhNListFileName name="Inhibitory Neurons" type="InputFile">configfiles/NList/InhibitoryNList.xml</inhNListFileName>
     </LayoutFiles>
 </LayoutParams>
