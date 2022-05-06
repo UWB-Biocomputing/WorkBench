@@ -277,7 +277,7 @@ public class ScriptManager {
                 // record provenance of upload
                 if (provMgr != null) {
                     Long startTime = System.currentTimeMillis();
-                    WorkbenchOperationRecorder.uploadFile(provMgr, scriptPath, remoteScriptPath,
+                    WorkbenchOperationRecorder.recordFile(provMgr, scriptPath, remoteScriptPath,
                             "script", hostname, "uploadScript", uploadStartTime, new Date());
                     accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
                 }
@@ -310,7 +310,7 @@ public class ScriptManager {
                                 } catch (ParserConfigurationException | SAXException
                                         | IOException ex) {
                                 }
-                                WorkbenchOperationRecorder.uploadFile(provMgr, nListFilename,
+                                WorkbenchOperationRecorder.recordFile(provMgr, nListFilename,
                                         nListDir + FileManager.getSimpleFilename(nListFilename),
                                         "nlist", hostname, "upload_" + nlType + "_NList",
                                         uploadStartTime, new Date());
@@ -328,7 +328,7 @@ public class ScriptManager {
                     if (success) {
                         if (provMgr != null) {
                             Long startTime = System.currentTimeMillis();
-                            WorkbenchOperationRecorder.uploadFile(provMgr, simConfigFilename,
+                            WorkbenchOperationRecorder.recordFile(provMgr, simConfigFilename,
                                     configDir + FileManager.getSimpleFilename(simConfigFilename),
                                     "simulationConfigurationFile", hostname, "upload_SimConfig",
                                     uploadStartTime, new Date());
