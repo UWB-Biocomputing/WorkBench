@@ -23,7 +23,7 @@ public final class RepoManager {
 
     /** Remote repository location. */
     public static final String BG_REPOSITORY_URI
-            = "git://github.com/UWB-Biocomputing/Graphitti.git";
+            = "https://github.com/UWB-Biocomputing/WorkBench.git";
     /** Name of the master branch. */
     public static final String MASTER_BRANCH_NAME = "master";
     private static boolean updatingBranch = false;
