@@ -41,7 +41,7 @@ public final class WorkbenchOperationRecorder {
      * @param timeUploadEnded  The date and time when the upload completed
      * @return The resource in the provenance record associated with the upload activity
      */
-    public static Resource uploadFile(ProvMgr provMgr, String sourceEntityURI,
+    public static Resource recordFile(ProvMgr provMgr, String sourceEntityURI,
             String destinationEntityURI, String entityLabel, String remoteLocation,
             String activityURI, Date timeUploadStarted, Date timeUploadEnded) {
         // set the remote namespace where the new entity was created
