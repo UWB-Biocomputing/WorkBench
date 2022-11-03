@@ -6,7 +6,9 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingNode;
@@ -37,6 +39,10 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.nio.graphml.GraphMLExporter;
+
+import com.sun.javafx.geom.Edge;
 
 import edu.uwb.braingrid.general.FileSelectorDirMgr;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
@@ -500,6 +506,46 @@ public class NLEdit extends WorkbenchApp {
         // dialogScene.getStylesheets().add("//style sheet of your choice");
         dialog.setScene(dialogScene);
         dialog.show();
+    }
+    /**
+     * TODO1:
+     * This function neuronListToGraph creates a graph that contains all the neurons as 
+     * vertices and contains no edges initially. It also contains the type of the neuron
+     * 
+     * @param list  Array list of neurons index
+     * 
+     */
+    private SimpleGraph<Vertex, Edge> neuronListToGraph(ArrayList<Integer>[] list) {
+    	SimpleGraph<Vertex, Edge> graph = new SimpleGraph<>(null);
+    	//ADD active neuron to the vertices
+    	for(int i=0;i<neuronsLayout.activeNList.size();i++) {
+    		graph.addVertex(new Vertex(neuronsLayout.activeNList.get(i), "ACT"));
+    	}
+    	
+    	//ADD inhibitory neuron to the vertices
+    	for(int i=0;i<neuronsLayout.inhNList.size();i++) {
+    		graph.addVertex(new Vertex(neuronsLayout.inhNList.get(i), "INH"));
+    	}
+    	
+    	//ADD probe neuron to the vertices
+    	for(int i=0;i<neuronsLayout.probedNList.size();i++) {
+    		graph.addVertex(new Vertex(neuronsLayout.probedNList.get(i), "PRB"));
+    	}
+    	
+    	return graph;
+    }
+    
+    
+    /**
+     * TODO2: This is a function that exports the graph in Graphml format. 
+     * 
+     *@param graph the graph of the neuronlist  
+     * @throws IOException 
+     */
+    private void writeGraphML(String filePath,SimpleGraph<Vertex, Edge> graph) throws IOException {
+    	GraphMLExporter exporter = new GraphMLExporter();
+    	Writer writer = new FileWriter(filePath);// specify the absolute path later
+    	exporter.exportGraph(graph, writer);
     }
 
     /**
