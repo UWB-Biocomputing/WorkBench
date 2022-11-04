@@ -516,7 +516,7 @@ public class NLEdit extends WorkbenchApp {
      * 
      */
     private SimpleGraph<Vertex, Edge> neuronListToGraph(ArrayList<Integer>[] list) {
-    	SimpleGraph<Vertex, Edge> graph = new SimpleGraph<>(null);
+    	SimpleGraph<Vertex, Edge> graph = new SimpleGraph<Vertex, Edge>(new VertexGetter(), new EdgeGetter(),false);
     	//ADD active neuron to the vertices
     	for(int i=0;i<neuronsLayout.activeNList.size();i++) {
     		graph.addVertex(new Vertex(neuronsLayout.activeNList.get(i), "ACT"));
