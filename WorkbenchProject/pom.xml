@@ -84,7 +84,7 @@
             </plugin>
             <!--End for testing-->
             <!-- Configure Checkstyle plugin as a build element -->
-            <plugin>
+            <!--  plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.2</version>
@@ -110,7 +110,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
         </plugins>
     </build>
     <dependencies>
@@ -290,5 +290,10 @@
     		<artifactId>jgrapht-core</artifactId>
     		<version>1.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>21.0</version>
+		</dependency>	
     </dependencies>
 </project>
