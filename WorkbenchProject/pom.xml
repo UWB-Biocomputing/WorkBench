@@ -285,5 +285,10 @@
             <artifactId>org.eclipse.jgit.junit</artifactId>
             <version>4.9.0.201710071750-r</version>
         </dependency>
+        <dependency>
+    		<groupId>org.jgrapht</groupId>
+    		<artifactId>jgrapht-core</artifactId>
+    		<version>1.0.1</version>
+		</dependency>
     </dependencies>
 </project>
