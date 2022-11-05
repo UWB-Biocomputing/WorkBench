@@ -39,6 +39,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.nio.graphml.GraphMLExporter;
 
@@ -49,6 +50,7 @@ import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
+
 
 public class NLEdit extends WorkbenchApp {
 
@@ -515,8 +517,8 @@ public class NLEdit extends WorkbenchApp {
      * @param list  Array list of neurons index
      * 
      */
-    private SimpleGraph<Vertex, Edge> neuronListToGraph(ArrayList<Integer>[] list) {
-    	SimpleGraph<Vertex, Edge> graph = new SimpleGraph<Vertex, Edge>(new VertexGetter(), new EdgeGetter(),false);
+    private SimpleGraph<Vertex, DefaultEdge> neuronListToGraph(ArrayList<Integer>[] list) {
+    	SimpleGraph<Vertex, DefaultEdge> graph = new SimpleGraph<Vertex, DefaultEdge>(DefaultEdge.class);
     	//ADD active neuron to the vertices
     	for(int i=0;i<neuronsLayout.activeNList.size();i++) {
     		graph.addVertex(new Vertex(neuronsLayout.activeNList.get(i), "ACT"));
@@ -542,8 +544,8 @@ public class NLEdit extends WorkbenchApp {
      *@param graph the graph of the neuronlist  
      * @throws IOException 
      */
-    private void writeGraphML(String filePath,SimpleGraph<Vertex, Edge> graph) throws IOException {
-    	GraphMLExporter exporter = new GraphMLExporter();
+    private void writeGraphML(String filePath,SimpleGraph<Vertex, DefaultEdge> graph) throws IOException {
+    	GraphMLExporter<Vertex, DefaultEdge> exporter = new GraphMLExporter();
     	Writer writer = new FileWriter(filePath);// specify the absolute path later
     	exporter.exportGraph(graph, writer);
     }
