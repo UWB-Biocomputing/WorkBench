@@ -1,5 +1,6 @@
 package edu.uwb.braingrid.workbenchdashboard.nledit;
 
+import java.util.*; 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.print.PrinterException;
@@ -9,7 +10,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingNode;
 import javafx.geometry.Pos;
@@ -32,6 +32,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.xml.transform.TransformerConfigurationException;
+
 import org.apache.jena.rdf.model.Resource;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -39,10 +41,17 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.AttributeType;
+import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.graphml.GraphMLExporter;
+import org.jgrapht.nio.graphml.GraphMLExporter.AttributeCategory;
+import org.xml.sax.SAXException;
 
+import com.github.andrewoma.dexx.collection.HashSet;
 import com.sun.javafx.geom.Edge;
 
 import edu.uwb.braingrid.general.FileSelectorDirMgr;
@@ -50,6 +59,8 @@ import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
+import edu.uwb.braingrid.workbenchdashboard.nledit.Vertex.Status;
+
 
 
 public class NLEdit extends WorkbenchApp {
@@ -402,7 +413,19 @@ public class NLEdit extends WorkbenchApp {
     private void actionExport() {
         exportPopup();
     }
-
+//    public static void main(String[] args) {
+//    	Vertex vertex = new Vertex(1,"haha the jokes on you");
+//        SimpleGraph<Vertex, DefaultEdge> graph1=new SimpleGraph<Vertex, DefaultEdge>(DefaultEdge.class);
+//        graph1.addVertex(vertex);
+//        //SimpleGraph<Vertex, DefaultEdge> graph = neuronListToGraph();
+//        try {
+//        	GraphMLExporter<Vertex, DefaultEdge> exporter = new GraphMLExporter();
+//        	Writer writer = new FileWriter("C:\\Users\\Yang Mobei\\Downloads\\newtrial\\graphmlTrial.graphml");// specify the absolute path later
+//        	exporter.exportGraph(graph1, writer);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//    }
     public void exportPopup() {
         ExportPanel myPanel = new ExportPanel(fileSelector);
 
@@ -416,76 +439,89 @@ public class NLEdit extends WorkbenchApp {
 
         Long functionStartTime = System.currentTimeMillis();
         Long accumulatedTime = 0L;
-
+        
         yes.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             Long accumulatedTime1 = 0L;
-            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(),
-                    neuronsLayout.inhNList, LayoutPanel.INH);
-            // add to workbench project
-            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
-                Long startTime = System.currentTimeMillis();
-                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                        "InhibitoryNeuronListExport" + java.util.UUID.randomUUID(),
-                        "neuronListExport", "NLEdit", null, false,
-                        myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(), null, null);
 
-                // Tell Java to stop considering the file to be in it's control
-                try {
-                    ((FileOutputStream) file).close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            SimpleGraph<Vertex, DefaultEdge> graph = neuronListToGraph();
+            try {
+				writeGraphML(" ", graph);
+			} catch (IOException | TransformerConfigurationException | SAXException e) {
+				e.printStackTrace();
+			}
+            
+           
+            //writeGraphML("C:\\Users\\Yang Mobei\\Downloads\\newtrial\\graphmlTrial.graphml", graph1);
+ 
 
-                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
-            }
+//            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(),
+//                   neuronsLayout.inhNList, LayoutPanel.INH);
 
-            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(),
-                    neuronsLayout.activeNList, LayoutPanel.ACT);
-            // add to workbench project
-            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
-                Long startTime = System.currentTimeMillis();
-                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                        "ActiveNeuronListExport" + java.util.UUID.randomUUID(),
-                        "neuronListExport", "NLEdit", null, false,
-                        myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(), null, null);
-                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
-
-                // Tell Java to stop considering the file to be in it's control
-                try {
-                    ((FileOutputStream) file).close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(),
-                    neuronsLayout.probedNList, LayoutPanel.PRB);
-            // add to workbench project
-            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
-                Long startTime = System.currentTimeMillis();
-                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
-                        "ProbedNeuronListExport" + java.util.UUID.randomUUID(),
-                        "neuronListExport", "NLEdit", null, false,
-                        myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(), null, null);
-                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
-
-                // Tell Java to stop considering the file to be in it's control
-                try {
-                    ((FileOutputStream) file).close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // In the original function this executed at the end of the popup regardless of
-            // what occurred.
-            DateTime.recordFunctionExecutionTime("ControlFrame", "actionExport",
-                    System.currentTimeMillis() - functionStartTime,
-                    workbenchMgr.isProvEnabled());
-            if (workbenchMgr.isProvEnabled()) {
-                DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport",
-                        accumulatedTime1);
-            }
+//            // add to workbench project
+//            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
+//                Long startTime = System.currentTimeMillis();
+//                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
+//                        "InhibitoryNeuronListExport" + java.util.UUID.randomUUID(),
+//                        "neuronListExport", "NLEdit", null, false,
+//                        myPanel.tFields[ExportPanel.IDX_INH_LIST].getText(), null, null);
+//
+//                // Tell Java to stop considering the file to be in it's control
+//                try {
+//                    ((FileOutputStream) file).close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
+//            }
+//
+//            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(),
+//                    neuronsLayout.activeNList, LayoutPanel.ACT);
+//            // add to workbench project
+//            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
+//                Long startTime = System.currentTimeMillis();
+//                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
+//                        "ActiveNeuronListExport" + java.util.UUID.randomUUID(),
+//                        "neuronListExport", "NLEdit", null, false,
+//                        myPanel.tFields[ExportPanel.IDX_ACT_LIST].getText(), null, null);
+//                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
+//
+//                // Tell Java to stop considering the file to be in it's control
+//                try {
+//                    ((FileOutputStream) file).close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            writeNeuronListToFile(myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(),
+//                    neuronsLayout.probedNList, LayoutPanel.PRB);
+//            // add to workbench project
+//            if (null != workbenchMgr && workbenchMgr.isProvEnabled()) {
+//                Long startTime = System.currentTimeMillis();
+//                Resource file = workbenchMgr.getProvMgr().addFileGeneration(
+//                        "ProbedNeuronListExport" + java.util.UUID.randomUUID(),
+//                        "neuronListExport", "NLEdit", null, false,
+//                        myPanel.tFields[ExportPanel.IDX_PRB_LIST].getText(), null, null);
+//                accumulatedTime1 = DateTime.sumProvTiming(startTime, accumulatedTime1);
+//
+//                // Tell Java to stop considering the file to be in it's control
+//                try {
+//                    ((FileOutputStream) file).close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            // In the original function this executed at the end of the popup regardless of
+//            // what occurred.
+//            DateTime.recordFunctionExecutionTime("ControlFrame", "actionExport",
+//                    System.currentTimeMillis() - functionStartTime,
+//                    workbenchMgr.isProvEnabled());
+//            if (workbenchMgr.isProvEnabled()) {
+//                DateTime.recordAccumulatedProvTiming("ControlFrame", "actionExport",
+//                        accumulatedTime1);
+//            }
             dialog.close();
         });
         no.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -517,21 +553,53 @@ public class NLEdit extends WorkbenchApp {
      * @param list  Array list of neurons index
      * 
      */
-    private SimpleGraph<Vertex, DefaultEdge> neuronListToGraph(ArrayList<Integer>[] list) {
+    private SimpleGraph<Vertex, DefaultEdge> neuronListToGraph() {
     	SimpleGraph<Vertex, DefaultEdge> graph = new SimpleGraph<Vertex, DefaultEdge>(DefaultEdge.class);
     	//ADD active neuron to the vertices
+    	java.util.HashSet<Integer> probedList = new java.util.HashSet<>();
+    	Dimension dimension = layoutPanel.getLayoutSize();
+    	int xlen = dimension.width;
+    	int ylen = dimension.height;
+    	for(int i=0;i<neuronsLayout.probedNList.size();i++) {
+    		probedList.add(neuronsLayout.probedNList.get(i));
+    	}
     	for(int i=0;i<neuronsLayout.activeNList.size();i++) {
-    		graph.addVertex(new Vertex(neuronsLayout.activeNList.get(i), "ACT"));
+    		double x = neuronsLayout.probedNList.get(i)%xlen;
+    		double y = neuronsLayout.probedNList.get(i)/xlen;
+    		Status neuronStatus = Status.EXCITATORY;
+    		boolean endogenouslyActive = true;
+    		boolean probe = false;
+    		if(probedList.contains(neuronsLayout.activeNList.get(i))) {
+    			probe =true;
+    			probedList.remove(neuronsLayout.activeNList.get(i));
+    		}
+    		graph.addVertex(new Vertex(x,y,neuronStatus,endogenouslyActive,probe));
     	}
     	
     	//ADD inhibitory neuron to the vertices
     	for(int i=0;i<neuronsLayout.inhNList.size();i++) {
-    		graph.addVertex(new Vertex(neuronsLayout.inhNList.get(i), "INH"));
+    		double x = neuronsLayout.probedNList.get(i)%xlen;
+    		double y = neuronsLayout.probedNList.get(i)/xlen;
+    		Status neuronStatus = Status.INHIBITORY;
+    		boolean endogenouslyActive = false;
+    		boolean probe = false;
+    		if(probedList.contains(neuronsLayout.activeNList.get(i))) {
+    			probe =true;
+    			probedList.remove(neuronsLayout.activeNList.get(i));
+    		}
+    		graph.addVertex(new Vertex(x,y,neuronStatus,endogenouslyActive,probe));
     	}
     	
     	//ADD probe neuron to the vertices
     	for(int i=0;i<neuronsLayout.probedNList.size();i++) {
-    		graph.addVertex(new Vertex(neuronsLayout.probedNList.get(i), "PRB"));
+    		if(probedList.contains(neuronsLayout.probedNList.get(i))) {
+    			double x = neuronsLayout.probedNList.get(i)%xlen;
+        		double y = neuronsLayout.probedNList.get(i)/xlen;
+        		Status neuronStatus = Status.INHIBITORY;
+        		boolean endogenouslyActive = false;
+        		boolean probe = true;
+        		graph.addVertex(new Vertex(x,y,neuronStatus,endogenouslyActive,probe));
+    		}
     	}
     	
     	return graph;
@@ -543,10 +611,29 @@ public class NLEdit extends WorkbenchApp {
      * 
      *@param graph the graph of the neuronlist  
      * @throws IOException 
+     * @throws SAXException 
+     * @throws TransformerConfigurationException 
      */
-    private void writeGraphML(String filePath,SimpleGraph<Vertex, DefaultEdge> graph) throws IOException {
-    	GraphMLExporter<Vertex, DefaultEdge> exporter = new GraphMLExporter();
-    	Writer writer = new FileWriter(filePath);// specify the absolute path later
+    private void writeGraphML(String filePath,SimpleGraph<Vertex, DefaultEdge> graph) throws IOException, TransformerConfigurationException, SAXException {
+    	GraphMLExporter<Vertex, DefaultEdge> exporter = new GraphMLExporter<>();
+		exporter.setVertexAttributeProvider((Vertex vertex) -> {
+            Map<String, Attribute> map = new LinkedHashMap<>();
+            map.put("ID", DefaultAttribute.createAttribute(vertex.getID()));
+            map.put("X", DefaultAttribute.createAttribute(vertex.getX()));
+            map.put("Y", DefaultAttribute.createAttribute(vertex.getY()));
+            //map.put("Status",De);
+            map.put("Endogenously_Active_status", DefaultAttribute.createAttribute(vertex.getEndogenouslyActive()));
+            map.put("Probe_status", DefaultAttribute.createAttribute(vertex.getProbeStatus()));
+            return map;
+        });
+		
+		exporter.registerAttribute("ID", AttributeCategory.NODE, AttributeType.INT);
+		exporter.registerAttribute("X", AttributeCategory.NODE, AttributeType.DOUBLE);
+		exporter.registerAttribute("Y", AttributeCategory.NODE, AttributeType.DOUBLE);
+		exporter.registerAttribute("Type", AttributeCategory.NODE, AttributeType.STRING);
+		exporter.registerAttribute("Endogenously_Active_status", AttributeCategory.NODE, AttributeType.BOOLEAN);
+		exporter.registerAttribute("Probe_status", AttributeCategory.NODE, AttributeType.BOOLEAN);
+    	Writer writer = new FileWriter("C:\\Users\\Yang Mobei\\Downloads\\newtrial\\graphmlTrial.graphml");// specify the absolute path later
     	exporter.exportGraph(graph, writer);
     }
 

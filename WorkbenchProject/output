@@ -1,0 +1,199 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------< edu.uwb.braingrid:BrainGridWorkbench >----------------
+[INFO] Building BrainGridWorkbench 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-checkstyle-plugin:3.1.2:check (checkstyle) @ BrainGridWorkbench ---
+[INFO] 寮?濮嬫鏌モ?︹??
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\data\SimulationConfigurationBuilder.java:27:7: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\data\SimulationConfigurationManager.java:38:15: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\data\SimulationConfigurationManager.java:58:11: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\data\SystemConfig.java:40:7: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\model\Simulation.java:117:7: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\model\SimulationSpecification.java:85:7: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\model\SimulationSpecification.java:213:7: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\script\Script.java:459:41: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\script\ScriptManager.java:560:19: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbench\script\ScriptManager.java:667:11: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\LayoutPanel.java:341:7: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NeuronsLayout.java:31:7: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:46:8: 鏃犵敤瀵煎叆 - com.sun.javafx.geom.Edge 銆? [UnusedImports]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:56:1: 鏂囦欢鍚湁鍒惰〃绗? tab 锛堣繖鍙槸绗竴渚嬶級銆? [FileTabCharacter]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:121: 鏈瀛楃鏁? 116涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:123: 鏈瀛楃鏁? 111涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:166: 鏈瀛楃鏁? 126涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:170: 鏈瀛楃鏁? 109涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:174: 鏈瀛楃鏁? 115涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:179: 鏈瀛楃鏁? 133涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:182: 鏈瀛楃鏁? 124涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:185: 鏈瀛楃鏁? 119涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:189: 鏈瀛楃鏁? 127涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:192: 鏈瀛楃鏁? 124涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:242: 鏈瀛楃鏁? 113涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:243: 鏈瀛楃鏁? 113涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:248: 鏈瀛楃鏁? 127涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:322: 鏈瀛楃鏁? 123涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:324: 鏈瀛楃鏁? 126涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:326: 鏈瀛楃鏁? 126涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:353: 鏈瀛楃鏁? 102涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:362: 鏈瀛楃鏁? 102涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:364: 鏈瀛楃鏁? 102涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:373: 鏈瀛楃鏁? 104涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:410: 鏈瀛楃鏁? 122涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:416: 鏈瀛楃鏁? 143涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:417: 鏈瀛楃鏁? 120涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:426: 鏈瀛楃鏁? 103涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:429: 鏈瀛楃鏁? 125涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:435: 鏈瀛楃鏁? 139涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:436: 鏈瀛楃鏁? 120涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:437: 鏈瀛楃鏁? 103涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:447: 鏈瀛楃鏁? 125涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:453: 鏈瀛楃鏁? 139涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:454: 鏈瀛楃鏁? 120涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:455: 鏈瀛楃鏁? 103涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:465: 鏈瀛楃鏁? 103涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:468: 鏈瀛楃鏁? 118涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:470: 鏈瀛楃鏁? 119涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:475: 鏈瀛楃鏁? 103涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:478: 鏈瀛楃鏁? 118涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:480: 鏈瀛楃鏁? 118涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:498: Line has trailing spaces. [RegexpSingleline]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:499: Javadoc tag '@param' 鍓嶉潰搴旀湁涓?涓┖琛屻?? [RequireEmptyLineBeforeBlockTagGroup]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:500: Line has trailing spaces. [RegexpSingleline]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:503: 鏈瀛楃鏁? 113涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:524: Line has trailing spaces. [RegexpSingleline]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:525: Javadoc tag '@param' 鍓嶉潰搴旀湁涓?涓┖琛屻?? [RequireEmptyLineBeforeBlockTagGroup]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:528: 鏈瀛楃鏁? 111涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:530:57: ';' 鍚庡簲鏈夌┖鏍笺?? [WhitespaceAfter]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:542: 鏈瀛楃鏁? 101涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:637: 鏈瀛楃鏁? 104涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:638: 鏈瀛楃鏁? 110涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:639: 鏈瀛楃鏁? 110涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:664: 鏈瀛楃鏁? 116涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:665: 鏈瀛楃鏁? 116涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:668: 鏈瀛楃鏁? 104涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:753: 鏈瀛楃鏁? 108涓紝鏈?澶氾細100涓?? [LineLength]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:3:19: 涓嶅簲浣跨敤 '.*' 褰㈠紡鐨勫鍏? - org.jgrapht.* 銆? [AvoidStarImport]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:5:1: 缂哄皯 Javadoc 銆? [MissingJavadocType]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:8:1: 鏂囦欢鍚湁鍒惰〃绗? tab 锛堣繖鍙槸绗竴渚嬶級銆? [FileTabCharacter]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:10:9: 缂哄皯 Javadoc 銆? [MissingJavadocMethod]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:10:25: '{' 鍚庡簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:10:26: '}' 鍓嶅簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:11:9: 缂哄皯 Javadoc 銆? [MissingJavadocMethod]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:13:26: '=' 鍓嶅簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:13:26: '=' 鍚庡簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:6:1: 缂哄皯 Javadoc 銆? [MissingJavadocType]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:6:53: '>' 鍚庡瓧绗︿笉鍚堟硶銆? [GenericWhitespace]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:6:54: '{' 鍓嶅簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:7:1: 鏂囦欢鍚湁鍒惰〃绗? tab 锛堣繖鍙槸绗竴渚嬶級銆? [FileTabCharacter]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:7:9: 缂哄皯 Javadoc 銆? [JavadocVariable]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:8:9: 缂哄皯 Javadoc 銆? [MissingJavadocMethod]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:8:30: '{' 鍓嶅簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:8:30: '{' 鍚庡簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:8:31: '}' 鍓嶅簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:9:9: 缂哄皯 Javadoc 銆? [MissingJavadocMethod]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:10:28: '=' 鍓嶅簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:10:28: '=' 鍚庡簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:12:9: 缂哄皯 Javadoc 銆? [MissingJavadocMethod]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:12:32: 'vertex' 闅愯棌灞炴?с?? [HiddenField]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:13:28: '=' 鍓嶅簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:13:28: '=' 鍚庡簲鏈夌┖鏍笺?? [WhitespaceAround]
+[ERROR] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:15:9: 缂哄皯 Javadoc 銆? [MissingJavadocMethod]
+[WARN] C:\Users\Yang Mobei\git\WorkBenchClone\WorkBench\WorkbenchProject\src\main\java\edu\uwb\braingrid\workbenchdashboard\user\User.java:42:11: TODO鍧楋細 'TODO:' 銆? [TodoComment]
+妫?鏌ュ畬鎴愩??
+[INFO] There are 81 errors reported by Checkstyle 8.43 with checkstyle.xml ruleset.
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[56,1] (whitespace) FileTabCharacter: 文件含有制表符 tab （这只是第一例）。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[121] (sizes) LineLength: 本行字符数 116个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[123] (sizes) LineLength: 本行字符数 111个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[166] (sizes) LineLength: 本行字符数 126个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[170] (sizes) LineLength: 本行字符数 109个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[174] (sizes) LineLength: 本行字符数 115个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[179] (sizes) LineLength: 本行字符数 133个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[182] (sizes) LineLength: 本行字符数 124个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[185] (sizes) LineLength: 本行字符数 119个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[189] (sizes) LineLength: 本行字符数 127个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[192] (sizes) LineLength: 本行字符数 124个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[242] (sizes) LineLength: 本行字符数 113个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[243] (sizes) LineLength: 本行字符数 113个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[248] (sizes) LineLength: 本行字符数 127个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[322] (sizes) LineLength: 本行字符数 123个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[324] (sizes) LineLength: 本行字符数 126个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[326] (sizes) LineLength: 本行字符数 126个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[353] (sizes) LineLength: 本行字符数 102个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[362] (sizes) LineLength: 本行字符数 102个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[364] (sizes) LineLength: 本行字符数 102个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[373] (sizes) LineLength: 本行字符数 104个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[410] (sizes) LineLength: 本行字符数 122个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[416] (sizes) LineLength: 本行字符数 143个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[417] (sizes) LineLength: 本行字符数 120个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[426] (sizes) LineLength: 本行字符数 103个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[429] (sizes) LineLength: 本行字符数 125个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[435] (sizes) LineLength: 本行字符数 139个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[436] (sizes) LineLength: 本行字符数 120个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[437] (sizes) LineLength: 本行字符数 103个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[447] (sizes) LineLength: 本行字符数 125个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[453] (sizes) LineLength: 本行字符数 139个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[454] (sizes) LineLength: 本行字符数 120个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[455] (sizes) LineLength: 本行字符数 103个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[465] (sizes) LineLength: 本行字符数 103个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[468] (sizes) LineLength: 本行字符数 118个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[470] (sizes) LineLength: 本行字符数 119个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[475] (sizes) LineLength: 本行字符数 103个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[478] (sizes) LineLength: 本行字符数 118个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[480] (sizes) LineLength: 本行字符数 118个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[498] (regexp) RegexpSingleline: Line has trailing spaces.
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[499] (javadoc) RequireEmptyLineBeforeBlockTagGroup: Javadoc tag '@param' 前面应有一个空行。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[500] (regexp) RegexpSingleline: Line has trailing spaces.
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[503] (sizes) LineLength: 本行字符数 113个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[524] (regexp) RegexpSingleline: Line has trailing spaces.
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[525] (javadoc) RequireEmptyLineBeforeBlockTagGroup: Javadoc tag '@param' 前面应有一个空行。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[528] (sizes) LineLength: 本行字符数 111个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[530,57] (whitespace) WhitespaceAfter: ';' 后应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[542] (sizes) LineLength: 本行字符数 101个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[637] (sizes) LineLength: 本行字符数 104个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[638] (sizes) LineLength: 本行字符数 110个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[639] (sizes) LineLength: 本行字符数 110个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[664] (sizes) LineLength: 本行字符数 116个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[665] (sizes) LineLength: 本行字符数 116个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[668] (sizes) LineLength: 本行字符数 104个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\NLEdit.java:[753] (sizes) LineLength: 本行字符数 108个，最多：100个。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[3,19] (imports) AvoidStarImport: 不应使用 '.*' 形式的导入 - org.jgrapht.* 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[5,1] (javadoc) MissingJavadocType: 缺少 Javadoc 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[8,1] (whitespace) FileTabCharacter: 文件含有制表符 tab （这只是第一例）。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[10,9] (javadoc) MissingJavadocMethod: 缺少 Javadoc 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[10,25] (whitespace) WhitespaceAround: '{' 后应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[10,26] (whitespace) WhitespaceAround: '}' 前应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[11,9] (javadoc) MissingJavadocMethod: 缺少 Javadoc 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[13,26] (whitespace) WhitespaceAround: '=' 前应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\Vertex.java:[13,26] (whitespace) WhitespaceAround: '=' 后应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[6,1] (javadoc) MissingJavadocType: 缺少 Javadoc 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[6,53] (whitespace) GenericWhitespace: '>' 后字符不合法。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[6,54] (whitespace) WhitespaceAround: '{' 前应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[7,1] (whitespace) FileTabCharacter: 文件含有制表符 tab （这只是第一例）。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[7,9] (javadoc) JavadocVariable: 缺少 Javadoc 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[8,9] (javadoc) MissingJavadocMethod: 缺少 Javadoc 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[8,30] (whitespace) WhitespaceAround: '{' 前应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[8,30] (whitespace) WhitespaceAround: '{' 后应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[8,31] (whitespace) WhitespaceAround: '}' 前应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[9,9] (javadoc) MissingJavadocMethod: 缺少 Javadoc 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[10,28] (whitespace) WhitespaceAround: '=' 前应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[10,28] (whitespace) WhitespaceAround: '=' 后应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[12,9] (javadoc) MissingJavadocMethod: 缺少 Javadoc 。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[12,32] (coding) HiddenField: 'vertex' 隐藏属性。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[13,28] (whitespace) WhitespaceAround: '=' 前应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[13,28] (whitespace) WhitespaceAround: '=' 后应有空格。
+[ERROR] src\main\java\edu\uwb\braingrid\workbenchdashboard\nledit\VertexGetter.java:[15,9] (javadoc) MissingJavadocMethod: 缺少 Javadoc 。
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.252 s
+[INFO] Finished at: 2022-11-04T20:13:00-07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-checkstyle-plugin:3.1.2:check (checkstyle) on project BrainGridWorkbench: You have 81 Checkstyle violations. -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
