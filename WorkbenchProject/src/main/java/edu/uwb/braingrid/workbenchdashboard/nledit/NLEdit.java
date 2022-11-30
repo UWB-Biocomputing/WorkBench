@@ -59,7 +59,7 @@ import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.utils.DateTime;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchApp;
 import edu.uwb.braingrid.workbenchdashboard.WorkbenchDisplay;
-import edu.uwb.braingrid.workbenchdashboard.nledit.Vertex.Status;
+
 
 
 
@@ -564,41 +564,49 @@ public class NLEdit extends WorkbenchApp {
     		probedList.add(neuronsLayout.probedNList.get(i));
     	}
     	for(int i=0;i<neuronsLayout.activeNList.size();i++) {
-    		double x = neuronsLayout.probedNList.get(i)%xlen;
-    		double y = neuronsLayout.probedNList.get(i)/xlen;
-    		Status neuronStatus = Status.EXCITATORY;
+    		int id = neuronsLayout.activeNList.get(i);
+    		double x = neuronsLayout.activeNList.get(i)%xlen;
+    		double y = neuronsLayout.activeNList.get(i)/xlen;		
+    		System.out.println("id:"+id);
+    		String neuronStatus = "EXCITATORY";
     		boolean endogenouslyActive = true;
     		boolean probe = false;
     		if(probedList.contains(neuronsLayout.activeNList.get(i))) {
-    			probe =true;
+    			probe = true;
     			probedList.remove(neuronsLayout.activeNList.get(i));
     		}
-    		graph.addVertex(new Vertex(x,y,neuronStatus,endogenouslyActive,probe));
+    		graph.addVertex(new Vertex(id,x,y,neuronStatus,endogenouslyActive,probe));
     	}
     	
     	//ADD inhibitory neuron to the vertices
     	for(int i=0;i<neuronsLayout.inhNList.size();i++) {
-    		double x = neuronsLayout.probedNList.get(i)%xlen;
-    		double y = neuronsLayout.probedNList.get(i)/xlen;
-    		Status neuronStatus = Status.INHIBITORY;
+    		int id = neuronsLayout.inhNList.get(i);
+    		double x = neuronsLayout.inhNList.get(i)%xlen;
+    		double y = neuronsLayout.inhNList.get(i)/xlen;
+    		System.out.println(x+"   "+y);
+    		System.out.println("id:"+id);
+    		String neuronStatus = "INHIBITORY";
     		boolean endogenouslyActive = false;
     		boolean probe = false;
-    		if(probedList.contains(neuronsLayout.activeNList.get(i))) {
+    		if(probedList.contains(neuronsLayout.inhNList.get(i))) {
     			probe =true;
-    			probedList.remove(neuronsLayout.activeNList.get(i));
+    			probedList.remove(neuronsLayout.inhNList.get(i));
     		}
-    		graph.addVertex(new Vertex(x,y,neuronStatus,endogenouslyActive,probe));
+    		graph.addVertex(new Vertex(id,x,y,neuronStatus,endogenouslyActive,probe));
     	}
     	
     	//ADD probe neuron to the vertices
     	for(int i=0;i<neuronsLayout.probedNList.size();i++) {
     		if(probedList.contains(neuronsLayout.probedNList.get(i))) {
+    			int id = neuronsLayout.probedNList.get(i);
     			double x = neuronsLayout.probedNList.get(i)%xlen;
         		double y = neuronsLayout.probedNList.get(i)/xlen;
-        		Status neuronStatus = Status.INHIBITORY;
+        		System.out.println(x+"   "+y);
+        		System.out.println("id:"+id);
+        		String neuronStatus = "INHIBITORY";
         		boolean endogenouslyActive = false;
         		boolean probe = true;
-        		graph.addVertex(new Vertex(x,y,neuronStatus,endogenouslyActive,probe));
+        		graph.addVertex(new Vertex(id,x,y,neuronStatus,endogenouslyActive,probe));
     		}
     	}
     	
@@ -621,7 +629,7 @@ public class NLEdit extends WorkbenchApp {
             map.put("ID", DefaultAttribute.createAttribute(vertex.getID()));
             map.put("X", DefaultAttribute.createAttribute(vertex.getX()));
             map.put("Y", DefaultAttribute.createAttribute(vertex.getY()));
-            //map.put("Status",De);
+            map.put("Status",DefaultAttribute.createAttribute(vertex.getNeuronStatus()));
             map.put("Endogenously_Active_status", DefaultAttribute.createAttribute(vertex.getEndogenouslyActive()));
             map.put("Probe_status", DefaultAttribute.createAttribute(vertex.getProbeStatus()));
             return map;
@@ -630,7 +638,7 @@ public class NLEdit extends WorkbenchApp {
 		exporter.registerAttribute("ID", AttributeCategory.NODE, AttributeType.INT);
 		exporter.registerAttribute("X", AttributeCategory.NODE, AttributeType.DOUBLE);
 		exporter.registerAttribute("Y", AttributeCategory.NODE, AttributeType.DOUBLE);
-		exporter.registerAttribute("Type", AttributeCategory.NODE, AttributeType.STRING);
+		exporter.registerAttribute("Status", AttributeCategory.NODE, AttributeType.STRING);
 		exporter.registerAttribute("Endogenously_Active_status", AttributeCategory.NODE, AttributeType.BOOLEAN);
 		exporter.registerAttribute("Probe_status", AttributeCategory.NODE, AttributeType.BOOLEAN);
     	Writer writer = new FileWriter("C:\\Users\\Yang Mobei\\Downloads\\newtrial\\graphmlTrial.graphml");// specify the absolute path later

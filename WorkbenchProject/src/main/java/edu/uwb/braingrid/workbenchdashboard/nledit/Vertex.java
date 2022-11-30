@@ -3,18 +3,13 @@ package edu.uwb.braingrid.workbenchdashboard.nledit;
 import org.jgrapht.*;
 
 public class Vertex {
-	
-	enum Status{
-		EXCITATORY,
-		INHIBITORY
-	}
 	private int id;
 	private Double x;
 	private Double y;
-	private Status neuronStatus;
+	private String neuronStatus;
 	private boolean endogenouslyActive;
 	private boolean probeStatus;
-	public Vertex(Double x, Double y, Status neuronStatus ,Boolean endogenouslyActive ,Boolean probeStatus) {
+	public Vertex(int id,double x, double y, String neuronStatus ,boolean endogenouslyActive ,boolean probeStatus) {
 		this.id=id;
 		this.x=x;
 		this.y=y;
@@ -32,10 +27,10 @@ public class Vertex {
 	}
 	
 	public Double getY() {
-		return this.x;
+		return this.y;
 	}
 	
-	public Status getNeuronStatus() {
+	public String getNeuronStatus() {
 		return neuronStatus;
 	}
 	
