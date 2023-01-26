@@ -84,7 +84,7 @@
             </plugin>
             <!--End for testing-->
             <!-- Configure Checkstyle plugin as a build element -->
-            <!--  plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.2</version>
@@ -242,11 +242,11 @@
             <artifactId>jgoodies-forms</artifactId>
             <version>1.9.0</version>
         </dependency>
-        <dependency>
+        <!-->dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
             <version>8.40.16</version>
-        </dependency>
+        </dependency-->
 
 	    <dependency>
 	      <groupId>org.openjfx</groupId>
@@ -332,7 +332,11 @@
 		    <artifactId>javafx-fxml</artifactId>
 		    <version>18-ea+1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
+		<dependency>
+		    <groupId>org.controlsfx</groupId>
+		    <artifactId>controlsfx</artifactId>
+		    <version>11.1.2</version>
+		</dependency>
 		<!-- end of JavaFX dependencies -->
     </dependencies>
 </project>
