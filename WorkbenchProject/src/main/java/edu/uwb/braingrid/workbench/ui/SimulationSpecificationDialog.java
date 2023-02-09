@@ -3,6 +3,10 @@ package edu.uwb.braingrid.workbench.ui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -127,7 +131,11 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         testConnectionButton.setEnabled(false);
         testConnectionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                testConnectionButtonActionPerformed(evt);
+                try {
+					testConnectionButtonActionPerformed(evt);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
             }
         });
 
@@ -146,21 +154,33 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         hostAddressTextField.setEnabled(false);
         hostAddressTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                hostAddressTextFieldKeyReleased(evt);
+                try {
+					hostAddressTextFieldKeyReleased(evt);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
             }
         });
 
         usernameTextField.setEnabled(false);
         usernameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                usernameTextFieldKeyReleased(evt);
+                try {
+					usernameTextFieldKeyReleased(evt);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
             }
         });
 
         passwordField.setEnabled(false);
         passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                passwordFieldKeyReleased(evt);
+                try {
+					passwordFieldKeyReleased(evt);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
             }
         });
 
@@ -321,7 +341,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         specifySimulation();
     }// GEN-LAST:event_okButtonActionPerformed
 
-    private void testConnectionButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_testConnectionButtonActionPerformed
+    private void testConnectionButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException {// GEN-FIRST:event_testConnectionButtonActionPerformed
         testConnection();
     }// GEN-LAST:event_testConnectionButtonActionPerformed
 
@@ -329,7 +349,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         remoteOrLocalSet();
     }// GEN-LAST:event_simulatorLocationComboBoxActionPerformed
 
-    private void hostAddressTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_hostAddressTextFieldKeyReleased
+    private void hostAddressTextFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_hostAddressTextFieldKeyReleased
         validateHostAddress();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -338,7 +358,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }// GEN-LAST:event_hostAddressTextFieldKeyReleased
 
-    private void usernameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_usernameTextFieldKeyReleased
+    private void usernameTextFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_usernameTextFieldKeyReleased
         validateUsername();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -347,7 +367,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }// GEN-LAST:event_usernameTextFieldKeyReleased
 
-    private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_passwordFieldKeyReleased
+    private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_passwordFieldKeyReleased
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 testConnection();
@@ -654,7 +674,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }
 
-    private void testConnection() {
+    private void testConnection() throws IOException {
         testConnectionButton.setEnabled(false);
         String hostname = hostAddressTextField.getText();
         String username = usernameTextField.getText();
@@ -671,6 +691,36 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         Arrays.fill(password, '0');
         // reset button
         testConnectionButton.setEnabled(true);
+        //save username and password if testconnection is successful
+        try {
+			FileOutputStream fileOutUser = new FileOutputStream("username.cache");
+			FileOutputStream fileOutPassword = new FileOutputStream("password.cache");
+			FileOutputStream fileOutHost = new FileOutputStream("hostname.cache");
+//			String pathString = ("\"C:\\Users\\Yang Mobei\\git\\"
+//			+
+//			"WorkBenchClone2\\WorkbenchProject\\"
+//			+
+//			"src\\main\\java\\edu\\uwb\braingrid\\workbench\\ui\\");
+//			String pathString2 = ("C:\\temp\\temp2\\");
+//			FileOutputStream fileOutUser =
+//					new FileOutputStream(pathString2 + "username.cache");
+//			FileOutputStream fileOutPassword =
+//					new FileOutputStream(pathString2 + "password.cache");
+//			FileOutputStream fileOutHost =
+//					new FileOutputStream(pathString2 + "hostname.cache");
+			ObjectOutputStream userNameOut = new ObjectOutputStream(fileOutUser);
+			ObjectOutputStream passwordOut = new ObjectOutputStream(fileOutPassword);
+			ObjectOutputStream hostOut = new ObjectOutputStream(fileOutHost);
+			userNameOut.writeObject(username);
+			passwordOut.writeObject(password);
+			hostOut.writeObject(hostname);
+			LOG.info("username saved");
+			userNameOut.close();
+			passwordOut.close();
+			hostOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
     }
     // </editor-fold>
 }
