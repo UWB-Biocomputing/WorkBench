@@ -3,12 +3,17 @@ package edu.uwb.braingrid.workbench.ui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.logging.Logger;
+
+import javax.swing.JTextField;
 
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
@@ -545,6 +550,48 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         hostAddressTextField.setEnabled(enabled);
         usernameTextField.setEnabled(enabled);
         passwordField.setEnabled(enabled);
+        //if the cache file exists, autofill the textfield;
+        String path = "C:\\temp\\temp2\\"; //this path for local test only
+        File userCache = new File(path + "username.cache");
+        File passwordCache = new File(path + "password.cache");
+        File hostCache = new File(path + "hostname.cache");
+
+        if (userCache.exists()) {
+        	System.out.println(path + "username.cache");
+			autoFillTextField(usernameTextField, userCache);
+        }
+
+        if (passwordCache.exists()) {
+        	System.out.println(path + "password.cache");
+        	autoFillTextField(passwordField, passwordCache);
+        }
+
+        if (hostCache.exists()) {
+        	System.out.println(path + "hostname.cache");
+        	autoFillTextField(hostAddressTextField, hostCache);
+        }
+
+        if (userCache.exists() && passwordCache.exists() && hostCache.exists()) {
+        	enableTestConnectionButton();
+        }
+    }
+
+    private void autoFillTextField(JTextField field, File file) {
+    	try {
+        	FileInputStream userStream = new FileInputStream(file);
+        	ObjectInputStream userIn = new ObjectInputStream(userStream);
+        	Object castObj = userIn.readObject();
+        	System.out.println(castObj.toString());
+        	if (castObj instanceof String) {
+        		String user = (String) castObj;
+    			field.setText(user);
+        	}
+			userIn.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     private void enableTestConnectionButton() {
@@ -642,11 +689,11 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
     private void remoteOrLocalSet() {
         setRemoteRelatedComponentsEnabled(simulatorLocationComboBox.getSelectedIndex()
-                == SimulationSpecification.REMOTE_EXECUTION_INDEX);
-        if (!isRemoteExecution()) {
-            setRemoteConnectionMsg("", "black");
-        }
-        enableOkButton();
+		        == SimulationSpecification.REMOTE_EXECUTION_INDEX);
+		if (!isRemoteExecution()) {
+		    setRemoteConnectionMsg("", "black");
+		}
+		enableOkButton();
     }
 
     private void validateHostAddress() {
@@ -693,28 +740,34 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         testConnectionButton.setEnabled(true);
         //save username and password if testconnection is successful
         try {
-			FileOutputStream fileOutUser = new FileOutputStream("username.cache");
-			FileOutputStream fileOutPassword = new FileOutputStream("password.cache");
-			FileOutputStream fileOutHost = new FileOutputStream("hostname.cache");
-//			String pathString = ("\"C:\\Users\\Yang Mobei\\git\\"
-//			+
-//			"WorkBenchClone2\\WorkbenchProject\\"
-//			+
-//			"src\\main\\java\\edu\\uwb\braingrid\\workbench\\ui\\");
-//			String pathString2 = ("C:\\temp\\temp2\\");
-//			FileOutputStream fileOutUser =
-//					new FileOutputStream(pathString2 + "username.cache");
-//			FileOutputStream fileOutPassword =
-//					new FileOutputStream(pathString2 + "password.cache");
-//			FileOutputStream fileOutHost =
-//					new FileOutputStream(pathString2 + "hostname.cache");
+//			FileOutputStream fileOutUser = new FileOutputStream("username.cache");
+//			FileOutputStream fileOutPassword = new FileOutputStream("password.cache");
+//			FileOutputStream fileOutHost = new FileOutputStream("hostname.cache");
+			String pathString = ("\"C:\\Users\\Yang Mobei\\git\\"
+			+
+			"WorkBenchClone2\\WorkbenchProject\\"
+			+
+			"src\\main\\java\\edu\\uwb\braingrid\\workbench\\ui\\");
+			String pathString2 = ("C:\\temp\\temp2\\");
+			FileOutputStream fileOutUser =
+					new FileOutputStream(pathString2 + "username.cache");
+			FileOutputStream fileOutPassword =
+					new FileOutputStream(pathString2 + "password.cache");
+			FileOutputStream fileOutHost =
+					new FileOutputStream(pathString2 + "hostname.cache");
 			ObjectOutputStream userNameOut = new ObjectOutputStream(fileOutUser);
 			ObjectOutputStream passwordOut = new ObjectOutputStream(fileOutPassword);
 			ObjectOutputStream hostOut = new ObjectOutputStream(fileOutHost);
 			userNameOut.writeObject(username);
-			passwordOut.writeObject(password);
-			hostOut.writeObject(hostname);
 			LOG.info("username saved");
+			String passwordString = "";
+			for (int i = 0; i < password.length; i++) {
+				passwordString += password[i];
+			}
+			passwordOut.writeObject(passwordString);
+			LOG.info("password saved");
+			hostOut.writeObject(hostname);
+			LOG.info("hostname saved");
 			userNameOut.close();
 			passwordOut.close();
 			hostOut.close();
