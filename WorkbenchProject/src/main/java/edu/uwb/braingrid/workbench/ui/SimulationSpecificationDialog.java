@@ -557,17 +557,14 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         File hostCache = new File(path + "hostname.cache");
 
         if (userCache.exists()) {
-        	System.out.println(path + "username.cache");
 			autoFillTextField(usernameTextField, userCache);
         }
 
         if (passwordCache.exists()) {
-        	System.out.println(path + "password.cache");
         	autoFillTextField(passwordField, passwordCache);
         }
 
         if (hostCache.exists()) {
-        	System.out.println(path + "hostname.cache");
         	autoFillTextField(hostAddressTextField, hostCache);
         }
 
@@ -581,7 +578,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         	FileInputStream userStream = new FileInputStream(file);
         	ObjectInputStream userIn = new ObjectInputStream(userStream);
         	Object castObj = userIn.readObject();
-        	System.out.println(castObj.toString());
         	if (castObj instanceof String) {
         		String user = (String) castObj;
     			field.setText(user);
@@ -735,7 +731,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         setRemoteConnectionMsg(msg, color);
         // mark operation success
         connectionTestSuccessful = success;
-        Arrays.fill(password, '0');
         // reset button
         testConnectionButton.setEnabled(true);
         //save username and password if testconnection is successful
@@ -764,7 +759,9 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 			for (int i = 0; i < password.length; i++) {
 				passwordString += password[i];
 			}
+			Arrays.fill(password, '0');
 			passwordOut.writeObject(passwordString);
+			passwordString = "";
 			LOG.info("password saved");
 			hostOut.writeObject(hostname);
 			LOG.info("hostname saved");
