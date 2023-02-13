@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 
 import org.eclipse.jgit.transport.CredentialItem.Username;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 
@@ -347,7 +349,8 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
     	try {
-			saveCache(usernameTextField.getText(), hostAddressTextField.getText(), passwordField.getPassword());
+    		makeCacheDir();
+    		saveCache(usernameTextField.getText(), hostAddressTextField.getText(), passwordField.getPassword());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -746,13 +749,18 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     	return System.getProperty("user.dir") + "\\Cache";
     }
 
+    private void makeCacheDir() {
+    	String cacheDirectory = getCachePath();
+    	File cacheFolder = new File(cacheDirectory);
+    	if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
+    		cacheFolder.mkdir();
+    	}
+    }
+
     private void saveCache(String username, String hostname, char[] password) throws IOException {
     	try {
         	String cacheDirectory = getCachePath();
-        	File cacheFolder = new File(cacheDirectory);
-        	if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
-        		cacheFolder.mkdir();
-        	}
+        	makeCacheDir();
 			FileOutputStream fileOutUser =
 					new FileOutputStream(cacheDirectory + "\\username.cache");
 			FileOutputStream fileOutPassword =
@@ -799,7 +807,9 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         // reset button
         testConnectionButton.setEnabled(true);
         //save username and password if testconnection is successful
-        saveCache(username, hostname, password);
+        if (success) {
+        	saveCache(username, hostname, password);
+        }
     }
     // </editor-fold>
 }
