@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -738,18 +739,19 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 //			FileOutputStream fileOutUser = new FileOutputStream("username.cache");
 //			FileOutputStream fileOutPassword = new FileOutputStream("password.cache");
 //			FileOutputStream fileOutHost = new FileOutputStream("hostname.cache");
-			String pathString = ("\"C:\\Users\\Yang Mobei\\git\\"
-			+
-			"WorkBenchClone2\\WorkbenchProject\\"
-			+
-			"src\\main\\java\\edu\\uwb\braingrid\\workbench\\ui\\");
-			String pathString2 = ("C:\\temp\\temp2\\");
+        	String cacheDirectory = System.getProperty("user.dir");
+        	cacheDirectory += "\\Cache";
+        	File cacheFolder = new File(cacheDirectory);
+        	System.out.println(cacheDirectory);
+        	if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
+        		cacheFolder.mkdir();
+        	}
 			FileOutputStream fileOutUser =
-					new FileOutputStream(pathString2 + "username.cache");
+					new FileOutputStream(cacheDirectory + "\\username.cache");
 			FileOutputStream fileOutPassword =
-					new FileOutputStream(pathString2 + "password.cache");
+					new FileOutputStream(cacheDirectory + "\\password.cache");
 			FileOutputStream fileOutHost =
-					new FileOutputStream(pathString2 + "hostname.cache");
+					new FileOutputStream(cacheDirectory + "\\hostname.cache");
 			ObjectOutputStream userNameOut = new ObjectOutputStream(fileOutUser);
 			ObjectOutputStream passwordOut = new ObjectOutputStream(fileOutPassword);
 			ObjectOutputStream hostOut = new ObjectOutputStream(fileOutHost);
