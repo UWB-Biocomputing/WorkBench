@@ -3,6 +3,11 @@ package edu.uwb.braingrid.workbench.ui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Arrays;
 
 /**
@@ -37,7 +42,26 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         hostnameLabel.setText("Hostname: ");
 
         usernameLabel.setText("Username: ");
-
+        File userCache = new File(System.getProperty("user.dir") + "\\Cache\\username.cache");
+        FileInputStream userNameInput;
+		try {
+			userNameInput = new FileInputStream(userCache);
+			try {
+				ObjectInputStream fillUserText = new ObjectInputStream(userNameInput);
+				try {
+					Object castObj = fillUserText.readObject();
+					if (castObj instanceof String) {
+			    		String user = (String) castObj;
+			    		usernameTextField.setText(user);
+			    	}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+		}
         usernameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 usernameTextFieldKeyReleased(evt);
@@ -127,16 +151,19 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
 
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_connectButtonActionPerformed
         specifyCredentials(true);
-    }// GEN-LAST:event_connectButtonActionPerformed
+    } // GEN-LAST:event_connectButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	// GEN-FIRST:event_cancelButtonActionPerformed
         specifyCredentials(false);
-    }// GEN-LAST:event_cancelButtonActionPerformed
+    } // GEN-LAST:event_cancelButtonActionPerformed
 
-    private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_passwordFieldKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+    private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {
+    	// GEN-FIRST:event_passwordFieldKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             specifyCredentials(true);
-    }// GEN-LAST:event_passwordFieldKeyReleased
+            }
+    } // GEN-LAST:event_passwordFieldKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

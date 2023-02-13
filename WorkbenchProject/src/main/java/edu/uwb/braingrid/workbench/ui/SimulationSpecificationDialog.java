@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JTextField;
 
+import org.eclipse.jgit.transport.CredentialItem.Username;
+
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 
@@ -553,25 +555,42 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         passwordField.setEnabled(enabled);
         //if the cache file exists, autofill the textfield;
         String path = getCachePath();
-        File userCache = new File(path + "username.cache");
-        File passwordCache = new File(path + "password.cache");
-        File hostCache = new File(path + "hostname.cache");
-
-        if (userCache.exists()) {
-        	autoFillTextField(usernameTextField, userCache);
-        }
-
-        if (passwordCache.exists()) {
-        	autoFillTextField(passwordField, passwordCache);
-        }
-
-        if (hostCache.exists()) {
-        	autoFillTextField(hostAddressTextField, hostCache);
-        }
-
-        if (userCache.exists() && passwordCache.exists() && hostCache.exists()) {
+        boolean usernameCached = tryFillUserName();
+        boolean passwordCached = tryFillPassWord();
+        boolean hostCached = tryFillHostName();
+        if (usernameCached && passwordCached && hostCached) {
         	enableTestConnectionButton();
         }
+    }
+
+    private boolean tryFillUserName() {
+    	File userCache = new File(getCachePath() + "\\username.cache");
+        if (userCache.exists()) {
+        	autoFillTextField(usernameTextField, userCache);
+        	LOG.info("UserName cache detected");
+        	return true;
+        }
+        return false;
+    }
+
+    private boolean tryFillPassWord() {
+    	File passwordCache = new File(getCachePath() + "\\password.cache");
+    	 if (passwordCache.exists()) {
+         	autoFillTextField(passwordField, passwordCache);
+         	LOG.info("UserName cache detected");
+        	return true;
+         }
+    	 return false;
+    }
+
+    private boolean tryFillHostName() {
+    	File hostCache = new File(getCachePath() + "\\hostname.cache");
+   	 if (hostCache.exists()) {
+        	autoFillTextField(hostAddressTextField, hostCache);
+        	LOG.info("host cache detected");
+        	return true;
+        }
+   	 	return false;
     }
 
     private void autoFillTextField(JTextField field, File file) {
@@ -726,7 +745,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     	try {
         	String cacheDirectory = getCachePath();
         	File cacheFolder = new File(cacheDirectory);
-        	System.out.println(cacheDirectory);
         	if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
         		cacheFolder.mkdir();
         	}
