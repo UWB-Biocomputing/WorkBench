@@ -346,7 +346,12 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_cancelButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
-        specifySimulation();
+    	try {
+			saveCache(usernameTextField.getText(), hostAddressTextField.getText(), passwordField.getPassword());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	specifySimulation();
     }// GEN-LAST:event_okButtonActionPerformed
 
     private void testConnectionButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException {// GEN-FIRST:event_testConnectionButtonActionPerformed
