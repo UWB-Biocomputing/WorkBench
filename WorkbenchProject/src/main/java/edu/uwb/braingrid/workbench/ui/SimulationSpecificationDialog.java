@@ -552,13 +552,13 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         usernameTextField.setEnabled(enabled);
         passwordField.setEnabled(enabled);
         //if the cache file exists, autofill the textfield;
-        String path = "C:\\temp\\temp2\\"; //this path for local test only
+        String path = getCachePath();
         File userCache = new File(path + "username.cache");
         File passwordCache = new File(path + "password.cache");
         File hostCache = new File(path + "hostname.cache");
 
         if (userCache.exists()) {
-			autoFillTextField(usernameTextField, userCache);
+        	autoFillTextField(usernameTextField, userCache);
         }
 
         if (passwordCache.exists()) {
@@ -718,29 +718,13 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }
 
-    private void testConnection() throws IOException {
-        testConnectionButton.setEnabled(false);
-        String hostname = hostAddressTextField.getText();
-        String username = usernameTextField.getText();
-        char[] password = passwordField.getPassword();
-        // try to connect
-        SecureFileTransfer sft = new SecureFileTransfer();
-        boolean success = sft.testConnection(3000, hostname, username, password);
-        String msg = success ? "Connection Successful" : "Connection Failed";
-        String color = success ? "green" : "red";
-        // report status
-        setRemoteConnectionMsg(msg, color);
-        // mark operation success
-        connectionTestSuccessful = success;
-        // reset button
-        testConnectionButton.setEnabled(true);
-        //save username and password if testconnection is successful
-        try {
-//			FileOutputStream fileOutUser = new FileOutputStream("username.cache");
-//			FileOutputStream fileOutPassword = new FileOutputStream("password.cache");
-//			FileOutputStream fileOutHost = new FileOutputStream("hostname.cache");
-        	String cacheDirectory = System.getProperty("user.dir");
-        	cacheDirectory += "\\Cache";
+    private String getCachePath() {
+    	return System.getProperty("user.dir") + "\\Cache";
+    }
+
+    private void saveCache(String username, String hostname, char[] password) throws IOException {
+    	try {
+        	String cacheDirectory = getCachePath();
         	File cacheFolder = new File(cacheDirectory);
         	System.out.println(cacheDirectory);
         	if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
@@ -773,6 +757,26 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+    }
+
+    private void testConnection() throws IOException {
+        testConnectionButton.setEnabled(false);
+        String hostname = hostAddressTextField.getText();
+        String username = usernameTextField.getText();
+        char[] password = passwordField.getPassword();
+        // try to connect
+        SecureFileTransfer sft = new SecureFileTransfer();
+        boolean success = sft.testConnection(3000, hostname, username, password);
+        String msg = success ? "Connection Successful" : "Connection Failed";
+        String color = success ? "green" : "red";
+        // report status
+        setRemoteConnectionMsg(msg, color);
+        // mark operation success
+        connectionTestSuccessful = success;
+        // reset button
+        testConnectionButton.setEnabled(true);
+        //save username and password if testconnection is successful
+        saveCache(username, hostname, password);
     }
     // </editor-fold>
 }
