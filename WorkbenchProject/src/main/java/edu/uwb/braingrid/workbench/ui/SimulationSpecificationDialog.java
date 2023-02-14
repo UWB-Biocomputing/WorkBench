@@ -11,9 +11,21 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.logging.Logger;
 
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JTextField;
 
 import org.eclipse.jgit.transport.CredentialItem.Username;
@@ -33,7 +45,8 @@ import edu.uwb.braingrid.workbench.model.SimulationSpecification;
  * @author Del Davis
  */
 public class SimulationSpecificationDialog extends javax.swing.JDialog {
-
+    private static final String ALGORITHM = "AES";
+    private static final String TRANSFORMATION = "AES";
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     /**
      * This method is called from within the constructor to initialize the form.
@@ -749,11 +762,66 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     	return System.getProperty("user.dir") + "\\Cache";
     }
 
+	 private static final String CHARACTERS
+	 				 				=
+	 				 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
+	 				 				+
+	 				 		"defghijklmnopqrstuvwxyz0123456789";
+
+	 private static String generateRandomString() {
+		 final int length = 16;
+	     SecureRandom random = new SecureRandom();
+	     StringBuilder sb = new StringBuilder(length);
+         for (int i = 0; i < length; i++) {
+	         sb.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
+	     }
+	     return sb.toString();
+	 }
+
+    private static void encrypt(String key, File inputFile, File outputFile) {
+        doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile);
+    }
+
+    private static void decrypt(String key, File inputFile, File outputFile) {
+        doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile);
+    }
+
+    private static void doCrypto(int cipherMode, String key, File inputFile,
+            File outputFile) {
+        try {
+            Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
+            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+            cipher.init(cipherMode, secretKey);
+            if (cipherMode == Cipher.ENCRYPT_MODE) {
+            	File keyFile = new File(System.getProperty("user.dir") + "\\Key");
+            	FileOutputStream keyOutput = new FileOutputStream(keyFile);
+            	ObjectOutputStream keyObj = new ObjectOutputStream(keyOutput);
+            	keyObj.writeObject(key);
+            	LOG.info("Key saved");
+            	keyObj.close();
+            }
+            System.out.println("3");
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException
+                | InvalidKeyException
+                | /*BadPaddingException
+                | IllegalBlockSizeException |*/ IOException ex) {
+        	ex.printStackTrace();
+        }
+    }
+
     private void makeCacheDir() {
     	String cacheDirectory = getCachePath();
     	File cacheFolder = new File(cacheDirectory);
     	if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
     		cacheFolder.mkdir();
+    		try {
+				Runtime.getRuntime().exec(
+						"attrib +h "
+								+
+				cacheFolder.getAbsolutePath().replaceAll(" ", "%20"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
     	}
     }
 
@@ -761,16 +829,24 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     	try {
         	String cacheDirectory = getCachePath();
         	makeCacheDir();
+        	File userFile = new File(cacheDirectory + "\\username.cache");
+        	File passwordFile = new File(cacheDirectory + "\\password.cache");
+        	File hostFile = new File(cacheDirectory + "\\hostname.cache");
 			FileOutputStream fileOutUser =
-					new FileOutputStream(cacheDirectory + "\\username.cache");
+					new FileOutputStream(userFile);
 			FileOutputStream fileOutPassword =
-					new FileOutputStream(cacheDirectory + "\\password.cache");
+					new FileOutputStream(passwordFile);
 			FileOutputStream fileOutHost =
-					new FileOutputStream(cacheDirectory + "\\hostname.cache");
+					new FileOutputStream(hostFile);
 			ObjectOutputStream userNameOut = new ObjectOutputStream(fileOutUser);
 			ObjectOutputStream passwordOut = new ObjectOutputStream(fileOutPassword);
 			ObjectOutputStream hostOut = new ObjectOutputStream(fileOutHost);
 			userNameOut.writeObject(username);
+			System.out.println(username);
+			File encrpytedUser = new File(cacheDirectory + "\\username.encrypted");
+			File encrpytedPassword = new File(cacheDirectory + "\\password.encrypted");
+			File encrpytedHost = new File(cacheDirectory + "\\hostname.encrypted");
+			encrypt(generateRandomString(), userFile, encrpytedUser);
 			LOG.info("username saved");
 			String passwordString = "";
 			for (int i = 0; i < password.length; i++) {
@@ -779,8 +855,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 			Arrays.fill(password, '0');
 			passwordOut.writeObject(passwordString);
 			passwordString = "";
+			//encrypt(generateKey(), passwordFile, encrpytedPassword);
 			LOG.info("password saved");
 			hostOut.writeObject(hostname);
+			//encrypt(generateKey(), hostFile, encrpytedHost);
 			LOG.info("hostname saved");
 			userNameOut.close();
 			passwordOut.close();
