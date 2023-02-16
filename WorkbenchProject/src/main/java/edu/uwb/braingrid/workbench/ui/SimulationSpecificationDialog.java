@@ -580,10 +580,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         usernameTextField.setEnabled(enabled);
         passwordField.setEnabled(enabled);
         //if the cache file exists, autofill the textfield;
-        // brief progress report:
-        // now you have encrpyted the information correctly
-        // and stored correctly,
-        //now you'll have to read them
         File key = new File(System.getProperty("user.dir") + "\\Key");
         String userPostfix = "\\Cache\\username.encrypted";
         String passwordPostfix = "\\Cache\\password.encrypted";
@@ -632,53 +628,6 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 			}
 		} catch (FileNotFoundException e) {
 			return false;
-		}
-    }
-
-//    private boolean tryFillUserName() {
-//    	File userCache = new File(getCachePath() + "\\username.cache");
-//        if (userCache.exists()) {
-//        	autoFillTextField(usernameTextField, userCache);
-//        	LOG.info("UserName cache detected");
-//        	return true;
-//        }
-//        return false;
-//    }
-
-    private boolean tryFillPassWord() {
-    	File passwordCache = new File(getCachePath() + "\\password.cache");
-    	 if (passwordCache.exists()) {
-         	autoFillTextField(passwordField, passwordCache);
-         	LOG.info("UserName cache detected");
-        	return true;
-         }
-    	 return false;
-    }
-
-    private boolean tryFillHostName() {
-    	File hostCache = new File(getCachePath() + "\\hostname.cache");
-   	 if (hostCache.exists()) {
-        	autoFillTextField(hostAddressTextField, hostCache);
-        	LOG.info("host cache detected");
-        	return true;
-        }
-   	 	return false;
-    }
-
-    private void autoFillTextField(JTextField field, File file) {
-    	try {
-        	FileInputStream userStream = new FileInputStream(file);
-        	ObjectInputStream userIn = new ObjectInputStream(userStream);
-        	Object castObj = userIn.readObject();
-        	if (castObj instanceof String) {
-        		String user = (String) castObj;
-    			field.setText(user);
-        	}
-			userIn.close();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
     }
 
@@ -889,25 +838,34 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 					e.printStackTrace();
 				}
             } else if (cipherMode == Cipher.DECRYPT_MODE) {
-            	FileInputStream readFile = new FileInputStream(inputFile);
-            	ObjectInputStream readObj = new ObjectInputStream(readFile);
             	try {
-					Object objEncrypted = readObj.readObject();
-					byte[] encryptedInfo = (byte[]) objEncrypted;
-					try {
-						byte[] decryptedInfo
-							=
-						cipher.doFinal(encryptedInfo);
-						String realInfo = new String(decryptedInfo);
-						return realInfo;
-					} catch (IllegalBlockSizeException e) {
-						e.printStackTrace();
-					} catch (BadPaddingException e) {
-						e.printStackTrace();
-					}
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
+            		FileInputStream readFile = new FileInputStream(inputFile);
+                	ObjectInputStream readObj = new ObjectInputStream(readFile);
+                	try {
+    					Object objEncrypted = readObj.readObject();
+    					byte[] encryptedInfo = (byte[]) objEncrypted;
+    					try {
+    						byte[] decryptedInfo
+    							=
+    						cipher.doFinal(encryptedInfo);
+    						String realInfo = new String(decryptedInfo);
+    						readObj.close();
+    						return realInfo;
+    					} catch (IllegalBlockSizeException e) {
+    						readObj.close();
+    						e.printStackTrace();
+    					} catch (BadPaddingException e) {
+    						readObj.close();
+    						e.printStackTrace();
+    					}
+    				} catch (ClassNotFoundException | FileNotFoundException e) {
+    					readObj.close();
+    					if (e instanceof ClassNotFoundException) {
+    						e.printStackTrace();
+    					}
+    				}
+                	readObj.close();
+                } catch (FileNotFoundException e) { }
             }
         } catch (NoSuchPaddingException | NoSuchAlgorithmException
                 | InvalidKeyException
@@ -937,40 +895,22 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     private void saveCache(String username, String hostname, char[] password) throws IOException {
     	String cacheDirectory = getCachePath();
 		makeCacheDir();
-//		File userFile = new File(cacheDirectory + "\\username.cache");
-//		File passwordFile = new File(cacheDirectory + "\\password.cache");
-//		File hostFile = new File(cacheDirectory + "\\hostname.cache");
-		/*FileOutputStream fileOutUser =
-				new FileOutputStream(userFile);
-		FileOutputStream fileOutPassword =
-				new FileOutputStream(passwordFile);
-		FileOutputStream fileOutHost =
-				new FileOutputStream(hostFile);
-		ObjectOutputStream userNameOut = new ObjectOutputStream(fileOutUser);
-		ObjectOutputStream passwordOut = new ObjectOutputStream(fileOutPassword);
-		ObjectOutputStream hostOut = new ObjectOutputStream(fileOutHost);
-		userNameOut.writeObject(username);*/
 		File encrpytedUser = new File(cacheDirectory + "\\username.encrypted");
 		File encrpytedPassword = new File(cacheDirectory + "\\password.encrypted");
 		File encrpytedHost = new File(cacheDirectory + "\\hostname.encrypted");
 		String keyString = generateRandomString();
 		encrypt(keyString, encrpytedUser,
 				encrpytedUser, username, "username");
-		//LOG.info("username saved");
 		String passwordString = "";
 		for (int i = 0; i < password.length; i++) {
 			passwordString += password[i];
 		}
 		Arrays.fill(password, '0');
-		//passwordOut.writeObject(passwordString);
 		encrypt(keyString, encrpytedPassword, encrpytedPassword,
 				passwordString, "password");
 		passwordString = "";
-		//LOG.info("password saved");
-		//hostOut.writeObject(hostname);
 		encrypt(keyString, encrpytedHost, encrpytedHost,
 				hostname, "hostname");
-		//LOG.info("hostname saved");
     }
 
     private void testConnection() throws IOException {
