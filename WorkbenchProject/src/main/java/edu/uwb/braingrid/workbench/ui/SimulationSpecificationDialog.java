@@ -364,7 +364,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
     	try {
     		makeCacheDir();
-    		saveCache(usernameTextField.getText(), hostAddressTextField.getText(), passwordField.getPassword());
+    		saveCache(usernameTextField.getText(), hostAddressTextField.getText());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -398,9 +398,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_usernameTextFieldKeyReleased
 
     private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_passwordFieldKeyReleased
-        if (testConnectionButton.isEnabled()) {
+    	enableTestConnectionButton();
+    	if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                testConnection();
+            	testConnection();
             }
         }
     }// GEN-LAST:event_passwordFieldKeyReleased
@@ -582,15 +583,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         //if the cache file exists, autofill the textfield;
         File key = new File(System.getProperty("user.dir") + "\\Key");
         String userPostfix = "\\Cache\\username.encrypted";
-        String passwordPostfix = "\\Cache\\password.encrypted";
         String hostnamePostfix = "\\Cache\\hostname.encrypted";
         boolean usernameFilled = tryFillTextField(key, userPostfix, "username", usernameTextField);
-        boolean passwordFilled = tryFillTextField(key, passwordPostfix, "password", passwordField);
         boolean hostCachedFilled = tryFillTextField(key,
         				hostnamePostfix, "hostname", hostAddressTextField);
-        if (usernameFilled && passwordFilled && hostCachedFilled) {
-        	enableTestConnectionButton();
-        }
     }
 
     private boolean tryFillTextField(File key, String location,
@@ -881,34 +877,17 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     	File cacheFolder = new File(cacheDirectory);
     	if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
     		cacheFolder.mkdir();
-    		try {
-				Runtime.getRuntime().exec(
-						"attrib +h "
-								+
-				cacheFolder.getAbsolutePath().replaceAll(" ", "%20"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
     	}
     }
 
-    private void saveCache(String username, String hostname, char[] password) throws IOException {
+    private void saveCache(String username, String hostname) throws IOException {
     	String cacheDirectory = getCachePath();
 		makeCacheDir();
 		File encrpytedUser = new File(cacheDirectory + "\\username.encrypted");
-		File encrpytedPassword = new File(cacheDirectory + "\\password.encrypted");
 		File encrpytedHost = new File(cacheDirectory + "\\hostname.encrypted");
 		String keyString = generateRandomString();
 		encrypt(keyString, encrpytedUser,
 				encrpytedUser, username, "username");
-		String passwordString = "";
-		for (int i = 0; i < password.length; i++) {
-			passwordString += password[i];
-		}
-		Arrays.fill(password, '0');
-		encrypt(keyString, encrpytedPassword, encrpytedPassword,
-				passwordString, "password");
-		passwordString = "";
 		encrypt(keyString, encrpytedHost, encrpytedHost,
 				hostname, "hostname");
     }
@@ -931,7 +910,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         testConnectionButton.setEnabled(true);
         //save username and password if testconnection is successful
         if (success) {
-        	saveCache(username, hostname, password);
+        	saveCache(username, hostname);
         }
     }
     // </editor-fold>
