@@ -1,6 +1,7 @@
 package edu.uwb.braingrid.workbench.ui;
 
 import java.awt.Dimension;
+import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -462,6 +463,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     private boolean okButtonClicked = false;
     private boolean connectionTestSuccessful = false;
     // </editor-fold>
+    /**
+     * default constructor.
+     */
+    public SimulationSpecificationDialog() { }
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
@@ -575,24 +580,70 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         usernameTextField.setEnabled(enabled);
         passwordField.setEnabled(enabled);
         //if the cache file exists, autofill the textfield;
-        String path = getCachePath();
-        boolean usernameCached = tryFillUserName();
-        boolean passwordCached = tryFillPassWord();
-        boolean hostCached = tryFillHostName();
-        if (usernameCached && passwordCached && hostCached) {
+        // brief progress report:
+        // now you have encrpyted the information correctly
+        // and stored correctly,
+        //now you'll have to read them
+        File key = new File(System.getProperty("user.dir") + "\\Key");
+        String userPostfix = "\\Cache\\username.encrypted";
+        String passwordPostfix = "\\Cache\\password.encrypted";
+        String hostnamePostfix = "\\Cache\\hostname.encrypted";
+        boolean usernameFilled = tryFillTextField(key, userPostfix, "username", usernameTextField);
+        boolean passwordFilled = tryFillTextField(key, passwordPostfix, "password", passwordField);
+        boolean hostCachedFilled = tryFillTextField(key,
+        				hostnamePostfix, "hostname", hostAddressTextField);
+        if (usernameFilled && passwordFilled && hostCachedFilled) {
         	enableTestConnectionButton();
         }
     }
 
-    private boolean tryFillUserName() {
-    	File userCache = new File(getCachePath() + "\\username.cache");
-        if (userCache.exists()) {
-        	autoFillTextField(usernameTextField, userCache);
-        	LOG.info("UserName cache detected");
-        	return true;
-        }
-        return false;
+    private boolean tryFillTextField(File key, String location,
+    					String fieldName, JTextField fieldToFill) {
+    	File inputFile = new File(System.getProperty("user.dir") + location);
+        FileInputStream keyInput;
+		try {
+			keyInput = new FileInputStream(key);
+	        ObjectInputStream keyObj;
+			try {
+				keyObj = new ObjectInputStream(keyInput);
+				String keyString;
+				try {
+					keyString = (String) keyObj.readObject();
+				    SimulationSpecificationDialog tempDialog
+				    		=
+				    		new SimulationSpecificationDialog();
+				    String textName
+				    	=
+				    	tempDialog.decrypt(keyString, inputFile,
+				    			inputFile, fieldName);
+				    fieldToFill.setText(textName);
+				    if (!textName.equals("")) {
+				    	LOG.info(fieldName + " detected, autofilled");
+					    return true;
+				    }
+				    return false;
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+					return false;
+				} // can do a isinstanceof
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		} catch (FileNotFoundException e) {
+			return false;
+		}
     }
+
+//    private boolean tryFillUserName() {
+//    	File userCache = new File(getCachePath() + "\\username.cache");
+//        if (userCache.exists()) {
+//        	autoFillTextField(usernameTextField, userCache);
+//        	LOG.info("UserName cache detected");
+//        	return true;
+//        }
+//        return false;
+//    }
 
     private boolean tryFillPassWord() {
     	File passwordCache = new File(getCachePath() + "\\password.cache");
@@ -778,16 +829,36 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 	     return sb.toString();
 	 }
 
-    private static void encrypt(String key, File inputFile, File outputFile) {
-        doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile);
+    private static void encrypt(String key, File inputFile,
+    		File outputFile, String targetInfo, String logInfo) {
+        doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile, targetInfo, logInfo);
+    }
+    /**
+     * It's used to decrypt the encrypted user information and set it to the text field.
+     *
+     * @param key is the key that used for decryption.
+     * @param inputFile are used to specify the target folder.
+     * @param outputFile are used to specify the target folder
+     * @param logInfo are used to tell the logger what to output.
+     * @return a string that contains user information like username, password, hostname.
+     */
+    public static String decrypt(String key, File inputFile, File outputFile, String logInfo) {
+        return doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile, "", logInfo);
     }
 
-    private static void decrypt(String key, File inputFile, File outputFile) {
-        doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile);
-    }
-
-    private static void doCrypto(int cipherMode, String key, File inputFile,
-            File outputFile) {
+    /**
+     * It's used to either decrypt or encrypt user information.
+     *
+     * @param cipherMode is used to identify whether to encrpyt or decrpyt.
+     * @param key is the key that used for decryption.
+     * @param inputFile are used to specify the target folder.
+     * @param outputFile are used to specify the target folder.
+     * @param targetInfo used in encryption mode.
+     * @param logInfo are used to tell the logger what to output.
+     * @return a string that contains user information like username, password, hostname.
+     */
+    public static String doCrypto(int cipherMode, String key, File inputFile,
+            File outputFile, String targetInfo, String logInfo) {
         try {
             Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
@@ -799,14 +870,52 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             	keyObj.writeObject(key);
             	LOG.info("Key saved");
             	keyObj.close();
+            	byte[] infoByte = targetInfo.getBytes();
+            	try {
+					byte[] encryptedInfo = cipher.doFinal(infoByte);
+					FileOutputStream storeUserEncrpyted
+								=
+							new FileOutputStream(inputFile);
+
+					ObjectOutputStream encrpytedObj
+							=
+						new ObjectOutputStream(storeUserEncrpyted);
+					encrpytedObj.writeObject(encryptedInfo);
+					LOG.info(logInfo + " encrypted");
+					return "success";
+				} catch (IllegalBlockSizeException e) {
+					e.printStackTrace();
+				} catch (BadPaddingException e) {
+					e.printStackTrace();
+				}
+            } else if (cipherMode == Cipher.DECRYPT_MODE) {
+            	FileInputStream readFile = new FileInputStream(inputFile);
+            	ObjectInputStream readObj = new ObjectInputStream(readFile);
+            	try {
+					Object objEncrypted = readObj.readObject();
+					byte[] encryptedInfo = (byte[]) objEncrypted;
+					try {
+						byte[] decryptedInfo
+							=
+						cipher.doFinal(encryptedInfo);
+						String realInfo = new String(decryptedInfo);
+						return realInfo;
+					} catch (IllegalBlockSizeException e) {
+						e.printStackTrace();
+					} catch (BadPaddingException e) {
+						e.printStackTrace();
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
             }
-            System.out.println("3");
         } catch (NoSuchPaddingException | NoSuchAlgorithmException
                 | InvalidKeyException
                 | /*BadPaddingException
                 | IllegalBlockSizeException |*/ IOException ex) {
         	ex.printStackTrace();
         }
+        return "";
     }
 
     private void makeCacheDir() {
@@ -826,46 +935,42 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }
 
     private void saveCache(String username, String hostname, char[] password) throws IOException {
-    	try {
-        	String cacheDirectory = getCachePath();
-        	makeCacheDir();
-        	File userFile = new File(cacheDirectory + "\\username.cache");
-        	File passwordFile = new File(cacheDirectory + "\\password.cache");
-        	File hostFile = new File(cacheDirectory + "\\hostname.cache");
-			FileOutputStream fileOutUser =
-					new FileOutputStream(userFile);
-			FileOutputStream fileOutPassword =
-					new FileOutputStream(passwordFile);
-			FileOutputStream fileOutHost =
-					new FileOutputStream(hostFile);
-			ObjectOutputStream userNameOut = new ObjectOutputStream(fileOutUser);
-			ObjectOutputStream passwordOut = new ObjectOutputStream(fileOutPassword);
-			ObjectOutputStream hostOut = new ObjectOutputStream(fileOutHost);
-			userNameOut.writeObject(username);
-			System.out.println(username);
-			File encrpytedUser = new File(cacheDirectory + "\\username.encrypted");
-			File encrpytedPassword = new File(cacheDirectory + "\\password.encrypted");
-			File encrpytedHost = new File(cacheDirectory + "\\hostname.encrypted");
-			encrypt(generateRandomString(), userFile, encrpytedUser);
-			LOG.info("username saved");
-			String passwordString = "";
-			for (int i = 0; i < password.length; i++) {
-				passwordString += password[i];
-			}
-			Arrays.fill(password, '0');
-			passwordOut.writeObject(passwordString);
-			passwordString = "";
-			//encrypt(generateKey(), passwordFile, encrpytedPassword);
-			LOG.info("password saved");
-			hostOut.writeObject(hostname);
-			//encrypt(generateKey(), hostFile, encrpytedHost);
-			LOG.info("hostname saved");
-			userNameOut.close();
-			passwordOut.close();
-			hostOut.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+    	String cacheDirectory = getCachePath();
+		makeCacheDir();
+//		File userFile = new File(cacheDirectory + "\\username.cache");
+//		File passwordFile = new File(cacheDirectory + "\\password.cache");
+//		File hostFile = new File(cacheDirectory + "\\hostname.cache");
+		/*FileOutputStream fileOutUser =
+				new FileOutputStream(userFile);
+		FileOutputStream fileOutPassword =
+				new FileOutputStream(passwordFile);
+		FileOutputStream fileOutHost =
+				new FileOutputStream(hostFile);
+		ObjectOutputStream userNameOut = new ObjectOutputStream(fileOutUser);
+		ObjectOutputStream passwordOut = new ObjectOutputStream(fileOutPassword);
+		ObjectOutputStream hostOut = new ObjectOutputStream(fileOutHost);
+		userNameOut.writeObject(username);*/
+		File encrpytedUser = new File(cacheDirectory + "\\username.encrypted");
+		File encrpytedPassword = new File(cacheDirectory + "\\password.encrypted");
+		File encrpytedHost = new File(cacheDirectory + "\\hostname.encrypted");
+		String keyString = generateRandomString();
+		encrypt(keyString, encrpytedUser,
+				encrpytedUser, username, "username");
+		//LOG.info("username saved");
+		String passwordString = "";
+		for (int i = 0; i < password.length; i++) {
+			passwordString += password[i];
 		}
+		Arrays.fill(password, '0');
+		//passwordOut.writeObject(passwordString);
+		encrypt(keyString, encrpytedPassword, encrpytedPassword,
+				passwordString, "password");
+		passwordString = "";
+		//LOG.info("password saved");
+		//hostOut.writeObject(hostname);
+		encrypt(keyString, encrpytedHost, encrpytedHost,
+				hostname, "hostname");
+		//LOG.info("hostname saved");
     }
 
     private void testConnection() throws IOException {
