@@ -43,12 +43,12 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         usernameLabel.setText("Username: ");
     File inputFile = new File(System.getProperty("user.dir") + "\\Cache\\username.encrypted");
     File key = new File(System.getProperty("user.dir") + "\\Key");
-	try {
-	FileInputStream keyInput = new FileInputStream(key);
-	ObjectInputStream keyObj;
-		try {
-				keyObj = new ObjectInputStream(keyInput);
-				String keyString;
+    try {
+    FileInputStream keyInput = new FileInputStream(key);
+    ObjectInputStream keyObj;
+        try {
+            keyObj = new ObjectInputStream(keyInput);
+            String keyString;
 				try {
 					keyString = (String) keyObj.readObject();
 				    SimulationSpecificationDialog tempDialog
