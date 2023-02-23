@@ -41,7 +41,7 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         hostnameLabel.setText("Hostname: ");
 
         usernameLabel.setText("Username: ");
-        File inputFile = new File(System.getProperty("user.dir") + "\\Cache\\username.encrypted");
+    File inputFile = new File(System.getProperty("user.dir") + "\\Cache\\username.encrypted");
         File key = new File(System.getProperty("user.dir") + "\\Key");
 		try {
 			FileInputStream keyInput = new FileInputStream(key);
