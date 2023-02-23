@@ -49,13 +49,13 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         try {
             keyObj = new ObjectInputStream(keyInput);
             String keyString;
-				try {
-					keyString = (String) keyObj.readObject();
-				    SimulationSpecificationDialog tempDialog
-				    		=
-				    		new SimulationSpecificationDialog();
-				    String textName
-				    	=
+            try {
+                keyString = (String) keyObj.readObject();
+				SimulationSpecificationDialog tempDialog
+				=
+				new SimulationSpecificationDialog();
+				String textName
+				=
 				    	tempDialog.decrypt(keyString, inputFile,
 				    			inputFile, "username");
 				    usernameTextField.setText(textName);
