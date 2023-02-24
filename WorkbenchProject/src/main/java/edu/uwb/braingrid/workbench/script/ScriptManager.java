@@ -4,8 +4,10 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -271,6 +273,13 @@ public class ScriptManager {
             String remoteScriptPath = simDir + "/" + FileManager.getSimpleFilename(scriptPath);
             String cmd = "mkdir -p " + nListDir;
             sft.executeCommand(cmd, hostname, lcd.getUsername(), password, true);
+            FileOutputStream simDirLocation = new FileOutputStream(new File(makeLastSimulationDir() + "\\simdir"));
+            try {
+              ObjectOutputStream writeSimDir = new ObjectOutputStream(simDirLocation);
+              writeSimDir.writeObject(simDir);
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
             /* Upload Script */
             Date uploadStartTime = new Date();
             if (sft.uploadFile(scriptPath, simDir, hostname, lcd.getUsername(), password, null)) {
@@ -644,6 +653,15 @@ public class ScriptManager {
         }
         return timeCompleted;
     }
+    
+  private String makeLastSimulationDir() {
+    String lastSim = System.getProperty("user.dir") + "\\LastSimulation";
+    File lastSimDirectory = new File(lastSim);
+    if (!lastSimDirectory.exists() || !lastSimDirectory.isDirectory()) {
+      lastSimDirectory.mkdir();
+    }
+    return lastSim;
+  }
 
     private String fetchScriptOutputFiles(Simulation simulation, SimulationSpecification simSpec,
             Path scriptOutputFolder) throws JSchException, SftpException, IOException {
