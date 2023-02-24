@@ -16,23 +16,18 @@ import java.nio.file.Files;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.logging.Logger;
-
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-
+import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JTextField;
-
 import org.eclipse.jgit.transport.CredentialItem.Username;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.SimulationSpecification;
 
@@ -46,8 +41,8 @@ import edu.uwb.braingrid.workbench.model.SimulationSpecification;
  * @author Del Davis
  */
 public class SimulationSpecificationDialog extends javax.swing.JDialog {
-    private static final String ALGORITHM = "AES";
-    private static final String TRANSFORMATION = "AES";
+  private static final String ALGORITHM = "AES";
+  private static final String TRANSFORMATION = "AES";
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated Code">
     /**
      * This method is called from within the constructor to initialize the form.
@@ -156,10 +151,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         testConnectionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-					testConnectionButtonActionPerformed(evt);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+                  testConnectionButtonActionPerformed(evt);
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
             }
         });
 
@@ -179,10 +174,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         hostAddressTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 try {
-					hostAddressTextFieldKeyReleased(evt);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+                  hostAddressTextFieldKeyReleased(evt);
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
             }
         });
 
@@ -190,9 +185,9 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         usernameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 try {
-					usernameTextFieldKeyReleased(evt);
-				} catch (IOException e) {
-					e.printStackTrace();
+                  usernameTextFieldKeyReleased(evt);
+                } catch (IOException e) {
+                  e.printStackTrace();
 				}
             }
         });
@@ -201,10 +196,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 try {
-					passwordFieldKeyReleased(evt);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+                  passwordFieldKeyReleased(evt);
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
             }
         });
 
@@ -362,24 +357,28 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_cancelButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
-    	try {
-    		makeCacheDir();
-    		saveCache(usernameTextField.getText(), hostAddressTextField.getText());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	specifySimulation();
+        try {
+      makeCacheDir();
+      saveCache(usernameTextField.getText(), hostAddressTextField.getText());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    specifySimulation();
     }// GEN-LAST:event_okButtonActionPerformed
 
-    private void testConnectionButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException {// GEN-FIRST:event_testConnectionButtonActionPerformed
+  private void testConnectionButtonActionPerformed
+    (java.awt.event.ActionEvent evt) throws IOException {
+    	// GEN-FIRST:event_testConnectionButtonActionPerformed
         testConnection();
     }// GEN-LAST:event_testConnectionButtonActionPerformed
 
-    private void simulatorLocationComboBoxActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_simulatorLocationComboBoxActionPerformed
+  private void simulatorLocationComboBoxActionPerformed
+    (java.awt.event.ActionEvent evt) { 
+	  // GEN-FIRST:event_simulatorLocationComboBoxActionPerformed
         remoteOrLocalSet();
     }// GEN-LAST:event_simulatorLocationComboBoxActionPerformed
 
-    private void hostAddressTextFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_hostAddressTextFieldKeyReleased
+  private void hostAddressTextFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_hostAddressTextFieldKeyReleased
         validateHostAddress();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -388,7 +387,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }// GEN-LAST:event_hostAddressTextFieldKeyReleased
 
-    private void usernameTextFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_usernameTextFieldKeyReleased
+  private void usernameTextFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_usernameTextFieldKeyReleased
         validateUsername();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -397,11 +396,12 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }// GEN-LAST:event_usernameTextFieldKeyReleased
 
-    private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_passwordFieldKeyReleased
-    	enableTestConnectionButton();
-    	if (testConnectionButton.isEnabled()) {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            	testConnection();
+  private void passwordFieldKeyReleased
+    (java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_passwordFieldKeyReleased
+    enableTestConnectionButton();
+    if (testConnectionButton.isEnabled()) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            testConnection();
             }
         }
     }// GEN-LAST:event_passwordFieldKeyReleased
@@ -467,7 +467,8 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     /**
      * default constructor.
      */
-    public SimulationSpecificationDialog() { }
+  public SimulationSpecificationDialog() {
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
@@ -581,51 +582,51 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         usernameTextField.setEnabled(enabled);
         passwordField.setEnabled(enabled);
         //if the cache file exists, autofill the textfield;
-        File key = new File(System.getProperty("user.dir") + "\\Key");
-        String userPostfix = "\\Cache\\username.encrypted";
-        String hostnamePostfix = "\\Cache\\hostname.encrypted";
-        boolean usernameFilled = tryFillTextField(key, userPostfix, "username", usernameTextField);
-        boolean hostCachedFilled = tryFillTextField(key,
-        				hostnamePostfix, "hostname", hostAddressTextField);
-    }
+    File key = new File(System.getProperty("user.dir") + "\\Key");
+    String userPostfix = "\\Cache\\username.encrypted";
+    String hostnamePostfix = "\\Cache\\hostname.encrypted";
+    boolean usernameFilled = tryFillTextField(key, userPostfix, "username", usernameTextField);
+    boolean hostCachedFilled = tryFillTextField(key,
+      hostnamePostfix, "hostname", hostAddressTextField);
+  }
 
-    private boolean tryFillTextField(File key, String location,
-    					String fieldName, JTextField fieldToFill) {
-    	File inputFile = new File(System.getProperty("user.dir") + location);
-        FileInputStream keyInput;
-		try {
-			keyInput = new FileInputStream(key);
-	        ObjectInputStream keyObj;
-			try {
-				keyObj = new ObjectInputStream(keyInput);
-				String keyString;
-				try {
-					keyString = (String) keyObj.readObject();
-				    SimulationSpecificationDialog tempDialog
-				    		=
-				    		new SimulationSpecificationDialog();
-				    String textName
-				    	=
-				    	tempDialog.decrypt(keyString, inputFile,
-				    			inputFile, fieldName);
-				    fieldToFill.setText(textName);
-				    if (!textName.equals("")) {
-				    	LOG.info(fieldName + " detected, autofilled");
-					    return true;
-				    }
-				    return false;
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-					return false;
-				} // can do a isinstanceof
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-		} catch (FileNotFoundException e) {
-			return false;
-		}
+  private boolean tryFillTextField(File key, String location,
+    String fieldName, JTextField fieldToFill) {
+    File inputFile = new File(System.getProperty("user.dir") + location);
+    FileInputStream keyInput;
+    try {
+      keyInput = new FileInputStream(key);
+      ObjectInputStream keyObj;
+      try {
+        keyObj = new ObjectInputStream(keyInput);
+        String keyString;
+        try {
+          keyString = (String) keyObj.readObject();
+          SimulationSpecificationDialog tempDialog
+          =
+          new SimulationSpecificationDialog();
+          String textName
+          =
+          tempDialog.decrypt(keyString, inputFile,
+            inputFile, fieldName);
+          fieldToFill.setText(textName);
+          if (!textName.equals("")) {
+            LOG.info(fieldName + " detected, autofilled");
+            return true;
+          }
+          return false;
+        } catch (ClassNotFoundException e) {
+          e.printStackTrace();
+          return false;
+        } // can do a isinstanceof
+      } catch (IOException e) {
+        e.printStackTrace();
+        return false;
+      }
+    } catch (FileNotFoundException e) {
+      return false;
     }
+  }
 
     private void enableTestConnectionButton() {
         testConnectionButton.setEnabled(isValidHostname(hostAddressTextField.getText())
@@ -722,11 +723,11 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
     private void remoteOrLocalSet() {
         setRemoteRelatedComponentsEnabled(simulatorLocationComboBox.getSelectedIndex()
-		        == SimulationSpecification.REMOTE_EXECUTION_INDEX);
-		if (!isRemoteExecution()) {
-		    setRemoteConnectionMsg("", "black");
-		}
-		enableOkButton();
+          == SimulationSpecification.REMOTE_EXECUTION_INDEX);
+    if (!isRemoteExecution()) {
+      setRemoteConnectionMsg("", "black");
+    }
+    enableOkButton();
     }
 
     private void validateHostAddress() {
@@ -754,30 +755,30 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }
 
-    private String getCachePath() {
-    	return System.getProperty("user.dir") + "\\Cache";
+  private String getCachePath() {
+    return System.getProperty("user.dir") + "\\Cache";
+  }
+
+  private static final String CHARACTERS
+    =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
+    +
+  "defghijklmnopqrstuvwxyz0123456789";
+
+  private static String generateRandomString() {
+    final int length = 16;
+    SecureRandom random = new SecureRandom();
+    StringBuilder sb = new StringBuilder(length);
+    for (int i = 0; i < length; i++) {
+      sb.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
     }
+    return sb.toString();
+  }
 
-	 private static final String CHARACTERS
-	 				 				=
-	 				 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
-	 				 				+
-	 				 		"defghijklmnopqrstuvwxyz0123456789";
-
-	 private static String generateRandomString() {
-		 final int length = 16;
-	     SecureRandom random = new SecureRandom();
-	     StringBuilder sb = new StringBuilder(length);
-         for (int i = 0; i < length; i++) {
-	         sb.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
-	     }
-	     return sb.toString();
-	 }
-
-    private static void encrypt(String key, File inputFile,
-    		File outputFile, String targetInfo, String logInfo) {
-        doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile, targetInfo, logInfo);
-    }
+  private static void encrypt(String key, File inputFile,
+    File outputFile, String targetInfo, String logInfo) {
+    doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile, targetInfo, logInfo);
+  }
     /**
      * It's used to decrypt the encrypted user information and set it to the text field.
      *
@@ -787,9 +788,9 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
      * @param logInfo are used to tell the logger what to output.
      * @return a string that contains user information like username, password, hostname.
      */
-    public static String decrypt(String key, File inputFile, File outputFile, String logInfo) {
-        return doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile, "", logInfo);
-    }
+  public static String decrypt(String key, File inputFile, File outputFile, String logInfo) {
+    return doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile, "", logInfo);
+  }
 
     /**
      * It's used to either decrypt or encrypt user information.
@@ -802,75 +803,75 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
      * @param logInfo are used to tell the logger what to output.
      * @return a string that contains user information like username, password, hostname.
      */
-    public static String doCrypto(int cipherMode, String key, File inputFile,
-            File outputFile, String targetInfo, String logInfo) {
+  public static String doCrypto(int cipherMode, String key, File inputFile,
+    File outputFile, String targetInfo, String logInfo) {
+    try {
+      Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
+      Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+      cipher.init(cipherMode, secretKey);
+      if (cipherMode == Cipher.ENCRYPT_MODE) {
+        File keyFile = new File(System.getProperty("user.dir") + "\\Key");
+        FileOutputStream keyOutput = new FileOutputStream(keyFile);
+        ObjectOutputStream keyObj = new ObjectOutputStream(keyOutput);
+        keyObj.writeObject(key);
+        LOG.info("Key saved");
+        keyObj.close();
+        byte[] infoByte = targetInfo.getBytes();
         try {
-            Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            cipher.init(cipherMode, secretKey);
-            if (cipherMode == Cipher.ENCRYPT_MODE) {
-            	File keyFile = new File(System.getProperty("user.dir") + "\\Key");
-            	FileOutputStream keyOutput = new FileOutputStream(keyFile);
-            	ObjectOutputStream keyObj = new ObjectOutputStream(keyOutput);
-            	keyObj.writeObject(key);
-            	LOG.info("Key saved");
-            	keyObj.close();
-            	byte[] infoByte = targetInfo.getBytes();
-            	try {
-					byte[] encryptedInfo = cipher.doFinal(infoByte);
-					FileOutputStream storeUserEncrpyted
-								=
-							new FileOutputStream(inputFile);
-
-					ObjectOutputStream encrpytedObj
-							=
-						new ObjectOutputStream(storeUserEncrpyted);
-					encrpytedObj.writeObject(encryptedInfo);
-					LOG.info(logInfo + " encrypted");
-					return "success";
-				} catch (IllegalBlockSizeException e) {
-					e.printStackTrace();
-				} catch (BadPaddingException e) {
-					e.printStackTrace();
-				}
-            } else if (cipherMode == Cipher.DECRYPT_MODE) {
-            	try {
-            		FileInputStream readFile = new FileInputStream(inputFile);
-                	ObjectInputStream readObj = new ObjectInputStream(readFile);
-                	try {
-    					Object objEncrypted = readObj.readObject();
-    					byte[] encryptedInfo = (byte[]) objEncrypted;
-    					try {
-    						byte[] decryptedInfo
-    							=
-    						cipher.doFinal(encryptedInfo);
-    						String realInfo = new String(decryptedInfo);
-    						readObj.close();
-    						return realInfo;
-    					} catch (IllegalBlockSizeException e) {
-    						readObj.close();
-    						e.printStackTrace();
-    					} catch (BadPaddingException e) {
-    						readObj.close();
-    						e.printStackTrace();
-    					}
-    				} catch (ClassNotFoundException | FileNotFoundException e) {
-    					readObj.close();
-    					if (e instanceof ClassNotFoundException) {
-    						e.printStackTrace();
-    					}
-    				}
-                	readObj.close();
-                } catch (FileNotFoundException e) { }
-            }
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException
-                | InvalidKeyException
-                | /*BadPaddingException
-                | IllegalBlockSizeException |*/ IOException ex) {
-        	ex.printStackTrace();
-        }
-        return "";
+          byte[] encryptedInfo = cipher.doFinal(infoByte);
+          FileOutputStream storeUserEncrpyted
+            =
+          new FileOutputStream(inputFile);
+          ObjectOutputStream encrpytedObj
+            =
+          new ObjectOutputStream(storeUserEncrpyted);
+          encrpytedObj.writeObject(encryptedInfo);
+          LOG.info(logInfo + " encrypted");
+          return "success";
+        } catch (IllegalBlockSizeException e) {
+          e.printStackTrace();
+    } catch (BadPaddingException e) {
+      e.printStackTrace();
     }
+      } else if (cipherMode == Cipher.DECRYPT_MODE) {
+        try {
+          FileInputStream readFile = new FileInputStream(inputFile);
+          ObjectInputStream readObj = new ObjectInputStream(readFile);
+          try {
+            Object objEncrypted = readObj.readObject();
+            byte[] encryptedInfo = (byte[]) objEncrypted;
+            try {
+              byte[] decryptedInfo
+                 =
+              cipher.doFinal(encryptedInfo);
+              String realInfo = new String(decryptedInfo);
+              readObj.close();
+              return realInfo;
+            } catch (IllegalBlockSizeException e) {
+              readObj.close();
+              e.printStackTrace();
+          } catch (BadPaddingException e) {
+          readObj.close();
+          e.printStackTrace();
+        }
+         } catch (ClassNotFoundException | FileNotFoundException e) {
+           readObj.close();
+           if (e instanceof ClassNotFoundException) {
+             e.printStackTrace();
+           }
+         }
+                	readObj.close();
+         } catch (FileNotFoundException e) {
+         }
+       }
+     } catch (NoSuchPaddingException | NoSuchAlgorithmException
+       | InvalidKeyException
+       | /*BadPaddingException
+       | IllegalBlockSizeException |*/ IOException ex) {
+         ex.printStackTrace();
+       }
+    return "";
+  }
 
     private void makeCacheDir() {
     	String cacheDirectory = getCachePath();

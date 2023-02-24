@@ -41,33 +41,34 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         hostnameLabel.setText("Hostname: ");
 
         usernameLabel.setText("Username: ");
-        File inputFile = new File(System.getProperty("user.dir") + "\\Cache\\username.encrypted");
-        File key = new File(System.getProperty("user.dir") + "\\Key");
-		try {
-			FileInputStream keyInput = new FileInputStream(key);
-	        ObjectInputStream keyObj;
-			try {
-				keyObj = new ObjectInputStream(keyInput);
-				String keyString;
-				try {
-					keyString = (String) keyObj.readObject();
-				    SimulationSpecificationDialog tempDialog
-					    =
-				    new SimulationSpecificationDialog();
-				    String textName
-				        =
-				    tempDialog.decrypt(keyString, inputFile,
-				    inputFile, "username");
-				    usernameTextField.setText(textName);
-				}catch (ClassNotFoundException e) {
-					e.printStackTrace();
-			} 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	} catch (FileNotFoundException e) {}
+    File inputFile = new File(System.getProperty("user.dir") + "\\Cache\\username.encrypted");
+    File key = new File(System.getProperty("user.dir") + "\\Key");
+    try {
+      FileInputStream keyInput = new FileInputStream(key);
+      ObjectInputStream keyObj;
+      try {
+        keyObj = new ObjectInputStream(keyInput);
+        String keyString;
+        try {
+          keyString = (String) keyObj.readObject();
+          SimulationSpecificationDialog tempDialog
+            =
+          new SimulationSpecificationDialog();
+          String textName
+            =
+          tempDialog.decrypt(keyString, inputFile,
+          inputFile, "username");
+          usernameTextField.setText(textName);
+        } catch (ClassNotFoundException e) {
+          e.printStackTrace();
+        } 
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    } catch (FileNotFoundException e) {
+	}
 
-        usernameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+    usernameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 usernameTextFieldKeyReleased(evt);
             }
@@ -99,9 +100,9 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
 
         msgLabel.setText("<html>Message: <span style=\"color:green\">None</span></html>");
 
-        javax.swing.GroupLayout layout
-        			=
-        			new javax.swing.GroupLayout(getContentPane());
+    javax.swing.GroupLayout layout
+      =
+    new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
                 .createSequentialGroup().addContainerGap()
@@ -127,38 +128,37 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
                 new java.awt.Component[] { hostnameTextField, passwordField, usernameTextField });
 
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup().addGap(13, 13, 13)
+        .addGroup(layout.createSequentialGroup().addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax
                         		.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(hostnameLabel)
-                                .addComponent(hostnameTextField, javax.
-                                		swing.GroupLayout.PREFERRED_SIZE,
+                                .addComponent(hostnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(
-                        		javax.swing.GroupLayout.Alignment.BASELINE)
+                               javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(usernameLabel)
                                 .addComponent(usernameTextField,
-                                		javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(
-                        		javax.swing.GroupLayout.Alignment.BASELINE)
+                                javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(passwordLabel)
                                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE,
                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(
-                        		javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(connectButton).
-                                addComponent(cancelButton).addComponent(msgLabel))
+                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(connectButton).addComponent(
+                                		cancelButton).addComponent(msgLabel))
                         .addContainerGap()));
 
         pack();
-    } // </editor-fold>//GEN-END:initComponents
+  } // </editor-fold>//GEN-END:initComponents
 
     private void usernameTextFieldKeyReleased(
     		java.awt.event.KeyEvent evt) { // GEN-FIRST:event_usernameTextFieldKeyReleased
