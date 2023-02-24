@@ -13,10 +13,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URLEncoder;
 import java.nio.file.Files;
-import java.security.SecureRandom;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.logging.Logger;
@@ -387,17 +387,18 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                 testConnection();
             }
         }
-    }// GEN-LAST:event_hostAddressTextFieldKeyReleased
+    } // GEN-LAST:event_hostAddressTextFieldKeyReleased
 
   private void usernameTextFieldKeyReleased(
-      java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_usernameTextFieldKeyReleased
+      java.awt.event.KeyEvent evt) throws IOException { 
+        // GEN-FIRST:event_usernameTextFieldKeyReleased
         validateUsername();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 testConnection();
             }
         }
-    }// GEN-LAST:event_usernameTextFieldKeyReleased
+    } // GEN-LAST:event_usernameTextFieldKeyReleased
 
   private void passwordFieldKeyReleased(
       java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_passwordFieldKeyReleased
@@ -857,68 +858,69 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
               readObj.close();
               e.printStackTrace();
             } catch (BadPaddingException e) {
+              readObj.close();
+              e.printStackTrace();
+            }
+          } catch (ClassNotFoundException | FileNotFoundException e) {
+            readObj.close();
+            if (e instanceof ClassNotFoundException) {
+              e.printStackTrace();
+            }
+          }
           readObj.close();
-          e.printStackTrace();
+        } catch (FileNotFoundException e) {
+        	LOG.info("Cache does not exist");
         }
-         } catch (ClassNotFoundException | FileNotFoundException e) {
-           readObj.close();
-           if (e instanceof ClassNotFoundException) {
-             e.printStackTrace();
-           }
-         }
-                	readObj.close();
-         } catch (FileNotFoundException e) {
-         }
-       }
-     } catch (NoSuchPaddingException | NoSuchAlgorithmException
+      }
+    } catch (NoSuchPaddingException | NoSuchAlgorithmException
        | InvalidKeyException
        | /*BadPaddingException
        | IllegalBlockSizeException |*/ IOException ex) {
-         ex.printStackTrace();
-       }
+      ex.printStackTrace();
+    }
     return "";
   }
 
-    private void makeCacheDir() {
-    	String cacheDirectory = getCachePath();
-    	File cacheFolder = new File(cacheDirectory);
-    	if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
-    		cacheFolder.mkdir();
-    	}
+  private void makeCacheDir() {
+    String cacheDirectory = getCachePath();
+    File cacheFolder = new File(cacheDirectory);
+    if (!cacheFolder.exists() || !cacheFolder.isDirectory()) {
+      cacheFolder.mkdir();
     }
+  }
 
-    private void saveCache(String username, String hostname) throws IOException {
-    	String cacheDirectory = getCachePath();
-		makeCacheDir();
-		File encrpytedUser = new File(cacheDirectory + "\\username.encrypted");
-		File encrpytedHost = new File(cacheDirectory + "\\hostname.encrypted");
-		String keyString = generateRandomString();
-		encrypt(keyString, encrpytedUser,
-				encrpytedUser, username, "username");
-		encrypt(keyString, encrpytedHost, encrpytedHost,
-				hostname, "hostname");
-    }
+  private void saveCache(String username, String hostname) throws IOException {
+    String cacheDirectory = getCachePath();
+    makeCacheDir();
+    File encrpytedUser = new File(cacheDirectory + "\\username.encrypted");
+    File encrpytedHost = new File(cacheDirectory + "\\hostname.encrypted");
+    String keyString = generateRandomString();
+    encrypt(keyString, encrpytedUser,
+        encrpytedUser, username, "username");
+    encrypt(keyString, encrpytedHost, encrpytedHost,
+        hostname, "hostname");
+  }
 
-    private void testConnection() throws IOException {
-        testConnectionButton.setEnabled(false);
-        String hostname = hostAddressTextField.getText();
-        String username = usernameTextField.getText();
-        char[] password = passwordField.getPassword();
-        // try to connect
-        SecureFileTransfer sft = new SecureFileTransfer();
-        boolean success = sft.testConnection(3000, hostname, username, password);
-        String msg = success ? "Connection Successful" : "Connection Failed";
-        String color = success ? "green" : "red";
-        // report status
-        setRemoteConnectionMsg(msg, color);
-        // mark operation success
-        connectionTestSuccessful = success;
-        // reset button
-        testConnectionButton.setEnabled(true);
-        //save username and password if testconnection is successful
-        if (success) {
-        	saveCache(username, hostname);
-        }
+  private void testConnection() throws IOException {
+    testConnectionButton.setEnabled(false);
+    String hostname = hostAddressTextField.getText();
+    String username = usernameTextField.getText();
+    char[] password = passwordField.getPassword();
+    // try to connect
+    SecureFileTransfer sft = new SecureFileTransfer();
+    boolean success = sft.testConnection(3000, hostname, username, password);
+    String msg = success ? "Connection Successful" : "Connection Failed";
+    String color = success ? "green" : "red";
+    // report status
+    setRemoteConnectionMsg(msg, color);
+    // mark operation success
+    connectionTestSuccessful = success;
+    // reset button
+    testConnectionButton.setEnabled(true);
+    //save username and password if testconnection is successful
+    if (success) {
+      saveCache(username, hostname);
     }
-    // </editor-fold>
+  }
+  // </editor-fold>
 }
