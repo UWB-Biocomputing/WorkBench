@@ -387,7 +387,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                 testConnection();
             }
         }
-    } // GEN-LAST:event_hostAddressTextFieldKeyReleased
+  } // GEN-LAST:event_hostAddressTextFieldKeyReleased
 
   private void usernameTextFieldKeyReleased(
       java.awt.event.KeyEvent evt) throws IOException { 
@@ -398,7 +398,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
                 testConnection();
             }
         }
-    } // GEN-LAST:event_usernameTextFieldKeyReleased
+  } // GEN-LAST:event_usernameTextFieldKeyReleased
 
   private void passwordFieldKeyReleased(
       java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_passwordFieldKeyReleased
@@ -869,7 +869,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
           }
           readObj.close();
         } catch (FileNotFoundException e) {
-        	LOG.info("Cache does not exist");
+          LOG.info("Cache does not exist");
         }
       }
     } catch (NoSuchPaddingException | NoSuchAlgorithmException

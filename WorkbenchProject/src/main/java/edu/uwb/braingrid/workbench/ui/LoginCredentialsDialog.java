@@ -52,12 +52,12 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         try {
           keyString = (String) keyObj.readObject();
           SimulationSpecificationDialog tempDialog
-            =
-          new SimulationSpecificationDialog();
+              =
+              new SimulationSpecificationDialog();
           String textName
-            =
-          tempDialog.decrypt(keyString, inputFile,
-          inputFile, "username");
+              =
+              tempDialog.decrypt(keyString, inputFile,
+              inputFile, "username");
           usernameTextField.setText(textName);
         } catch (ClassNotFoundException e) {
           e.printStackTrace();
@@ -66,7 +66,8 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         e.printStackTrace();
       }
     } catch (FileNotFoundException e) {
-	}
+      System.err.println("Cache does not exist");
+    }
 
     usernameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -101,8 +102,8 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         msgLabel.setText("<html>Message: <span style=\"color:green\">None</span></html>");
 
     javax.swing.GroupLayout layout
-      =
-    new javax.swing.GroupLayout(getContentPane());
+        =
+        new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
                 .createSequentialGroup().addContainerGap()
@@ -128,7 +129,7 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
                 new java.awt.Component[] { hostnameTextField, passwordField, usernameTextField });
 
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup().addGap(13, 13, 13)
+            .addGroup(layout.createSequentialGroup().addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax
                         		.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(hostnameLabel)
@@ -154,36 +155,36 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(
                                 javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(connectButton).addComponent(
-                                		cancelButton).addComponent(msgLabel))
+                                        cancelButton).addComponent(msgLabel))
                         .addContainerGap()));
 
         pack();
   } // </editor-fold>//GEN-END:initComponents
 
-    private void usernameTextFieldKeyReleased(
-    		java.awt.event.KeyEvent evt) { // GEN-FIRST:event_usernameTextFieldKeyReleased
-        validateUsername();
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        	specifyCredentials(true);
-        	}
-    } // GEN-LAST:event_usernameTextFieldKeyReleased
+  private void usernameTextFieldKeyReleased(
+    java.awt.event.KeyEvent evt) { // GEN-FIRST:event_usernameTextFieldKeyReleased
+    validateUsername();
+    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+      specifyCredentials(true);
+    }
+  } // GEN-LAST:event_usernameTextFieldKeyReleased
 
-    private void connectButtonActionPerformed(
-    		java.awt.event.ActionEvent evt) { // GEN-FIRST:event_connectButtonActionPerformed
-        specifyCredentials(true);
-    } // GEN-LAST:event_connectButtonActionPerformed
+  private void connectButtonActionPerformed(
+    java.awt.event.ActionEvent evt) { // GEN-FIRST:event_connectButtonActionPerformed
+    specifyCredentials(true);
+  } // GEN-LAST:event_connectButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	// GEN-FIRST:event_cancelButtonActionPerformed
-        specifyCredentials(false);
-    } // GEN-LAST:event_cancelButtonActionPerformed
+  private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    // GEN-FIRST:event_cancelButtonActionPerformed
+    specifyCredentials(false);
+  } // GEN-LAST:event_cancelButtonActionPerformed
 
-    private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {
-    	// GEN-FIRST:event_passwordFieldKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            specifyCredentials(true);
-            }
-    } // GEN-LAST:event_passwordFieldKeyReleased
+  private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {
+    // GEN-FIRST:event_passwordFieldKeyReleased
+    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+      specifyCredentials(true);
+    }
+  } // GEN-LAST:event_passwordFieldKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
