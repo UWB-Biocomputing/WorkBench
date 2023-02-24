@@ -162,7 +162,7 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
   } // </editor-fold>//GEN-END:initComponents
 
   private void usernameTextFieldKeyReleased(
-    java.awt.event.KeyEvent evt) { // GEN-FIRST:event_usernameTextFieldKeyReleased
+      java.awt.event.KeyEvent evt) { // GEN-FIRST:event_usernameTextFieldKeyReleased
     validateUsername();
     if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
       specifyCredentials(true);
@@ -170,7 +170,7 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
   } // GEN-LAST:event_usernameTextFieldKeyReleased
 
   private void connectButtonActionPerformed(
-    java.awt.event.ActionEvent evt) { // GEN-FIRST:event_connectButtonActionPerformed
+      java.awt.event.ActionEvent evt) { // GEN-FIRST:event_connectButtonActionPerformed
     specifyCredentials(true);
   } // GEN-LAST:event_connectButtonActionPerformed
 
