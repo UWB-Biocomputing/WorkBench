@@ -41,30 +41,30 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         hostnameLabel.setText("Hostname: ");
 
         usernameLabel.setText("Username: ");
-    File inputFile = new File(System.getProperty("user.dir") + "\\Cache\\username.encrypted");
-    File key = new File(System.getProperty("user.dir") + "\\Key");
-    try {
-    FileInputStream keyInput = new FileInputStream(key);
-    ObjectInputStream keyObj;
-    try {
-    keyObj = new ObjectInputStream(keyInput);
-    String keyString;
-    try {
-    keyString = (String) keyObj.readObject();
-    SimulationSpecificationDialog tempDialog
-    =
-    new SimulationSpecificationDialog();
-    String textName
-    =
-    tempDialog.decrypt(keyString, inputFile,
-    inputFile, "username");
-    usernameTextField.setText(textName);
-    }catch (ClassNotFoundException e) {
-    e.printStackTrace();
-    } 
-    } catch (IOException e) {
-    e.printStackTrace();
-    }
+        File inputFile = new File(System.getProperty("user.dir") + "\\Cache\\username.encrypted");
+        File key = new File(System.getProperty("user.dir") + "\\Key");
+		try {
+			FileInputStream keyInput = new FileInputStream(key);
+	        ObjectInputStream keyObj;
+			try {
+				keyObj = new ObjectInputStream(keyInput);
+				String keyString;
+				try {
+					keyString = (String) keyObj.readObject();
+				    SimulationSpecificationDialog tempDialog
+					    =
+				    new SimulationSpecificationDialog();
+				    String textName
+				        =
+				    tempDialog.decrypt(keyString, inputFile,
+				    inputFile, "username");
+				    usernameTextField.setText(textName);
+				}catch (ClassNotFoundException e) {
+					e.printStackTrace();
+			} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	} catch (FileNotFoundException e) {}
 
         usernameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
