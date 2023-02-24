@@ -15,10 +15,10 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Base64;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -357,7 +357,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_cancelButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
-        try {
+    try {
       makeCacheDir();
       saveCache(usernameTextField.getText(), hostAddressTextField.getText());
     } catch (IOException e) {
@@ -366,19 +366,20 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     specifySimulation();
     }// GEN-LAST:event_okButtonActionPerformed
 
-  private void testConnectionButtonActionPerformed
-    (java.awt.event.ActionEvent evt) throws IOException {
-    	// GEN-FIRST:event_testConnectionButtonActionPerformed
+  private void testConnectionButtonActionPerformed(
+  java.awt.event.ActionEvent evt) throws IOException {
+        // GEN-FIRST:event_testConnectionButtonActionPerformed
         testConnection();
     }// GEN-LAST:event_testConnectionButtonActionPerformed
 
-  private void simulatorLocationComboBoxActionPerformed
-    (java.awt.event.ActionEvent evt) { 
-	  // GEN-FIRST:event_simulatorLocationComboBoxActionPerformed
+  private void simulatorLocationComboBoxActionPerformed(
+  java.awt.event.ActionEvent evt) { 
+        // GEN-FIRST:event_simulatorLocationComboBoxActionPerformed
         remoteOrLocalSet();
     }// GEN-LAST:event_simulatorLocationComboBoxActionPerformed
 
-  private void hostAddressTextFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_hostAddressTextFieldKeyReleased
+  private void hostAddressTextFieldKeyReleased(
+  java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_hostAddressTextFieldKeyReleased
         validateHostAddress();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -387,7 +388,8 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }// GEN-LAST:event_hostAddressTextFieldKeyReleased
 
-  private void usernameTextFieldKeyReleased(java.awt.event.KeyEvent evt) throws IOException {// GEN-FIRST:event_usernameTextFieldKeyReleased
+  private void usernameTextFieldKeyReleased(
+  java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_usernameTextFieldKeyReleased
         validateUsername();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -396,12 +398,12 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         }
     }// GEN-LAST:event_usernameTextFieldKeyReleased
 
-  private void passwordFieldKeyReleased
-    (java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_passwordFieldKeyReleased
+  private void passwordFieldKeyReleased(
+  java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_passwordFieldKeyReleased
     enableTestConnectionButton();
     if (testConnectionButton.isEnabled()) {
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            testConnection();
+      if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        testConnection();
             }
         }
     }// GEN-LAST:event_passwordFieldKeyReleased
@@ -454,7 +456,8 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
-    private static final Logger LOG = Logger.getLogger(SimulationSpecificationDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(
+      SimulationSpecificationDialog.class.getName());
     private static final String LINUX_HOSTNAME_PATTERN
             = "^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\\.([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*$";
     private static final String LINUX_USERNAME_PATTERN = "^[a-z][a-z0-9\\-]*$";
@@ -464,11 +467,12 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     private boolean okButtonClicked = false;
     private boolean connectionTestSuccessful = false;
     // </editor-fold>
-    /**
+     /**
      * default constructor.
      */
+
   public SimulationSpecificationDialog() {
-    }
+  }
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
@@ -581,17 +585,17 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         hostAddressTextField.setEnabled(enabled);
         usernameTextField.setEnabled(enabled);
         passwordField.setEnabled(enabled);
-        //if the cache file exists, autofill the textfield;
+    //if the cache file exists, autofill the textfield;
     File key = new File(System.getProperty("user.dir") + "\\Key");
     String userPostfix = "\\Cache\\username.encrypted";
     String hostnamePostfix = "\\Cache\\hostname.encrypted";
     boolean usernameFilled = tryFillTextField(key, userPostfix, "username", usernameTextField);
     boolean hostCachedFilled = tryFillTextField(key,
-      hostnamePostfix, "hostname", hostAddressTextField);
+        hostnamePostfix, "hostname", hostAddressTextField);
   }
 
   private boolean tryFillTextField(File key, String location,
-    String fieldName, JTextField fieldToFill) {
+      String fieldName, JTextField fieldToFill) {
     File inputFile = new File(System.getProperty("user.dir") + location);
     FileInputStream keyInput;
     try {
@@ -603,12 +607,12 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         try {
           keyString = (String) keyObj.readObject();
           SimulationSpecificationDialog tempDialog
-          =
-          new SimulationSpecificationDialog();
+              =
+              new SimulationSpecificationDialog();
           String textName
-          =
-          tempDialog.decrypt(keyString, inputFile,
-            inputFile, fieldName);
+              =
+              tempDialog.decrypt(keyString, inputFile,
+              inputFile, fieldName);
           fieldToFill.setText(textName);
           if (!textName.equals("")) {
             LOG.info(fieldName + " detected, autofilled");
