@@ -14,10 +14,10 @@ import java.io.ObjectOutputStream;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
@@ -367,19 +367,20 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_okButtonActionPerformed
 
   private void testConnectionButtonActionPerformed(
-  java.awt.event.ActionEvent evt) throws IOException {
+      java.awt.event.ActionEvent evt) throws IOException {
         // GEN-FIRST:event_testConnectionButtonActionPerformed
         testConnection();
     }// GEN-LAST:event_testConnectionButtonActionPerformed
 
   private void simulatorLocationComboBoxActionPerformed(
-  java.awt.event.ActionEvent evt) { 
+      java.awt.event.ActionEvent evt) { 
         // GEN-FIRST:event_simulatorLocationComboBoxActionPerformed
         remoteOrLocalSet();
     }// GEN-LAST:event_simulatorLocationComboBoxActionPerformed
 
   private void hostAddressTextFieldKeyReleased(
-  java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_hostAddressTextFieldKeyReleased
+      java.awt.event.KeyEvent evt) throws IOException { 
+        // GEN-FIRST:event_hostAddressTextFieldKeyReleased
         validateHostAddress();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -389,7 +390,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_hostAddressTextFieldKeyReleased
 
   private void usernameTextFieldKeyReleased(
-  java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_usernameTextFieldKeyReleased
+      java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_usernameTextFieldKeyReleased
         validateUsername();
         if (testConnectionButton.isEnabled()) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -399,7 +400,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }// GEN-LAST:event_usernameTextFieldKeyReleased
 
   private void passwordFieldKeyReleased(
-  java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_passwordFieldKeyReleased
+      java.awt.event.KeyEvent evt) throws IOException { // GEN-FIRST:event_passwordFieldKeyReleased
     enableTestConnectionButton();
     if (testConnectionButton.isEnabled()) {
       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -456,8 +457,8 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Custom Members">
-    private static final Logger LOG = Logger.getLogger(
-      SimulationSpecificationDialog.class.getName());
+  private static final Logger LOG = Logger.getLogger(
+        SimulationSpecificationDialog.class.getName());
     private static final String LINUX_HOSTNAME_PATTERN
             = "^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)+(\\.([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*$";
     private static final String LINUX_USERNAME_PATTERN = "^[a-z][a-z0-9\\-]*$";
@@ -467,9 +468,9 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     private boolean okButtonClicked = false;
     private boolean connectionTestSuccessful = false;
     // </editor-fold>
-     /**
-     * default constructor.
-     */
+  /**
+  * default constructor.
+  */
 
   public SimulationSpecificationDialog() {
   }
@@ -727,7 +728,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
 
     private void remoteOrLocalSet() {
         setRemoteRelatedComponentsEnabled(simulatorLocationComboBox.getSelectedIndex()
-          == SimulationSpecification.REMOTE_EXECUTION_INDEX);
+            == SimulationSpecification.REMOTE_EXECUTION_INDEX);
     if (!isRemoteExecution()) {
       setRemoteConnectionMsg("", "black");
     }
@@ -764,10 +765,10 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
   }
 
   private static final String CHARACTERS
-    =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
-    +
-  "defghijklmnopqrstuvwxyz0123456789";
+      =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
+      +
+      "defghijklmnopqrstuvwxyz0123456789";
 
   private static String generateRandomString() {
     final int length = 16;
@@ -780,35 +781,36 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
   }
 
   private static void encrypt(String key, File inputFile,
-    File outputFile, String targetInfo, String logInfo) {
+      File outputFile, String targetInfo, String logInfo) {
     doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile, targetInfo, logInfo);
   }
-    /**
-     * It's used to decrypt the encrypted user information and set it to the text field.
-     *
-     * @param key is the key that used for decryption.
-     * @param inputFile are used to specify the target folder.
-     * @param outputFile are used to specify the target folder
-     * @param logInfo are used to tell the logger what to output.
-     * @return a string that contains user information like username, password, hostname.
-     */
+  /**
+   * It's used to decrypt the encrypted user information and set it to the text field.
+   *
+   * @param key is the key that used for decryption.
+   * @param inputFile are used to specify the target folder.
+   * @param outputFile are used to specify the target folder
+   * @param logInfo are used to tell the logger what to output.
+   * @return a string that contains user information like username, password, hostname.
+   */
+
   public static String decrypt(String key, File inputFile, File outputFile, String logInfo) {
     return doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile, "", logInfo);
   }
 
-    /**
-     * It's used to either decrypt or encrypt user information.
-     *
-     * @param cipherMode is used to identify whether to encrpyt or decrpyt.
-     * @param key is the key that used for decryption.
-     * @param inputFile are used to specify the target folder.
-     * @param outputFile are used to specify the target folder.
-     * @param targetInfo used in encryption mode.
-     * @param logInfo are used to tell the logger what to output.
-     * @return a string that contains user information like username, password, hostname.
-     */
+  /**
+   * It's used to either decrypt or encrypt user information.
+   *
+   * @param cipherMode is used to identify whether to encrpyt or decrpyt.
+   * @param key is the key that used for decryption.
+   * @param inputFile are used to specify the target folder.
+   * @param outputFile are used to specify the target folder.
+   * @param targetInfo used in encryption mode.
+   * @param logInfo are used to tell the logger what to output.
+   * @return a string that contains user information like username, password, hostname.
+   */
   public static String doCrypto(int cipherMode, String key, File inputFile,
-    File outputFile, String targetInfo, String logInfo) {
+      File outputFile, String targetInfo, String logInfo) {
     try {
       Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
       Cipher cipher = Cipher.getInstance(TRANSFORMATION);
@@ -824,19 +826,19 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         try {
           byte[] encryptedInfo = cipher.doFinal(infoByte);
           FileOutputStream storeUserEncrpyted
-            =
-          new FileOutputStream(inputFile);
+              =
+              new FileOutputStream(inputFile);
           ObjectOutputStream encrpytedObj
-            =
-          new ObjectOutputStream(storeUserEncrpyted);
+              =
+              new ObjectOutputStream(storeUserEncrpyted);
           encrpytedObj.writeObject(encryptedInfo);
           LOG.info(logInfo + " encrypted");
           return "success";
         } catch (IllegalBlockSizeException e) {
           e.printStackTrace();
-    } catch (BadPaddingException e) {
-      e.printStackTrace();
-    }
+        } catch (BadPaddingException e) {
+          e.printStackTrace();
+        }
       } else if (cipherMode == Cipher.DECRYPT_MODE) {
         try {
           FileInputStream readFile = new FileInputStream(inputFile);
@@ -854,7 +856,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
             } catch (IllegalBlockSizeException e) {
               readObj.close();
               e.printStackTrace();
-          } catch (BadPaddingException e) {
+            } catch (BadPaddingException e) {
           readObj.close();
           e.printStackTrace();
         }
