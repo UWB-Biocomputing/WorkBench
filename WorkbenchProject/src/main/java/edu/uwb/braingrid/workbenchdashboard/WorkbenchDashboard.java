@@ -1,10 +1,18 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
+import java.awt.FlowLayout;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -15,6 +23,7 @@ import javafx.stage.Stage;
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
+import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
 
 /**
@@ -122,7 +131,7 @@ public class WorkbenchDashboard extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
-
+        checkLastSim();
         // Exit application on window close
         primaryStage.setOnCloseRequest(event -> {
             Platform.exit();
@@ -132,4 +141,25 @@ public class WorkbenchDashboard extends Application {
         // Initialize Workbench Manager
         WorkbenchManager.getInstance();
     }
+  private void checkLastSim() {
+    File lastSim = new File(System.getProperty("user.dir") + "\\LastSimulation\\simdir");
+    if (lastSim.exists() && lastSim.isFile() && lastSim.length() != 0) {
+      LOG.info("Last Simulation detected");
+      JFrame frame = new JFrame();
+      String[] options = {"Resume", "No"};
+      int option = JOptionPane.showOptionDialog(frame,
+          "Do you want to resume last simulation?", "Confirmation",
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                  null, options, options[0]);
+      if (option == JOptionPane.YES_NO_OPTION) {
+        try {
+          FileInputStream readHost = new FileInputStream(
+                new File(System.getProperty("user.dir") + "\\hostname.encrypted"));
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        }
+        LoginCredentialsDialog signIn = new LoginCredentialsDialog("bla", true);
+      }
+    }
+  }
 }

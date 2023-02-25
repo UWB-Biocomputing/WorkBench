@@ -253,6 +253,17 @@ public class ScriptManager {
         return success;
     }
 
+  private void saveSimDir(String simDir) {
+    try {
+      FileOutputStream simDirLocation = new FileOutputStream(
+          new File(makeLastSimulationDir() + "\\simdir"));
+      ObjectOutputStream writeSimDir = new ObjectOutputStream(simDirLocation);
+      writeSimDir.writeObject(simDir);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
     private boolean runRemoteScript(ProvMgr provMgr, String hostname, String simulationName,
             String scriptPath, String[] nListFilenames, String simConfigFilename)
             throws JSchException, FileNotFoundException, SftpException {
@@ -273,13 +284,7 @@ public class ScriptManager {
             String remoteScriptPath = simDir + "/" + FileManager.getSimpleFilename(scriptPath);
             String cmd = "mkdir -p " + nListDir;
             sft.executeCommand(cmd, hostname, lcd.getUsername(), password, true);
-            FileOutputStream simDirLocation = new FileOutputStream(new File(makeLastSimulationDir() + "\\simdir"));
-            try {
-              ObjectOutputStream writeSimDir = new ObjectOutputStream(simDirLocation);
-              writeSimDir.writeObject(simDir);
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
+            saveSimDir(simDir);
             /* Upload Script */
             Date uploadStartTime = new Date();
             if (sft.uploadFile(scriptPath, simDir, hostname, lcd.getUsername(), password, null)) {
@@ -653,7 +658,7 @@ public class ScriptManager {
         }
         return timeCompleted;
     }
-    
+
   private String makeLastSimulationDir() {
     String lastSim = System.getProperty("user.dir") + "\\LastSimulation";
     File lastSimDirectory = new File(lastSim);
