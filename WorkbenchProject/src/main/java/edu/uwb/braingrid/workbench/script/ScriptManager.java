@@ -253,12 +253,28 @@ public class ScriptManager {
         return success;
     }
 
+  private String lastSimLocation() {
+    return System.getProperty("user.dir") + "\\LastSimulation";
+  }
+
   private void saveSimDir(String simDir) {
     try {
       FileOutputStream simDirLocation = new FileOutputStream(
           new File(makeLastSimulationDir() + "\\simdir"));
       ObjectOutputStream writeSimDir = new ObjectOutputStream(simDirLocation);
       writeSimDir.writeObject(simDir);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void saveSimName(String simName) {
+    FileOutputStream simNameLocation;
+    try {
+      simNameLocation = new FileOutputStream(
+          new File(lastSimLocation() + "\\simName"));
+      ObjectOutputStream writeSimName = new ObjectOutputStream(simNameLocation);
+      writeSimName.writeObject(simName);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -285,6 +301,7 @@ public class ScriptManager {
             String cmd = "mkdir -p " + nListDir;
             sft.executeCommand(cmd, hostname, lcd.getUsername(), password, true);
             saveSimDir(simDir);
+            saveSimName(simulationName);
             /* Upload Script */
             Date uploadStartTime = new Date();
             if (sft.uploadFile(scriptPath, simDir, hostname, lcd.getUsername(), password, null)) {

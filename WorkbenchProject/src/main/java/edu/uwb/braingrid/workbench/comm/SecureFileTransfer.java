@@ -299,10 +299,9 @@ public class SecureFileTransfer {
 
       Channel channel = session.openChannel("exec");
       ((ChannelExec) channel).setInputStream(null);
-      ((ChannelExec) channel).setCommand("cd WorkbenchSimulations/");
+      ((ChannelExec) channel).setCommand("cd WorkbenchSimulations/ && ls");
       channel.connect();
-      ((ChannelExec) channel).setCommand("ls");
-      channel.connect();
+      channel.disconnect();
 
       InputStream in;
     try {
@@ -313,7 +312,10 @@ public class SecureFileTransfer {
           String[] file = files.split("\\s+");
           for (int i = 0; i < file.length; i++) {
             if (file.equals(simName)) {
+              System.out.println("yesssssssssssssssssss!");
               return;
+            } else {
+              System.out.println("noooooooooooooooo!");
             }
           }
         }

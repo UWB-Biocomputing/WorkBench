@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
+import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
@@ -133,7 +134,6 @@ public class WorkbenchDashboard extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
-        checkLastSim();
         // Exit application on window close
         primaryStage.setOnCloseRequest(event -> {
             Platform.exit();
@@ -142,9 +142,16 @@ public class WorkbenchDashboard extends Application {
 
         // Initialize Workbench Manager
         WorkbenchManager.getInstance();
+        checkLastSim();
     }
   private void checkLastSim() {
-    File lastSim = new File(System.getProperty("user.dir") + "\\LastSimulation\\simdir");
+    String workDir = System.getProperty("user.dir");
+    String substr = "\\target";
+    if (workDir.endsWith(substr)) {
+      workDir = workDir.substring(0, workDir.length() - substr.length());
+    }
+    String simPath = workDir + "\\LastSimulation\\simdir";
+    File lastSim = new File(simPath);
     if (lastSim.exists() && lastSim.isFile() && lastSim.length() != 0) {
       LOG.info("Last Simulation detected");
       JFrame frame = new JFrame();
@@ -166,8 +173,16 @@ public class WorkbenchDashboard extends Application {
                       System.getProperty("user.dir") + "\\Cache\\hostname.encrypted");
               SimulationSpecificationDialog tempDiaLog = new SimulationSpecificationDialog();
               String realHostInfo = tempDiaLog.decrypt(key, hostInfo, hostInfo, "");
+              FileInputStream readSimlationName = new FileInputStream(new File(
+                  System.getProperty("user.dir") + "\\LastSimulation\\simName"));
+              ObjectInputStream readSimNameObj = new ObjectInputStream(readSimlationName);
+              String simName = (String) readSimNameObj.readObject();
               LoginCredentialsDialog loginToResume = new
                   LoginCredentialsDialog(realHostInfo, true);
+              String username = loginToResume.getUsername();
+              String password = new String(loginToResume.getPassword());
+              SecureFileTransfer fileTransfer = new SecureFileTransfer();
+              fileTransfer.checkLastSim(realHostInfo, username, password, simName);
             } catch (ClassNotFoundException e) {
               e.printStackTrace();
             }
