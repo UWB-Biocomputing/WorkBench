@@ -175,13 +175,22 @@ public final class FileManager {
         return getProjectsDirectory().resolve(WorkbenchManager.getInstance().getProjectName());
     }
 
+  private static String workingDir() {
+    String dir = System.getProperty("user.dir");
+    String target = "\\target";
+    if (dir.endsWith(target)) {
+      dir = dir.substring(0, dir.length() - target.length());
+    }
+    return dir;
+  }
+
     /**
      * Provides the working directory of the current user.
      *
      * @return The working directory of the current user
      */
     public static Path getUserDir() {
-        return Paths.get(System.getProperty("user.dir"));
+        return Paths.get(workingDir());
     }
 
     /**

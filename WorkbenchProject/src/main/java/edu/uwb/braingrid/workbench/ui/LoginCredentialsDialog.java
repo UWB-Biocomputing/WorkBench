@@ -15,6 +15,15 @@ import java.util.Arrays;
  * @author Del Davis
  */
 public class LoginCredentialsDialog extends javax.swing.JDialog {
+	
+  private String workingDir() {
+    String dir = System.getProperty("user.dir");
+    String target = "\\target";
+    if (dir.endsWith(target)) {
+      dir = dir.substring(0, dir.length() - target.length());
+    }
+    return dir;
+  }
 
     // <editor-fold defaultstate="collapsed" desc="Auto-Generated">
     /**
@@ -41,8 +50,8 @@ public class LoginCredentialsDialog extends javax.swing.JDialog {
         hostnameLabel.setText("Hostname: ");
 
         usernameLabel.setText("Username: ");
-    File inputFile = new File(System.getProperty("user.dir") + "\\Cache\\username.encrypted");
-    File key = new File(System.getProperty("user.dir") + "\\Key");
+    File inputFile = new File(workingDir() + "\\Cache\\username.encrypted");
+    File key = new File(workingDir() + "\\Key");
     try {
       FileInputStream keyInput = new FileInputStream(key);
       ObjectInputStream keyObj;

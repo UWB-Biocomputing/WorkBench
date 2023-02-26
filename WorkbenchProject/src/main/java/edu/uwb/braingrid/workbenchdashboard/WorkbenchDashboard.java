@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.eclipse.jgit.transport.CredentialItem.Username;
+
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -144,8 +146,18 @@ public class WorkbenchDashboard extends Application {
         WorkbenchManager.getInstance();
         checkLastSim();
     }
+
+  private String workingDir() {
+    String dir = System.getProperty("user.dir");
+    String target = "\\target";
+    if (dir.endsWith(target)) {
+      dir = dir.substring(0, dir.length() - target.length());
+    }
+    return dir;
+  }
+
   private void checkLastSim() {
-    String workDir = System.getProperty("user.dir");
+    String workDir = workingDir();
     String substr = "\\target";
     if (workDir.endsWith(substr)) {
       workDir = workDir.substring(0, workDir.length() - substr.length());
@@ -163,18 +175,18 @@ public class WorkbenchDashboard extends Application {
       if (option == JOptionPane.YES_NO_OPTION) {
         try {
           FileInputStream readKey = new FileInputStream(
-              new File(System.getProperty("user.dir") + "\\Key"));
+              new File(workingDir() + "\\Key"));
           try {
             ObjectInputStream readKeyObj = new ObjectInputStream(readKey);
             String key;
             try {
               key = (String) readKeyObj.readObject();
               File hostInfo = new File(
-                      System.getProperty("user.dir") + "\\Cache\\hostname.encrypted");
+                  workingDir() + "\\Cache\\hostname.encrypted");
               SimulationSpecificationDialog tempDiaLog = new SimulationSpecificationDialog();
               String realHostInfo = tempDiaLog.decrypt(key, hostInfo, hostInfo, "");
               FileInputStream readSimlationName = new FileInputStream(new File(
-                  System.getProperty("user.dir") + "\\LastSimulation\\simName"));
+                  workingDir() + "\\LastSimulation\\simName"));
               ObjectInputStream readSimNameObj = new ObjectInputStream(readSimlationName);
               String simName = (String) readSimNameObj.readObject();
               LoginCredentialsDialog loginToResume = new

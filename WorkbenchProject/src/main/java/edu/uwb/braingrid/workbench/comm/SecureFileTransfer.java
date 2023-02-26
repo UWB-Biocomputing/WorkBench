@@ -301,7 +301,6 @@ public class SecureFileTransfer {
       ((ChannelExec) channel).setInputStream(null);
       ((ChannelExec) channel).setCommand("cd WorkbenchSimulations/ && ls");
       channel.connect();
-      channel.disconnect();
 
       InputStream in;
     try {
@@ -309,13 +308,28 @@ public class SecureFileTransfer {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String files;
         while ((files = reader.readLine()) != null) {
-          String[] file = files.split("\\s+");
-          for (int i = 0; i < file.length; i++) {
-            if (file.equals(simName)) {
-              System.out.println("yesssssssssssssssssss!");
-              return;
-            } else {
-              System.out.println("noooooooooooooooo!");
+          if (files.equals(simName)) {
+              Channel channel2 = session.openChannel("sftp");
+              channel2.connect();
+              //((ChannelSftp) channel2).setInputStream(null);
+              try {
+                ((ChannelSftp) channel2).cd(
+                    "WorkbenchSimulations//" + simName + "//Output//Debug");
+                InputStream workBenchLOG = ((ChannelSftp) channel2).get("workbench.txt");
+                BufferedReader readLOG = new BufferedReader(new InputStreamReader(workBenchLOG));
+                String line;
+                String lastline = "";
+                while ((line = readLOG.readLine()) != null) {
+                    lastline = line;
+                }
+                String completion = "Complete";
+                lastline = lastline.substring(
+                    lastline.length() - completion.length(), lastline.length());
+                if (lastline.equals("Complete")) {
+                  System.out.println("hhoooray!");
+                }
+            } catch (SftpException e) {
+              e.printStackTrace();
             }
           }
         }

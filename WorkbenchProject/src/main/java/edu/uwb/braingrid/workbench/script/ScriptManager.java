@@ -253,8 +253,17 @@ public class ScriptManager {
         return success;
     }
 
+  private static String workingDir() {
+    String dir = System.getProperty("user.dir");
+    String target = "\\target";
+    if (dir.endsWith(target)) {
+      dir = dir.substring(0, dir.length() - target.length());
+    }
+    return dir;
+  }
+
   private String lastSimLocation() {
-    return System.getProperty("user.dir") + "\\LastSimulation";
+    return workingDir() + "\\LastSimulation";
   }
 
   private void saveSimDir(String simDir) {
@@ -677,7 +686,7 @@ public class ScriptManager {
     }
 
   private String makeLastSimulationDir() {
-    String lastSim = System.getProperty("user.dir") + "\\LastSimulation";
+    String lastSim = workingDir() + "\\LastSimulation";
     File lastSimDirectory = new File(lastSim);
     if (!lastSimDirectory.exists() || !lastSimDirectory.isDirectory()) {
       lastSimDirectory.mkdir();
