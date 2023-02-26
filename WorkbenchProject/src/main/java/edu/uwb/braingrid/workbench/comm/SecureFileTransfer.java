@@ -1,5 +1,6 @@
 package edu.uwb.braingrid.workbench.comm;
 
+import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -7,11 +8,16 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
+
+import riotcmd.infer;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 
 /**
@@ -273,4 +279,51 @@ public class SecureFileTransfer {
         return success;
     }
     // </editor-fold>
+
+    /**
+     * Connects to the last simulation.
+     *
+     * @param hostname  The name of the host machine to connect to.
+     * @param username  The user's login username.
+     * @param password  The user's login password.
+     * @param simName  The  last simulation to connect to.
+     */
+
+  public void checkLastSim(String hostname, String username, String password, String simName) {
+    JSch jsch = new JSch();
+    try {
+      session = jsch.getSession(username, hostname, PORT);
+      session.setPassword(password);
+      session.setConfig("StrictHostKeyChecking", "no"); //optional
+      session.connect();
+
+      Channel channel = session.openChannel("exec");
+      ((ChannelExec) channel).setInputStream(null);
+      ((ChannelExec) channel).setCommand("cd WorkbenchSimulations/");
+      channel.connect();
+      ((ChannelExec) channel).setCommand("ls");
+      channel.connect();
+
+      InputStream in;
+    try {
+        in = channel.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String files;
+        while ((files = reader.readLine()) != null) {
+          String[] file = files.split("\\s+");
+          for (int i = 0; i < file.length; i++) {
+            if (file.equals(simName)) {
+              return;
+            }
+          }
+        }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    } catch (JSchException e) {
+      e.printStackTrace();
+    }
+
+  }
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.FileHandler;
@@ -24,6 +25,7 @@ import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
+import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
 
 /**
@@ -153,12 +155,28 @@ public class WorkbenchDashboard extends Application {
                   null, options, options[0]);
       if (option == JOptionPane.YES_NO_OPTION) {
         try {
-          FileInputStream readHost = new FileInputStream(
-                new File(System.getProperty("user.dir") + "\\hostname.encrypted"));
+          FileInputStream readKey = new FileInputStream(
+              new File(System.getProperty("user.dir") + "\\Key"));
+          try {
+            ObjectInputStream readKeyObj = new ObjectInputStream(readKey);
+            String key;
+            try {
+              key = (String) readKeyObj.readObject();
+              File hostInfo = new File(
+                      System.getProperty("user.dir") + "\\Cache\\hostname.encrypted");
+              SimulationSpecificationDialog tempDiaLog = new SimulationSpecificationDialog();
+              String realHostInfo = tempDiaLog.decrypt(key, hostInfo, hostInfo, "");
+              LoginCredentialsDialog loginToResume = new
+                  LoginCredentialsDialog(realHostInfo, true);
+            } catch (ClassNotFoundException e) {
+              e.printStackTrace();
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         } catch (FileNotFoundException e) {
           e.printStackTrace();
         }
-        LoginCredentialsDialog signIn = new LoginCredentialsDialog("bla", true);
       }
     }
   }
