@@ -1,13 +1,17 @@
 package edu.uwb.braingrid.workbench.script;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -408,6 +412,27 @@ public class ScriptManager {
         if (provMgr != null) {
             DateTime.recordAccumulatedProvTiming("ScriptManager", "runRemoteScript",
                     accumulatedTime);
+        }
+        if (success) {
+          String simLocation = workingDir() + "\\LastSimulation";
+          File messageFile = new File(simLocation + "\\message");
+          File uriFile = new File(simLocation + "\\uri");
+          FileOutputStream messageOut = new FileOutputStream(messageFile);
+          try {
+            ObjectOutputStream messageOutObj = new ObjectOutputStream(messageOut);
+            messageOutObj.writeObject(outstandingMessages);
+            provMgr.getModel().write(
+                new FileOutputStream(new File(
+                    workingDir() + "\\LastSimulation\\model.ttl")), "TURTLE");
+            FileWriter uriWriter = new FileWriter(uriFile);
+            uriWriter.write(provMgr.getProvURI() + "\n");
+            uriWriter.write(provMgr.getLocalURI() + "\n");
+            uriWriter.write(provMgr.getRemoteURI() + "\n");
+            uriWriter.close();
+            messageOutObj.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         }
         return success;
     }

@@ -1,6 +1,8 @@
 package edu.uwb.braingrid.workbench.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Objects;
  *
  * @author Del Davis
  */
-public class SimulationSpecification {
+public class SimulationSpecification implements Serializable {
 
     /**
      * Description of the execution model for a simulation (in particular, these values indicate the

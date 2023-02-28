@@ -9,6 +9,9 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
 
+import edu.uwb.braingrid.workbench.WorkbenchManager;
+import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
+import javafx.scene.control.TextArea;
 import riotcmd.infer;
 
 import java.io.BufferedReader;
@@ -19,6 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * Provides abbreviated SSF/FTP functionality. This includes uploading/downloading files and
@@ -287,9 +293,11 @@ public class SecureFileTransfer {
      * @param username  The user's login username.
      * @param password  The user's login password.
      * @param simName  The  last simulation to connect to.
+     * @param manager  The temp place holder.
      */
 
-  public void checkLastSim(String hostname, String username, String password, String simName) {
+  public void checkLastSim(String hostname, String username,
+      String password, String simName, WorkbenchManager manager) {
     JSch jsch = new JSch();
     try {
       session = jsch.getSession(username, hostname, PORT);
@@ -326,7 +334,8 @@ public class SecureFileTransfer {
                 lastline = lastline.substring(
                     lastline.length() - completion.length(), lastline.length());
                 if (lastline.equals("Complete")) {
-                  System.out.println("hhoooray!");
+                  displayDownloadFrame(channel2, manager);
+                  break;
                 }
             } catch (SftpException e) {
               e.printStackTrace();
@@ -340,6 +349,18 @@ public class SecureFileTransfer {
     } catch (JSchException e) {
       e.printStackTrace();
     }
+  }
 
+  private void displayDownloadFrame(Channel channel, WorkbenchManager manager) {
+    JFrame frame = new JFrame();
+    String[] options = {"Download", "Cancel"};
+    int option = JOptionPane.showOptionDialog(frame,
+        "Last simlation completed, do you want to download?", "Last Simulation Completed",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null, options, options[0]);
+      if (option == JOptionPane.YES_NO_OPTION) {
+        SimulationRuntimeDialog srd = new SimulationRuntimeDialog(
+            new TextArea(manager.getMessages()));
+      }
   }
 }

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -56,6 +59,14 @@ public final class WorkbenchManager {
     private Project project;
     private Simulation simulation;
     private ProvMgr prov;
+
+    public void simulationSetter(Simulation inputSimulation) {
+      this.simulation = inputSimulation;
+    }
+
+    public void provMgrSetter(ProvMgr inputProv) {
+      this.prov = inputProv;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -527,8 +538,17 @@ public final class WorkbenchManager {
                     neuronLists, simulation.getSimConfigFilename());
             simulation.setScriptRan(success);
             simulation.setScriptStartedAt();
+            if (success) {
+              File simulationFile = new File(workingDir() + "\\LastSimulation\\simulation");
+              FileOutputStream simOut = new FileOutputStream(simulationFile);
+              ObjectOutputStream simObjOut = new ObjectOutputStream(simOut);
+              simObjOut.writeObject(simulation);
+            }
+
+            //save the simulation here
             messageAccumulator += sm.getOutstandingMessages();
         } catch (JSchException | SftpException | IOException | NullPointerException e) {
+            e.printStackTrace();
             messageAccumulator += "\n" + "Script did not run do to "
                     + e.getClass() + "...\n";
             messageAccumulator += "Exception message: " + e.getMessage();
@@ -536,6 +556,15 @@ public final class WorkbenchManager {
 
         return success;
     }
+
+  private static String workingDir() {
+    String dir = System.getProperty("user.dir");
+    String target = "\\target";
+    if (dir.endsWith(target)) {
+      dir = dir.substring(0, dir.length() - target.length());
+    }
+    return dir;
+  }
 
     /**
      * Analyzes the redirected provenance output from an executed script.

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
@@ -50,7 +51,7 @@ import edu.uwb.braingrid.workbench.model.Simulation;
  * @author Del Davis, Extended by Joseph Conquest
  * @version 1.2
  */
-public class ProvMgr {
+public class ProvMgr implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(ProvMgr.class.getName());
@@ -70,6 +71,50 @@ public class ProvMgr {
     /* RDF in-memory representation of the provenance */
     private Model model;
     // </editor-fold>
+
+    /**
+     * The getter for provURI.
+     *
+     *  @return return the provURI.
+     *
+     */
+  public String getProvURI() {
+      return provOutputFileURI;
+  }
+
+    /**
+     * The getter for LocalURI.
+     *
+     *  @return return the LocalURI.
+     *
+     */
+  public String getLocalURI() {
+     return localNameSpaceURI;
+  }
+
+    /**
+     * The getter for RemoteURI.
+     *
+     *  @return return the RemoteURI.
+     *
+     */
+  public String getRemoteURI() {
+    return remoteNameSpaceURI;
+    }
+  /**
+   * The constructor used by resume Lastsimulation.
+   *
+   *  @param provURI the provURI
+   *  @param localURI the localURI
+   *  @param remoteURI the remoteURI
+   *  @param model the model
+   */
+  public ProvMgr(String provURI, String localURI, String remoteURI, Model model) {
+    this.provOutputFileURI = provURI;
+    this.localNameSpaceURI = localURI;
+    this.remoteNameSpaceURI = remoteURI;
+    this.model = model;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**

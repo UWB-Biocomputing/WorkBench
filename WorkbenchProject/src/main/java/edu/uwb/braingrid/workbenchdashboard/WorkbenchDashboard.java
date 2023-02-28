@@ -1,9 +1,11 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
 import java.awt.FlowLayout;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
@@ -14,7 +16,11 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.eclipse.jgit.transport.CredentialItem.Username;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -24,9 +30,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import edu.uwb.braingrid.general.LoggerHelper;
+import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
+import edu.uwb.braingrid.workbench.model.Simulation;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
@@ -169,7 +177,7 @@ public class WorkbenchDashboard extends Application {
       JFrame frame = new JFrame();
       String[] options = {"Resume", "No"};
       int option = JOptionPane.showOptionDialog(frame,
-          "Do you want to resume last simulation?", "Confirmation",
+          "Do you want to resume last simulation?", "Last Simulation Detected",
               JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                   null, options, options[0]);
       if (option == JOptionPane.YES_NO_OPTION) {
@@ -194,7 +202,26 @@ public class WorkbenchDashboard extends Application {
               String username = loginToResume.getUsername();
               String password = new String(loginToResume.getPassword());
               SecureFileTransfer fileTransfer = new SecureFileTransfer();
-              fileTransfer.checkLastSim(realHostInfo, username, password, simName);
+
+              File simulationInput = new File(workingDir() + "\\LastSimulation\\simulation");
+              FileInputStream simIn = new FileInputStream(simulationInput);
+              ObjectInputStream simInObj = new ObjectInputStream(simIn);
+
+              BufferedReader readURI = new BufferedReader(
+                  new FileReader(workingDir() + "\\LastSimulation\\uri"));
+              String provURI = readURI.readLine();
+              String localURI = readURI.readLine();
+              String remoteURI = readURI.readLine();
+              Model model = ModelFactory.createDefaultModel();
+//              String modelPath = workingDir() + "\\LastSimulation\\model.ttl";
+//              modelPath = modelPath.replaceAll(" ", "%20");
+              model.read(workingDir() + "\\LastSimulation\\model.ttl", "TURTLE");
+              ProvMgr lastMgr = new ProvMgr(provURI, localURI, remoteURI, model);
+              WorkbenchManager.getInstance().simulationSetter((Simulation) simInObj.readObject());
+              WorkbenchManager.getInstance().provMgrSetter(lastMgr);
+              fileTransfer.checkLastSim(realHostInfo, username,
+                  password, simName, WorkbenchManager.getInstance());
+              JOptionPane.getRootFrame().dispose();
             } catch (ClassNotFoundException e) {
               e.printStackTrace();
             }
@@ -205,6 +232,8 @@ public class WorkbenchDashboard extends Application {
           e.printStackTrace();
         }
       }
+    } else {
+      JOptionPane.getRootFrame().dispose();
     }
   }
 }
