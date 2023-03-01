@@ -60,13 +60,13 @@ public final class WorkbenchManager {
     private Simulation simulation;
     private ProvMgr prov;
 
-    public void simulationSetter(Simulation inputSimulation) {
-      this.simulation = inputSimulation;
-    }
+  public void simulationSetter(Simulation inputSimulation) {
+    this.simulation = inputSimulation;
+  }
 
-    public void provMgrSetter(ProvMgr inputProv) {
-      this.prov = inputProv;
-    }
+  public void provMgrSetter(ProvMgr inputProv) {
+    this.prov = inputProv;
+  }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -527,35 +527,35 @@ public final class WorkbenchManager {
      * @return True if all files were uploaded/copied successfully and the script was started,
      *         otherwise false
      */
-    public boolean runScript() {
-        boolean success = false;
-        ScriptManager sm = new ScriptManager();
-        try {
-            String simulationName = simulation.getName();
-            String scriptPath = simulation.getScriptFilePath();
-            String[] neuronLists = FileManager.getNeuronListFilenames(simulationName);
-            success = sm.runScript(prov, simulation.getSimSpec(), simulationName, scriptPath,
-                    neuronLists, simulation.getSimConfigFilename());
-            simulation.setScriptRan(success);
-            simulation.setScriptStartedAt();
-            if (success) {
-              File simulationFile = new File(workingDir() + "\\LastSimulation\\simulation");
-              FileOutputStream simOut = new FileOutputStream(simulationFile);
-              ObjectOutputStream simObjOut = new ObjectOutputStream(simOut);
-              simObjOut.writeObject(simulation);
-            }
+  public boolean runScript() {
+    boolean success = false;
+    ScriptManager sm = new ScriptManager();
+    try {
+      String simulationName = simulation.getName();
+      String scriptPath = simulation.getScriptFilePath();
+      String[] neuronLists = FileManager.getNeuronListFilenames(simulationName);
+      success = sm.runScript(prov, simulation.getSimSpec(), simulationName, scriptPath,
+          neuronLists, simulation.getSimConfigFilename());
+      simulation.setScriptRan(success);
+      simulation.setScriptStartedAt();
+      if (success) {
+        File simulationFile = new File(workingDir() + "\\LastSimulation\\simulation");
+        FileOutputStream simOut = new FileOutputStream(simulationFile);
+        ObjectOutputStream simObjOut = new ObjectOutputStream(simOut);
+        simObjOut.writeObject(simulation);
+      }
 
-            //save the simulation here
-            messageAccumulator += sm.getOutstandingMessages();
-        } catch (JSchException | SftpException | IOException | NullPointerException e) {
-            e.printStackTrace();
-            messageAccumulator += "\n" + "Script did not run do to "
-                    + e.getClass() + "...\n";
-            messageAccumulator += "Exception message: " + e.getMessage();
-        }
+       //save the simulation here
+       messageAccumulator += sm.getOutstandingMessages();
+       } catch (JSchException | SftpException | IOException | NullPointerException e) {
+         e.printStackTrace();
+         messageAccumulator += "\n" + "Script did not run do to "
+                  + e.getClass() + "...\n";
+         messageAccumulator += "Exception message: " + e.getMessage();
+       }
 
-        return success;
-    }
+       return success;
+  }
 
   private static String workingDir() {
     String dir = System.getProperty("user.dir");
