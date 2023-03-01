@@ -1,5 +1,11 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.uwb.braingrid.provenance.ProvMgr;
+import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
+import edu.uwb.braingrid.workbench.model.Simulation;
+import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
+import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
 import java.awt.FlowLayout;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,12 +21,6 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.apache.jena.rdf.model.Model;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.uwb.braingrid.provenance.ProvMgr;
-import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
-import edu.uwb.braingrid.workbench.model.Simulation;
-import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
-import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.eclipse.jgit.transport.CredentialItem.Username;
 import javafx.application.Platform;
@@ -204,12 +204,12 @@ public class WorkbenchDashboard extends Application {
 
               BufferedReader readUri = new BufferedReader(
                   new FileReader(workingDir() + "\\LastSimulation\\uri"));
-              String provURI = readUri.readLine();
-              String localURI = readUri.readLine();
-              String remoteURI = readUri.readLine();
+              String provUri = readUri.readLine();
+              String localUri = readUri.readLine();
+              String remoteUri = readUri.readLine();
               Model model = ModelFactory.createDefaultModel();
               model.read(workingDir() + "\\LastSimulation\\model.ttl", "TURTLE");
-              ProvMgr lastMgr = new ProvMgr(provURI, localURI, remoteURI, model);
+              ProvMgr lastMgr = new ProvMgr(provUri, localUri, remoteUri, model);
               WorkbenchManager.getInstance().simulationSetter((Simulation) simInObj.readObject());
               WorkbenchManager.getInstance().provMgrSetter(lastMgr);
               ObjectInputStream msgReader = new ObjectInputStream(
