@@ -92,12 +92,12 @@ public class ProvMgr implements Serializable {
     return localNameSpaceUri;
   }
 
- /**
-  * The getter for RemoteURI.
-  *
-  *  @return return the RemoteURI.
-  *
-  */
+  /**
+   * The getter for RemoteURI.
+   *
+   *  @return return the RemoteURI.
+   *
+   */
   public String getRemoteUri() {
     return remoteNameSpaceUri;
   }
@@ -111,12 +111,12 @@ public class ProvMgr implements Serializable {
    *  @param model the model
    */
 
-  public ProvMgr(String provURI, String localURI, String remoteURI, Model model) {
-    this.provOutputFileUri = provURI;
-    this.localNameSpaceUri = localURI;
-    this.remoteNameSpaceUri = remoteURI;
+  public ProvMgr(String provUri, String localUri, String remoteUri, Model model) {
+    this.provOutputFileUri = provUri;
+    this.localNameSpaceUri = localUri;
+    this.remoteNameSpaceUri = remoteUri;
     this.model = model;
-    }
+  }
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
@@ -144,7 +144,7 @@ public class ProvMgr implements Serializable {
     private void init(Simulation simulation) {
         // create RDF model
         model = ModelFactory.createDefaultModel();
-        provOutputFileUri = simulation.getProvLocation()
+    provOutputFileUri = simulation.getProvLocation()
                 .resolve(simulation.getName() + ".ttl").toString();
         // set prefixes for...
         // RDF syntax
@@ -155,9 +155,9 @@ public class ProvMgr implements Serializable {
         model.setNsPrefix("prov", ProvOntology.getPROVNameSpaceURI());
         // XML schema
         model.setNsPrefix("xsd", ProvOntology.getXSDNameSpaceURI());
-        localNameSpaceUri = getLocalNameSpaceURI();
+    localNameSpaceUri = getLocalNameSpaceURI();
         // Graphitti Prov
-        model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceUri);
+    model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceUri);
     }
 
     /**
@@ -167,11 +167,11 @@ public class ProvMgr implements Serializable {
      */
     private void load(Simulation simulation) throws RiotNotFoundException {
         String name = simulation.getName();
-        provOutputFileUri = simulation.getProvLocation().resolve(name + ".ttl").toString();
-        model = RDFDataMgr.loadModel(provOutputFileUri);
-        localNameSpaceUri = getLocalNameSpaceURI();
-        model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceUri);
-        trimRemoteNS();
+    provOutputFileUri = simulation.getProvLocation().resolve(name + ".ttl").toString();
+    model = RDFDataMgr.loadModel(provOutputFileUri);
+    localNameSpaceUri = getLocalNameSpaceURI();
+    model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceUri);
+    trimRemoteNS();
     }
 
     /**
@@ -184,8 +184,8 @@ public class ProvMgr implements Serializable {
             String nameSpace = entry.getKey();
             String uri = entry.getValue();
             if (nameSpace.startsWith(REMOTE_NS_PREFIX)) {
-                remoteNameSpaceUri = uri.substring(uri.lastIndexOf('/') + 1);
-                model.setNsPrefix(nameSpace, remoteNameSpaceUri);
+        remoteNameSpaceUri = uri.substring(uri.lastIndexOf('/') + 1);
+        model.setNsPrefix(nameSpace, remoteNameSpaceUri);
             }
         }
     }
@@ -213,9 +213,9 @@ public class ProvMgr implements Serializable {
      *
      * @return The URI of the provenance output file
      */
-    public String getProvFileUri() {
-        return provOutputFileUri;
-    }
+  public String getProvFileUri() {
+    return provOutputFileUri;
+  }
 
     /**
      * Gets the RDF model maintained by the manager.

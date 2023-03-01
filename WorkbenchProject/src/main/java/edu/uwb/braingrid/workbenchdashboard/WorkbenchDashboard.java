@@ -12,31 +12,26 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.eclipse.jgit.transport.CredentialItem.Username;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import edu.uwb.braingrid.provenance.ProvMgr;
+import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
+import edu.uwb.braingrid.workbench.model.Simulation;
+import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
+import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
+import org.eclipse.jgit.transport.CredentialItem.Username;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
 import edu.uwb.braingrid.general.LoggerHelper;
-import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
-import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
-import edu.uwb.braingrid.workbench.model.Simulation;
-import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
-import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
 import edu.uwb.braingrid.workbenchdashboard.utils.SystemProperties;
 
 /**
@@ -152,8 +147,8 @@ public class WorkbenchDashboard extends Application {
 
         // Initialize Workbench Manager
         WorkbenchManager.getInstance();
-        checkLastSim();
-    }
+    checkLastSim();
+  }
 
   private String workingDir() {
     String dir = System.getProperty("user.dir");
