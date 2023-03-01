@@ -588,7 +588,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         usernameTextField.setEnabled(enabled);
         passwordField.setEnabled(enabled);
     //if the cache file exists, autofill the textfield;
-    File key = new File(System.getProperty("user.dir") + "\\Key");
+    File key = new File(workingDir() + "\\Key");
     String userPostfix = "\\Cache\\username.encrypted";
     String hostnamePostfix = "\\Cache\\hostname.encrypted";
     boolean usernameFilled = tryFillTextField(key, userPostfix, "username", usernameTextField);
@@ -596,9 +596,18 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
         hostnamePostfix, "hostname", hostAddressTextField);
   }
 
+  private static String workingDir() {
+    String dir = System.getProperty("user.dir");
+    String target = "\\target";
+    if (dir.endsWith(target)) {
+      dir = dir.substring(0, dir.length() - target.length());
+    }
+    return dir;
+  }
+
   private boolean tryFillTextField(File key, String location,
       String fieldName, JTextField fieldToFill) {
-    File inputFile = new File(System.getProperty("user.dir") + location);
+    File inputFile = new File(workingDir() + location);
     FileInputStream keyInput;
     try {
       keyInput = new FileInputStream(key);
@@ -762,7 +771,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
     }
 
   private String getCachePath() {
-    return System.getProperty("user.dir") + "\\Cache";
+    return workingDir() + "\\Cache";
   }
 
   private static final String CHARACTERS
@@ -817,7 +826,7 @@ public class SimulationSpecificationDialog extends javax.swing.JDialog {
       Cipher cipher = Cipher.getInstance(TRANSFORMATION);
       cipher.init(cipherMode, secretKey);
       if (cipherMode == Cipher.ENCRYPT_MODE) {
-        File keyFile = new File(System.getProperty("user.dir") + "\\Key");
+        File keyFile = new File(workingDir() + "\\Key");
         FileOutputStream keyOutput = new FileOutputStream(keyFile);
         ObjectOutputStream keyObj = new ObjectOutputStream(keyOutput);
         keyObj.writeObject(key);

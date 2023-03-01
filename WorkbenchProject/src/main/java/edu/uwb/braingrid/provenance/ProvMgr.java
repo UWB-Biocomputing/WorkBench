@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
@@ -50,7 +51,7 @@ import edu.uwb.braingrid.workbench.model.Simulation;
  * @author Del Davis, Extended by Joseph Conquest
  * @version 1.2
  */
-public class ProvMgr {
+public class ProvMgr implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(ProvMgr.class.getName());
@@ -63,13 +64,59 @@ public class ProvMgr {
     public static final String LOCAL_NS_PREFIX = "local";
 
     /* URIs used to describe the provenance */
-    private String provOutputFileURI;
-    private String localNameSpaceURI;
-    private String remoteNameSpaceURI;
+  private String provOutputFileUri;
+  private String localNameSpaceUri;
+  private String remoteNameSpaceUri;
 
     /* RDF in-memory representation of the provenance */
     private Model model;
     // </editor-fold>
+
+  /**
+   * The getter for provURI.
+   *
+   *  @return return the provURI.
+   *
+   */
+  public String getProvUri() {
+    return provOutputFileUri;
+  }
+
+  /**
+   * The getter for LocalURI.
+   *
+   *  @return return the LocalURI.
+   *
+   */
+  public String getLocalUri() {
+    return localNameSpaceUri;
+  }
+
+  /**
+   * The getter for RemoteURI.
+   *
+   *  @return return the RemoteURI.
+   *
+   */
+  public String getRemoteUri() {
+    return remoteNameSpaceUri;
+  }
+
+  /**
+   * The constructor used by resume Lastsimulation.
+   *
+   *  @param provUri the provURI
+   *  @param localUri the localURI
+   *  @param remoteUri the remoteURI
+   *  @param model the model
+   */
+
+  public ProvMgr(String provUri, String localUri, String remoteUri, Model model) {
+    this.provOutputFileUri = provUri;
+    this.localNameSpaceUri = localUri;
+    this.remoteNameSpaceUri = remoteUri;
+    this.model = model;
+  }
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
     /**
@@ -97,7 +144,7 @@ public class ProvMgr {
     private void init(Simulation simulation) {
         // create RDF model
         model = ModelFactory.createDefaultModel();
-        provOutputFileURI = simulation.getProvLocation()
+    provOutputFileUri = simulation.getProvLocation()
                 .resolve(simulation.getName() + ".ttl").toString();
         // set prefixes for...
         // RDF syntax
@@ -108,9 +155,9 @@ public class ProvMgr {
         model.setNsPrefix("prov", ProvOntology.getPROVNameSpaceURI());
         // XML schema
         model.setNsPrefix("xsd", ProvOntology.getXSDNameSpaceURI());
-        localNameSpaceURI = getLocalNameSpaceURI();
+    localNameSpaceUri = getLocalNameSpaceURI();
         // Graphitti Prov
-        model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceURI);
+    model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceUri);
     }
 
     /**
@@ -120,11 +167,11 @@ public class ProvMgr {
      */
     private void load(Simulation simulation) throws RiotNotFoundException {
         String name = simulation.getName();
-        provOutputFileURI = simulation.getProvLocation().resolve(name + ".ttl").toString();
-        model = RDFDataMgr.loadModel(provOutputFileURI);
-        localNameSpaceURI = getLocalNameSpaceURI();
-        model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceURI);
-        trimRemoteNS();
+    provOutputFileUri = simulation.getProvLocation().resolve(name + ".ttl").toString();
+    model = RDFDataMgr.loadModel(provOutputFileUri);
+    localNameSpaceUri = getLocalNameSpaceURI();
+    model.setNsPrefix(LOCAL_NS_PREFIX, localNameSpaceUri);
+    trimRemoteNS();
     }
 
     /**
@@ -137,8 +184,8 @@ public class ProvMgr {
             String nameSpace = entry.getKey();
             String uri = entry.getValue();
             if (nameSpace.startsWith(REMOTE_NS_PREFIX)) {
-                remoteNameSpaceURI = uri.substring(uri.lastIndexOf('/') + 1);
-                model.setNsPrefix(nameSpace, remoteNameSpaceURI);
+        remoteNameSpaceUri = uri.substring(uri.lastIndexOf('/') + 1);
+        model.setNsPrefix(nameSpace, remoteNameSpaceUri);
             }
         }
     }
@@ -166,9 +213,9 @@ public class ProvMgr {
      *
      * @return The URI of the provenance output file
      */
-    public String getProvFileURI() {
-        return provOutputFileURI;
-    }
+  public String getProvFileUri() {
+    return provOutputFileUri;
+  }
 
     /**
      * Gets the RDF model maintained by the manager.

@@ -1,5 +1,7 @@
 package edu.uwb.braingrid.workbench.model;
 
+import java.io.Serializable;
+
 import edu.uwb.braingrid.workbench.utils.DateTime;
 
 /**
@@ -7,7 +9,7 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
  *
  * @author Aaron Conrad
  */
-public class ScriptHistory {
+public class ScriptHistory implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
     private long startedAt;

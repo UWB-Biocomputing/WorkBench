@@ -1,17 +1,34 @@
 package edu.uwb.braingrid.workbenchdashboard;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.uwb.braingrid.provenance.ProvMgr;
+import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
+import edu.uwb.braingrid.workbench.model.Simulation;
+import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
+import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
+import java.awt.FlowLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.eclipse.jgit.transport.CredentialItem.Username;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.workbench.FileManager;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
@@ -122,7 +139,6 @@ public class WorkbenchDashboard extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
-
         // Exit application on window close
         primaryStage.setOnCloseRequest(event -> {
             Platform.exit();
@@ -131,5 +147,90 @@ public class WorkbenchDashboard extends Application {
 
         // Initialize Workbench Manager
         WorkbenchManager.getInstance();
+    checkLastSim();
+  }
+
+  private String workingDir() {
+    String dir = System.getProperty("user.dir");
+    String target = "\\target";
+    if (dir.endsWith(target)) {
+      dir = dir.substring(0, dir.length() - target.length());
     }
+    return dir;
+  }
+
+  private void checkLastSim() {
+    String workDir = workingDir();
+    String substr = "\\target";
+    if (workDir.endsWith(substr)) {
+      workDir = workDir.substring(0, workDir.length() - substr.length());
+    }
+    String simPath = workDir + "\\LastSimulation\\simdir";
+    File lastSim = new File(simPath);
+    if (lastSim.exists() && lastSim.isFile() && lastSim.length() != 0) {
+      LOG.info("Last Simulation detected");
+      JFrame frame = new JFrame();
+      String[] options = {"Resume", "No"};
+      int option = JOptionPane.showOptionDialog(frame,
+          "Do you want to resume last simulation?", "Last Simulation Detected",
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                  null, options, options[0]);
+      if (option == JOptionPane.YES_NO_OPTION) {
+        try {
+          FileInputStream readKey = new FileInputStream(
+              new File(workingDir() + "\\Key"));
+          try {
+            ObjectInputStream readKeyObj = new ObjectInputStream(readKey);
+            String key;
+            try {
+              key = (String) readKeyObj.readObject();
+              File hostInfo = new File(
+                  workingDir() + "\\Cache\\hostname.encrypted");
+              SimulationSpecificationDialog tempDiaLog = new SimulationSpecificationDialog();
+              String realHostInfo = tempDiaLog.decrypt(key, hostInfo, hostInfo, "");
+              FileInputStream readSimlationName = new FileInputStream(new File(
+                  workingDir() + "\\LastSimulation\\simName"));
+              ObjectInputStream readSimNameObj = new ObjectInputStream(readSimlationName);
+              String simName = (String) readSimNameObj.readObject();
+              LoginCredentialsDialog loginToResume = new
+                  LoginCredentialsDialog(realHostInfo, true);
+              final String username = loginToResume.getUsername();
+              final String password = new String(loginToResume.getPassword());
+              final SecureFileTransfer fileTransfer = new SecureFileTransfer();
+
+              File simulationInput = new File(workingDir() + "\\LastSimulation\\simulation");
+              FileInputStream simIn = new FileInputStream(simulationInput);
+              ObjectInputStream simInObj = new ObjectInputStream(simIn);
+
+              BufferedReader readUri = new BufferedReader(
+                  new FileReader(workingDir() + "\\LastSimulation\\uri"));
+              String provUri = readUri.readLine();
+              String localUri = readUri.readLine();
+              String remoteUri = readUri.readLine();
+              Model model = ModelFactory.createDefaultModel();
+              model.read(workingDir() + "\\LastSimulation\\model.ttl", "TURTLE");
+              ProvMgr lastMgr = new ProvMgr(provUri, localUri, remoteUri, model);
+              WorkbenchManager.getInstance().simulationSetter((Simulation) simInObj.readObject());
+              WorkbenchManager.getInstance().provMgrSetter(lastMgr);
+              ObjectInputStream msgReader = new ObjectInputStream(
+                  new FileInputStream(new File(workingDir() + "\\LastSimulation\\message")));
+              String message = (String) msgReader.readObject();
+              WorkbenchManager.getInstance().setMessages(message);
+              fileTransfer.checkLastSim(realHostInfo, username,
+                  password, simName, WorkbenchManager.getInstance());
+              JOptionPane.getRootFrame().dispose();
+            } catch (ClassNotFoundException e) {
+              e.printStackTrace();
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        }
+      }
+    } else {
+      JOptionPane.getRootFrame().dispose();
+    }
+  }
 }

@@ -1,5 +1,6 @@
 package edu.uwb.braingrid.workbench.comm;
 
+import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -7,6 +8,14 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
+import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
+import java.io.InputStreamReader;
+import javafx.scene.control.TextArea;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import riotcmd.infer;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -273,4 +282,82 @@ public class SecureFileTransfer {
         return success;
     }
     // </editor-fold>
+
+  /**
+   * Connects to the last simulation.
+   *
+   * @param hostname  The name of the host machine to connect to.
+   * @param username  The user's login username.
+   * @param password  The user's login password.
+   * @param simName  The  last simulation to connect to.
+   * @param manager  The temp place holder.
+   */
+
+  public void checkLastSim(String hostname, String username,
+      String password, String simName, WorkbenchManager manager) {
+    JSch jsch = new JSch();
+    try {
+      session = jsch.getSession(username, hostname, PORT);
+      session.setPassword(password);
+      session.setConfig("StrictHostKeyChecking", "no"); //optional
+      session.connect();
+
+      Channel channel = session.openChannel("exec");
+      ((ChannelExec) channel).setInputStream(null);
+      ((ChannelExec) channel).setCommand("cd WorkbenchSimulations/ && ls");
+      channel.connect();
+
+      InputStream in;
+      try {
+        in = channel.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String files;
+        while ((files = reader.readLine()) != null) {
+          if (files.equals(simName)) {
+            Channel channel2 = session.openChannel("sftp");
+            channel2.connect();
+            //((ChannelSftp) channel2).setInputStream(null);
+            try {
+              ((ChannelSftp) channel2).cd(
+                  "WorkbenchSimulations//" + simName + "//Output//Debug");
+              InputStream workBenchLog = ((ChannelSftp) channel2).get("workbench.txt");
+              BufferedReader readLog = new BufferedReader(new InputStreamReader(workBenchLog));
+              String line;
+              String lastline = "";
+              while ((line = readLog.readLine()) != null) {
+                lastline = line;
+              }
+              String completion = "Complete";
+              lastline = lastline.substring(
+                  lastline.length() - completion.length(), lastline.length());
+              if (lastline.equals("Complete")) {
+                displayDownloadFrame(channel2, manager);
+                break;
+              }
+            } catch (SftpException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+    } catch (JSchException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void displayDownloadFrame(Channel channel, WorkbenchManager manager) {
+    JFrame frame = new JFrame();
+    String[] options = {"Download", "Cancel"};
+    int option = JOptionPane.showOptionDialog(frame,
+        "Last simlation completed, do you want to download?", "Last Simulation Completed",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null, options, options[0]);
+    if (option == JOptionPane.YES_NO_OPTION) {
+      SimulationRuntimeDialog srd = new SimulationRuntimeDialog(
+          new TextArea(manager.getMessages()));
+    }
+  }
 }

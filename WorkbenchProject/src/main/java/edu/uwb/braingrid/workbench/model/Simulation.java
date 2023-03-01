@@ -1,5 +1,6 @@
 package edu.uwb.braingrid.workbench.model;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
@@ -13,7 +14,7 @@ import edu.uwb.braingrid.workbench.utils.DateTime;
  *
  * @author Steven Leighton
  */
-public class Simulation {
+public class Simulation implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="Members">
     private static final Logger LOG = Logger.getLogger(Simulation.class.getName());
