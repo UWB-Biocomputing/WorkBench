@@ -21,9 +21,9 @@ import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
-import org.apache.jena.rdf.model.Resource;
 import edu.uwb.braingrid.workbench.Workbench;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
+import org.apache.jena.rdf.model.Resource;
 import org.xml.sax.SAXException;
 import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.provenance.WorkbenchOperationRecorder;
@@ -321,85 +321,85 @@ public class ScriptManager {
       if (sft.uploadFile(scriptPath, simDir, hostname, lcd.getUsername(), password, null)) {
         // record provenance of upload
         if (provMgr != null) {
-        Long startTime = System.currentTimeMillis();
-        WorkbenchOperationRecorder.recordFile(provMgr, scriptPath, remoteScriptPath,
+          Long startTime = System.currentTimeMillis();
+          WorkbenchOperationRecorder.recordFile(provMgr, scriptPath, remoteScriptPath,
              "script", hostname, "uploadScript", uploadStartTime, new Date());
-        accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
+          accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
         }
         outstandingMessages += "\n" + scriptPath + "\nuploaded to " + hostname + "\n";
         /* Upload Neuron List Files */
         boolean loopSuccess;
         if (nListFilenames != null) {
           for (String nListFilename : nListFilenames) {
-          String filename = FileManager.getSimpleFilename(nListFilename);
-          outstandingMessages += "\n" + "Uploaded " + nListFilename + "\nto "
-              + hostname + "\n";
-          uploadStartTime = new Date();
-          loopSuccess = sft.uploadFile(nListFilename, nListDir, hostname,
-              lcd.getUsername(), password, null);
-          if (!loopSuccess) {
-            success = false;
-            outstandingMessages += "\n" + "Problem uploading " + nListFilename
-                + "\nto " + hostname + "\n";
-            break;
-          } else {
-            outstandingMessages += "\n" + filename + "\nuploaded to " + hostname
-                + "\n";
-            // record upload provenance
-            if (provMgr != null) {
-              Long startTime = System.currentTimeMillis();
-              String nlType = "";
-              try {
-                nlType = InputAnalyzer.getInputType(
-                    new File(nListFilename)).toString();
-              } catch (ParserConfigurationException | SAXException
-                  | IOException ex) {
-              }
-                  WorkbenchOperationRecorder.recordFile(provMgr, nListFilename,
-                      nListDir + FileManager.getSimpleFilename(nListFilename),
-                      "nlist", hostname, "upload_" + nlType + "_NList",
-                      uploadStartTime, new Date());
-                  accumulatedTime = DateTime.sumProvTiming(startTime,
-                      accumulatedTime);
+            String filename = FileManager.getSimpleFilename(nListFilename);
+            outstandingMessages += "\n" + "Uploaded " + nListFilename + "\nto "
+                + hostname + "\n";
+            uploadStartTime = new Date();
+            loopSuccess = sft.uploadFile(nListFilename, nListDir, hostname,
+                lcd.getUsername(), password, null);
+            if (!loopSuccess) {
+              success = false;
+              outstandingMessages += "\n" + "Problem uploading " + nListFilename
+                  + "\nto " + hostname + "\n";
+              break;
+            } else {
+              outstandingMessages += "\n" + filename + "\nuploaded to " + hostname
+                  + "\n";
+              // record upload provenance
+              if (provMgr != null) {
+                Long startTime = System.currentTimeMillis();
+                String nlType = "";
+                try {
+                  nlType = InputAnalyzer.getInputType(
+                      new File(nListFilename)).toString();
+                } catch (ParserConfigurationException | SAXException
+                    | IOException ex) {
+                }
+                WorkbenchOperationRecorder.recordFile(provMgr, nListFilename,
+                    nListDir + FileManager.getSimpleFilename(nListFilename),
+                    "nlist", hostname, "upload_" + nlType + "_NList",
+                    uploadStartTime, new Date());
+                accumulatedTime = DateTime.sumProvTiming(startTime,
+                accumulatedTime);
               }
             }
-         }
-       }
-                /* Upload Simulation Configuration File */
-       if (success) {
-         uploadStartTime = new Date();
-         success = sft.uploadFile(simConfigFilename, configDir, hostname,
-             lcd.getUsername(), password, null);
-         if (success) {
-         if (provMgr != null) {
-           Long startTime = System.currentTimeMillis();
-           WorkbenchOperationRecorder.recordFile(provMgr, simConfigFilename,
-               configDir + FileManager.getSimpleFilename(simConfigFilename),
-               "simulationConfigurationFile", hostname, "upload_SimConfig",
-               uploadStartTime, new Date());
-           accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
-         }
-           outstandingMessages += "\n"
+          }
+        }
+       /* Upload Simulation Configuration File */
+        if (success) {
+          uploadStartTime = new Date();
+          success = sft.uploadFile(simConfigFilename, configDir, hostname,
+              lcd.getUsername(), password, null);
+          if (success) {
+            if (provMgr != null) {
+              Long startTime = System.currentTimeMillis();
+              WorkbenchOperationRecorder.recordFile(provMgr, simConfigFilename,
+                configDir + FileManager.getSimpleFilename(simConfigFilename),
+                "simulationConfigurationFile", hostname, "upload_SimConfig",
+                uploadStartTime, new Date());
+              accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
+            }
+              outstandingMessages += "\n"
                + FileManager.getSimpleFilename(simConfigFilename)
                    + "\nuploaded to " + hostname + "\n";
-         } else {
-           outstandingMessages += "\n" + "Problem uploading "
+          } else {
+            outstandingMessages += "\n" + "Problem uploading "
                + FileManager.getSimpleFilename(simConfigFilename)
                    + "\nto " + hostname + "\n";
-         }
-       }
+          }
+        }
        /* Execute Script */
-       if (success) {
-         cmd = "nohup sh " + remoteScriptPath + " &";
-         outstandingMessages += "\n" + "Executing " + cmd
-             + "\nat "
-                 + hostname + "\n";
-         sft.executeCommand(cmd, hostname, lcd.getUsername(), password, false);
-         success = true;
-       }
-     } else {
-       outstandingMessages += "\n" + "Failed to upload script to " + hostname + "\n";
-     }
+        if (success) {
+          cmd = "nohup sh " + remoteScriptPath + " &";
+          outstandingMessages += "\n" + "Executing " + cmd
+              + "\nat "
+                  + hostname + "\n";
+          sft.executeCommand(cmd, hostname, lcd.getUsername(), password, false);
+          success = true;
+        }
+      } else {
+        outstandingMessages += "\n" + "Failed to upload script to " + hostname + "\n";
+      }
    } else {
      outstandingMessages += "\n" + "\nRemote Credentials Specification Cancelled\n";
    }

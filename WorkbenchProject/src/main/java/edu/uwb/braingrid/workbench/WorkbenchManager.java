@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-
 import edu.uwb.braingrid.general.LoggerHelper;
 import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.workbench.model.Project;
@@ -545,7 +544,7 @@ public final class WorkbenchManager {
         simObjOut.writeObject(simulation);
       }
 
-       //save the simulation here
+      //save the simulation here
       messageAccumulator += sm.getOutstandingMessages();
     } catch (JSchException | SftpException | IOException | NullPointerException e) {
       e.printStackTrace();
@@ -764,11 +763,11 @@ public final class WorkbenchManager {
         return messageAccumulator;
     }
 
-    /**
-     * Set the message for message Accumulator, used for remember last simulation.
-     *
-     *  @param msg msg to set
-     */
+  /**
+   * Set the message for message Accumulator, used for remember last simulation.
+   *
+   *  @param msg msg to set
+   */
   public void setMessages(String msg) {
     messageAccumulator = msg;
   }
