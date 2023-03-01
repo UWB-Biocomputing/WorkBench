@@ -64,9 +64,9 @@ public class ProvMgr implements Serializable {
     public static final String LOCAL_NS_PREFIX = "local";
 
     /* URIs used to describe the provenance */
-    private String provOutputFileUri;
-    private String localNameSpaceUri;
-    private String remoteNameSpaceUri;
+  private String provOutputFileUri;
+  private String localNameSpaceUri;
+  private String remoteNameSpaceUri;
 
     /* RDF in-memory representation of the provenance */
     private Model model;
@@ -79,7 +79,7 @@ public class ProvMgr implements Serializable {
    *
    */
   public String getProvUri() {
-      return provOutputFileUri;
+    return provOutputFileUri;
   }
 
   /**
@@ -92,15 +92,16 @@ public class ProvMgr implements Serializable {
     return localNameSpaceUri;
   }
 
-    /**
-     * The getter for RemoteURI.
-     *
-     *  @return return the RemoteURI.
-     *
-     */
+ /**
+  * The getter for RemoteURI.
+  *
+  *  @return return the RemoteURI.
+  *
+  */
   public String getRemoteUri() {
     return remoteNameSpaceUri;
-    }
+  }
+
   /**
    * The constructor used by resume Lastsimulation.
    *
@@ -109,6 +110,7 @@ public class ProvMgr implements Serializable {
    *  @param remoteURI the remoteURI
    *  @param model the model
    */
+
   public ProvMgr(String provURI, String localURI, String remoteURI, Model model) {
     this.provOutputFileUri = provURI;
     this.localNameSpaceUri = localURI;

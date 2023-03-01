@@ -10,8 +10,8 @@ import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
-import javafx.scene.control.TextArea;
 import java.io.InputStreamReader;
+import javafx.scene.control.TextArea;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import riotcmd.infer;
@@ -357,7 +357,7 @@ public class SecureFileTransfer {
             null, options, options[0]);
     if (option == JOptionPane.YES_NO_OPTION) {
       SimulationRuntimeDialog srd = new SimulationRuntimeDialog(
-      new TextArea(manager.getMessages()));
+          new TextArea(manager.getMessages()));
     }
   }
 }

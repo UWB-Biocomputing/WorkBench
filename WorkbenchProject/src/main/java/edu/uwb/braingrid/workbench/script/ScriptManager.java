@@ -20,10 +20,11 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
 import edu.uwb.braingrid.workbench.Workbench;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.sparql.function.library.e;
 import org.xml.sax.SAXException;
 import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.provenance.WorkbenchOperationRecorder;
@@ -323,7 +324,7 @@ public class ScriptManager {
         if (provMgr != null) {
           Long startTime = System.currentTimeMillis();
           WorkbenchOperationRecorder.recordFile(provMgr, scriptPath, remoteScriptPath,
-             "script", hostname, "uploadScript", uploadStartTime, new Date());
+              "script", hostname, "uploadScript", uploadStartTime, new Date());
           accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
         }
         outstandingMessages += "\n" + scriptPath + "\nuploaded to " + hostname + "\n";
@@ -354,6 +355,7 @@ public class ScriptManager {
                       new File(nListFilename)).toString();
                 } catch (ParserConfigurationException | SAXException
                     | IOException ex) {
+                  ex.printStackTrace();
                 }
                 WorkbenchOperationRecorder.recordFile(provMgr, nListFilename,
                     nListDir + FileManager.getSimpleFilename(nListFilename),
@@ -365,7 +367,7 @@ public class ScriptManager {
             }
           }
         }
-       /* Upload Simulation Configuration File */
+        /* Upload Simulation Configuration File */
         if (success) {
           uploadStartTime = new Date();
           success = sft.uploadFile(simConfigFilename, configDir, hostname,
@@ -374,12 +376,12 @@ public class ScriptManager {
             if (provMgr != null) {
               Long startTime = System.currentTimeMillis();
               WorkbenchOperationRecorder.recordFile(provMgr, simConfigFilename,
-                configDir + FileManager.getSimpleFilename(simConfigFilename),
-                "simulationConfigurationFile", hostname, "upload_SimConfig",
-                uploadStartTime, new Date());
+                  configDir + FileManager.getSimpleFilename(simConfigFilename),
+                  "simulationConfigurationFile", hostname, "upload_SimConfig",
+                  uploadStartTime, new Date());
               accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
             }
-              outstandingMessages += "\n"
+            outstandingMessages += "\n"
                + FileManager.getSimpleFilename(simConfigFilename)
                    + "\nuploaded to " + hostname + "\n";
           } else {
@@ -388,7 +390,7 @@ public class ScriptManager {
                    + "\nto " + hostname + "\n";
           }
         }
-       /* Execute Script */
+        /* Execute Script */
         if (success) {
           cmd = "nohup sh " + remoteScriptPath + " &";
           outstandingMessages += "\n" + "Executing " + cmd
@@ -400,14 +402,14 @@ public class ScriptManager {
       } else {
         outstandingMessages += "\n" + "Failed to upload script to " + hostname + "\n";
       }
-   } else {
-     outstandingMessages += "\n" + "\nRemote Credentials Specification Cancelled\n";
-   }
-   outstandingMessages += "\n" + "Remote Operations Completed: " + new Date() + "\n";
+    } else {
+      outstandingMessages += "\n" + "\nRemote Credentials Specification Cancelled\n";
+    }
+    outstandingMessages += "\n" + "Remote Operations Completed: " + new Date() + "\n";
 
-   if (password != null) {
-     Arrays.fill(password, '0');
-   }
+    if (password != null) {
+      Arrays.fill(password, '0');
+    }
         DateTime.recordFunctionExecutionTime("ScriptManager", "runRemoteScript",
                 System.currentTimeMillis() - functionStartTime, provMgr != null);
         if (provMgr != null) {
@@ -423,7 +425,7 @@ public class ScriptManager {
         ObjectOutputStream messageOutObj = new ObjectOutputStream(messageOut);
         messageOutObj.writeObject(WorkbenchManager.getInstance().getMessages());
         provMgr.getModel().write(
-        new FileOutputStream(new File(
+          new FileOutputStream(new File(
             workingDir() + "\\LastSimulation\\model.ttl")), "TURTLE");
         FileWriter uriWriter = new FileWriter(uriFile);
         uriWriter.write(provMgr.getProvUri() + "\n");
@@ -432,9 +434,9 @@ public class ScriptManager {
         uriWriter.close();
         messageOutObj.close();
       } catch (IOException e) {
-    e.printStackTrace();
-  }
-  }
+        e.printStackTrace();
+      }
+    }
     return success;
   }
 
