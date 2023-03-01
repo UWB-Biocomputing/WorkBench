@@ -295,149 +295,149 @@ public class ScriptManager {
     }
   }
 
-    private boolean runRemoteScript(ProvMgr provMgr, String hostname, String simulationName,
-            String scriptPath, String[] nListFilenames, String simConfigFilename)
-            throws JSchException, FileNotFoundException, SftpException {
-        Long functionStartTime = System.currentTimeMillis();
-        Long accumulatedTime = 0L;
-        char[] password = null;
-        boolean success = true;
-        // get username and password
-        LoginCredentialsDialog lcd = new LoginCredentialsDialog(hostname, true);
-        if (lcd.okClicked()) {
-            SecureFileTransfer sft = new SecureFileTransfer();
-            password = lcd.getPassword();
-            lcd.clearPassword();
-            /* Create Simulation Directory and Subdirectories */
-            String simDir = FileManager.getSimulationsDirectory() + "/" + simulationName;
-            String configDir = simDir + "/configfiles";
-            String nListDir = simDir + "/configfiles/NList";
-            String remoteScriptPath = simDir + "/" + FileManager.getSimpleFilename(scriptPath);
-            String cmd = "mkdir -p " + nListDir;
-            sft.executeCommand(cmd, hostname, lcd.getUsername(), password, true);
-            saveSimDir(simDir);
-            saveSimName(simulationName);
-            /* Upload Script */
-            Date uploadStartTime = new Date();
-            if (sft.uploadFile(scriptPath, simDir, hostname, lcd.getUsername(), password, null)) {
-                // record provenance of upload
-                if (provMgr != null) {
-                    Long startTime = System.currentTimeMillis();
-                    WorkbenchOperationRecorder.recordFile(provMgr, scriptPath, remoteScriptPath,
-                            "script", hostname, "uploadScript", uploadStartTime, new Date());
-                    accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
-                }
-                outstandingMessages += "\n" + scriptPath + "\nuploaded to " + hostname + "\n";
-                /* Upload Neuron List Files */
-                boolean loopSuccess;
-                if (nListFilenames != null) {
-                    for (String nListFilename : nListFilenames) {
-                        String filename = FileManager.getSimpleFilename(nListFilename);
-                        outstandingMessages += "\n" + "Uploaded " + nListFilename + "\nto "
-                                + hostname + "\n";
-                        uploadStartTime = new Date();
-                        loopSuccess = sft.uploadFile(nListFilename, nListDir, hostname,
-                                lcd.getUsername(), password, null);
-                        if (!loopSuccess) {
-                            success = false;
-                            outstandingMessages += "\n" + "Problem uploading " + nListFilename
-                                    + "\nto " + hostname + "\n";
-                            break;
-                        } else {
-                            outstandingMessages += "\n" + filename + "\nuploaded to " + hostname
-                                    + "\n";
-                            // record upload provenance
-                            if (provMgr != null) {
-                                Long startTime = System.currentTimeMillis();
-                                String nlType = "";
-                                try {
-                                    nlType = InputAnalyzer.getInputType(
-                                            new File(nListFilename)).toString();
-                                } catch (ParserConfigurationException | SAXException
-                                        | IOException ex) {
-                                }
-                                WorkbenchOperationRecorder.recordFile(provMgr, nListFilename,
-                                        nListDir + FileManager.getSimpleFilename(nListFilename),
-                                        "nlist", hostname, "upload_" + nlType + "_NList",
-                                        uploadStartTime, new Date());
-                                accumulatedTime = DateTime.sumProvTiming(startTime,
-                                        accumulatedTime);
-                            }
-                        }
-                    }
-                }
-                /* Upload Simulation Configuration File */
-                if (success) {
-                    uploadStartTime = new Date();
-                    success = sft.uploadFile(simConfigFilename, configDir, hostname,
-                            lcd.getUsername(), password, null);
-                    if (success) {
-                        if (provMgr != null) {
-                            Long startTime = System.currentTimeMillis();
-                            WorkbenchOperationRecorder.recordFile(provMgr, simConfigFilename,
-                                    configDir + FileManager.getSimpleFilename(simConfigFilename),
-                                    "simulationConfigurationFile", hostname, "upload_SimConfig",
-                                    uploadStartTime, new Date());
-                            accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
-                        }
-                        outstandingMessages += "\n"
-                                + FileManager.getSimpleFilename(simConfigFilename)
-                                + "\nuploaded to " + hostname + "\n";
-                    } else {
-                        outstandingMessages += "\n" + "Problem uploading "
-                                + FileManager.getSimpleFilename(simConfigFilename)
-                                + "\nto " + hostname + "\n";
-                    }
-                }
-                /* Execute Script */
-                if (success) {
-                    cmd = "nohup sh " + remoteScriptPath + " &";
-                    outstandingMessages += "\n" + "Executing " + cmd
-                            + "\nat "
-                            + hostname + "\n";
-                    sft.executeCommand(cmd, hostname, lcd.getUsername(), password, false);
-                    success = true;
-                }
-            } else {
-                outstandingMessages += "\n" + "Failed to upload script to " + hostname + "\n";
+  private boolean runRemoteScript(ProvMgr provMgr, String hostname, String simulationName,
+          String scriptPath, String[] nListFilenames, String simConfigFilename)
+          throws JSchException, FileNotFoundException, SftpException {
+    Long functionStartTime = System.currentTimeMillis();
+    Long accumulatedTime = 0L;
+    char[] password = null;
+    boolean success = true;
+    // get username and password
+    LoginCredentialsDialog lcd = new LoginCredentialsDialog(hostname, true);
+    if (lcd.okClicked()) {
+      SecureFileTransfer sft = new SecureFileTransfer();
+      password = lcd.getPassword();
+      lcd.clearPassword();
+      /* Create Simulation Directory and Subdirectories */
+      String simDir = FileManager.getSimulationsDirectory() + "/" + simulationName;
+      String configDir = simDir + "/configfiles";
+      String nListDir = simDir + "/configfiles/NList";
+      String remoteScriptPath = simDir + "/" + FileManager.getSimpleFilename(scriptPath);
+      String cmd = "mkdir -p " + nListDir;
+      sft.executeCommand(cmd, hostname, lcd.getUsername(), password, true);
+      saveSimDir(simDir);
+      saveSimName(simulationName);
+      /* Upload Script */
+      Date uploadStartTime = new Date();
+      if (sft.uploadFile(scriptPath, simDir, hostname, lcd.getUsername(), password, null)) {
+        // record provenance of upload
+        if (provMgr != null) {
+        Long startTime = System.currentTimeMillis();
+        WorkbenchOperationRecorder.recordFile(provMgr, scriptPath, remoteScriptPath,
+             "script", hostname, "uploadScript", uploadStartTime, new Date());
+        accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
+        }
+        outstandingMessages += "\n" + scriptPath + "\nuploaded to " + hostname + "\n";
+        /* Upload Neuron List Files */
+        boolean loopSuccess;
+        if (nListFilenames != null) {
+          for (String nListFilename : nListFilenames) {
+          String filename = FileManager.getSimpleFilename(nListFilename);
+          outstandingMessages += "\n" + "Uploaded " + nListFilename + "\nto "
+              + hostname + "\n";
+          uploadStartTime = new Date();
+          loopSuccess = sft.uploadFile(nListFilename, nListDir, hostname,
+              lcd.getUsername(), password, null);
+          if (!loopSuccess) {
+            success = false;
+            outstandingMessages += "\n" + "Problem uploading " + nListFilename
+                + "\nto " + hostname + "\n";
+            break;
+          } else {
+            outstandingMessages += "\n" + filename + "\nuploaded to " + hostname
+                + "\n";
+            // record upload provenance
+            if (provMgr != null) {
+              Long startTime = System.currentTimeMillis();
+              String nlType = "";
+              try {
+                nlType = InputAnalyzer.getInputType(
+                    new File(nListFilename)).toString();
+              } catch (ParserConfigurationException | SAXException
+                  | IOException ex) {
+              }
+                  WorkbenchOperationRecorder.recordFile(provMgr, nListFilename,
+                      nListDir + FileManager.getSimpleFilename(nListFilename),
+                      "nlist", hostname, "upload_" + nlType + "_NList",
+                      uploadStartTime, new Date());
+                  accumulatedTime = DateTime.sumProvTiming(startTime,
+                      accumulatedTime);
+              }
             }
-        } else {
-            outstandingMessages += "\n" + "\nRemote Credentials Specification Cancelled\n";
-        }
-        outstandingMessages += "\n" + "Remote Operations Completed: " + new Date() + "\n";
+         }
+       }
+                /* Upload Simulation Configuration File */
+       if (success) {
+         uploadStartTime = new Date();
+         success = sft.uploadFile(simConfigFilename, configDir, hostname,
+             lcd.getUsername(), password, null);
+         if (success) {
+         if (provMgr != null) {
+           Long startTime = System.currentTimeMillis();
+           WorkbenchOperationRecorder.recordFile(provMgr, simConfigFilename,
+               configDir + FileManager.getSimpleFilename(simConfigFilename),
+               "simulationConfigurationFile", hostname, "upload_SimConfig",
+               uploadStartTime, new Date());
+           accumulatedTime = DateTime.sumProvTiming(startTime, accumulatedTime);
+         }
+           outstandingMessages += "\n"
+               + FileManager.getSimpleFilename(simConfigFilename)
+                   + "\nuploaded to " + hostname + "\n";
+         } else {
+           outstandingMessages += "\n" + "Problem uploading "
+               + FileManager.getSimpleFilename(simConfigFilename)
+                   + "\nto " + hostname + "\n";
+         }
+       }
+       /* Execute Script */
+       if (success) {
+         cmd = "nohup sh " + remoteScriptPath + " &";
+         outstandingMessages += "\n" + "Executing " + cmd
+             + "\nat "
+                 + hostname + "\n";
+         sft.executeCommand(cmd, hostname, lcd.getUsername(), password, false);
+         success = true;
+       }
+     } else {
+       outstandingMessages += "\n" + "Failed to upload script to " + hostname + "\n";
+     }
+   } else {
+     outstandingMessages += "\n" + "\nRemote Credentials Specification Cancelled\n";
+   }
+   outstandingMessages += "\n" + "Remote Operations Completed: " + new Date() + "\n";
 
-        if (password != null) {
-            Arrays.fill(password, '0');
-        }
+   if (password != null) {
+     Arrays.fill(password, '0');
+   }
         DateTime.recordFunctionExecutionTime("ScriptManager", "runRemoteScript",
                 System.currentTimeMillis() - functionStartTime, provMgr != null);
         if (provMgr != null) {
             DateTime.recordAccumulatedProvTiming("ScriptManager", "runRemoteScript",
                     accumulatedTime);
         }
-        if (success) {
-          String simLocation = workingDir() + "\\LastSimulation";
-          File messageFile = new File(simLocation + "\\message");
-          File uriFile = new File(simLocation + "\\uri");
-          FileOutputStream messageOut = new FileOutputStream(messageFile);
-          try {
-            ObjectOutputStream messageOutObj = new ObjectOutputStream(messageOut);
-            messageOutObj.writeObject(WorkbenchManager.getInstance().getMessages());
-            provMgr.getModel().write(
-                new FileOutputStream(new File(
-                    workingDir() + "\\LastSimulation\\model.ttl")), "TURTLE");
-            FileWriter uriWriter = new FileWriter(uriFile);
-            uriWriter.write(provMgr.getProvURI() + "\n");
-            uriWriter.write(provMgr.getLocalURI() + "\n");
-            uriWriter.write(provMgr.getRemoteURI() + "\n");
-            uriWriter.close();
-            messageOutObj.close();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-        return success;
-    }
+    if (success) {
+      String simLocation = workingDir() + "\\LastSimulation";
+      File messageFile = new File(simLocation + "\\message");
+      File uriFile = new File(simLocation + "\\uri");
+      FileOutputStream messageOut = new FileOutputStream(messageFile);
+      try {
+        ObjectOutputStream messageOutObj = new ObjectOutputStream(messageOut);
+        messageOutObj.writeObject(WorkbenchManager.getInstance().getMessages());
+        provMgr.getModel().write(
+        new FileOutputStream(new File(
+            workingDir() + "\\LastSimulation\\model.ttl")), "TURTLE");
+        FileWriter uriWriter = new FileWriter(uriFile);
+        uriWriter.write(provMgr.getProvURI() + "\n");
+        uriWriter.write(provMgr.getLocalURI() + "\n");
+        uriWriter.write(provMgr.getRemoteURI() + "\n");
+        uriWriter.close();
+        messageOutObj.close();
+      } catch (IOException e) {
+    e.printStackTrace();
+  }
+  }
+    return success;
+  }
 
     private boolean runLocalScript(ProvMgr provMgr, String simulationName, String scriptLocation,
             String[] inputFilenames, String simConfigFilename) throws IOException {
