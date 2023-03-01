@@ -15,13 +15,13 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.model.Simulation;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.eclipse.jgit.transport.CredentialItem.Username;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -194,22 +194,20 @@ public class WorkbenchDashboard extends Application {
               String simName = (String) readSimNameObj.readObject();
               LoginCredentialsDialog loginToResume = new
                   LoginCredentialsDialog(realHostInfo, true);
-              String username = loginToResume.getUsername();
-              String password = new String(loginToResume.getPassword());
-              SecureFileTransfer fileTransfer = new SecureFileTransfer();
+              final String username = loginToResume.getUsername();
+              final String password = new String(loginToResume.getPassword());
+              final SecureFileTransfer fileTransfer = new SecureFileTransfer();
 
               File simulationInput = new File(workingDir() + "\\LastSimulation\\simulation");
               FileInputStream simIn = new FileInputStream(simulationInput);
               ObjectInputStream simInObj = new ObjectInputStream(simIn);
 
-              BufferedReader readURI = new BufferedReader(
+              BufferedReader readUri = new BufferedReader(
                   new FileReader(workingDir() + "\\LastSimulation\\uri"));
-              String provURI = readURI.readLine();
-              String localURI = readURI.readLine();
-              String remoteURI = readURI.readLine();
+              String provURI = readUri.readLine();
+              String localURI = readUri.readLine();
+              String remoteURI = readUri.readLine();
               Model model = ModelFactory.createDefaultModel();
-//              String modelPath = workingDir() + "\\LastSimulation\\model.ttl";
-//              modelPath = modelPath.replaceAll(" ", "%20");
               model.read(workingDir() + "\\LastSimulation\\model.ttl", "TURTLE");
               ProvMgr lastMgr = new ProvMgr(provURI, localURI, remoteURI, model);
               WorkbenchManager.getInstance().simulationSetter((Simulation) simInObj.readObject());

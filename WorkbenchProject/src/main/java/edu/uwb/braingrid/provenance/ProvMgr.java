@@ -105,9 +105,9 @@ public class ProvMgr implements Serializable {
   /**
    * The constructor used by resume Lastsimulation.
    *
-   *  @param provURI the provURI
-   *  @param localURI the localURI
-   *  @param remoteURI the remoteURI
+   *  @param provUri the provURI
+   *  @param localUri the localURI
+   *  @param remoteUri the remoteURI
    *  @param model the model
    */
 
