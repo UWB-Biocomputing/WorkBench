@@ -27,6 +27,8 @@ import org.xml.sax.SAXException;
 import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.provenance.WorkbenchOperationRecorder;
 import edu.uwb.braingrid.workbench.FileManager;
+import edu.uwb.braingrid.workbench.Workbench;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.model.Simulation;
@@ -420,7 +422,7 @@ public class ScriptManager {
           FileOutputStream messageOut = new FileOutputStream(messageFile);
           try {
             ObjectOutputStream messageOutObj = new ObjectOutputStream(messageOut);
-            messageOutObj.writeObject(outstandingMessages);
+            messageOutObj.writeObject(WorkbenchManager.getInstance().getMessages());
             provMgr.getModel().write(
                 new FileOutputStream(new File(
                     workingDir() + "\\LastSimulation\\model.ttl")), "TURTLE");

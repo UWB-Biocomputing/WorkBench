@@ -765,6 +765,15 @@ public final class WorkbenchManager {
     }
 
     /**
+     * Set the message for message Accumulator, used for remember last simulation.
+     *
+     *  @param msg msg to set
+     */
+    public void setMessages(String msg) {
+      messageAccumulator = msg;
+    }
+
+    /**
      * Clears the accumulated messages for this manager.
      */
     private void clearMessages() {

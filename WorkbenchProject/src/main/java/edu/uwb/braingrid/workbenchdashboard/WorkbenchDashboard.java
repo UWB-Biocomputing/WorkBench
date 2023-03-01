@@ -219,6 +219,10 @@ public class WorkbenchDashboard extends Application {
               ProvMgr lastMgr = new ProvMgr(provURI, localURI, remoteURI, model);
               WorkbenchManager.getInstance().simulationSetter((Simulation) simInObj.readObject());
               WorkbenchManager.getInstance().provMgrSetter(lastMgr);
+              ObjectInputStream msgReader = new ObjectInputStream(
+                  new FileInputStream(new File(workingDir() + "\\LastSimulation\\message")));
+              String message = (String) msgReader.readObject();
+              WorkbenchManager.getInstance().setMessages(message);
               fileTransfer.checkLastSim(realHostInfo, username,
                   password, simName, WorkbenchManager.getInstance());
               JOptionPane.getRootFrame().dispose();

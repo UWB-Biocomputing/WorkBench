@@ -3,52 +3,49 @@
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix remote: <otachi.uwb.edu#> .
 @prefix prov:  <http://www.w3.org/ns/prov#> .
-@prefix local: <DESKTOP-3N8B16A@73.225.90.139#> .
+@prefix local: <DESKTOP-3N8B16A@205.175.118.10#> .
 
-<local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/script/23_script.sh>
-        a           prov:Entity ;
-        rdfs:label  "script" .
-
-<local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/23.xml>
+<local:~/WorkbenchSimulations/trial404/configfilestrial404.xml>
         a                    prov:Entity ;
         rdfs:label           "simulationConfigurationFile" ;
-        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/trial404.xml> ;
+        prov:wasGeneratedBy  <local:upload_SimConfig> .
+
+<local:~/WorkbenchSimulations/trial404/configfiles/NListActiveNList.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/ActiveNList.xml> ;
+        prov:wasGeneratedBy  <local:upload_ACTIVE_NList> .
 
 <local:upload_SimConfig>
         a                       prov:Activity ;
         rdfs:label              "upload" ;
-        prov:endedAtTime        "2023-02-28T08:19:20.003Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:generated          <local:~/WorkbenchSimulations/23/configfiles23.xml> ;
-        prov:startedAtTime      "2023-02-28T08:19:19.454Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:used               <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/23.xml> ;
+        prov:endedAtTime        "2023-03-01T00:04:26.626Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/trial404/configfilestrial404.xml> ;
+        prov:startedAtTime      "2023-03-01T00:04:26.298Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/trial404.xml> ;
         prov:wasAssociatedWith  <local:workbench> .
 
-<local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/ActiveNList.xml>
+<local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/ActiveNList.xml>
         a           prov:Entity ;
         rdfs:label  "nlist" .
 
-<local:~/WorkbenchSimulations/23/23_script.sh>
-        a                    prov:Entity ;
-        rdfs:label           "script" ;
-        prov:wasDerivedFrom  <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/script/23_script.sh> ;
-        prov:wasGeneratedBy  <local:uploadScript> .
-
-<local:~/WorkbenchSimulations/23/configfiles/NListInhibitoryNList.xml>
+<local:~/WorkbenchSimulations/trial404/configfiles/NListprobedNList.xml>
         a                    prov:Entity ;
         rdfs:label           "nlist" ;
-        prov:wasDerivedFrom  <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/InhibitoryNList.xml> ;
-        prov:wasGeneratedBy  <local:upload_INHIBITORY_NList> .
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/probedNList.xml> ;
+        prov:wasGeneratedBy  <local:upload_PROBED_NList> .
 
-<local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/probedNList.xml>
+<local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/probedNList.xml>
         a           prov:Entity ;
         rdfs:label  "nlist" .
 
 <local:uploadScript>  a         prov:Activity ;
         rdfs:label              "upload" ;
-        prov:endedAtTime        "2023-02-28T08:19:17.839Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:generated          <local:~/WorkbenchSimulations/23/23_script.sh> ;
-        prov:startedAtTime      "2023-02-28T08:19:17.285Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:used               <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/script/23_script.sh> ;
+        prov:endedAtTime        "2023-03-01T00:04:25.333Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/trial404/trial404_script.sh> ;
+        prov:startedAtTime      "2023-03-01T00:04:25.026Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/script/trial404_script.sh> ;
         prov:wasAssociatedWith  <local:workbench> .
 
 <local:workbench>  a  prov:SoftwareAgent .
@@ -56,53 +53,56 @@
 <local:upload_INHIBITORY_NList>
         a                       prov:Activity ;
         rdfs:label              "upload" ;
-        prov:endedAtTime        "2023-02-28T08:19:18.918Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:generated          <local:~/WorkbenchSimulations/23/configfiles/NListInhibitoryNList.xml> ;
-        prov:startedAtTime      "2023-02-28T08:19:18.385Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:used               <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/InhibitoryNList.xml> ;
+        prov:endedAtTime        "2023-03-01T00:04:25.99Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/trial404/configfiles/NListInhibitoryNList.xml> ;
+        prov:startedAtTime      "2023-03-01T00:04:25.682Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/InhibitoryNList.xml> ;
         prov:wasAssociatedWith  <local:workbench> .
 
 <local:upload_PROBED_NList>
         a                       prov:Activity ;
         rdfs:label              "upload" ;
-        prov:endedAtTime        "2023-02-28T08:19:19.454Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:generated          <local:~/WorkbenchSimulations/23/configfiles/NListprobedNList.xml> ;
-        prov:startedAtTime      "2023-02-28T08:19:18.919Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:used               <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/probedNList.xml> ;
+        prov:endedAtTime        "2023-03-01T00:04:26.298Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/trial404/configfiles/NListprobedNList.xml> ;
+        prov:startedAtTime      "2023-03-01T00:04:25.991Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/probedNList.xml> ;
         prov:wasAssociatedWith  <local:workbench> .
 
-<local:~/WorkbenchSimulations/23/configfiles23.xml>
-        a                    prov:Entity ;
-        rdfs:label           "simulationConfigurationFile" ;
-        prov:wasDerivedFrom  <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/23.xml> ;
-        prov:wasGeneratedBy  <local:upload_SimConfig> .
+<local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/InhibitoryNList.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
 
 <local:upload_ACTIVE_NList>
         a                       prov:Activity ;
         rdfs:label              "upload" ;
-        prov:endedAtTime        "2023-02-28T08:19:18.385Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:generated          <local:~/WorkbenchSimulations/23/configfiles/NListActiveNList.xml> ;
-        prov:startedAtTime      "2023-02-28T08:19:17.84Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
-        prov:used               <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/ActiveNList.xml> ;
+        prov:endedAtTime        "2023-03-01T00:04:25.682Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/trial404/configfiles/NListActiveNList.xml> ;
+        prov:startedAtTime      "2023-03-01T00:04:25.333Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/ActiveNList.xml> ;
         prov:wasAssociatedWith  <local:workbench> .
 
 <local:simulation_input_file_generation>
         a                       prov:Activity ;
-        prov:generated          <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/23.xml> ;
+        prov:generated          <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/trial404.xml> ;
         prov:wasAssociatedWith  <local:workbench> .
 
-<local:~/WorkbenchSimulations/23/configfiles/NListActiveNList.xml>
+<local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/trial404.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:~/WorkbenchSimulations/trial404/configfiles/NListInhibitoryNList.xml>
         a                    prov:Entity ;
         rdfs:label           "nlist" ;
-        prov:wasDerivedFrom  <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/ActiveNList.xml> ;
-        prov:wasGeneratedBy  <local:upload_ACTIVE_NList> .
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/configfiles/NList/InhibitoryNList.xml> ;
+        prov:wasGeneratedBy  <local:upload_INHIBITORY_NList> .
 
-<local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/InhibitoryNList.xml>
+<local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/script/trial404_script.sh>
         a           prov:Entity ;
-        rdfs:label  "nlist" .
+        rdfs:label  "script" .
 
-<local:~/WorkbenchSimulations/23/configfiles/NListprobedNList.xml>
+<local:~/WorkbenchSimulations/trial404/trial404_script.sh>
         a                    prov:Entity ;
-        rdfs:label           "nlist" ;
-        prov:wasDerivedFrom  <local:C:/Users/Yang Mobei/WorkbenchProjects/Trial/23/configfiles/NList/probedNList.xml> ;
-        prov:wasGeneratedBy  <local:upload_PROBED_NList> .
+        rdfs:label           "script" ;
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/trial404/script/trial404_script.sh> ;
+        prov:wasGeneratedBy  <local:uploadScript> .
