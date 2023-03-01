@@ -15,7 +15,7 @@ import java.util.Arrays;
  * @author Del Davis
  */
 public class LoginCredentialsDialog extends javax.swing.JDialog {
-	
+
   private String workingDir() {
     String dir = System.getProperty("user.dir");
     String target = "\\target";

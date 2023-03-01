@@ -1,7 +1,6 @@
 package edu.uwb.braingrid.workbench.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.io.Serializable;
 import java.util.Objects;
 

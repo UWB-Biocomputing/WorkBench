@@ -546,15 +546,15 @@ public final class WorkbenchManager {
       }
 
        //save the simulation here
-       messageAccumulator += sm.getOutstandingMessages();
-       } catch (JSchException | SftpException | IOException | NullPointerException e) {
-         e.printStackTrace();
-         messageAccumulator += "\n" + "Script did not run do to "
-                  + e.getClass() + "...\n";
-         messageAccumulator += "Exception message: " + e.getMessage();
-       }
+      messageAccumulator += sm.getOutstandingMessages();
+    } catch (JSchException | SftpException | IOException | NullPointerException e) {
+      e.printStackTrace();
+      messageAccumulator += "\n" + "Script did not run do to "
+          + e.getClass() + "...\n";
+      messageAccumulator += "Exception message: " + e.getMessage();
+    }
 
-       return success;
+    return success;
   }
 
   private static String workingDir() {
@@ -640,7 +640,7 @@ public final class WorkbenchManager {
                 prov.persist(simulation);
                 messageAccumulator += "\n"
                         + "Provenance persisted to: "
-                        + prov.getProvFileURI() + "\n";
+                        + prov.getProvFileUri() + "\n";
             } catch (IOException e) {
                 messageAccumulator += "\n"
                         + "Unable to persist provenance\n"
@@ -769,9 +769,9 @@ public final class WorkbenchManager {
      *
      *  @param msg msg to set
      */
-    public void setMessages(String msg) {
-      messageAccumulator = msg;
-    }
+  public void setMessages(String msg) {
+    messageAccumulator = msg;
+  }
 
     /**
      * Clears the accumulated messages for this manager.

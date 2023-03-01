@@ -189,9 +189,9 @@ public final class FileManager {
      *
      * @return The working directory of the current user
      */
-    public static Path getUserDir() {
-        return Paths.get(workingDir());
-    }
+  public static Path getUserDir() {
+    return Paths.get(workingDir());
+  }
 
     /**
      * Provides the home directory of the current user.

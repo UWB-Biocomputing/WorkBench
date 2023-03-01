@@ -22,13 +22,12 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.jena.rdf.model.Resource;
+import edu.uwb.braingrid.workbench.Workbench;
+import edu.uwb.braingrid.workbench.WorkbenchManager;
 import org.xml.sax.SAXException;
-
 import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.provenance.WorkbenchOperationRecorder;
 import edu.uwb.braingrid.workbench.FileManager;
-import edu.uwb.braingrid.workbench.Workbench;
-import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
 import edu.uwb.braingrid.workbench.data.InputAnalyzer;
 import edu.uwb.braingrid.workbench.model.Simulation;
@@ -427,9 +426,9 @@ public class ScriptManager {
         new FileOutputStream(new File(
             workingDir() + "\\LastSimulation\\model.ttl")), "TURTLE");
         FileWriter uriWriter = new FileWriter(uriFile);
-        uriWriter.write(provMgr.getProvURI() + "\n");
-        uriWriter.write(provMgr.getLocalURI() + "\n");
-        uriWriter.write(provMgr.getRemoteURI() + "\n");
+        uriWriter.write(provMgr.getProvUri() + "\n");
+        uriWriter.write(provMgr.getLocalUri() + "\n");
+        uriWriter.write(provMgr.getRemoteUri() + "\n");
         uriWriter.close();
         messageOutObj.close();
       } catch (IOException e) {
