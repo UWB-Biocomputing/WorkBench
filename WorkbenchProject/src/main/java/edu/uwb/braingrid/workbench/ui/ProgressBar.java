@@ -1,6 +1,7 @@
 package edu.uwb.braingrid.workbench.ui;
 
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +23,8 @@ public class ProgressBar {
 	private int subPortion;
 	private SecureFileTransfer progressTracker;
 	private String simName;
-	private Session session;	
+	private Session session;
+	private JFrame frame;
 	public ProgressBar(String currentProgress, String subProgress, SecureFileTransfer tracker, String simName, Session session) {
 		int numDiv = currentProgress.indexOf("/");
 		int numDiv2 = subProgress.indexOf("/");
@@ -39,7 +41,7 @@ public class ProgressBar {
 		this.progressBar = new JProgressBar(0 , denominator * denominator2);
 		int current = numerator * numerator2 + numerator;
 		progressBar.setValue(current);
-		JFrame frame = new JFrame("Progress Bar");
+		frame = new JFrame("Progress Bar");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         progressBar.setStringPainted(true);
         frame.add(progressBar);
@@ -53,5 +55,8 @@ public class ProgressBar {
   public void updateProgress(double newProgress) {
       progressBar.setValue((int)(newProgress * mainPortion * subPortion));
       progressBar.repaint();
+      if (newProgress == 1) {
+    	  frame.setVisible(false);
+      }
   }
 }
