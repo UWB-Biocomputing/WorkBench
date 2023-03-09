@@ -9,6 +9,8 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
+import edu.uwb.braingrid.workbench.provvisualizer.model.CommitNode;
+import edu.uwb.braingrid.workbench.ui.ProgressBar;
 import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 import java.io.InputStreamReader;
 import javafx.scene.control.TextArea;
@@ -327,12 +329,23 @@ public class SecureFileTransfer {
               while ((line = readLog.readLine()) != null) {
                 lastline = line;
               }
+              String originalCommandString = lastline;
               String completion = "Complete";
               lastline = lastline.substring(
                   lastline.length() - completion.length(), lastline.length());
               if (lastline.equals("Complete")) {
                 displayDownloadFrame(channel2, manager);
                 break;
+              }
+              else {
+            	  int epochIndex = originalCommandString.indexOf("Epoch: ");
+            	  int simulationIndex = originalCommandString.indexOf("simulating time:");
+                  if (epochIndex >= 0 && simulationIndex >= 0) {
+                  String percent = originalCommandString.substring(epochIndex + 7, simulationIndex).trim();
+                  String percent2 = originalCommandString.substring(simulationIndex + 16).trim();
+                  ProgressBar progressBar = new ProgressBar(percent, percent2, this, simName, session);
+                  }
+                  break;
               }
             } catch (SftpException e) {
               e.printStackTrace();
@@ -359,5 +372,53 @@ public class SecureFileTransfer {
       SimulationRuntimeDialog srd = new SimulationRuntimeDialog(
           new TextArea(manager.getMessages()));
     }
+  }
+  
+  public double checkProgress(String simName, ProgressBar bar) {
+      try {
+    	Channel channel = session.openChannel("exec");
+        try {
+//			((ChannelSftp) channel).cd(
+//			    "WorkbenchSimulations//" + simName + "//Output//Debug");
+        	((ChannelExec) channel).setCommand("tail -f -n 1 " +
+    			"WorkbenchSimulations//" + simName + "//Output//Debug//workbench.txt");
+        	channel.connect();
+        	InputStream workBenchLog = channel.getInputStream();
+            BufferedReader readLog = new BufferedReader(new InputStreamReader(workBenchLog));
+            String line;
+            String lastline = "";
+            try {
+				while ((line = readLog.readLine()) != null) {
+				  lastline = line;
+					if(lastline.contains("Complete")) {
+						bar.updateProgress(1);
+						break;
+					}
+					else {
+						int epochIndex = lastline.indexOf("Epoch: ");
+		            	int simulationIndex = lastline.indexOf("simulating time:");
+		                if (epochIndex >= 0 && simulationIndex >= 0) {
+		                	String percent1 = lastline.substring(epochIndex + 7, simulationIndex).trim();
+		                	String percent2 = lastline.substring(simulationIndex + 16).trim();
+		                	int numDiv1 = percent1.indexOf("/");
+		                	int numDiv2 = percent2.indexOf("/");
+		 	        		double numerator1 = Double.parseDouble(percent1.substring(0, numDiv1)) - 1;
+		 	        		double denominator1 = Integer.parseInt(percent1.substring(numDiv1 + 1, percent1.length()));
+		 	        		double numerator2 = Double.parseDouble(percent2.substring(0, numDiv2));
+		 	        		double denominator2 = Integer.parseInt(percent2.substring(numDiv2 + 1, percent2.length()));
+		 	        		bar.updateProgress(numerator1/denominator1 + numerator2/denominator2/denominator1);
+		                }
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	} catch (JSchException e) {
+		e.printStackTrace();
+	}
+    return 0;
   }
 }
