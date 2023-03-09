@@ -47,59 +47,11 @@ public class ProgressBar {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         // Set the size of the frame and make it visible
-        checkProgress(simName);
+        progressTracker.checkProgress(simName, this);
 	}
   
   public void updateProgress(double newProgress) {
       progressBar.setValue((int)(newProgress * mainPortion * subPortion));
       progressBar.repaint();
-  }
-  
-  public double checkProgress(String simName) {
-      try {
-    	Channel channel = session.openChannel("exec");
-        try {
-//			((ChannelSftp) channel).cd(
-//			    "WorkbenchSimulations//" + simName + "//Output//Debug");
-        	((ChannelExec) channel).setCommand("tail -f -n 1 " +
-    			"WorkbenchSimulations//" + simName + "//Output//Debug//workbench.txt");
-        	channel.connect();
-        	InputStream workBenchLog = channel.getInputStream();
-            BufferedReader readLog = new BufferedReader(new InputStreamReader(workBenchLog));
-            String line;
-            String lastline = "";
-            try {
-				while ((line = readLog.readLine()) != null) {
-				  lastline = line;
-					if(lastline.contains("Complete")) {
-						updateProgress(1);
-						break;
-					}
-					else {
-						int epochIndex = lastline.indexOf("Epoch: ");
-		            	int simulationIndex = lastline.indexOf("simulating time:");
-		                if (epochIndex >= 0 && simulationIndex >= 0) {
-		                	String percent1 = lastline.substring(epochIndex + 7, simulationIndex).trim();
-		                	String percent2 = lastline.substring(simulationIndex + 16).trim();
-		                	int numDiv1 = percent1.indexOf("/");
-		                	int numDiv2 = percent2.indexOf("/");
-		 	        		double numerator1 = Double.parseDouble(percent1.substring(0, numDiv1)) - 1;
-		 	        		double denominator1 = Integer.parseInt(percent1.substring(numDiv1 + 1, percent1.length()));
-		 	        		double numerator2 = Double.parseDouble(percent2.substring(0, numDiv2));
-		 	        		double denominator2 = Integer.parseInt(percent2.substring(numDiv2 + 1, percent2.length()));
-		 	        		updateProgress(numerator1/denominator1 + numerator2/denominator2/denominator1);
-		                }
-					}
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	} catch (JSchException e) {
-		e.printStackTrace();
-	}
-    return 0;
   }
 }

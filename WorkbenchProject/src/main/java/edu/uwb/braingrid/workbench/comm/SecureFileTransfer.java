@@ -345,6 +345,7 @@ public class SecureFileTransfer {
                   String percent2 = originalCommandString.substring(simulationIndex + 16).trim();
                   ProgressBar progressBar = new ProgressBar(percent, percent2, this, simName, session);
                   }
+                  displayDownloadFrame(channel2, manager);
                   break;
               }
             } catch (SftpException e) {
