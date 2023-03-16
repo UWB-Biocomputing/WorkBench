@@ -37,6 +37,8 @@ public class SecureFileTransfer {
     private static final int PORT = 22;
     private static final int BUFFER_SIZE = 1024;
     private Session session;
+    private final int epochStringLength = 7;
+    private final int simStringLength = 16;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Construction">
@@ -336,14 +338,16 @@ public class SecureFileTransfer {
               if (lastline.equals("Complete")) {
                 displayDownloadFrame(channel2, manager);
                 break;
-              }
-              else {
-            	  int epochIndex = originalCommandString.indexOf("Epoch: ");
-            	  int simulationIndex = originalCommandString.indexOf("simulating time:");
+              } else {
+                  int epochIndex = originalCommandString.indexOf("Epoch: ");
+                  int simulationIndex = originalCommandString.indexOf("simulating time:");
                   if (epochIndex >= 0 && simulationIndex >= 0) {
-                  String percent = originalCommandString.substring(epochIndex + 7, simulationIndex).trim();
-                  String percent2 = originalCommandString.substring(simulationIndex + 16).trim();
-                  ProgressBar progressBar = new ProgressBar(percent, percent2, this, simName, session);
+                  String percent = originalCommandString.substring(
+                    epochIndex + epochStringLength, simulationIndex).trim();
+                  String percent2 = originalCommandString.substring(
+                    simulationIndex + simStringLength).trim();
+                  ProgressBar progressBar = new ProgressBar(
+                    percent, percent2, this, simName);
                   }
                   displayDownloadFrame(channel2, manager);
                   break;
@@ -374,52 +378,64 @@ public class SecureFileTransfer {
           new TextArea(manager.getMessages()));
     }
   }
-  
-  public double checkProgress(String simName, ProgressBar bar) {
+
+ /**
+  * Connects to the last simulation.
+  *
+  * @param simName  The  last simulation to connect to.
+  * @param bar  The progress bar for that simulation
+  */
+  public void checkProgress(String simName, ProgressBar bar) {
       try {
-    	Channel channel = session.openChannel("exec");
+        Channel channel = session.openChannel("exec");
         try {
-//			((ChannelSftp) channel).cd(
-//			    "WorkbenchSimulations//" + simName + "//Output//Debug");
-        	((ChannelExec) channel).setCommand("tail -f -n 1 " +
-    			"WorkbenchSimulations//" + simName + "//Output//Debug//workbench.txt");
-        	channel.connect();
-        	InputStream workBenchLog = channel.getInputStream();
+            ((ChannelExec) channel).setCommand(
+              "tail -f -n 1 " + "WorkbenchSimulations//"
+                +
+                  simName + "//Output//Debug//workbench.txt");
+            channel.connect();
+            InputStream workBenchLog = channel.getInputStream();
             BufferedReader readLog = new BufferedReader(new InputStreamReader(workBenchLog));
             String line;
             String lastline = "";
             try {
-				while ((line = readLog.readLine()) != null) {
-				  lastline = line;
-					if(lastline.contains("Complete")) {
-						bar.updateProgress(1);
-						break;
-					}
-					else {
-						int epochIndex = lastline.indexOf("Epoch: ");
-		            	int simulationIndex = lastline.indexOf("simulating time:");
-		                if (epochIndex >= 0 && simulationIndex >= 0) {
-		                	String percent1 = lastline.substring(epochIndex + 7, simulationIndex).trim();
-		                	String percent2 = lastline.substring(simulationIndex + 16).trim();
-		                	int numDiv1 = percent1.indexOf("/");
-		                	int numDiv2 = percent2.indexOf("/");
-		 	        		double numerator1 = Double.parseDouble(percent1.substring(0, numDiv1)) - 1;
-		 	        		double denominator1 = Integer.parseInt(percent1.substring(numDiv1 + 1, percent1.length()));
-		 	        		double numerator2 = Double.parseDouble(percent2.substring(0, numDiv2));
-		 	        		double denominator2 = Integer.parseInt(percent2.substring(numDiv2 + 1, percent2.length()));
-		 	        		bar.updateProgress(numerator1/denominator1 + numerator2/denominator2/denominator1);
-		                }
-					}
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	} catch (JSchException e) {
-		e.printStackTrace();
-	}
-    return 0;
+                while ((line = readLog.readLine()) != null) {
+                  lastline = line;
+                    if (lastline.contains("Complete")) {
+                        bar.updateProgress(1);
+                        break;
+                    } else {
+                        int epochIndex = lastline.indexOf("Epoch: ");
+                        int simulationIndex = lastline.indexOf("simulating time:");
+                        if (epochIndex >= 0 && simulationIndex >= 0) {
+                            String percent1 = lastline.substring(
+                              epochIndex + epochStringLength, simulationIndex).trim();
+                            String percent2 = lastline.substring(
+                              simulationIndex + simStringLength).trim();
+                            int numDiv1 = percent1.indexOf("/");
+                            int numDiv2 = percent2.indexOf("/");
+                            double numerator1 = Double.parseDouble(
+                              percent1.substring(0, numDiv1)) - 1;
+                            double denominator1 = Integer.parseInt(
+                              percent1.substring(numDiv1 + 1, percent1.length()));
+                            double numerator2 = Double.parseDouble(
+                              percent2.substring(0, numDiv2));
+                            double denominator2 = Integer.parseInt(
+                              percent2.substring(numDiv2 + 1, percent2.length()));
+                            bar.updateProgress(numerator1 / denominator1
+                              +
+                                numerator2 / denominator2 / denominator1);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } catch (JSchException e) {
+         e.printStackTrace();
+    }
   }
 }
