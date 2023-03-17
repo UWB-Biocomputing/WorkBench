@@ -3,6 +3,7 @@ package edu.uwb.braingrid.workbenchdashboard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uwb.braingrid.provenance.ProvMgr;
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
+import edu.uwb.braingrid.workbench.comm.SecureFileWrapperMultiThread;
 import edu.uwb.braingrid.workbench.model.Simulation;
 import edu.uwb.braingrid.workbench.ui.LoginCredentialsDialog;
 import edu.uwb.braingrid.workbench.ui.SimulationSpecificationDialog;
@@ -222,15 +223,17 @@ public class WorkbenchDashboard extends Application {
                   models[i] = model;
                   ObjectInputStream msgReader = new ObjectInputStream(
                       new FileInputStream(new File(
-                          lastSimulationsDir() + simNames[i] + "message")));
+                          lastSimulationsDir() + "\\" + simNames[i] + "\\message")));
                   msgs[i] = (String) msgReader.readObject();
                   simulations[i] = (Simulation) simInObj.readObject();
                   lastMgrs[i] = new ProvMgr(provUris[i], localUris[i], remoteUris[i], models[i]);
                   WorkbenchManager.getInstance().simulationSetter(simulations[i]);
                   WorkbenchManager.getInstance().provMgrSetter(lastMgrs[i]);
                   WorkbenchManager.getInstance().setMessages(msgs[i]);
-                  fileTransfer.checkLastSim(realHostInfo, username,
-                          password, simNames[i], WorkbenchManager.getInstance());
+                  SecureFileWrapperMultiThread wrapper = new SecureFileWrapperMultiThread(realHostInfo, username,
+                          password, simNames[i], msgs[i]);
+                  Thread thread = new Thread(wrapper);
+                  thread.start();
               }
             } catch (ClassNotFoundException e) {
               e.printStackTrace();

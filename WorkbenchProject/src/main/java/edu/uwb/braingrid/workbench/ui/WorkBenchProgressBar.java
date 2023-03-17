@@ -12,15 +12,17 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
+import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
 
 /**
  * Implements the progress bar to track the progress of the on-going simulations
  *
  * Created by Ben Yang on 16/03/2023.
  */
-public class ProgressBar {
+public class WorkBenchProgressBar {
     private int progress;
-    private JProgressBar progressBar;
+    private ProgressBar progressBar;
     private int mainPortion;
     private int subPortion;
     private SecureFileTransfer progressTracker;
@@ -34,8 +36,8 @@ public class ProgressBar {
      * @param tracker  Tracker connects to the remote machine and check for progress update
      * @param simName  The name of the simulation
      */
-    public ProgressBar(String currentProgress, String subProgress,
-      SecureFileTransfer tracker, String simName) {
+    public WorkBenchProgressBar(String currentProgress, String subProgress,
+      SecureFileTransfer tracker, String simName, Scene scene) {
       int numDiv = currentProgress.indexOf("/");
       int numDiv2 = subProgress.indexOf("/");
       int numerator = Integer.parseInt(currentProgress.substring(0, numDiv));

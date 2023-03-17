@@ -12,6 +12,8 @@ import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.provvisualizer.model.CommitNode;
 import edu.uwb.braingrid.workbench.ui.ProgressBar;
 import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
+import edu.uwb.braingrid.workbench.ui.SimulationsFrame;
+
 import java.io.InputStreamReader;
 import javafx.scene.control.TextArea;
 import javax.swing.JFrame;
@@ -286,6 +288,21 @@ public class SecureFileTransfer {
         return success;
     }
     // </editor-fold>
+    
+ /**
+  * Connects to the last simulation.
+  *
+  * @param hostname  The name of the host machine to connect to.
+  * @param username  The user's login username.
+  * @param password  The user's login password.
+  * @param simName  The  last simulation to connect to.
+  * @param manager  The temp place holder.
+  */
+  public void run(String hostname, String username,
+	      String password, String simName, String msg) {  
+	  checkLastSim(hostname, username, password, simName, msg);
+  }
+  
 
   /**
    * Connects to the last simulation.
@@ -298,7 +315,7 @@ public class SecureFileTransfer {
    */
 
   public void checkLastSim(String hostname, String username,
-      String password, String simName, WorkbenchManager manager) {
+      String password, String simName, String msg) {
     JSch jsch = new JSch();
     try {
       session = jsch.getSession(username, hostname, PORT);
@@ -336,7 +353,7 @@ public class SecureFileTransfer {
               lastline = lastline.substring(
                   lastline.length() - completion.length(), lastline.length());
               if (lastline.equals("Complete")) {
-                displayDownloadFrame(channel2, manager);
+                displayDownloadFrame(channel2, msg);
                 break;
               } else {
                   int epochIndex = originalCommandString.indexOf("Epoch: ");
@@ -346,10 +363,11 @@ public class SecureFileTransfer {
                     epochIndex + epochStringLength, simulationIndex).trim();
                   String percent2 = originalCommandString.substring(
                     simulationIndex + simStringLength).trim();
+                  SimulationsFrame.returnInstance();
                   ProgressBar progressBar = new ProgressBar(
                     percent, percent2, this, simName);
                   }
-                  displayDownloadFrame(channel2, manager);
+                  displayDownloadFrame(channel2, msg);
                   break;
               }
             } catch (SftpException e) {
@@ -366,7 +384,7 @@ public class SecureFileTransfer {
     }
   }
 
-  private void displayDownloadFrame(Channel channel, WorkbenchManager manager) {
+  private void displayDownloadFrame(Channel channel, String msg) {
     JFrame frame = new JFrame();
     String[] options = {"Download", "Cancel"};
     int option = JOptionPane.showOptionDialog(frame,
@@ -375,7 +393,7 @@ public class SecureFileTransfer {
             null, options, options[0]);
     if (option == JOptionPane.YES_NO_OPTION) {
       SimulationRuntimeDialog srd = new SimulationRuntimeDialog(
-          new TextArea(manager.getMessages()));
+          new TextArea(msg));
     }
   }
 
