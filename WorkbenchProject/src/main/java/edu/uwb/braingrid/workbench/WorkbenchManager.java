@@ -516,6 +516,10 @@ public final class WorkbenchManager {
         }
         return success;
     }
+    
+    private String LastSimulationsDir() {
+  	  return workingDir() + "\\LastSimulations";
+    }
 
     /**
      * Runs the last generated script file. This entails moving the script to the directory
@@ -538,7 +542,7 @@ public final class WorkbenchManager {
       simulation.setScriptRan(success);
       simulation.setScriptStartedAt();
       if (success) {
-        File simulationFile = new File(workingDir() + "\\LastSimulation\\simulation");
+        File simulationFile = new File(LastSimulationsDir() + "\\" + simulationName + "\\simulation");
         FileOutputStream simOut = new FileOutputStream(simulationFile);
         ObjectOutputStream simObjOut = new ObjectOutputStream(simOut);
         simObjOut.writeObject(simulation);

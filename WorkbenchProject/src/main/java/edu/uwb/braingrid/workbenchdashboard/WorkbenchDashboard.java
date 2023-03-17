@@ -165,9 +165,9 @@ public class WorkbenchDashboard extends Application {
     if (workDir.endsWith(substr)) {
       workDir = workDir.substring(0, workDir.length() - substr.length());
     }
-    String simPath = workDir + "\\LastSimulation\\simdir";
+    String simPath = workDir + "\\LastSimulations";
     File lastSim = new File(simPath);
-    if (lastSim.exists() && lastSim.isFile() && lastSim.length() != 0) {
+    if (lastSim.exists() && lastSim.isDirectory() && lastSim.list().length > 0) {
       LOG.info("Last Simulation detected");
       JFrame frame = new JFrame();
       String[] options = {"Resume", "No"};
@@ -177,6 +177,7 @@ public class WorkbenchDashboard extends Application {
                   null, options, options[0]);
       if (option == JOptionPane.YES_NO_OPTION) {
         try {
+          JOptionPane.getRootFrame().dispose();        	
           FileInputStream readKey = new FileInputStream(
               new File(workingDir() + "\\Key"));
           try {
@@ -188,37 +189,47 @@ public class WorkbenchDashboard extends Application {
                   workingDir() + "\\Cache\\hostname.encrypted");
               SimulationSpecificationDialog tempDiaLog = new SimulationSpecificationDialog();
               String realHostInfo = tempDiaLog.decrypt(key, hostInfo, hostInfo, "");
-              FileInputStream readSimlationName = new FileInputStream(new File(
-                  workingDir() + "\\LastSimulation\\simName"));
-              ObjectInputStream readSimNameObj = new ObjectInputStream(readSimlationName);
-              String simName = (String) readSimNameObj.readObject();
+              File[] files = lastSim.listFiles();
+              String simNames[] = new String[files.length];
+              for (int i = 0; i < files.length; i++) {
+            	  simNames[i] = files[i].getName();
+              }
               LoginCredentialsDialog loginToResume = new
                   LoginCredentialsDialog(realHostInfo, true);
               final String username = loginToResume.getUsername();
               final String password = new String(loginToResume.getPassword());
               final SecureFileTransfer fileTransfer = new SecureFileTransfer();
-
-              File simulationInput = new File(workingDir() + "\\LastSimulation\\simulation");
-              FileInputStream simIn = new FileInputStream(simulationInput);
-              ObjectInputStream simInObj = new ObjectInputStream(simIn);
-
-              BufferedReader readUri = new BufferedReader(
-                  new FileReader(workingDir() + "\\LastSimulation\\uri"));
-              String provUri = readUri.readLine();
-              String localUri = readUri.readLine();
-              String remoteUri = readUri.readLine();
-              Model model = ModelFactory.createDefaultModel();
-              model.read(workingDir() + "\\LastSimulation\\model.ttl", "TURTLE");
-              ProvMgr lastMgr = new ProvMgr(provUri, localUri, remoteUri, model);
-              WorkbenchManager.getInstance().simulationSetter((Simulation) simInObj.readObject());
-              WorkbenchManager.getInstance().provMgrSetter(lastMgr);
-              ObjectInputStream msgReader = new ObjectInputStream(
-                  new FileInputStream(new File(workingDir() + "\\LastSimulation\\message")));
-              String message = (String) msgReader.readObject();
-              WorkbenchManager.getInstance().setMessages(message);
-              fileTransfer.checkLastSim(realHostInfo, username,
-                  password, simName, WorkbenchManager.getInstance());
-              JOptionPane.getRootFrame().dispose();
+              String[] provUris = new String[files.length];
+              String[] localUris = new String[files.length];
+              String[] remoteUris = new String[files.length];
+              String Msgs[] = new String[files.length];
+              Simulation[] simulations = new Simulation[files.length];
+              Model[] models = new Model[files.length];
+              ProvMgr[] lastMgrs = new ProvMgr[files.length];
+              
+              for(int i = 0; i < files.length; i++) {
+            	  File simulationInput = new File(LastSimulationsDir() + "\\" + simNames[i] + "\\simulation");
+                  FileInputStream simIn = new FileInputStream(simulationInput);
+                  ObjectInputStream simInObj = new ObjectInputStream(simIn);
+                  BufferedReader readUri = new BufferedReader(
+                      new FileReader(LastSimulationsDir() + "\\" + simNames[i] + "\\uri"));
+                  provUris[i] = readUri.readLine();
+                  localUris[i] = readUri.readLine();
+                  remoteUris[i] = readUri.readLine();
+                  Model model = ModelFactory.createDefaultModel();
+                  model.read(LastSimulationsDir() + "\\" + simNames[i] + "\\model.ttl", "TURTLE");
+                  models[i] = model;
+                  ObjectInputStream msgReader = new ObjectInputStream(
+                      new FileInputStream(new File(LastSimulationsDir() + simNames[i] + "message")));
+                  Msgs[i] = (String) msgReader.readObject();
+                  simulations[i] = (Simulation) simInObj.readObject();
+                  lastMgrs[i] = new ProvMgr(provUris[i], localUris[i], remoteUris[i], models[i]);
+                  WorkbenchManager.getInstance().simulationSetter(simulations[i]);
+                  WorkbenchManager.getInstance().provMgrSetter(lastMgrs[i]);
+                  WorkbenchManager.getInstance().setMessages(Msgs[i]);
+                  fileTransfer.checkLastSim(realHostInfo, username,
+                          password, simNames[i], WorkbenchManager.getInstance());
+              }
             } catch (ClassNotFoundException e) {
               e.printStackTrace();
             }
@@ -233,4 +244,7 @@ public class WorkbenchDashboard extends Application {
       JOptionPane.getRootFrame().dispose();
     }
   }
+  private String LastSimulationsDir() {
+  	  return workingDir() + "\\LastSimulations";
+    }
 }
