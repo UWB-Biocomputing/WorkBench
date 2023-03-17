@@ -283,7 +283,7 @@ public class ScriptManager {
     FileOutputStream simNameLocation;
     try {
       simNameLocation = new FileOutputStream(
-          new File(LastSimulationsDir() + "\\" + simName + "\\simName"));
+          new File(lastSimulationsDir() + "\\" + simName + "\\simName"));
       ObjectOutputStream writeSimName = new ObjectOutputStream(simNameLocation);
       writeSimName.writeObject(simName);
     } catch (IOException e) {
@@ -413,7 +413,7 @@ public class ScriptManager {
                     accumulatedTime);
         }
     if (success) {
-      String simLocation = LastSimulationsDir();
+      String simLocation = lastSimulationsDir();
       File messageFile = new File(simLocation + "\\" + simulationName + "\\message");
       File uriFile = new File(simLocation + "\\" + simulationName + "\\uri");
       FileOutputStream messageOut = new FileOutputStream(messageFile);
@@ -422,7 +422,7 @@ public class ScriptManager {
         messageOutObj.writeObject(WorkbenchManager.getInstance().getMessages());
         provMgr.getModel().write(
           new FileOutputStream(new File(
-            LastSimulationsDir() + "\\" + simulationName + "\\model.ttl")), "TURTLE");
+            lastSimulationsDir() + "\\" + simulationName + "\\model.ttl")), "TURTLE");
         FileWriter uriWriter = new FileWriter(uriFile);
         uriWriter.write(provMgr.getProvUri() + "\n");
         uriWriter.write(provMgr.getLocalUri() + "\n");
@@ -720,9 +720,9 @@ public class ScriptManager {
     }
     return lastSimFolder;
   }
-  
-  private String LastSimulationsDir() {
-	  return workingDir() + "\\LastSimulations";
+
+  private String lastSimulationsDir() {
+    return workingDir() + "\\LastSimulations";
   }
 
     private String fetchScriptOutputFiles(Simulation simulation, SimulationSpecification simSpec,

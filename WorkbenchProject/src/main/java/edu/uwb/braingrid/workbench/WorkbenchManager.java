@@ -516,9 +516,9 @@ public final class WorkbenchManager {
         }
         return success;
     }
-    
-    private String LastSimulationsDir() {
-  	  return workingDir() + "\\LastSimulations";
+
+    private String lastSimulationsDir() {
+      return workingDir() + "\\LastSimulations";
     }
 
     /**
@@ -542,7 +542,8 @@ public final class WorkbenchManager {
       simulation.setScriptRan(success);
       simulation.setScriptStartedAt();
       if (success) {
-        File simulationFile = new File(LastSimulationsDir() + "\\" + simulationName + "\\simulation");
+        File simulationFile = new File(
+            lastSimulationsDir() + "\\" + simulationName + "\\simulation");
         FileOutputStream simOut = new FileOutputStream(simulationFile);
         ObjectOutputStream simObjOut = new ObjectOutputStream(simOut);
         simObjOut.writeObject(simulation);

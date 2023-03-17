@@ -177,7 +177,7 @@ public class WorkbenchDashboard extends Application {
                   null, options, options[0]);
       if (option == JOptionPane.YES_NO_OPTION) {
         try {
-          JOptionPane.getRootFrame().dispose();        	
+          JOptionPane.getRootFrame().dispose();
           FileInputStream readKey = new FileInputStream(
               new File(workingDir() + "\\Key"));
           try {
@@ -190,9 +190,9 @@ public class WorkbenchDashboard extends Application {
               SimulationSpecificationDialog tempDiaLog = new SimulationSpecificationDialog();
               String realHostInfo = tempDiaLog.decrypt(key, hostInfo, hostInfo, "");
               File[] files = lastSim.listFiles();
-              String simNames[] = new String[files.length];
+              String[] simNames = new String[files.length];
               for (int i = 0; i < files.length; i++) {
-            	  simNames[i] = files[i].getName();
+                  simNames[i] = files[i].getName();
               }
               LoginCredentialsDialog loginToResume = new
                   LoginCredentialsDialog(realHostInfo, true);
@@ -202,31 +202,33 @@ public class WorkbenchDashboard extends Application {
               String[] provUris = new String[files.length];
               String[] localUris = new String[files.length];
               String[] remoteUris = new String[files.length];
-              String Msgs[] = new String[files.length];
+              String[] msgs = new String[files.length];
               Simulation[] simulations = new Simulation[files.length];
               Model[] models = new Model[files.length];
               ProvMgr[] lastMgrs = new ProvMgr[files.length];
-              
-              for(int i = 0; i < files.length; i++) {
-            	  File simulationInput = new File(LastSimulationsDir() + "\\" + simNames[i] + "\\simulation");
+
+              for (int i = 0; i < files.length; i++) {
+                  File simulationInput = new File(
+                      lastSimulationsDir() + "\\" + simNames[i] + "\\simulation");
                   FileInputStream simIn = new FileInputStream(simulationInput);
                   ObjectInputStream simInObj = new ObjectInputStream(simIn);
                   BufferedReader readUri = new BufferedReader(
-                      new FileReader(LastSimulationsDir() + "\\" + simNames[i] + "\\uri"));
+                      new FileReader(lastSimulationsDir() + "\\" + simNames[i] + "\\uri"));
                   provUris[i] = readUri.readLine();
                   localUris[i] = readUri.readLine();
                   remoteUris[i] = readUri.readLine();
                   Model model = ModelFactory.createDefaultModel();
-                  model.read(LastSimulationsDir() + "\\" + simNames[i] + "\\model.ttl", "TURTLE");
+                  model.read(lastSimulationsDir() + "\\" + simNames[i] + "\\model.ttl", "TURTLE");
                   models[i] = model;
                   ObjectInputStream msgReader = new ObjectInputStream(
-                      new FileInputStream(new File(LastSimulationsDir() + simNames[i] + "message")));
-                  Msgs[i] = (String) msgReader.readObject();
+                      new FileInputStream(new File(
+                          lastSimulationsDir() + simNames[i] + "message")));
+                  msgs[i] = (String) msgReader.readObject();
                   simulations[i] = (Simulation) simInObj.readObject();
                   lastMgrs[i] = new ProvMgr(provUris[i], localUris[i], remoteUris[i], models[i]);
                   WorkbenchManager.getInstance().simulationSetter(simulations[i]);
                   WorkbenchManager.getInstance().provMgrSetter(lastMgrs[i]);
-                  WorkbenchManager.getInstance().setMessages(Msgs[i]);
+                  WorkbenchManager.getInstance().setMessages(msgs[i]);
                   fileTransfer.checkLastSim(realHostInfo, username,
                           password, simNames[i], WorkbenchManager.getInstance());
               }
@@ -244,7 +246,7 @@ public class WorkbenchDashboard extends Application {
       JOptionPane.getRootFrame().dispose();
     }
   }
-  private String LastSimulationsDir() {
-  	  return workingDir() + "\\LastSimulations";
-    }
+  private String lastSimulationsDir() {
+    return workingDir() + "\\LastSimulations";
+  }
 }
