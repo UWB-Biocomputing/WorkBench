@@ -715,6 +715,8 @@ public class ScriptManager {
     File lastSimDirectory = new File(lastSim);
     if (!lastSimDirectory.exists() || !lastSimDirectory.isDirectory()) {
       lastSimDirectory.mkdir();
+    }
+    if (lastSimDirectory.exists() && lastSimDirectory.isDirectory()) {
       File lastFolder = new File(lastSimFolder);
       lastFolder.mkdir();
     }

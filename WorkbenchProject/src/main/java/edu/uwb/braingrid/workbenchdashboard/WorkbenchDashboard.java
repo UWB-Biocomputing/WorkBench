@@ -230,7 +230,9 @@ public class WorkbenchDashboard extends Application {
                   WorkbenchManager.getInstance().simulationSetter(simulations[i]);
                   WorkbenchManager.getInstance().provMgrSetter(lastMgrs[i]);
                   WorkbenchManager.getInstance().setMessages(msgs[i]);
-                  SecureFileWrapperMultiThread wrapper = new SecureFileWrapperMultiThread(realHostInfo, username,
+                  SecureFileWrapperMultiThread wrapper
+                      =
+                          new SecureFileWrapperMultiThread(realHostInfo, username,
                           password, simNames[i], msgs[i]);
                   Thread thread = new Thread(wrapper);
                   thread.start();

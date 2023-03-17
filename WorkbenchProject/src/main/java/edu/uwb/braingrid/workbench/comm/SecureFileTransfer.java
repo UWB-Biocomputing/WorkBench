@@ -10,11 +10,11 @@ import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
 import edu.uwb.braingrid.workbench.WorkbenchManager;
 import edu.uwb.braingrid.workbench.provvisualizer.model.CommitNode;
-import edu.uwb.braingrid.workbench.ui.ProgressBar;
+import edu.uwb.braingrid.workbench.ui.WorkBenchProgressBar;
 import edu.uwb.braingrid.workbench.ui.SimulationRuntimeDialog;
 import edu.uwb.braingrid.workbench.ui.SimulationsFrame;
-
 import java.io.InputStreamReader;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -288,7 +288,7 @@ public class SecureFileTransfer {
         return success;
     }
     // </editor-fold>
-    
+
  /**
   * Connects to the last simulation.
   *
@@ -296,13 +296,13 @@ public class SecureFileTransfer {
   * @param username  The user's login username.
   * @param password  The user's login password.
   * @param simName  The  last simulation to connect to.
-  * @param manager  The temp place holder.
+  * @param msg  The message to display
   */
   public void run(String hostname, String username,
-	      String password, String simName, String msg) {  
-	  checkLastSim(hostname, username, password, simName, msg);
+    String password, String simName, String msg) {
+    checkLastSim(hostname, username, password, simName, msg);
   }
-  
+
 
   /**
    * Connects to the last simulation.
@@ -311,7 +311,7 @@ public class SecureFileTransfer {
    * @param username  The user's login username.
    * @param password  The user's login password.
    * @param simName  The  last simulation to connect to.
-   * @param manager  The temp place holder.
+   * @param msg  The message to display
    */
 
   public void checkLastSim(String hostname, String username,
@@ -363,9 +363,7 @@ public class SecureFileTransfer {
                     epochIndex + epochStringLength, simulationIndex).trim();
                   String percent2 = originalCommandString.substring(
                     simulationIndex + simStringLength).trim();
-                  SimulationsFrame.returnInstance();
-                  ProgressBar progressBar = new ProgressBar(
-                    percent, percent2, this, simName);
+                  SimulationsFrame.returnInstance().addSimulation(simName, percent, percent2, this);
                   }
                   displayDownloadFrame(channel2, msg);
                   break;
@@ -403,7 +401,7 @@ public class SecureFileTransfer {
   * @param simName  The  last simulation to connect to.
   * @param bar  The progress bar for that simulation
   */
-  public void checkProgress(String simName, ProgressBar bar) {
+  public void checkProgress(String simName, WorkBenchProgressBar bar) {
       try {
         Channel channel = session.openChannel("exec");
         try {
