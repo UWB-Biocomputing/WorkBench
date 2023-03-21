@@ -1,5 +1,6 @@
 package edu.uwb.braingrid.workbench.ui;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
@@ -23,10 +24,10 @@ import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
  */
 public final class SimulationsFrame {
     private Stage mainFrame;
-    private ArrayList<Scene> scenes;
-    private ArrayList<Button> downLoadButtons;
-    private ArrayList<TextArea> downLoadTextAreas;
-    private ArrayList<ProgressBar> progressBars;
+    private ArrayList<Scene> scenes = new ArrayList<>();
+    private ArrayList<Button> downLoadButtons = new ArrayList<>();;
+    private ArrayList<TextArea> downLoadTextAreas = new ArrayList<>();;
+    private ArrayList<ProgressBar> progressBars = new ArrayList<>();;
     private static SimulationsFrame mainStage = null;
 
     /**
@@ -42,8 +43,10 @@ public final class SimulationsFrame {
     }
 
   private SimulationsFrame() {
-    mainFrame = new Stage();
-    mainFrame.setTitle("Last Simulations");
+    Platform.runLater(() -> {
+    	mainFrame = new Stage();
+    	mainFrame.setTitle("Last Simulations");
+    });
   }
 
    /**
@@ -67,5 +70,6 @@ public final class SimulationsFrame {
         WorkBenchProgressBar progressBar = new WorkBenchProgressBar(
                 currentProgress, subProgress, tracker, simName, sceneContent,
                 scene, mainStage.mainFrame);
+        progressBars.add(progressBar.getProgressBar());
     }
 }

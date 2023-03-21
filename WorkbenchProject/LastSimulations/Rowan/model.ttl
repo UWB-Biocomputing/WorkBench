@@ -1,0 +1,108 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2000/10/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix remote: <otachi.uwb.edu#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix local: <DESKTOP-3N8B16A@73.225.90.139#> .
+
+<local:upload_SimConfig>
+        a                       prov:Activity ;
+        rdfs:label              "upload" ;
+        prov:endedAtTime        "2023-03-18T18:59:46.821Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/Rowan/configfilesRowan.xml> ;
+        prov:startedAtTime      "2023-03-18T18:59:46.327Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/Rowan.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/probedNList.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/InhibitoryNList.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .
+
+<local:upload_PROBED_NList>
+        a                       prov:Activity ;
+        rdfs:label              "upload" ;
+        prov:endedAtTime        "2023-03-18T18:59:46.327Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/Rowan/configfiles/NListprobedNList.xml> ;
+        prov:startedAtTime      "2023-03-18T18:59:45.822Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/probedNList.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/script/Rowan_script.sh>
+        a           prov:Entity ;
+        rdfs:label  "script" .
+
+<local:~/WorkbenchSimulations/Rowan/configfiles/NListInhibitoryNList.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/InhibitoryNList.xml> ;
+        prov:wasGeneratedBy  <local:upload_INHIBITORY_NList> .
+
+<local:upload_INHIBITORY_NList>
+        a                       prov:Activity ;
+        rdfs:label              "upload" ;
+        prov:endedAtTime        "2023-03-18T18:59:45.822Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/Rowan/configfiles/NListInhibitoryNList.xml> ;
+        prov:startedAtTime      "2023-03-18T18:59:45.313Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/InhibitoryNList.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:uploadScript>  a         prov:Activity ;
+        rdfs:label              "upload" ;
+        prov:endedAtTime        "2023-03-18T18:59:44.823Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/Rowan/Rowan_script.sh> ;
+        prov:startedAtTime      "2023-03-18T18:59:44.319Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/script/Rowan_script.sh> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:workbench>  a  prov:SoftwareAgent .
+
+<local:~/WorkbenchSimulations/Rowan/configfiles/NListActiveNList.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/ActiveNList.xml> ;
+        prov:wasGeneratedBy  <local:upload_ACTIVE_NList> .
+
+<local:~/WorkbenchSimulations/Rowan/Rowan_script.sh>
+        a                    prov:Entity ;
+        rdfs:label           "script" ;
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/script/Rowan_script.sh> ;
+        prov:wasGeneratedBy  <local:uploadScript> .
+
+<local:~/WorkbenchSimulations/Rowan/configfilesRowan.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/Rowan.xml> ;
+        prov:wasGeneratedBy  <local:upload_SimConfig> .
+
+<local:~/WorkbenchSimulations/Rowan/configfiles/NListprobedNList.xml>
+        a                    prov:Entity ;
+        rdfs:label           "nlist" ;
+        prov:wasDerivedFrom  <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/probedNList.xml> ;
+        prov:wasGeneratedBy  <local:upload_PROBED_NList> .
+
+<local:upload_ACTIVE_NList>
+        a                       prov:Activity ;
+        rdfs:label              "upload" ;
+        prov:endedAtTime        "2023-03-18T18:59:45.312Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:generated          <local:~/WorkbenchSimulations/Rowan/configfiles/NListActiveNList.xml> ;
+        prov:startedAtTime      "2023-03-18T18:59:44.824Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+        prov:used               <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/ActiveNList.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:simulation_input_file_generation>
+        a                       prov:Activity ;
+        prov:generated          <local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/Rowan.xml> ;
+        prov:wasAssociatedWith  <local:workbench> .
+
+<local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/Rowan.xml>
+        a                    prov:Entity ;
+        rdfs:label           "simulationConfigurationFile" ;
+        prov:wasGeneratedBy  <local:simulation_input_file_generation> .
+
+<local:C:/Users/Administrator/WorkbenchProjects/Default/Rowan/configfiles/NList/ActiveNList.xml>
+        a           prov:Entity ;
+        rdfs:label  "nlist" .

@@ -11,6 +11,7 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import edu.uwb.braingrid.workbench.comm.SecureFileTransfer;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
@@ -28,6 +29,11 @@ public class WorkBenchProgressBar {
     private SecureFileTransfer progressTracker;
     private String simName;
     private JFrame frame;
+    
+    public ProgressBar getProgressBar() {
+    	return progressBar;
+    }
+    
     /**
      * Constructor of the progress bar.
      *
@@ -66,7 +72,9 @@ public class WorkBenchProgressBar {
       progressBar.setPrefWidth(length);
       progressBar.setPrefHeight(height);
       sceneContent.getChildren().add(progressBar);
-      stage.setScene(scene);
+      Platform.runLater(() -> {
+          stage.setScene(scene);
+      });
       // Set the size of the frame and make it visible
       progressTracker.checkProgress(simName, this);
     }
@@ -79,7 +87,9 @@ public class WorkBenchProgressBar {
   public void updateProgress(double newProgress) {
     progressBar.setProgress(newProgress);
     if (newProgress == 1) {
-     frame.setVisible(false);
+    	Platform.runLater(() -> {
+    	  frame.setVisible(false);
+        });
     }
   }
 }
